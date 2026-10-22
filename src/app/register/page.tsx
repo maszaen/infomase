@@ -8,7 +8,7 @@ import { User as UserIcon, Mail, Lock, Phone, Eye, EyeOff, ArrowRight, AlertCirc
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { register, isAuthenticated } = useAuth();
+  const { register, loginDemo, isAuthenticated } = useAuth();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -57,6 +57,11 @@ export default function RegisterPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleDemoLogin = () => {
+    loginDemo();
+    router.push('/dashboard');
   };
 
   return (
@@ -137,10 +142,7 @@ export default function RegisterPage() {
         {errorMessage && (
           <div
             style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: 10,
-              padding: '12px 14px',
+              padding: '14px',
               borderRadius: 10,
               background: '#fef2f2',
               border: '1px solid #fee2e2',
@@ -149,8 +151,42 @@ export default function RegisterPage() {
               marginBottom: 18,
             }}
           >
-            <AlertCircle size={16} style={{ flexShrink: 0, marginTop: 2 }} />
-            <div>{errorMessage}</div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+              <AlertCircle size={16} style={{ flexShrink: 0, marginTop: 2 }} />
+              <div>{errorMessage}</div>
+            </div>
+            <div
+              style={{
+                marginTop: 12,
+                paddingTop: 10,
+                borderTop: '1px dashed #fca5a5',
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 8,
+              }}
+            >
+              <span style={{ fontSize: '0.76rem', color: '#7f1d1d' }}>
+                Backend belum siap? Masuk uji coba studio:
+              </span>
+              <button
+                type="button"
+                onClick={handleDemoLogin}
+                style={{
+                  background: '#991b1b',
+                  color: '#ffffff',
+                  border: 'none',
+                  borderRadius: 6,
+                  padding: '6px 12px',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                Masuk Mode Demo ➔
+              </button>
+            </div>
           </div>
         )}
 

@@ -51,6 +51,7 @@ export async function apiFetch<T = any>(
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
   const token = getToken();
+  const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
 
   const headers: Record<string, string> = {
     Accept: 'application/json',
@@ -65,12 +66,17 @@ export async function apiFetch<T = any>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
-
-  const res = await fetch(url, {
-    ...options,
-    headers,
-  });
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      ...options,
+      headers,
+    });
+  } catch {
+    throw new Error(
+      `Tidak dapat terhubung ke server backend di "${url}". Pastikan web server Apache/CodeIgniter sudah berjalan (misal di XAMPP) dan CORS diizinkan.`
+    );
+  }
 
   const json: ApiResponse<T> = await res.json().catch(() => ({
     success: false,

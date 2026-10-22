@@ -8,7 +8,7 @@ import { Mail, Lock, Eye, EyeOff, ArrowRight, Sparkles, CheckCircle2, AlertCircl
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login, isAuthenticated } = useAuth();
+  const { login, loginDemo, isAuthenticated } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -45,6 +45,11 @@ export default function LoginPage() {
     setEmail('budi@example.com');
     setPassword('Password123!');
     setErrorMessage(null);
+  };
+
+  const handleDemoLogin = () => {
+    loginDemo();
+    router.push('/dashboard');
   };
 
   return (
@@ -125,10 +130,7 @@ export default function LoginPage() {
         {errorMessage && (
           <div
             style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: 10,
-              padding: '12px 14px',
+              padding: '14px',
               borderRadius: 10,
               background: '#fef2f2',
               border: '1px solid #fee2e2',
@@ -137,8 +139,45 @@ export default function LoginPage() {
               marginBottom: 18,
             }}
           >
-            <AlertCircle size={16} style={{ flexShrink: 0, marginTop: 2 }} />
-            <div>{errorMessage}</div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+              <AlertCircle size={16} style={{ flexShrink: 0, marginTop: 2 }} />
+              <div>{errorMessage}</div>
+            </div>
+            <div
+              style={{
+                marginTop: 12,
+                paddingTop: 10,
+                borderTop: '1px dashed #fca5a5',
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 8,
+              }}
+            >
+              <span style={{ fontSize: '0.76rem', color: '#7f1d1d' }}>
+                Backend belum aktif? Masuk tanpa backend:
+              </span>
+              <button
+                type="button"
+                onClick={handleDemoLogin}
+                style={{
+                  background: '#991b1b',
+                  color: '#ffffff',
+                  border: 'none',
+                  borderRadius: 6,
+                  padding: '6px 12px',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                }}
+              >
+                Masuk Mode Demo ➔
+              </button>
+            </div>
           </div>
         )}
 
@@ -254,10 +293,44 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* Demo Fast Login Helper */}
+        {/* Divider */}
+        <div style={{ margin: '18px 0 14px', position: 'relative', textAlign: 'center' }}>
+          <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, borderBottom: '1px solid var(--border-default)' }} />
+          <span style={{ position: 'relative', background: '#ffffff', padding: '0 10px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+            atau untuk pengujian
+          </span>
+        </div>
+
+        {/* Instant Demo Login Button */}
+        <button
+          type="button"
+          onClick={handleDemoLogin}
+          style={{
+            width: '100%',
+            padding: '10px 14px',
+            fontSize: '0.84rem',
+            fontWeight: 600,
+            background: 'var(--bg-secondary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-default)',
+            borderRadius: 8,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            transition: 'all 0.2s ease',
+          }}
+          title="Masuk langsung ke Dashboard tanpa menunggu server backend aktif"
+        >
+          <Sparkles size={15} color="#2563eb" />
+          Masuk Mode Demo (Tanpa Backend)
+        </button>
+
+        {/* Demo Credentials Box */}
         <div
           style={{
-            marginTop: 20,
+            marginTop: 16,
             padding: '12px 14px',
             background: 'var(--bg-secondary)',
             borderRadius: 10,
@@ -268,7 +341,7 @@ export default function LoginPage() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
             <span style={{ fontWeight: 600, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 6 }}>
               <Sparkles size={13} color="#2563eb" />
-              Akun Uji Coba (Demo)
+              Kredensial API Backend
             </span>
             <button
               type="button"
@@ -283,7 +356,7 @@ export default function LoginPage() {
                 padding: 0,
               }}
             >
-              Isi Otomatis
+              Isi Form
             </button>
           </div>
           <span style={{ color: 'var(--text-muted)' }}>

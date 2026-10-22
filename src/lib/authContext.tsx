@@ -15,6 +15,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (credentials: { email: string; password: string }) => Promise<void>;
+  loginDemo: () => void;
   register: (payload: { name: string; email: string; password: string; phoneNumber?: string }) => Promise<void>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -97,6 +98,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
+  const loginDemo = useCallback(() => {
+    const demoUser: User = {
+      id: 'usr-demo-24',
+      name: 'Budi Santoso (Demo)',
+      email: 'budi@example.com',
+      phoneNumber: '081234567890',
+      role: 'USER',
+      totalInvitations: 1,
+    };
+    setUser(demoUser);
+    setTokenState('demo-token-active');
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('infomase_token', 'demo-token-active');
+      localStorage.setItem('infomase_user', JSON.stringify(demoUser));
+    }
+  }, []);
+
   const refreshProfile = useCallback(async () => {
     try {
       const profile = await authApi.getMe();
@@ -114,6 +132,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAuthenticated: !!token,
         isLoading,
         login,
+        loginDemo,
         register,
         logout,
         refreshProfile,
