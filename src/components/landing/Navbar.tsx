@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Sparkles, ArrowRight, Menu, X, Heart } from 'lucide-react';
+import { Sparkles, ArrowRight, Menu, X } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -10,7 +10,7 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -24,12 +24,10 @@ export const Navbar: React.FC = () => {
         left: 0,
         right: 0,
         zIndex: 100,
-        transition: 'all 0.3s ease',
-        background: isScrolled ? 'rgba(10, 13, 20, 0.9)' : 'transparent',
-        backdropFilter: isScrolled ? 'blur(16px)' : 'none',
-        WebkitBackdropFilter: isScrolled ? 'blur(16px)' : 'none',
-        borderBottom: isScrolled ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid transparent',
-        padding: '16px 0',
+        transition: 'all 0.2s ease',
+        background: '#ffffff',
+        borderBottom: isScrolled ? '1px solid #e2e8f0' : '1px solid #f1f5f9',
+        padding: '14px 0',
       }}
     >
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -37,56 +35,55 @@ export const Navbar: React.FC = () => {
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
           <div
             style={{
-              width: 36,
-              height: 36,
-              borderRadius: 10,
-              background: 'var(--gold-gradient)',
+              width: 34,
+              height: 34,
+              borderRadius: 8,
+              background: '#0f172a',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 14px rgba(212, 175, 55, 0.35)',
             }}
           >
-            <Sparkles size={18} color="#0c1017" />
+            <Sparkles size={16} color="#ffffff" />
           </div>
           <span
             style={{
               fontFamily: 'var(--font-heading)',
-              fontSize: '1.45rem',
-              fontWeight: 700,
-              color: '#ffffff',
-              letterSpacing: '-0.01em',
+              fontSize: '1.35rem',
+              fontWeight: 800,
+              color: '#0f172a',
+              letterSpacing: '-0.02em',
             }}
           >
-            Info<span className="text-gradient-gold">Mase</span>
+            Info<span style={{ color: '#2563eb' }}>Mase</span>
           </span>
         </Link>
 
         {/* Desktop Nav Links */}
         <div style={{ display: 'none', alignItems: 'center', gap: 28 }} className="desktop-nav">
-          <a href="#templates" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', transition: 'color 0.2s ease' }}>
+          <a href="#templates" style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-secondary)', transition: 'color 0.15s ease' }}>
             Template Desain
           </a>
-          <a href="#fitur" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', transition: 'color 0.2s ease' }}>
+          <a href="#fitur" style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-secondary)', transition: 'color 0.15s ease' }}>
             Fitur Utama
           </a>
-          <a href="#demo" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', transition: 'color 0.2s ease' }}>
+          <a href="#demo" style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-secondary)', transition: 'color 0.15s ease' }}>
             Coba Langsung
           </a>
-          <a href="#harga" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', transition: 'color 0.2s ease' }}>
+          <a href="#harga" style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-secondary)', transition: 'color 0.15s ease' }}>
             Pilihan Paket
           </a>
-          <a href="#testimoni" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', transition: 'color 0.2s ease' }}>
+          <a href="#testimoni" style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-secondary)', transition: 'color 0.15s ease' }}>
             Testimoni
           </a>
         </div>
 
         {/* Action Buttons */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <Link
             href="/dashboard"
-            className="btn btn-sm btn-glass"
-            style={{ display: 'none' }}
+            className="btn btn-sm btn-subtle"
+            style={{ display: 'none', fontWeight: 600 }}
             id="nav-dashboard-link"
           >
             Masuk Studio
@@ -95,7 +92,7 @@ export const Navbar: React.FC = () => {
           <Link
             href="/dashboard"
             className="btn btn-sm btn-gold"
-            style={{ textDecoration: 'none' }}
+            style={{ textDecoration: 'none', borderRadius: 8 }}
           >
             <span>Bikin Undangan Sat-Set</span>
             <ArrowRight size={14} />
@@ -105,7 +102,7 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="btn btn-sm btn-glass"
+            className="btn btn-sm btn-subtle"
             style={{ padding: '8px', display: 'none' }}
             id="mobile-menu-btn"
           >

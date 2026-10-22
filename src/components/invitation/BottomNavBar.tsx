@@ -26,16 +26,14 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({ onScrollTo }) => {
         margin: '0 auto',
         maxWidth: 340,
         zIndex: 40,
-        background: 'rgba(15, 23, 42, 0.85)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255, 255, 255, 0.15)',
+        background: '#ffffff',
+        border: '1px solid #e2e8f0',
         borderRadius: 999,
         padding: '6px 12px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+        boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
       }}
     >
       {navItems.map((item) => {
@@ -47,14 +45,14 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({ onScrollTo }) => {
             style={{
               background: 'transparent',
               border: 'none',
-              color: '#f8fafc',
+              color: '#0f172a',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               gap: 2,
               padding: '4px 6px',
               cursor: 'pointer',
-              opacity: 0.8,
+              opacity: 0.75,
               transition: 'opacity 0.2s ease, transform 0.2s ease',
             }}
             onMouseEnter={(e) => {

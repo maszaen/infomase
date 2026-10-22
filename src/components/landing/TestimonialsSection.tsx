@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Star, Heart, Quote, Sparkles } from 'lucide-react';
+import { Star, Quote, Sparkles } from 'lucide-react';
 
 export const TestimonialsSection: React.FC = () => {
   const reviews = [
@@ -11,7 +11,7 @@ export const TestimonialsSection: React.FC = () => {
       rating: 5,
       date: 'Pernikahan Oktober 2026',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-      text: 'Desainnya bener-bener mewah! Tamu-tamu undangan banyak yang memuji lagunya yang syahdu dan kemudahan konfirmasi kehadiran. Fitur salin rekeningnya juga ngebantu banget bagi tamu yang berhalangan hadir.',
+      text: 'Desainnya bener-bener bersih dan rapi! Tamu-tamu banyak yang muji karena enteng banget dibuka di HP, gak ada iklan atau pop-up ganggu. Fitur salin nomor rekeningnya juga ngebantu banget bagi yang transfer kado.',
     },
     {
       name: 'dr. Dimas & dr. Nadia',
@@ -27,32 +27,32 @@ export const TestimonialsSection: React.FC = () => {
       rating: 5,
       date: 'Pernikahan Agustus 2026',
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
-      text: 'Editornya sangat intuitif! Bisa ganti foto langsung, preview live di HP langsung berubah seketika. Support-nya responsif dan website undangan sangat cepat diakses tanpa lemot.',
+      text: 'Editornya sangat gampang dipake! Bisa ganti foto langsung, preview live di simulator HP langsung berubah seketika. Gak perlu nunggu admin buat ubah typo teks.',
     },
   ];
 
   return (
-    <section id="testimoni" style={{ padding: '80px 0', position: 'relative' }}>
+    <section id="testimoni" style={{ padding: '70px 0', background: '#ffffff' }}>
       <div className="container">
         {/* Header */}
-        <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 48px' }}>
+        <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 44px' }}>
           <div style={{ display: 'inline-flex', marginBottom: 12 }}>
             <span className="badge badge-gold">
-              <Sparkles size={14} />
+              <Sparkles size={14} color="#2563eb" />
               Kisah Bahagia
             </span>
           </div>
           <h2
             style={{
               fontFamily: 'var(--font-heading)',
-              fontSize: 'clamp(2rem, 3.8vw, 3rem)',
-              color: '#ffffff',
-              marginBottom: 16,
+              fontSize: 'clamp(1.9rem, 3.5vw, 2.7rem)',
+              color: '#0f172a',
+              marginBottom: 12,
             }}
           >
             Dipercaya Oleh Lebih Dari 150.000 Pasangan
           </h2>
-          <p style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>
+          <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
             Lihat cerita dan kesan bahagia para mempelai yang telah menggunakan InfoMase untuk hari sakral mereka.
           </p>
         </div>
@@ -62,7 +62,7 @@ export const TestimonialsSection: React.FC = () => {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: 24,
+            gap: 22,
           }}
         >
           {reviews.map((rev, idx) => (
@@ -70,46 +70,47 @@ export const TestimonialsSection: React.FC = () => {
               key={idx}
               className="glass-card"
               style={{
-                padding: '30px 26px',
-                borderRadius: 22,
+                padding: '26px 22px',
+                borderRadius: 14,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                background: '#ffffff',
               }}
             >
               <div>
                 {/* Stars & Quote Icon */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                  <div style={{ display: 'flex', gap: 4, color: '#f59e0b' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                  <div style={{ display: 'flex', gap: 3, color: '#f59e0b' }}>
                     {[...Array(rev.rating)].map((_, i) => (
-                      <Star key={i} size={16} fill="currentColor" />
+                      <Star key={i} size={15} fill="currentColor" />
                     ))}
                   </div>
-                  <Quote size={24} color="var(--gold-400)" style={{ opacity: 0.5 }} />
+                  <Quote size={20} color="#cbd5e1" />
                 </div>
 
-                <p style={{ fontSize: '0.92rem', color: 'var(--text-primary)', lineHeight: 1.6, fontStyle: 'italic', marginBottom: 24 }}>
-                  "{rev.text}"
+                <p style={{ fontSize: '0.88rem', color: '#0f172a', lineHeight: 1.6, marginBottom: 20 }}>
+                  &quot;{rev.text}&quot;
                 </p>
               </div>
 
               {/* Author Footer */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 14, borderTop: '1px solid #f1f5f9' }}>
                 <div
                   style={{
-                    width: 44,
-                    height: 44,
+                    width: 40,
+                    height: 40,
                     borderRadius: '50%',
                     overflow: 'hidden',
-                    border: '2px solid var(--gold-400)',
+                    border: '1px solid #e2e8f0',
                     flexShrink: 0,
                   }}
                 >
                   <img src={rev.avatar} alt={rev.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <div>
-                  <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: '#ffffff' }}>{rev.name}</h4>
-                  <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                  <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>{rev.name}</h4>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                     {rev.city} • {rev.date}
                   </span>
                 </div>

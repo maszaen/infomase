@@ -126,16 +126,17 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ data }) => {
                 rel="noreferrer"
                 className="btn"
                 style={{
-                  background: 'var(--gold-gradient)',
-                  color: '#0e141f',
+                  background: 'var(--inv-primary)',
+                  color: '#ffffff',
                   fontSize: '0.85rem',
                   padding: '10px 18px',
                   borderRadius: 999,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: 8,
+                  textDecoration: 'none',
                 }}
               >
                 <Navigation size={16} />

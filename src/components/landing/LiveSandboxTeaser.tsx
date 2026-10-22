@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useInvitationStore } from '@/lib/invitationStore';
 import { TemplateId } from '@/types/invitation';
-import { Sparkles, ArrowRight, Heart, Calendar, Image as ImageIcon } from 'lucide-react';
+import { Sparkles, ArrowRight } from 'lucide-react';
 
 export const LiveSandboxTeaser: React.FC = () => {
   const router = useRouter();
-  const { data, updateGroom, updateBride, setTemplateId, updateCountdownDate } = useInvitationStore();
+  const { data, updateGroom, updateBride, setTemplateId } = useInvitationStore();
 
   const [groomName, setGroomName] = useState(data.groom.name);
   const [brideName, setBrideName] = useState(data.bride.name);
@@ -22,29 +22,28 @@ export const LiveSandboxTeaser: React.FC = () => {
   };
 
   const themes: { id: TemplateId; label: string; color: string }[] = [
-    { id: 'rustic', label: 'Rustic Warmth', color: '#c49a6c' },
-    { id: 'royal-gold', label: 'Royal Midnight Gold', color: '#d4af37' },
-    { id: 'islamic', label: 'Islamic Emerald', color: '#10b981' },
-    { id: 'sakura', label: 'Blush Sakura', color: '#f43f5e' },
+    { id: 'rustic', label: 'Rustic Warmth', color: '#78350f' },
+    { id: 'royal-gold', label: 'Royal Midnight Gold', color: '#09090b' },
+    { id: 'islamic', label: 'Islamic Emerald', color: '#047857' },
+    { id: 'sakura', label: 'Blush Sakura', color: '#e11d48' },
   ];
 
   return (
-    <section id="demo" style={{ padding: '80px 0', position: 'relative' }}>
+    <section id="demo" style={{ padding: '70px 0', background: '#ffffff' }}>
       <div className="container">
         <div
-          className="glass-panel"
           style={{
-            borderRadius: 32,
-            padding: '48px 36px',
-            background: 'radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.08) 0%, rgba(16, 22, 34, 0.9) 100%)',
-            border: '1px solid rgba(212, 175, 55, 0.25)',
+            borderRadius: 20,
+            padding: '40px 32px',
+            background: '#f8fafc',
+            border: '1px solid #e2e8f0',
           }}
         >
           <div
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: 40,
+              gap: 36,
               alignItems: 'center',
             }}
           >
@@ -52,7 +51,7 @@ export const LiveSandboxTeaser: React.FC = () => {
             <div>
               <div style={{ display: 'inline-flex', marginBottom: 12 }}>
                 <span className="badge badge-gold">
-                  <Sparkles size={14} />
+                  <Sparkles size={14} color="#2563eb" />
                   Simulasi Sat-Set Tanpa Ribet
                 </span>
               </div>
@@ -60,21 +59,21 @@ export const LiveSandboxTeaser: React.FC = () => {
               <h2
                 style={{
                   fontFamily: 'var(--font-heading)',
-                  fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)',
-                  color: '#ffffff',
-                  marginBottom: 12,
+                  fontSize: 'clamp(1.7rem, 3vw, 2.4rem)',
+                  color: '#0f172a',
+                  marginBottom: 10,
                 }}
               >
                 Ketik Nama Kalian, Langsung Jadi Sekejap Mase!
               </h2>
 
-              <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 28 }}>
+              <p style={{ fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 24 }}>
                 Mau lihat gimana elegannya undangan kalian? Coba ketik nama panggilan di bawah ini, liat preview kartu di samping auto berubah seketika. Cocok? Tinggal gas ke studio!
               </p>
 
               {/* Form Controls */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 24 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                   <div className="form-group" style={{ margin: 0 }}>
                     <label className="form-label">Nama Mempelai Pria</label>
                     <input
@@ -112,21 +111,21 @@ export const LiveSandboxTeaser: React.FC = () => {
                           type="button"
                           onClick={() => setSelectedTheme(th.id)}
                           style={{
-                            padding: '10px 14px',
-                            borderRadius: 12,
-                            border: isSel ? `2px solid ${th.color}` : '1px solid var(--border-glass)',
-                            background: isSel ? `${th.color}20` : 'rgba(255,255,255,0.03)',
-                            color: isSel ? '#ffffff' : 'var(--text-secondary)',
+                            padding: '9px 12px',
+                            borderRadius: 8,
+                            border: isSel ? '2px solid #0f172a' : '1px solid #cbd5e1',
+                            background: isSel ? '#ffffff' : '#f8fafc',
+                            color: '#0f172a',
                             display: 'flex',
                             alignItems: 'center',
                             gap: 8,
                             fontSize: '0.82rem',
-                            fontWeight: 600,
+                            fontWeight: isSel ? 700 : 500,
                             cursor: 'pointer',
                             textAlign: 'left',
                           }}
                         >
-                          <div style={{ width: 12, height: 12, borderRadius: '50%', background: th.color }} />
+                          <div style={{ width: 10, height: 10, borderRadius: '50%', background: th.color }} />
                           <span>{th.label}</span>
                         </button>
                       );
@@ -143,57 +142,36 @@ export const LiveSandboxTeaser: React.FC = () => {
                 style={{ width: '100%' }}
               >
                 <span>Gas Lanjut Edit Sat-Set di Studio</span>
-                <ArrowRight size={18} />
+                <ArrowRight size={17} />
               </button>
             </div>
 
-            {/* Right Live Card Preview */}
+            {/* Right Live Card Preview (Flat White) */}
             <div style={{ display: 'flex', justifyContent: 'center' }}>
               <div
                 style={{
                   width: '100%',
-                  maxWidth: 360,
-                  borderRadius: 28,
-                  padding: '32px 24px',
-                  background:
-                    selectedTheme === 'royal-gold'
-                      ? 'linear-gradient(180deg, #090f19 0%, #101a2c 100%)'
-                      : selectedTheme === 'islamic'
-                      ? 'linear-gradient(180deg, #06261d 0%, #0c3e30 100%)'
-                      : selectedTheme === 'sakura'
-                      ? 'linear-gradient(180deg, #fff5f7 0%, #ffe3e8 100%)'
-                      : 'linear-gradient(180deg, #fbf7ee 0%, #f4ecdc 100%)',
-                  color: selectedTheme === 'sakura' || selectedTheme === 'rustic' ? '#332219' : '#f8fafc',
-                  border:
-                    selectedTheme === 'royal-gold'
-                      ? '2px solid rgba(212, 175, 55, 0.4)'
-                      : selectedTheme === 'islamic'
-                      ? '2px solid rgba(230, 200, 117, 0.4)'
-                      : selectedTheme === 'sakura'
-                      ? '2px solid #f8c2cb'
-                      : '2px solid #c49a6c',
-                  boxShadow: '0 25px 60px rgba(0, 0, 0, 0.5)',
+                  maxWidth: 340,
+                  borderRadius: 18,
+                  padding: '28px 22px',
+                  background: '#ffffff',
+                  color: '#0f172a',
+                  border: '1px solid #e2e8f0',
+                  boxShadow: 'var(--shadow-md)',
                   textAlign: 'center',
                   position: 'relative',
                   overflow: 'hidden',
                 }}
               >
                 {/* Decorative header */}
-                <div style={{ marginBottom: 16 }}>
+                <div style={{ marginBottom: 14 }}>
                   <span
                     style={{
-                      fontSize: '0.72rem',
+                      fontSize: '0.7rem',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.22em',
+                      letterSpacing: '0.15em',
                       fontWeight: 700,
-                      color:
-                        selectedTheme === 'royal-gold'
-                          ? '#d4af37'
-                          : selectedTheme === 'islamic'
-                          ? '#e6c875'
-                          : selectedTheme === 'sakura'
-                          ? '#9d3b55'
-                          : '#70482f',
+                      color: '#64748b',
                     }}
                   >
                     The Wedding Of
@@ -204,17 +182,10 @@ export const LiveSandboxTeaser: React.FC = () => {
                 <h3
                   style={{
                     fontFamily: 'var(--font-heading)',
-                    fontSize: '2.2rem',
+                    fontSize: '1.9rem',
                     lineHeight: 1.15,
-                    marginBottom: 10,
-                    color:
-                      selectedTheme === 'royal-gold'
-                        ? '#f3d47d'
-                        : selectedTheme === 'islamic'
-                        ? '#e6c875'
-                        : selectedTheme === 'sakura'
-                        ? '#9d3b55'
-                        : '#70482f',
+                    marginBottom: 8,
+                    color: '#0f172a',
                   }}
                 >
                   {groomName || 'Pria'} &amp; {brideName || 'Wanita'}
@@ -222,9 +193,9 @@ export const LiveSandboxTeaser: React.FC = () => {
 
                 <p
                   style={{
-                    fontSize: '0.82rem',
-                    opacity: 0.8,
-                    marginBottom: 20,
+                    fontSize: '0.8rem',
+                    color: '#64748b',
+                    marginBottom: 16,
                   }}
                 >
                   Sabtu, 28 November 2026
@@ -233,13 +204,12 @@ export const LiveSandboxTeaser: React.FC = () => {
                 {/* Photo frame */}
                 <div
                   style={{
-                    width: 130,
-                    height: 170,
-                    borderRadius: '80px 80px 18px 18px',
+                    width: 120,
+                    height: 155,
+                    borderRadius: 12,
                     overflow: 'hidden',
-                    margin: '0 auto 20px',
-                    border: '3px solid rgba(255,255,255,0.4)',
-                    boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+                    margin: '0 auto 16px',
+                    border: '1px solid #e2e8f0',
                   }}
                 >
                   <img
@@ -251,15 +221,16 @@ export const LiveSandboxTeaser: React.FC = () => {
 
                 <div
                   style={{
-                    background: selectedTheme === 'royal-gold' || selectedTheme === 'islamic' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
-                    borderRadius: 14,
-                    padding: '12px',
+                    background: '#f8fafc',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: 10,
+                    padding: '10px',
                     fontSize: '0.78rem',
-                    marginBottom: 16,
+                    marginBottom: 14,
                   }}
                 >
-                  <span style={{ display: 'block', opacity: 0.7, fontSize: '0.7rem' }}>Kepada Yth:</span>
-                  <strong style={{ fontSize: '0.88rem' }}>Tamu Undangan Istimewa</strong>
+                  <span style={{ display: 'block', color: '#64748b', fontSize: '0.7rem' }}>Kepada Yth:</span>
+                  <strong style={{ fontSize: '0.85rem', color: '#0f172a' }}>Tamu Undangan Istimewa</strong>
                 </div>
 
                 <div
@@ -267,12 +238,12 @@ export const LiveSandboxTeaser: React.FC = () => {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: 6,
-                    fontSize: '0.75rem',
+                    fontSize: '0.72rem',
                     fontWeight: 600,
-                    color: selectedTheme === 'royal-gold' ? '#d4af37' : '#10b981',
+                    color: '#059669',
                   }}
                 >
-                  <Sparkles size={14} />
+                  <Sparkles size={13} />
                   <span>Preview Kartu Aktif Real-Time</span>
                 </div>
               </div>

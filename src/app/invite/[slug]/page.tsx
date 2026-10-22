@@ -19,14 +19,14 @@ function InvitationContent() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#0a0d14',
-          color: '#ffffff',
+          background: '#f8fafc',
+          color: '#0f172a',
         }}
       >
         <div style={{ textAlign: 'center' }}>
-          <Sparkles size={32} color="#d4af37" className="music-spinning" />
-          <p style={{ marginTop: 14, fontSize: '0.9rem', color: '#94a3b8' }}>
-            Membuka Undangan Pernikahan...
+          <Sparkles size={32} color="#0f172a" className="music-spinning" />
+          <p style={{ marginTop: 14, fontSize: '0.9rem', color: '#64748b', fontWeight: 500 }}>
+            Membuka Undangan Digital InfoMase...
           </p>
         </div>
       </div>
@@ -37,7 +37,7 @@ function InvitationContent() {
     <div
       style={{
         minHeight: '100vh',
-        background: '#0a0d14',
+        background: '#f1f5f9',
         display: 'flex',
         justifyContent: 'center',
       }}
@@ -48,8 +48,10 @@ function InvitationContent() {
           width: '100%',
           maxWidth: 480,
           minHeight: '100vh',
-          background: 'var(--inv-bg, #ffffff)',
-          boxShadow: '0 0 50px rgba(0,0,0,0.5)',
+          background: '#ffffff',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
+          borderLeft: '1px solid #e2e8f0',
+          borderRight: '1px solid #e2e8f0',
           position: 'relative',
         }}
       >
@@ -67,8 +69,8 @@ export default function InvitationPage() {
   return (
     <Suspense
       fallback={
-        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0d14' }}>
-          <Sparkles size={32} color="#d4af37" className="music-spinning" />
+        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc' }}>
+          <Sparkles size={32} color="#0f172a" className="music-spinning" />
         </div>
       }
     >

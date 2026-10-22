@@ -1,62 +1,62 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronDown, Sparkles, HelpCircle } from 'lucide-react';
+import { ChevronDown, HelpCircle } from 'lucide-react';
 
 export const FAQSection: React.FC = () => {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
   const faqs = [
     {
-      q: 'Bagaimana cara membagikan undangan dengan nama tamu yang berbeda-beda?',
-      a: 'Sangat mudah! Di dalam Dashboard Studio Anda terdapat menu "Daftar Tamu". Anda cukup mengetikkan nama tamu (misal: "Budi Santoso & Keluarga"), dan sistem kami otomatis menghasilkan tautan khusus serta draft pesan WhatsApp yang sopan. Anda tinggal klik tombol "Salin Teks WA" dan kirimkan langsung ke WhatsApp tamu.',
+      q: 'Gimana cara sebar undangan dengan nama tamu yang beda-beda?',
+      a: 'Gampang banget mase! Di Dashboard Studio ada menu "Daftar Tamu". Tinggal ketik nama tamu (misal: "Budi Santoso & Keluarga"), sistem otomatis bikinin link khusus dan draft pesan WhatsApp yang sopan. Tinggal klik "Salin Teks WA" dan langsung kirim ke kontak tamu.',
     },
     {
-      q: 'Apakah bisa mengganti foto, teks, dan musik sesuka hati?',
-      a: 'Tentu saja! Anda memiliki kontrol penuh untuk mengubah nama mempelai, cerita cinta, galeri foto prewedding, jadwal akad/resepsi, hingga tautan musik MP3 favorit Anda. Anda juga bisa memilih dari foto preset berkualitas tinggi yang kami sediakan.',
+      q: 'Bisa ganti foto, teks, sama musiknya gak?',
+      a: 'Bisa banget! Mase punya kontrol penuh buat ganti nama pengantin, jadwal akad & resepsi, foto prewedding, cerita cinta, sampai lagu MP3 favorit. Kalau belum ada foto sendiri, kami juga siapin foto prewedding estetik siap pakai.',
     },
     {
-      q: 'Bagaimana cara kerja Amplop Digital? Apakah ada potongan biaya?',
-      a: 'Tidak ada potongan biaya sama sekali (0% fee). Tamu Anda akan mentransfer uang langsung ke rekening bank pribadi Anda (BCA, Mandiri, BSI, dll) atau melalui kode QRIS yang Anda pasang. Uang tanda kasih 100% masuk langsung ke rekening Anda.',
+      q: 'Amplop digitalnya gimana? Ada potongan admin?',
+      a: 'Nol rupiah alias tanpa potongan sepeserpun! Tamu mentransfer langsung ke rekening bank mase (BCA, Mandiri, BSI, dll) atau scan QRIS yang mase pasang. Uang kado 100% masuk ke dompet mase.',
     },
     {
-      q: 'Berapa lama proses pembuatan undangan online ini?',
-      a: 'Hanya butuh 3 hingga 5 menit! Template kami sudah siap pakai lengkap dengan teks kutipan dan susunan acara standar. Anda hanya perlu menyesuaikan nama, tanggal, lokasi, dan foto.',
+      q: 'Berapa lama proses bikin undangannya?',
+      a: 'Cuma 3 sampai 5 menit beres! Template dan susunan acara udah siap pakai. Mase tinggal edit nama, tanggal, lokasi, terus langsung bisa disebar.',
     },
     {
-      q: 'Apakah website undangan ramah dibuka di semua perangkat seluler?',
-      a: 'Ya, seluruh template InfoMase dirancang secara modern dengan pendekatan mobile-first. Website akan tampil proporsional, mulus, dan mewah di layar iPhone, Android, tablet, hingga layar laptop/desktop.',
+      q: 'Apakah undangannya enteng dibuka di semua HP?',
+      a: 'Pasti mase! Desain kami dibikin mobile-first, sangat ringan dan responsif di iPhone, Android, tablet, sampai laptop tanpa lemot.',
     },
   ];
 
   return (
-    <section style={{ padding: '80px 0', position: 'relative' }}>
+    <section style={{ padding: '70px 0', background: '#ffffff', borderTop: '1px solid #f1f5f9' }}>
       <div className="container" style={{ maxWidth: 840 }}>
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: 48 }}>
+        <div style={{ textAlign: 'center', marginBottom: 40 }}>
           <div style={{ display: 'inline-flex', marginBottom: 12 }}>
             <span className="badge badge-gold">
-              <HelpCircle size={14} />
-              Pertanyaan Umum
+              <HelpCircle size={14} color="#2563eb" />
+              Tanya Jawab Sat-Set
             </span>
           </div>
           <h2
             style={{
               fontFamily: 'var(--font-heading)',
-              fontSize: 'clamp(2rem, 3.8vw, 2.8rem)',
-              color: '#ffffff',
-              marginBottom: 14,
+              fontSize: 'clamp(1.9rem, 3.5vw, 2.7rem)',
+              color: '#0f172a',
+              marginBottom: 12,
             }}
           >
             Sering Ditanyakan (FAQ)
           </h2>
           <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
-            Segala informasi yang ingin Anda ketahui tentang kemudahan membuat undangan digital di InfoMase.
+            Semua hal yang perlu mase tahu tentang kepraktisan bikin undangan digital di InfoMase.
           </p>
         </div>
 
         {/* Accordions */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {faqs.map((faq, idx) => {
             const isOpen = openIdx === idx;
 
@@ -65,10 +65,10 @@ export const FAQSection: React.FC = () => {
                 key={idx}
                 className="glass-card"
                 style={{
-                  borderRadius: 18,
+                  borderRadius: 12,
                   overflow: 'hidden',
-                  border: isOpen ? '1px solid rgba(212, 175, 55, 0.4)' : '1px solid var(--border-glass)',
-                  transition: 'all 0.3s ease',
+                  border: isOpen ? '1px solid #0f172a' : '1px solid #e2e8f0',
+                  background: '#ffffff',
                 }}
               >
                 <button
@@ -76,16 +76,16 @@ export const FAQSection: React.FC = () => {
                   onClick={() => setOpenIdx(isOpen ? null : idx)}
                   style={{
                     width: '100%',
-                    padding: '20px 24px',
+                    padding: '18px 20px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     gap: 16,
                     background: 'transparent',
                     border: 'none',
-                    color: '#ffffff',
-                    fontSize: '1rem',
-                    fontWeight: 600,
+                    color: '#0f172a',
+                    fontSize: '0.96rem',
+                    fontWeight: 700,
                     textAlign: 'left',
                     cursor: 'pointer',
                   }}
@@ -93,17 +93,17 @@ export const FAQSection: React.FC = () => {
                   <span>{faq.q}</span>
                   <ChevronDown
                     size={18}
-                    color="var(--gold-400)"
+                    color="#64748b"
                     style={{
                       transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                      transition: 'transform 0.3s ease',
+                      transition: 'transform 0.2s ease',
                       flexShrink: 0,
                     }}
                   />
                 </button>
 
                 {isOpen && (
-                  <div style={{ padding: '0 24px 22px', color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>
+                  <div style={{ padding: '0 20px 20px', color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: 1.6 }}>
                     {faq.a}
                   </div>
                 )}

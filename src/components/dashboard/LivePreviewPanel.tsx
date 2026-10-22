@@ -35,8 +35,8 @@ export const LivePreviewPanel: React.FC<LivePreviewPanelProps> = ({ data, onAddR
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-          <Smartphone size={16} color="var(--gold-400)" />
-          <span style={{ fontWeight: 600, color: '#fff' }}>Live Preview</span>
+          <Smartphone size={16} color="#0f172a" />
+          <span style={{ fontWeight: 600, color: '#0f172a' }}>Live Preview</span>
         </div>
 
         <div style={{ display: 'flex', gap: 6 }}>
@@ -73,13 +73,13 @@ export const LivePreviewPanel: React.FC<LivePreviewPanelProps> = ({ data, onAddR
           display: 'flex',
           alignItems: 'center',
           gap: 8,
-          background: 'rgba(255,255,255,0.03)',
-          padding: '6px 12px',
+          background: '#ffffff',
+          padding: '8px 12px',
           borderRadius: 10,
-          border: '1px solid var(--border-glass)',
+          border: '1px solid #e2e8f0',
         }}
       >
-        <UserCheck size={14} color="var(--gold-400)" />
+        <UserCheck size={14} color="#0f172a" />
         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>Tamu Mockup:</span>
         <input
           type="text"
@@ -89,8 +89,9 @@ export const LivePreviewPanel: React.FC<LivePreviewPanelProps> = ({ data, onAddR
           style={{
             background: 'transparent',
             border: 'none',
-            color: '#fff',
-            fontSize: '0.8rem',
+            color: '#0f172a',
+            fontSize: '0.82rem',
+            fontWeight: 500,
             width: '100%',
             outline: 'none',
           }}

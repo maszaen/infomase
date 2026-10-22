@@ -80,7 +80,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
   };
 
   return (
-    <div className="glass-card" style={{ padding: '24px', borderRadius: 20 }}>
+    <div className="glass-card" style={{ padding: '24px', borderRadius: 14 }}>
       {/* Sub Tabs Bar */}
       <div
         style={{
@@ -89,7 +89,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
           overflowX: 'auto',
           paddingBottom: 12,
           marginBottom: 24,
-          borderBottom: '1px solid rgba(255,255,255,0.08)',
+          borderBottom: '1px solid #e2e8f0',
         }}
       >
         {subTabs.map((tab) => {
@@ -119,8 +119,8 @@ export const EditorForm: React.FC<EditorFormProps> = ({
       {activeSubTab === 'mempelai' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
           {/* General Title & Slug */}
-          <div style={{ background: 'rgba(255,255,255,0.02)', padding: 18, borderRadius: 14, border: '1px solid var(--border-glass)' }}>
-            <h4 style={{ fontSize: '1rem', color: 'var(--gold-300)', marginBottom: 12 }}>
+          <div style={{ background: '#f8fafc', padding: 18, borderRadius: 12, border: '1px solid #e2e8f0' }}>
+            <h4 style={{ fontSize: '1rem', color: '#0f172a', fontWeight: 600, marginBottom: 12 }}>
               Judul Undangan &amp; Tautan Slug
             </h4>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
@@ -147,9 +147,9 @@ export const EditorForm: React.FC<EditorFormProps> = ({
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
             {/* Mempelai Pria */}
-            <div style={{ background: 'rgba(255,255,255,0.02)', padding: 18, borderRadius: 14, border: '1px solid var(--border-glass)' }}>
+            <div style={{ background: '#ffffff', padding: 18, borderRadius: 12, border: '1px solid #e2e8f0' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-                <h4 style={{ fontSize: '1.05rem', color: '#ffffff', fontWeight: 600 }}>Mempelai Pria</h4>
+                <h4 style={{ fontSize: '1.05rem', color: '#0f172a', fontWeight: 600 }}>Mempelai Pria</h4>
                 <span className="badge badge-gold">Groom</span>
               </div>
 
@@ -215,7 +215,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                           height: 38,
                           borderRadius: 8,
                           overflow: 'hidden',
-                          border: data.groom.photo === p.url ? '2px solid var(--gold-400)' : '1px solid rgba(255,255,255,0.2)',
+                          border: data.groom.photo === p.url ? '2px solid #0f172a' : '1px solid #e2e8f0',
                           padding: 0,
                           cursor: 'pointer',
                         }}
@@ -240,9 +240,9 @@ export const EditorForm: React.FC<EditorFormProps> = ({
             </div>
 
             {/* Mempelai Wanita */}
-            <div style={{ background: 'rgba(255,255,255,0.02)', padding: 18, borderRadius: 14, border: '1px solid var(--border-glass)' }}>
+            <div style={{ background: '#ffffff', padding: 18, borderRadius: 12, border: '1px solid #e2e8f0' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-                <h4 style={{ fontSize: '1.05rem', color: '#ffffff', fontWeight: 600 }}>Mempelai Wanita</h4>
+                <h4 style={{ fontSize: '1.05rem', color: '#0f172a', fontWeight: 600 }}>Mempelai Wanita</h4>
                 <span className="badge badge-rose">Bride</span>
               </div>
 
@@ -308,7 +308,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                           height: 38,
                           borderRadius: 8,
                           overflow: 'hidden',
-                          border: data.bride.photo === p.url ? '2px solid var(--gold-400)' : '1px solid rgba(255,255,255,0.2)',
+                          border: data.bride.photo === p.url ? '2px solid #0f172a' : '1px solid #e2e8f0',
                           padding: 0,
                           cursor: 'pointer',
                         }}
@@ -338,8 +338,8 @@ export const EditorForm: React.FC<EditorFormProps> = ({
       {/* 2. ACARA TAB */}
       {activeSubTab === 'acara' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          <div style={{ background: 'rgba(212, 175, 55, 0.08)', padding: 16, borderRadius: 14, border: '1px solid rgba(212, 175, 55, 0.2)' }}>
-            <label className="form-label" style={{ color: 'var(--gold-300)' }}>
+          <div style={{ background: '#f8fafc', padding: 16, borderRadius: 12, border: '1px solid #e2e8f0' }}>
+            <label className="form-label" style={{ color: '#0f172a', fontWeight: 600 }}>
               Target Tanggal Countdown (Hari H)
             </label>
             <input
@@ -354,14 +354,14 @@ export const EditorForm: React.FC<EditorFormProps> = ({
             <div
               key={event.id || idx}
               style={{
-                background: 'rgba(255,255,255,0.02)',
-                border: '1px solid var(--border-glass)',
-                borderRadius: 16,
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
+                borderRadius: 12,
                 padding: 18,
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                <h4 style={{ fontSize: '1rem', color: '#ffffff' }}>Acara #{idx + 1}: {event.title}</h4>
+                <h4 style={{ fontSize: '1rem', color: '#0f172a', fontWeight: 600 }}>Acara #{idx + 1}: {event.title}</h4>
                 {data.events.length > 1 && (
                   <button
                     type="button"
@@ -515,9 +515,9 @@ export const EditorForm: React.FC<EditorFormProps> = ({
             <div
               key={story.id}
               style={{
-                background: 'rgba(255,255,255,0.02)',
-                border: '1px solid var(--border-glass)',
-                borderRadius: 14,
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
+                borderRadius: 12,
                 padding: 16,
               }}
             >
@@ -614,8 +614,8 @@ export const EditorForm: React.FC<EditorFormProps> = ({
       {activeSubTab === 'galeri' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           {/* Add photo card */}
-          <div style={{ background: 'rgba(255,255,255,0.03)', padding: 18, borderRadius: 14, border: '1px solid var(--border-glass)' }}>
-            <h4 style={{ fontSize: '0.95rem', color: 'var(--gold-300)', marginBottom: 12 }}>
+          <div style={{ background: '#f8fafc', padding: 18, borderRadius: 12, border: '1px solid #e2e8f0' }}>
+            <h4 style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: 600, marginBottom: 12 }}>
               Tambah Foto ke Galeri
             </h4>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12, marginBottom: 12 }}>
@@ -640,7 +640,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
             </button>
 
             {/* Presets Quick Pick */}
-            <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid #e2e8f0' }}>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginBottom: 8 }}>
                 Atau pilih langsung foto profesional siap pakai:
               </span>
@@ -660,7 +660,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                       overflow: 'hidden',
                       width: 50,
                       height: 50,
-                      border: '1px solid var(--border-glass)',
+                      border: '1px solid #e2e8f0',
                       cursor: 'pointer',
                       padding: 0,
                     }}
@@ -683,7 +683,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                   height: 120,
                   borderRadius: 12,
                   overflow: 'hidden',
-                  border: '1px solid var(--border-glass)',
+                  border: '1px solid #e2e8f0',
                 }}
               >
                 <img src={photo.url} alt="Galeri" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -735,14 +735,14 @@ export const EditorForm: React.FC<EditorFormProps> = ({
       {/* 6. KADO & AMPLOP TAB */}
       {activeSubTab === 'kado' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          <h4 style={{ fontSize: '1rem', color: '#ffffff' }}>Akun Rekening Transfer</h4>
+          <h4 style={{ fontSize: '1rem', color: '#0f172a', fontWeight: 600 }}>Akun Rekening Transfer</h4>
           {data.bankAccounts.map((account, idx) => (
             <div
               key={account.id}
               style={{
-                background: 'rgba(255,255,255,0.02)',
-                border: '1px solid var(--border-glass)',
-                borderRadius: 14,
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
+                borderRadius: 12,
                 padding: 16,
               }}
             >
@@ -824,8 +824,8 @@ export const EditorForm: React.FC<EditorFormProps> = ({
           </button>
 
           {/* Physical Address */}
-          <div style={{ marginTop: 12, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            <h4 style={{ fontSize: '1rem', color: '#ffffff', marginBottom: 12 }}>
+          <div style={{ marginTop: 12, paddingTop: 18, borderTop: '1px solid #e2e8f0' }}>
+            <h4 style={{ fontSize: '1rem', color: '#0f172a', fontWeight: 600, marginBottom: 12 }}>
               Alamat Pengiriman Kado Fisik
             </h4>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>

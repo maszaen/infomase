@@ -123,8 +123,8 @@ export const GiftEnvelopeSection: React.FC<GiftEnvelopeSectionProps> = ({ data }
                     fontWeight: 600,
                     borderRadius: 999,
                     border: '1px solid var(--inv-border)',
-                    background: isCopied ? '#10b981' : 'var(--gold-gradient)',
-                    color: isCopied ? '#ffffff' : '#0e141f',
+                    background: isCopied ? '#10b981' : 'var(--inv-primary)',
+                    color: '#ffffff',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
                   }}

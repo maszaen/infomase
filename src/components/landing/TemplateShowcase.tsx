@@ -29,27 +29,27 @@ export const TemplateShowcase: React.FC = () => {
   });
 
   return (
-    <section id="templates" style={{ padding: '80px 0', position: 'relative' }}>
+    <section id="templates" style={{ padding: '70px 0', background: '#ffffff', borderTop: '1px solid #f1f5f9' }}>
       <div className="container">
         {/* Section Header */}
-        <div style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto 48px' }}>
+        <div style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto 40px' }}>
           <div style={{ display: 'inline-flex', marginBottom: 12 }}>
             <span className="badge badge-gold">
-              <Sparkles size={14} />
+              <Sparkles size={14} color="#2563eb" />
               Template Siap Pakai Tinggal Pake
             </span>
           </div>
           <h2
             style={{
               fontFamily: 'var(--font-heading)',
-              fontSize: 'clamp(2rem, 3.8vw, 3rem)',
-              color: '#ffffff',
-              marginBottom: 16,
+              fontSize: 'clamp(1.9rem, 3.5vw, 2.7rem)',
+              color: '#0f172a',
+              marginBottom: 12,
             }}
           >
             Desain Mewah Siap Pakai, Bikin Tamu Kagum Mase!
           </h2>
-          <p style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>
+          <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
             Pilih tema yang paling pas sama konsep acara mase. Semuanya mobile-first, enteng dibuka di semua HP, dan gampang diedit foto serta teksnya.
           </p>
         </div>
@@ -59,9 +59,9 @@ export const TemplateShowcase: React.FC = () => {
           style={{
             display: 'flex',
             justifyContent: 'center',
-            gap: 10,
+            gap: 8,
             flexWrap: 'wrap',
-            marginBottom: 40,
+            marginBottom: 36,
           }}
         >
           {[
@@ -70,25 +70,35 @@ export const TemplateShowcase: React.FC = () => {
             { id: 'luxury', label: 'Royal Midnight Gold' },
             { id: 'islamic', label: 'Islami Modern' },
             { id: 'pastel', label: 'Blush Sakura' },
-          ].map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setFilter(item.id)}
-              className={`btn btn-sm ${filter === item.id ? 'btn-gold' : 'btn-glass'}`}
-              style={{ padding: '8px 18px', fontSize: '0.85rem' }}
-            >
-              {item.label}
-            </button>
-          ))}
+          ].map((item) => {
+            const isSelected = filter === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setFilter(item.id)}
+                className="btn btn-sm"
+                style={{
+                  padding: '7px 16px',
+                  fontSize: '0.82rem',
+                  background: isSelected ? '#0f172a' : '#ffffff',
+                  color: isSelected ? '#ffffff' : '#475569',
+                  border: isSelected ? '1px solid #0f172a' : '1px solid #e2e8f0',
+                  borderRadius: 8,
+                }}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Templates Grid */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: 28,
+            gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))',
+            gap: 24,
           }}
         >
           {filtered.map((tmpl) => (
@@ -96,15 +106,14 @@ export const TemplateShowcase: React.FC = () => {
               key={tmpl.id}
               className="glass-card"
               style={{
-                borderRadius: 24,
+                borderRadius: 14,
                 overflow: 'hidden',
-                border: '1px solid var(--border-glass)',
                 display: 'flex',
                 flexDirection: 'column',
               }}
             >
-              {/* Image Preview with overlay */}
-              <div style={{ position: 'relative', height: 260, overflow: 'hidden' }}>
+              {/* Image Preview */}
+              <div style={{ position: 'relative', height: 230, overflow: 'hidden', background: '#f8fafc' }}>
                 <img
                   src={tmpl.previewImage}
                   alt={tmpl.name}
@@ -112,83 +121,94 @@ export const TemplateShowcase: React.FC = () => {
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
-                    transition: 'transform 0.5s ease',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.06)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-                />
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'linear-gradient(to top, rgba(10, 13, 20, 0.95) 0%, rgba(10, 13, 20, 0.2) 60%, transparent 100%)',
                   }}
                 />
 
                 {tmpl.badge && (
-                  <span className="badge badge-gold" style={{ position: 'absolute', top: 14, right: 14 }}>
-                    <Sparkles size={12} />
+                  <span
+                    className="badge"
+                    style={{
+                      position: 'absolute',
+                      top: 12,
+                      right: 12,
+                      background: '#ffffff',
+                      color: '#0f172a',
+                      border: '1px solid #e2e8f0',
+                      boxShadow: 'var(--shadow-sm)',
+                    }}
+                  >
+                    <Sparkles size={12} color="#2563eb" />
                     {tmpl.badge}
                   </span>
                 )}
 
                 {/* Color Swatches */}
-                <div style={{ position: 'absolute', bottom: 16, left: 18, display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ position: 'absolute', bottom: 12, left: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
                   <div
                     style={{
-                      width: 24,
-                      height: 24,
+                      width: 20,
+                      height: 20,
                       borderRadius: '50%',
                       background: tmpl.themeColor,
                       border: '2px solid #ffffff',
-                      boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
                     }}
                     title="Warna Latar Utama"
                   />
                   <div
                     style={{
-                      width: 24,
-                      height: 24,
+                      width: 20,
+                      height: 20,
                       borderRadius: '50%',
                       background: tmpl.accentColor,
                       border: '2px solid #ffffff',
-                      boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
                     }}
-                    title="Warna Aksen Emas/Pastel"
+                    title="Warna Aksen"
                   />
-                  <span style={{ fontSize: '0.75rem', color: '#ffffff', fontWeight: 600, textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}>
-                    {tmpl.category}
-                  </span>
                 </div>
               </div>
 
               {/* Card Body */}
-              <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
+                  <span
+                    style={{
+                      fontSize: '0.72rem',
+                      textTransform: 'uppercase',
+                      color: '#64748b',
+                      fontWeight: 700,
+                      letterSpacing: '0.05em',
+                      display: 'block',
+                      marginBottom: 4,
+                    }}
+                  >
+                    {tmpl.category}
+                  </span>
                   <h3
                     style={{
                       fontFamily: 'var(--font-heading)',
-                      fontSize: '1.4rem',
-                      color: '#ffffff',
-                      marginBottom: 8,
+                      fontSize: '1.25rem',
+                      color: '#0f172a',
+                      marginBottom: 6,
                     }}
                   >
                     {tmpl.name}
                   </h3>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 20 }}>
+                  <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 18 }}>
                     {tmpl.description}
                   </p>
                 </div>
 
                 {/* Actions */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: 10 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: 8 }}>
                   <button
                     type="button"
                     onClick={() => setPreviewTemplate(tmpl)}
                     className="btn btn-sm btn-glass"
-                    style={{ fontSize: '0.82rem' }}
+                    style={{ fontSize: '0.8rem', borderRadius: 8 }}
                   >
-                    <Eye size={15} />
+                    <Eye size={14} />
                     Pratinjau
                   </button>
 
@@ -196,7 +216,7 @@ export const TemplateShowcase: React.FC = () => {
                     type="button"
                     onClick={() => handleUseTemplate(tmpl.id)}
                     className="btn btn-sm btn-gold"
-                    style={{ fontSize: '0.82rem' }}
+                    style={{ fontSize: '0.8rem', borderRadius: 8 }}
                   >
                     <span>Gunakan</span>
                     <ArrowRight size={14} />
@@ -213,8 +233,7 @@ export const TemplateShowcase: React.FC = () => {
             style={{
               position: 'fixed',
               inset: 0,
-              background: 'rgba(0,0,0,0.85)',
-              backdropFilter: 'blur(10px)',
+              background: 'rgba(15, 23, 42, 0.65)',
               zIndex: 1000,
               display: 'flex',
               alignItems: 'center',
@@ -237,21 +256,22 @@ export const TemplateShowcase: React.FC = () => {
                 onClick={() => setPreviewTemplate(null)}
                 style={{
                   position: 'absolute',
-                  top: -46,
+                  top: -42,
                   right: 0,
-                  background: 'rgba(255,255,255,0.2)',
-                  border: 'none',
+                  background: '#ffffff',
+                  border: '1px solid #e2e8f0',
                   borderRadius: '50%',
-                  width: 38,
-                  height: 38,
-                  color: '#fff',
+                  width: 36,
+                  height: 36,
+                  color: '#0f172a',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: 'pointer',
+                  boxShadow: 'var(--shadow-sm)',
                 }}
               >
-                <X size={20} />
+                <X size={18} />
               </button>
 
               {/* Smartphone Preview Frame */}
@@ -267,12 +287,12 @@ export const TemplateShowcase: React.FC = () => {
               </div>
 
               {/* Bottom Action inside Modal */}
-              <div style={{ marginTop: 16, display: 'flex', gap: 12 }}>
+              <div style={{ marginTop: 14 }}>
                 <button
                   type="button"
                   onClick={() => handleUseTemplate(previewTemplate.id)}
                   className="btn btn-gold"
-                  style={{ padding: '10px 24px', fontSize: '0.9rem' }}
+                  style={{ padding: '9px 22px', fontSize: '0.88rem', borderRadius: 8 }}
                 >
                   <Check size={16} />
                   Gunakan Template {previewTemplate.name}

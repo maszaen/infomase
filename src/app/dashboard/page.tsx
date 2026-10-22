@@ -18,7 +18,6 @@ import {
   RotateCcw,
   CheckCircle2,
   ChevronLeft,
-  Smartphone,
   Eye,
 } from 'lucide-react';
 
@@ -52,10 +51,10 @@ export default function DashboardPage() {
 
   if (!isLoaded) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#ffffff' }}>
         <div style={{ textAlign: 'center' }}>
-          <Sparkles size={32} color="var(--gold-400)" className="music-spinning" />
-          <p style={{ marginTop: 12, color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+          <Sparkles size={28} color="#0f172a" className="music-spinning" />
+          <p style={{ marginTop: 12, color: 'var(--text-secondary)', fontSize: '0.88rem', fontWeight: 500 }}>
             Memuat Dasbor Studio InfoMase...
           </p>
         </div>
@@ -71,51 +70,49 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-primary)' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#ffffff' }}>
       {/* Top Navbar */}
       <header
         style={{
           position: 'sticky',
           top: 0,
           zIndex: 50,
-          background: 'rgba(10, 13, 20, 0.88)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          borderBottom: '1px solid var(--border-glass)',
-          padding: '14px 24px',
+          background: '#ffffff',
+          borderBottom: '1px solid #e2e8f0',
+          padding: '12px 24px',
         }}
       >
         <div className="container-wide" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
           {/* Brand & Back to Home */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
             <Link
               href="/"
               className="btn btn-sm btn-subtle"
-              style={{ padding: '6px 12px', fontSize: '0.8rem' }}
+              style={{ padding: '6px 12px', fontSize: '0.8rem', fontWeight: 600, color: '#475569' }}
             >
               <ChevronLeft size={16} />
               Landing Page
             </Link>
 
-            <div style={{ height: 20, width: 1, background: 'var(--border-glass)' }} />
+            <div style={{ height: 20, width: 1, background: '#e2e8f0' }} />
 
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span
                   style={{
                     fontFamily: 'var(--font-heading)',
-                    fontSize: '1.25rem',
-                    fontWeight: 700,
-                    color: '#ffffff',
+                    fontSize: '1.15rem',
+                    fontWeight: 800,
+                    color: '#0f172a',
                   }}
                 >
-                  InfoMase <span className="text-gradient-gold">Studio</span>
+                  Info<span style={{ color: '#2563eb' }}>Mase</span> Studio
                 </span>
-                <span className="badge badge-gold" style={{ fontSize: '0.7rem' }}>
+                <span className="badge badge-gold" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
                   {data.templateId.toUpperCase()}
                 </span>
               </div>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
                 {data.title} ({data.groom.name} &amp; {data.bride.name})
               </span>
             </div>
@@ -129,12 +126,13 @@ export default function DashboardPage() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 6,
-                fontSize: '0.78rem',
-                color: '#10b981',
-                background: 'rgba(16, 185, 129, 0.1)',
-                padding: '6px 12px',
-                borderRadius: 999,
-                border: '1px solid rgba(16, 185, 129, 0.25)',
+                fontSize: '0.76rem',
+                fontWeight: 600,
+                color: '#065f46',
+                background: '#ecfdf5',
+                padding: '5px 10px',
+                borderRadius: 6,
+                border: '1px solid #a7f3d0',
               }}
             >
               <CheckCircle2 size={13} />
@@ -149,10 +147,10 @@ export default function DashboardPage() {
                 }
               }}
               className="btn btn-sm btn-glass"
-              style={{ padding: '8px 12px', fontSize: '0.8rem' }}
+              style={{ padding: '6px 12px', fontSize: '0.78rem', borderRadius: 6 }}
               title="Reset ke Data Default"
             >
-              <RotateCcw size={14} />
+              <RotateCcw size={13} />
               Reset Default
             </button>
 
@@ -161,22 +159,22 @@ export default function DashboardPage() {
               target="_blank"
               rel="noreferrer"
               className="btn btn-sm btn-gold"
-              style={{ padding: '8px 16px', fontSize: '0.82rem', textDecoration: 'none' }}
+              style={{ padding: '7px 14px', fontSize: '0.8rem', textDecoration: 'none', borderRadius: 6 }}
             >
-              <ExternalLink size={14} />
+              <ExternalLink size={13} />
               Buka Web Publik
             </a>
           </div>
         </div>
       </header>
 
-      {/* Mobile Tab Toggle between Form and Live Preview */}
+      {/* Mobile Tab Toggle */}
       <div
         style={{
           display: 'none',
           padding: '10px 16px',
-          background: 'var(--bg-secondary)',
-          borderBottom: '1px solid var(--border-glass)',
+          background: '#f8fafc',
+          borderBottom: '1px solid #e2e8f0',
         }}
         className="mobile-preview-switch"
       >
@@ -201,28 +199,29 @@ export default function DashboardPage() {
       </div>
 
       {/* Main Workspace */}
-      <main style={{ flex: 1, padding: '28px 0 60px' }}>
+      <main style={{ flex: 1, padding: '24px 0 60px', background: '#f8fafc' }}>
         <div className="container-wide">
           <div
             style={{
               display: 'grid',
               gridTemplateColumns: 'minmax(0, 1.35fr) minmax(380px, 0.85fr)',
-              gap: 32,
+              gap: 28,
               alignItems: 'flex-start',
             }}
           >
             {/* Left Column: Navigation Tabs & Tab Content */}
             <div style={{ minWidth: 0 }}>
-              {/* Main Navigation Bar */}
+              {/* Main Navigation Bar (Flat Tab Bar) */}
               <div
-                className="glass-card"
                 style={{
-                  padding: 8,
-                  borderRadius: 18,
+                  padding: 4,
+                  borderRadius: 10,
                   display: 'flex',
-                  gap: 8,
-                  marginBottom: 24,
+                  gap: 4,
+                  marginBottom: 20,
                   overflowX: 'auto',
+                  background: '#ffffff',
+                  border: '1px solid #e2e8f0',
                 }}
               >
                 {navTabs.map((tab) => {
@@ -233,24 +232,34 @@ export default function DashboardPage() {
                       key={tab.id}
                       type="button"
                       onClick={() => setMainTab(tab.id as any)}
-                      className={`btn ${isActive ? 'btn-gold' : 'btn-glass'}`}
                       style={{
                         flex: 1,
-                        padding: '10px 16px',
-                        fontSize: '0.88rem',
-                        borderRadius: 14,
+                        padding: '9px 14px',
+                        fontSize: '0.85rem',
+                        borderRadius: 6,
                         whiteSpace: 'nowrap',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 8,
+                        fontWeight: isActive ? 700 : 500,
+                        border: 'none',
+                        cursor: 'pointer',
+                        background: isActive ? '#0f172a' : 'transparent',
+                        color: isActive ? '#ffffff' : '#475569',
+                        transition: 'all 0.15s ease',
                       }}
                     >
-                      <Icon size={16} />
+                      <Icon size={15} />
                       <span>{tab.label}</span>
                       {typeof tab.count === 'number' && (
                         <span
                           style={{
-                            fontSize: '0.72rem',
-                            padding: '2px 6px',
+                            fontSize: '0.7rem',
+                            padding: '1px 6px',
                             borderRadius: 999,
-                            background: isActive ? '#00000025' : 'rgba(255,255,255,0.15)',
+                            background: isActive ? 'rgba(255,255,255,0.2)' : '#f1f5f9',
+                            color: isActive ? '#ffffff' : '#0f172a',
                             fontWeight: 700,
                           }}
                         >
@@ -306,7 +315,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Right Column: Sticky Live Smartphone Mockup */}
-            <div style={{ position: 'sticky', top: 90 }}>
+            <div style={{ position: 'sticky', top: 80 }}>
               <LivePreviewPanel data={data} onAddRSVP={addRSVP} />
             </div>
           </div>

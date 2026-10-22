@@ -116,13 +116,13 @@ export const EnvelopeCover: React.FC<EnvelopeCoverProps> = ({ data, guestName, o
         onClick={onOpen}
         className="btn"
         style={{
-          background: 'var(--gold-gradient)',
-          color: '#0e141f',
+          background: 'var(--inv-primary)',
+          color: '#ffffff',
           padding: '14px 28px',
           fontSize: '0.95rem',
-          fontWeight: 700,
+          fontWeight: 600,
           borderRadius: '999px',
-          boxShadow: '0 8px 25px rgba(212, 175, 55, 0.4)',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
           border: 'none',
           display: 'flex',
           alignItems: 'center',

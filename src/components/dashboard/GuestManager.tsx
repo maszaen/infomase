@@ -72,7 +72,7 @@ _Wassalamu’alaikum Warahmatullahi Wabarakatuh_`;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
-        <h3 style={{ fontSize: '1.4rem', fontFamily: 'var(--font-heading)', color: '#ffffff', marginBottom: 6 }}>
+        <h3 style={{ fontSize: '1.4rem', fontFamily: 'var(--font-heading)', color: '#0f172a', marginBottom: 6, fontWeight: 700 }}>
           Manajemen Tamu &amp; Generator Link WhatsApp
         </h3>
         <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
@@ -84,10 +84,10 @@ _Wassalamu’alaikum Warahmatullahi Wabarakatuh_`;
       <form
         onSubmit={handleAdd}
         className="glass-card"
-        style={{ padding: 20, borderRadius: 16 }}
+        style={{ padding: 20, borderRadius: 14 }}
       >
-        <h4 style={{ fontSize: '0.95rem', color: 'var(--gold-300)', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <UserPlus size={16} />
+        <h4 style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: 600, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <UserPlus size={16} color="#0f172a" />
           Tambah Tamu Undangan Baru
         </h4>
 
@@ -147,11 +147,11 @@ _Wassalamu’alaikum Warahmatullahi Wabarakatuh_`;
       </div>
 
       {/* Guest Table / List */}
-      <div className="glass-card" style={{ borderRadius: 16, overflow: 'hidden' }}>
+      <div className="glass-card" style={{ borderRadius: 14, overflow: 'hidden' }}>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.86rem' }}>
             <thead>
-              <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid var(--border-glass)', color: 'var(--text-muted)' }}>
+              <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', color: 'var(--text-secondary)' }}>
                 <th style={{ padding: '12px 16px', fontWeight: 600 }}>Nama Tamu</th>
                 <th style={{ padding: '12px 16px', fontWeight: 600 }}>Kategori</th>
                 <th style={{ padding: '12px 16px', fontWeight: 600 }}>Tautan Personal</th>
@@ -174,9 +174,9 @@ _Wassalamu’alaikum Warahmatullahi Wabarakatuh_`;
                   return (
                     <tr
                       key={guest.id}
-                      style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', transition: 'background 0.2s ease' }}
+                      style={{ borderBottom: '1px solid #f1f5f9', transition: 'background 0.2s ease' }}
                     >
-                      <td style={{ padding: '14px 16px', fontWeight: 600, color: '#ffffff' }}>
+                      <td style={{ padding: '14px 16px', fontWeight: 600, color: '#0f172a' }}>
                         {guest.name}
                       </td>
                       <td style={{ padding: '14px 16px' }}>
@@ -197,7 +197,7 @@ _Wassalamu’alaikum Warahmatullahi Wabarakatuh_`;
                           href={link}
                           target="_blank"
                           rel="noreferrer"
-                          style={{ color: 'var(--gold-300)', textDecoration: 'underline' }}
+                          style={{ color: '#2563eb', textDecoration: 'underline' }}
                         >
                           {link}
                         </a>

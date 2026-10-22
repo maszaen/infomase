@@ -216,11 +216,11 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ data, onAddRSVP, guest
           className="btn"
           style={{
             width: '100%',
-            background: 'var(--gold-gradient)',
-            color: '#0e141f',
+            background: 'var(--inv-primary)',
+            color: '#ffffff',
             padding: '12px',
             fontSize: '0.9rem',
-            fontWeight: 700,
+            fontWeight: 600,
             borderRadius: 999,
             display: 'flex',
             alignItems: 'center',

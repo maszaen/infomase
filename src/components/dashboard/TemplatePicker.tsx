@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { AVAILABLE_TEMPLATES, TemplateMeta } from '@/lib/defaultData';
+import { AVAILABLE_TEMPLATES } from '@/lib/defaultData';
 import { TemplateId } from '@/types/invitation';
-import { Check, Sparkles, Eye } from 'lucide-react';
+import { Check, Sparkles } from 'lucide-react';
 
 interface TemplatePickerProps {
   selectedTemplateId: TemplateId;
@@ -14,16 +14,15 @@ interface TemplatePickerProps {
 export const TemplatePicker: React.FC<TemplatePickerProps> = ({
   selectedTemplateId,
   onSelect,
-  onPreviewClick,
 }) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <div>
-        <h3 style={{ fontSize: '1.4rem', fontFamily: 'var(--font-heading)', color: '#ffffff', marginBottom: 6 }}>
+        <h3 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-heading)', color: '#0f172a', marginBottom: 4, fontWeight: 700 }}>
           Pilih Template Undangan
         </h3>
-        <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
-          Pilih tema desain yang paling menggambarkan konsep pesta pernikahan Anda. Semua template responsif dan siap pakai.
+        <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)' }}>
+          Pilih tema desain yang paling pas sama konsep acara mase. Klik template untuk langsung menerapkan ke preview.
         </p>
       </div>
 
@@ -31,7 +30,7 @@ export const TemplatePicker: React.FC<TemplatePickerProps> = ({
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: 20,
+          gap: 16,
         }}
       >
         {AVAILABLE_TEMPLATES.map((tmpl) => {
@@ -43,17 +42,17 @@ export const TemplatePicker: React.FC<TemplatePickerProps> = ({
               onClick={() => onSelect(tmpl.id)}
               className="glass-card"
               style={{
-                borderRadius: 20,
+                borderRadius: 12,
                 overflow: 'hidden',
                 cursor: 'pointer',
-                border: isSelected ? '2px solid var(--gold-400)' : '1px solid var(--border-glass)',
-                boxShadow: isSelected ? '0 12px 30px rgba(212, 175, 55, 0.25)' : 'var(--shadow-sm)',
-                transition: 'all 0.3s ease',
-                position: 'relative',
+                border: isSelected ? '2px solid #0f172a' : '1px solid #e2e8f0',
+                background: '#ffffff',
+                boxShadow: isSelected ? 'var(--shadow-sm)' : 'var(--shadow-xs)',
+                transition: 'all 0.15s ease',
               }}
             >
-              {/* Image banner with overlay */}
-              <div style={{ position: 'relative', height: 170, overflow: 'hidden' }}>
+              {/* Image banner */}
+              <div style={{ position: 'relative', height: 160, overflow: 'hidden', background: '#f8fafc' }}>
                 <img
                   src={tmpl.previewImage}
                   alt={tmpl.name}
@@ -61,49 +60,49 @@ export const TemplatePicker: React.FC<TemplatePickerProps> = ({
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
-                    transition: 'transform 0.4s ease',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-                />
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'linear-gradient(to top, rgba(16, 22, 34, 0.9) 0%, transparent 60%)',
                   }}
                 />
 
                 {/* Badge if any */}
                 {tmpl.badge && (
                   <span
-                    className="badge badge-gold"
-                    style={{ position: 'absolute', top: 12, right: 12 }}
+                    className="badge"
+                    style={{
+                      position: 'absolute',
+                      top: 10,
+                      right: 10,
+                      background: '#ffffff',
+                      color: '#0f172a',
+                      border: '1px solid #e2e8f0',
+                      boxShadow: 'var(--shadow-xs)',
+                    }}
                   >
-                    <Sparkles size={12} />
+                    <Sparkles size={11} color="#2563eb" />
                     {tmpl.badge}
                   </span>
                 )}
 
                 {/* Color swatches */}
-                <div style={{ position: 'absolute', bottom: 12, left: 16, display: 'flex', gap: 6 }}>
+                <div style={{ position: 'absolute', bottom: 10, left: 12, display: 'flex', gap: 6 }}>
                   <div
                     style={{
-                      width: 22,
-                      height: 22,
+                      width: 18,
+                      height: 18,
                       borderRadius: '50%',
                       background: tmpl.themeColor,
                       border: '2px solid #ffffff',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.15)',
                     }}
                     title="Warna Utama"
                   />
                   <div
                     style={{
-                      width: 22,
-                      height: 22,
+                      width: 18,
+                      height: 18,
                       borderRadius: '50%',
                       background: tmpl.accentColor,
                       border: '2px solid #ffffff',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.15)',
                     }}
                     title="Warna Aksen"
                   />
@@ -111,14 +110,14 @@ export const TemplatePicker: React.FC<TemplatePickerProps> = ({
               </div>
 
               {/* Template details */}
-              <div style={{ padding: '18px 20px' }}>
+              <div style={{ padding: '16px' }}>
                 <span
                   style={{
-                    fontSize: '0.75rem',
+                    fontSize: '0.7rem',
                     textTransform: 'uppercase',
-                    color: 'var(--gold-400)',
+                    color: '#64748b',
                     fontWeight: 700,
-                    letterSpacing: '0.08em',
+                    letterSpacing: '0.05em',
                   }}
                 >
                   {tmpl.category}
@@ -127,36 +126,37 @@ export const TemplatePicker: React.FC<TemplatePickerProps> = ({
                 <h4
                   style={{
                     fontFamily: 'var(--font-heading)',
-                    fontSize: '1.25rem',
-                    color: '#ffffff',
-                    margin: '6px 0 8px',
+                    fontSize: '1.1rem',
+                    color: '#0f172a',
+                    margin: '4px 0 6px',
+                    fontWeight: 700,
                   }}
                 >
                   {tmpl.name}
                 </h4>
 
-                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 16 }}>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 14 }}>
                   {tmpl.description}
                 </p>
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10, borderTop: '1px solid #f1f5f9' }}>
                   <span
                     style={{
-                      fontSize: '0.85rem',
+                      fontSize: '0.8rem',
                       fontWeight: 600,
-                      color: isSelected ? 'var(--gold-300)' : 'var(--text-muted)',
+                      color: isSelected ? '#0f172a' : '#94a3b8',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 6,
+                      gap: 4,
                     }}
                   >
                     {isSelected ? (
                       <>
-                        <Check size={16} color="var(--gold-400)" />
-                        Sedang Aktif
+                        <Check size={14} color="#059669" />
+                        Aktif
                       </>
                     ) : (
-                      'Klik untuk Terapkan'
+                      'Pilih Template'
                     )}
                   </span>
 
@@ -167,7 +167,7 @@ export const TemplatePicker: React.FC<TemplatePickerProps> = ({
                       onSelect(tmpl.id);
                     }}
                     className={`btn btn-sm ${isSelected ? 'btn-gold' : 'btn-outline-gold'}`}
-                    style={{ padding: '6px 14px', fontSize: '0.78rem' }}
+                    style={{ padding: '5px 12px', fontSize: '0.76rem', borderRadius: 6 }}
                   >
                     {isSelected ? 'Terpilih' : 'Pilih'}
                   </button>

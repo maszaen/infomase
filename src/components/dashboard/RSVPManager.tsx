@@ -25,7 +25,7 @@ export const RSVPManager: React.FC<RSVPManagerProps> = ({ data, onDeleteRSVP }) 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
-        <h3 style={{ fontSize: '1.4rem', fontFamily: 'var(--font-heading)', color: '#ffffff', marginBottom: 6 }}>
+        <h3 style={{ fontSize: '1.4rem', fontFamily: 'var(--font-heading)', color: '#0f172a', marginBottom: 6, fontWeight: 700 }}>
           Data RSVP &amp; Buku Tamu Digital
         </h3>
         <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
@@ -35,7 +35,7 @@ export const RSVPManager: React.FC<RSVPManagerProps> = ({ data, onDeleteRSVP }) 
 
       {/* Metrics Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }}>
-        <div className="glass-card" style={{ padding: 18, borderRadius: 16 }}>
+        <div className="glass-card" style={{ padding: 18, borderRadius: 14 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Pasti Hadir</span>
             <CheckCircle size={18} color="#10b981" />
@@ -48,7 +48,7 @@ export const RSVPManager: React.FC<RSVPManagerProps> = ({ data, onDeleteRSVP }) 
           </span>
         </div>
 
-        <div className="glass-card" style={{ padding: 18, borderRadius: 16 }}>
+        <div className="glass-card" style={{ padding: 18, borderRadius: 14 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Ragu-ragu</span>
             <HelpCircle size={18} color="#f59e0b" />
@@ -61,7 +61,7 @@ export const RSVPManager: React.FC<RSVPManagerProps> = ({ data, onDeleteRSVP }) 
           </span>
         </div>
 
-        <div className="glass-card" style={{ padding: 18, borderRadius: 16 }}>
+        <div className="glass-card" style={{ padding: 18, borderRadius: 14 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Berhalangan</span>
             <XCircle size={18} color="#ef4444" />
@@ -74,12 +74,12 @@ export const RSVPManager: React.FC<RSVPManagerProps> = ({ data, onDeleteRSVP }) 
           </span>
         </div>
 
-        <div className="glass-card" style={{ padding: 18, borderRadius: 16 }}>
+        <div className="glass-card" style={{ padding: 18, borderRadius: 14 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Total Ucapan</span>
-            <MessageSquareHeart size={18} color="var(--gold-400)" />
+            <MessageSquareHeart size={18} color="#2563eb" />
           </div>
-          <span style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--gold-300)' }}>
+          <span style={{ fontSize: '1.8rem', fontWeight: 700, color: '#0f172a' }}>
             {data.rsvpList.length}
           </span>
           <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginTop: 4 }}>
@@ -137,7 +137,7 @@ export const RSVPManager: React.FC<RSVPManagerProps> = ({ data, onDeleteRSVP }) 
                 className="glass-card"
                 style={{
                   padding: 18,
-                  borderRadius: 16,
+                  borderRadius: 14,
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'flex-start',
@@ -147,17 +147,18 @@ export const RSVPManager: React.FC<RSVPManagerProps> = ({ data, onDeleteRSVP }) 
                 <div style={{ display: 'flex', gap: 14 }}>
                   <div
                     style={{
-                      width: 42,
-                      height: 42,
-                      borderRadius: '50%',
-                      background: 'rgba(212, 175, 55, 0.15)',
-                      color: 'var(--gold-300)',
+                      width: 40,
+                      height: 40,
+                      borderRadius: 10,
+                      background: '#f1f5f9',
+                      color: '#0f172a',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontWeight: 700,
-                      fontSize: '1rem',
+                      fontSize: '0.95rem',
                       flexShrink: 0,
+                      border: '1px solid #e2e8f0',
                     }}
                   >
                     {rsvp.guestName.charAt(0).toUpperCase()}
@@ -165,7 +166,7 @@ export const RSVPManager: React.FC<RSVPManagerProps> = ({ data, onDeleteRSVP }) 
 
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 4 }}>
-                      <h4 style={{ fontSize: '0.95rem', color: '#ffffff', fontWeight: 600 }}>
+                      <h4 style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: 600 }}>
                         {rsvp.guestName}
                       </h4>
                       <span
