@@ -56,7 +56,6 @@ export async function apiFetch<T = any>(
 
   const headers: Record<string, string> = {
     Accept: 'application/json',
-    'ngrok-skip-browser-warning': 'true',
     ...(options.headers as Record<string, string>),
   };
 
@@ -66,6 +65,7 @@ export async function apiFetch<T = any>(
 
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
+    headers['X-Token'] = token;
   }
 
   let res: Response;
@@ -106,11 +106,11 @@ export async function apiUpload<T = any>(
   const token = getToken();
   const headers: Record<string, string> = {
     Accept: 'application/json',
-    'ngrok-skip-browser-warning': 'true',
   };
 
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
+    headers['X-Token'] = token;
   }
 
   const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
