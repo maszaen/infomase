@@ -88,26 +88,57 @@ export const RSVPManager: React.FC<RSVPManagerProps> = ({ data, onDeleteRSVP }) 
         </div>
       </div>
 
-      {/* Filter Tabs */}
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-        <Filter size={16} color="var(--text-muted)" />
-        <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginRight: 4 }}>Filter:</span>
-        {[
-          { id: 'all', label: 'Semua Ucapan' },
-          { id: 'hadir', label: 'Hadir' },
-          { id: 'ragu', label: 'Ragu' },
-          { id: 'tidak', label: 'Berhalangan' },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            onClick={() => setFilter(tab.id as any)}
-            className={`btn btn-sm ${filter === tab.id ? 'btn-gold' : 'btn-glass'}`}
-            style={{ padding: '6px 14px', fontSize: '0.78rem' }}
-          >
-            {tab.label}
-          </button>
-        ))}
+      {/* Filter Tabs & Export */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+          <Filter size={16} color="var(--text-muted)" />
+          <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginRight: 4 }}>Filter:</span>
+          {[
+            { id: 'all', label: 'Semua Ucapan' },
+            { id: 'hadir', label: 'Hadir' },
+            { id: 'ragu', label: 'Ragu' },
+            { id: 'tidak', label: 'Berhalangan' },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setFilter(tab.id as any)}
+              className={`btn btn-sm ${filter === tab.id ? 'btn-gold' : 'btn-glass'}`}
+              style={{ padding: '6px 14px', fontSize: '0.78rem' }}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            // Generate clean CSV export
+            const headers = ['Nama Tamu', 'Kehadiran', 'Jumlah Pax', 'Pesan Doa', 'Tanggal'];
+            const rows = data.rsvpList.map((r) => [
+              `"${r.guestName.replace(/"/g, '""')}"`,
+              `"${r.attendance}"`,
+              r.pax || 1,
+              `"${r.message.replace(/"/g, '""')}"`,
+              `"${r.createdAt}"`,
+            ]);
+            const csvContent = '\uFEFF' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', `rekap-rsvp-${data.slug}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }}
+          className="btn btn-sm btn-glass"
+          style={{ padding: '6px 12px', fontSize: '0.78rem', fontWeight: 600 }}
+          title="Export data RSVP ke file Excel CSV"
+        >
+          <span>Unduh Rekap CSV / Excel</span>
+        </button>
       </div>
 
       {/* Wishes Feed */}

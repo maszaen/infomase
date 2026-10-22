@@ -2,11 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Sparkles, ArrowRight, Menu, X } from 'lucide-react';
+import { Sparkles, ArrowRight, Menu, X, User as UserIcon, LogOut } from 'lucide-react';
+import { useAuth } from '@/lib/authContext';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,23 +82,78 @@ export const Navbar: React.FC = () => {
 
         {/* Action Buttons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Link
-            href="/dashboard"
-            className="btn btn-sm btn-subtle"
-            style={{ display: 'none', fontWeight: 600 }}
-            id="nav-dashboard-link"
-          >
-            Masuk Studio
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <div
+                style={{
+                  display: 'none',
+                  alignItems: 'center',
+                  gap: 8,
+                  fontSize: '0.85rem',
+                  color: 'var(--text-primary)',
+                  fontWeight: 600,
+                  marginRight: 4,
+                }}
+                id="user-greeting"
+              >
+                <div
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: '50%',
+                    background: '#f1f5f9',
+                    border: '1px solid #e2e8f0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#0f172a',
+                  }}
+                >
+                  <UserIcon size={14} />
+                </div>
+                <span>{user?.name || 'User'}</span>
+              </div>
 
-          <Link
-            href="/dashboard"
-            className="btn btn-sm btn-gold"
-            style={{ textDecoration: 'none', borderRadius: 8 }}
-          >
-            <span>Bikin Undangan Sat-Set</span>
-            <ArrowRight size={14} />
-          </Link>
+              <Link
+                href="/dashboard"
+                className="btn btn-sm btn-gold"
+                style={{ textDecoration: 'none', borderRadius: 8 }}
+              >
+                <span>Buka Studio</span>
+                <ArrowRight size={14} />
+              </Link>
+
+              <button
+                type="button"
+                onClick={() => logout()}
+                className="btn btn-sm btn-subtle"
+                style={{ padding: '8px', color: 'var(--text-muted)' }}
+                title="Keluar Akun"
+              >
+                <LogOut size={16} />
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="btn btn-sm btn-subtle"
+                style={{ display: 'none', fontWeight: 600 }}
+                id="nav-dashboard-link"
+              >
+                Masuk
+              </Link>
+
+              <Link
+                href="/register"
+                className="btn btn-sm btn-gold"
+                style={{ textDecoration: 'none', borderRadius: 8 }}
+              >
+                <span>Bikin Undangan Sat-Set</span>
+                <ArrowRight size={14} />
+              </Link>
+            </>
+          )}
 
           {/* Mobile Menu Toggle */}
           <button

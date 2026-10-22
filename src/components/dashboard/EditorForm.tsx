@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { InvitationData, EventDetail, LoveStory, GalleryPhoto, BankAccount } from '@/types/invitation';
 import { PRESET_PHOTOS } from '@/lib/defaultData';
+import { uploadApi } from '@/lib/api';
 import {
   Users,
   Calendar,
@@ -14,6 +15,9 @@ import {
   Trash2,
   ExternalLink,
   Sparkles,
+  UploadCloud,
+  Loader2,
+  Check,
 } from 'lucide-react';
 
 interface EditorFormProps {
@@ -52,6 +56,118 @@ export const EditorForm: React.FC<EditorFormProps> = ({
   const [activeSubTab, setActiveSubTab] = useState<'mempelai' | 'acara' | 'quote' | 'kisah' | 'galeri' | 'kado' | 'musik'>('mempelai');
   const [newPhotoUrl, setNewPhotoUrl] = useState('');
   const [newPhotoCaption, setNewPhotoCaption] = useState('');
+  const [uploadingGroom, setUploadingGroom] = useState(false);
+  const [uploadingBride, setUploadingBride] = useState(false);
+  const [uploadingGallery, setUploadingGallery] = useState(false);
+  const [uploadingMusic, setUploadingMusic] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  const handleUploadGroomPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingGroom(true);
+    try {
+      const res = await uploadApi.uploadPhoto(data.id, file, 'groom');
+      if (res?.url) {
+        onUpdateGroom({ photo: res.url });
+        showToast('Foto mempelai pria berhasil diunggah ke server!');
+      }
+    } catch (err: any) {
+      // Local preview fallback if backend server is not running
+      const localUrl = URL.createObjectURL(file);
+      onUpdateGroom({ photo: localUrl });
+      showToast('Backend offline: Foto dimuat sebagai preview lokal');
+    } finally {
+      setUploadingGroom(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleUploadBridePhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingBride(true);
+    try {
+      const res = await uploadApi.uploadPhoto(data.id, file, 'bride');
+      if (res?.url) {
+        onUpdateBride({ photo: res.url });
+        showToast('Foto mempelai wanita berhasil diunggah ke server!');
+      }
+    } catch (err: any) {
+      const localUrl = URL.createObjectURL(file);
+      onUpdateBride({ photo: localUrl });
+      showToast('Backend offline: Foto dimuat sebagai preview lokal');
+    } finally {
+      setUploadingBride(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleUploadGalleryFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setUploadingGallery(true);
+    try {
+      const fileArray = Array.from(files);
+      const res = await uploadApi.uploadGalleryBatch(data.id, fileArray);
+      if (Array.isArray(res) && res.length > 0) {
+        onUpdateGallery([
+          ...data.gallery,
+          ...res.map((item, idx) => ({
+            id: item.id || 'gal-' + Date.now() + idx,
+            url: item.url,
+            caption: item.caption || '',
+          })),
+        ]);
+        showToast(`${res.length} foto berhasil diunggah ke server!`);
+      }
+    } catch {
+      // Fallback local preview
+      const newItems: GalleryPhoto[] = Array.from(files).map((f, idx) => ({
+        id: 'gal-local-' + Date.now() + idx,
+        url: URL.createObjectURL(f),
+        caption: f.name.replace(/\.[^/.]+$/, ''),
+      }));
+      onUpdateGallery([...data.gallery, ...newItems]);
+      showToast('Backend offline: Foto galeri dimuat secara lokal');
+    } finally {
+      setUploadingGallery(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleUploadMusicAudio = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingMusic(true);
+    try {
+      const res = await uploadApi.uploadAudio(data.id, file, file.name);
+      if (res?.url) {
+        onUpdateMusic({
+          ...data.music,
+          url: res.url,
+          title: res.title || file.name.replace(/\.[^/.]+$/, ''),
+        });
+        showToast('Audio musik berhasil diunggah ke server!');
+      }
+    } catch {
+      const localAudioUrl = URL.createObjectURL(file);
+      onUpdateMusic({
+        ...data.music,
+        url: localAudioUrl,
+        title: file.name.replace(/\.[^/.]+$/, ''),
+      });
+      showToast('Backend offline: Audio musik dimuat secara lokal');
+    } finally {
+      setUploadingMusic(false);
+      e.target.value = '';
+    }
+  };
 
   const subTabs = [
     { id: 'mempelai', label: 'Mempelai', icon: Users },
@@ -114,6 +230,28 @@ export const EditorForm: React.FC<EditorFormProps> = ({
           );
         })}
       </div>
+
+      {/* Upload Toast Notification */}
+      {toastMessage && (
+        <div
+          style={{
+            padding: '10px 14px',
+            borderRadius: 8,
+            background: '#ecfdf5',
+            border: '1px solid #a7f3d0',
+            color: '#065f46',
+            fontSize: '0.82rem',
+            fontWeight: 600,
+            marginBottom: 16,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+          }}
+        >
+          <Check size={16} />
+          <span>{toastMessage}</span>
+        </div>
+      )}
 
       {/* 1. MEMPELAI TAB */}
       {activeSubTab === 'mempelai' && (
@@ -194,10 +332,34 @@ export const EditorForm: React.FC<EditorFormProps> = ({
               </div>
 
               <div className="form-group">
-                <label className="form-label">Foto Pria (URL Gambar)</label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                  <label className="form-label" style={{ margin: 0 }}>Foto Pria</label>
+                  <label
+                    className="btn btn-sm btn-glass"
+                    style={{
+                      padding: '4px 10px',
+                      fontSize: '0.74rem',
+                      cursor: uploadingGroom ? 'not-allowed' : 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 6,
+                    }}
+                  >
+                    {uploadingGroom ? <Loader2 size={13} className="music-spinning" /> : <UploadCloud size={13} />}
+                    {uploadingGroom ? 'Mengunggah...' : 'Upload Gambar'}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleUploadGroomPhoto}
+                      disabled={uploadingGroom}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                </div>
                 <input
                   type="text"
                   className="form-input"
+                  placeholder="URL Foto Gambar..."
                   value={data.groom.photo}
                   onChange={(e) => onUpdateGroom({ photo: e.target.value })}
                 />
@@ -287,10 +449,34 @@ export const EditorForm: React.FC<EditorFormProps> = ({
               </div>
 
               <div className="form-group">
-                <label className="form-label">Foto Wanita (URL Gambar)</label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                  <label className="form-label" style={{ margin: 0 }}>Foto Wanita</label>
+                  <label
+                    className="btn btn-sm btn-glass"
+                    style={{
+                      padding: '4px 10px',
+                      fontSize: '0.74rem',
+                      cursor: uploadingBride ? 'not-allowed' : 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 6,
+                    }}
+                  >
+                    {uploadingBride ? <Loader2 size={13} className="music-spinning" /> : <UploadCloud size={13} />}
+                    {uploadingBride ? 'Mengunggah...' : 'Upload Gambar'}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleUploadBridePhoto}
+                      disabled={uploadingBride}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                </div>
                 <input
                   type="text"
                   className="form-input"
+                  placeholder="URL Foto Gambar..."
                   value={data.bride.photo}
                   onChange={(e) => onUpdateBride({ photo: e.target.value })}
                 />
@@ -634,10 +820,33 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                 onChange={(e) => setNewPhotoCaption(e.target.value)}
               />
             </div>
-            <button type="button" onClick={handleAddGalleryPhoto} className="btn btn-sm btn-gold">
-              <Plus size={15} />
-              Tambahkan Foto
-            </button>
+            <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+              <button type="button" onClick={handleAddGalleryPhoto} className="btn btn-sm btn-gold">
+                <Plus size={15} />
+                Tambahkan via URL
+              </button>
+
+              <label
+                className="btn btn-sm btn-glass"
+                style={{
+                  cursor: uploadingGallery ? 'not-allowed' : 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                {uploadingGallery ? <Loader2 size={14} className="music-spinning" /> : <UploadCloud size={14} />}
+                {uploadingGallery ? 'Mengunggah ke Server...' : 'Upload Foto Galeri (Bisa Banyak)'}
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleUploadGalleryFiles}
+                  disabled={uploadingGallery}
+                  style={{ display: 'none' }}
+                />
+              </label>
+            </div>
 
             {/* Presets Quick Pick */}
             <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid #e2e8f0' }}>
@@ -885,7 +1094,30 @@ export const EditorForm: React.FC<EditorFormProps> = ({
           </div>
 
           <div className="form-group">
-            <label className="form-label">URL Audio MP3 (Direct link)</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+              <label className="form-label" style={{ margin: 0 }}>URL Audio MP3 (Direct link)</label>
+              <label
+                className="btn btn-sm btn-glass"
+                style={{
+                  padding: '4px 10px',
+                  fontSize: '0.74rem',
+                  cursor: uploadingMusic ? 'not-allowed' : 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                {uploadingMusic ? <Loader2 size={13} className="music-spinning" /> : <UploadCloud size={13} />}
+                {uploadingMusic ? 'Mengunggah MP3...' : 'Upload File MP3'}
+                <input
+                  type="file"
+                  accept="audio/*"
+                  onChange={handleUploadMusicAudio}
+                  disabled={uploadingMusic}
+                  style={{ display: 'none' }}
+                />
+              </label>
+            </div>
             <input
               type="url"
               className="form-input"
@@ -893,7 +1125,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
               onChange={(e) => onUpdateMusic({ ...data.music, url: e.target.value })}
             />
             <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>
-              Gunakan link audio berformat .mp3 yang dapat diakses publik.
+              Gunakan link audio berformat .mp3 atau upload langsung file lagu romantis pilihan Anda.
             </span>
           </div>
         </div>

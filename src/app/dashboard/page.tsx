@@ -1,7 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/authContext';
+import { invitationsApi } from '@/lib/api';
 import { useInvitationStore } from '@/lib/invitationStore';
 import { TemplatePicker } from '@/components/dashboard/TemplatePicker';
 import { EditorForm } from '@/components/dashboard/EditorForm';
@@ -19,9 +22,18 @@ import {
   CheckCircle2,
   ChevronLeft,
   Eye,
+  Cloud,
+  Save,
+  LogOut,
+  User as UserIcon,
+  Lock,
+  ArrowRight,
 } from 'lucide-react';
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const { user, isAuthenticated, isLoading: authLoading, logout } = useAuth();
+
   const {
     data,
     isLoaded,
@@ -48,8 +60,41 @@ export default function DashboardPage() {
 
   const [mainTab, setMainTab] = useState<'template' | 'editor' | 'guests' | 'rsvp'>('editor');
   const [mobileView, setMobileView] = useState<'content' | 'preview'>('content');
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveToast, setSaveToast] = useState<string | null>(null);
 
-  if (!isLoaded) {
+  // Attempt to load existing invitation from backend when user logs in
+  useEffect(() => {
+    if (isAuthenticated) {
+      invitationsApi
+        .getAll()
+        .then((list) => {
+          if (list && list.length > 0) {
+            console.log('Backend invitations found:', list.length);
+          }
+        })
+        .catch(() => {
+          // Backend offline or local development fallback
+        });
+    }
+  }, [isAuthenticated]);
+
+  const handleSaveToCloud = async () => {
+    setIsSaving(true);
+    setSaveToast(null);
+    try {
+      await invitationsApi.update(data.id, data);
+      setSaveToast('Undangan berhasil disimpan ke server backend!');
+    } catch {
+      setSaveToast('Tersimpan di penyimpanan lokal (Backend offline)');
+    } finally {
+      setIsSaving(false);
+      setTimeout(() => setSaveToast(null), 4000);
+    }
+  };
+
+  // 1. Loading state
+  if (authLoading || !isLoaded) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#ffffff' }}>
         <div style={{ textAlign: 'center' }}>
@@ -57,6 +102,96 @@ export default function DashboardPage() {
           <p style={{ marginTop: 12, color: 'var(--text-secondary)', fontSize: '0.88rem', fontWeight: 500 }}>
             Memuat Dasbor Studio InfoMase...
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Auth Gate: Must be logged in to access dashboard studio
+  if (!isAuthenticated) {
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          background: 'var(--bg-secondary)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '24px 16px',
+        }}
+      >
+        <div
+          className="glass-card"
+          style={{
+            maxWidth: 440,
+            width: '100%',
+            padding: '36px 28px',
+            borderRadius: 16,
+            textAlign: 'center',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+          }}
+        >
+          <div
+            style={{
+              width: 52,
+              height: 52,
+              borderRadius: '50%',
+              background: '#f1f5f9',
+              border: '1px solid #e2e8f0',
+              color: '#0f172a',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 16px',
+            }}
+          >
+            <Lock size={24} />
+          </div>
+
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>
+            Area Studio Terisolasi
+          </h2>
+          <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 24 }}>
+            Untuk melindungi data undangan, manajemen tamu, dan buku tamu Anda, silakan masuk ke akun InfoMase terlebih dahulu.
+          </p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <Link
+              href="/login"
+              className="btn btn-gold"
+              style={{
+                width: '100%',
+                padding: '11px',
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                textDecoration: 'none',
+              }}
+            >
+              <span>Masuk ke Akun Anda</span>
+              <ArrowRight size={16} />
+            </Link>
+
+            <Link
+              href="/register"
+              className="btn btn-glass"
+              style={{
+                width: '100%',
+                padding: '11px',
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                textDecoration: 'none',
+              }}
+            >
+              <span>Daftar Akun Gratis</span>
+            </Link>
+          </div>
+
+          <div style={{ marginTop: 20 }}>
+            <Link href="/" style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textDecoration: 'none' }}>
+              ← Kembali ke Beranda
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -120,24 +255,46 @@ export default function DashboardPage() {
 
           {/* Right Action buttons */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            {/* Autosave status indicator */}
+            {/* User chip */}
             <div
               style={{
-                display: 'flex',
+                display: 'none',
+                alignItems: 'center',
+                gap: 8,
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                color: '#0f172a',
+                background: '#f8fafc',
+                padding: '4px 10px',
+                borderRadius: 8,
+                border: '1px solid #e2e8f0',
+              }}
+              className="user-badge-desktop"
+            >
+              <UserIcon size={14} color="#2563eb" />
+              <span>{user?.name || 'User'}</span>
+            </div>
+
+            {/* Cloud save button */}
+            <button
+              type="button"
+              onClick={handleSaveToCloud}
+              disabled={isSaving}
+              className="btn btn-sm btn-glass"
+              style={{
+                padding: '6px 12px',
+                fontSize: '0.78rem',
+                borderRadius: 6,
+                display: 'inline-flex',
                 alignItems: 'center',
                 gap: 6,
-                fontSize: '0.76rem',
                 fontWeight: 600,
-                color: '#065f46',
-                background: '#ecfdf5',
-                padding: '5px 10px',
-                borderRadius: 6,
-                border: '1px solid #a7f3d0',
               }}
+              title="Simpan Perubahan ke Server Cloud"
             >
-              <CheckCircle2 size={13} />
-              <span>Tersimpan Otomatis</span>
-            </div>
+              <Save size={13} color="#2563eb" />
+              <span>{isSaving ? 'Menyimpan...' : 'Simpan Cloud'}</span>
+            </button>
 
             <button
               type="button"
@@ -151,7 +308,7 @@ export default function DashboardPage() {
               title="Reset ke Data Default"
             >
               <RotateCcw size={13} />
-              Reset Default
+              Reset
             </button>
 
             <a
@@ -164,8 +321,44 @@ export default function DashboardPage() {
               <ExternalLink size={13} />
               Buka Web Publik
             </a>
+
+            <button
+              type="button"
+              onClick={() => {
+                logout();
+                router.push('/login');
+              }}
+              className="btn btn-sm btn-subtle"
+              style={{ padding: '7px 10px', color: '#ef4444' }}
+              title="Keluar / Logout"
+            >
+              <LogOut size={15} />
+            </button>
           </div>
         </div>
+
+        {/* Save Toast Banner */}
+        {saveToast && (
+          <div
+            style={{
+              marginTop: 10,
+              padding: '6px 12px',
+              borderRadius: 6,
+              background: '#ecfdf5',
+              border: '1px solid #a7f3d0',
+              color: '#065f46',
+              fontSize: '0.78rem',
+              fontWeight: 600,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 8,
+            }}
+          >
+            <CheckCircle2 size={14} />
+            <span>{saveToast}</span>
+          </div>
+        )}
       </header>
 
       {/* Mobile Tab Toggle */}

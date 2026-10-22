@@ -1,17 +1,69 @@
 'use client';
 
-import React, { Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import React, { Suspense, useState, useEffect } from 'react';
+import { useSearchParams, useParams } from 'next/navigation';
 import { useInvitationStore } from '@/lib/invitationStore';
+import { publicApi } from '@/lib/api';
+import { InvitationData, RSVPItem } from '@/types/invitation';
 import { InvitationRenderer } from '@/components/invitation/InvitationRenderer';
 import { Sparkles } from 'lucide-react';
 
 function InvitationContent() {
+  const params = useParams();
   const searchParams = useSearchParams();
+  const slug = (params?.slug as string) || '';
   const guestName = searchParams.get('to') || undefined;
-  const { data, isLoaded, addRSVP } = useInvitationStore();
 
-  if (!isLoaded) {
+  const { data: localData, isLoaded: localLoaded, addRSVP: addLocalRSVP } = useInvitationStore();
+  const [invitationData, setInvitationData] = useState<InvitationData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch real invitation data from backend API
+  useEffect(() => {
+    let isMounted = true;
+
+    if (slug) {
+      publicApi
+        .getBySlug(slug, guestName)
+        .then((res) => {
+          if (isMounted && res) {
+            setInvitationData(res);
+          }
+        })
+        .catch(() => {
+          // If backend offline or slug not found on server, fallback to local store
+          if (isMounted) {
+            setInvitationData(null);
+          }
+        })
+        .finally(() => {
+          if (isMounted) setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [slug, guestName]);
+
+  const activeData = invitationData || localData;
+
+  const handleAddRSVP = async (item: Omit<RSVPItem, 'id' | 'createdAt'>) => {
+    // 1. Submit to backend API if slug exists
+    if (slug) {
+      try {
+        await publicApi.submitRsvp(slug, item);
+      } catch (err) {
+        console.warn('Backend RSVP submit offline or failed, saving locally', err);
+      }
+    }
+    // 2. Always update local store so user sees instant feedback in preview
+    addLocalRSVP(item);
+  };
+
+  if (loading && !localLoaded) {
     return (
       <div
         style={{
@@ -56,9 +108,9 @@ function InvitationContent() {
         }}
       >
         <InvitationRenderer
-          data={data}
+          data={activeData}
           guestName={guestName}
-          onAddRSVP={addRSVP}
+          onAddRSVP={handleAddRSVP}
         />
       </div>
     </div>
