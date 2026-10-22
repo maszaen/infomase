@@ -2,7 +2,8 @@ import { ApiResponse, AuthResponseData, User } from '@/types/auth';
 import { InvitationData, RSVPItem, GuestItem, TemplateId } from '@/types/invitation';
 
 export const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost/wedding_digital/api/v1';
+  process.env.NEXT_PUBLIC_API_URL ||
+  'https://elvin-affectional-edwardo.ngrok-free.dev/wedding_digital/api/v1';
 
 export const TOKEN_KEY = 'infomase_token';
 export const REFRESH_TOKEN_KEY = 'infomase_refresh_token';
@@ -55,6 +56,7 @@ export async function apiFetch<T = any>(
 
   const headers: Record<string, string> = {
     Accept: 'application/json',
+    'ngrok-skip-browser-warning': 'true',
     ...(options.headers as Record<string, string>),
   };
 
@@ -74,7 +76,7 @@ export async function apiFetch<T = any>(
     });
   } catch {
     throw new Error(
-      `Tidak dapat terhubung ke server backend di "${url}". Pastikan web server Apache/CodeIgniter sudah berjalan (misal di XAMPP) dan CORS diizinkan.`
+      `Tidak dapat terhubung ke server backend di "${url}". Pastikan URL backend valid dan tunnel ngrok / web server sedang aktif.`
     );
   }
 
@@ -104,6 +106,7 @@ export async function apiUpload<T = any>(
   const token = getToken();
   const headers: Record<string, string> = {
     Accept: 'application/json',
+    'ngrok-skip-browser-warning': 'true',
   };
 
   if (token) {

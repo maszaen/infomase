@@ -42,7 +42,7 @@ export default function LoginPage() {
   };
 
   const handleFillDemo = () => {
-    setEmail('budi@example.com');
+    setEmail('zaenal.arifin99@gmail.com');
     setPassword('Password123!');
     setErrorMessage(null);
   };
@@ -360,7 +360,7 @@ export default function LoginPage() {
             </button>
           </div>
           <span style={{ color: 'var(--text-muted)' }}>
-            Email: <b>budi@example.com</b> | Pass: <b>Password123!</b>
+            Email: <b>zaenal.arifin99@gmail.com</b> | Pass: <b>Password123!</b>
           </span>
         </div>
 

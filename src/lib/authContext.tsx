@@ -16,6 +16,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (credentials: { email: string; password: string }) => Promise<void>;
   loginDemo: () => void;
+  registerOffline: (payload: { name: string; email: string; phoneNumber?: string }) => void;
   register: (payload: { name: string; email: string; password: string; phoneNumber?: string }) => Promise<void>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -115,6 +116,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
+  const registerOffline = useCallback(
+    (payload: { name: string; email: string; phoneNumber?: string }) => {
+      const offlineUser: User = {
+        id: `usr-${Date.now()}`,
+        name: payload.name || 'Pengguna InfoMase',
+        email: payload.email || 'demo@infomase.id',
+        phoneNumber: payload.phoneNumber || '',
+        role: 'USER',
+        totalInvitations: 0,
+      };
+      setUser(offlineUser);
+      setTokenState('demo-token-active');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('infomase_token', 'demo-token-active');
+        localStorage.setItem('infomase_user', JSON.stringify(offlineUser));
+      }
+    },
+    []
+  );
+
   const refreshProfile = useCallback(async () => {
     try {
       const profile = await authApi.getMe();
@@ -133,6 +154,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isLoading,
         login,
         loginDemo,
+        registerOffline,
         register,
         logout,
         refreshProfile,
