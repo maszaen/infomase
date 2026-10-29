@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AVAILABLE_TEMPLATES, TemplateMeta } from '@/lib/defaultData';
 import { TemplateId } from '@/types/invitation';
 import { useInvitationStore } from '@/lib/invitationStore';
-import { Sparkles, Eye, Check, ArrowRight, X } from 'lucide-react';
+import { Eye, Check, ArrowRight, Layers } from 'lucide-react';
 import { InvitationRenderer } from '../invitation/InvitationRenderer';
 
 export const TemplateShowcase: React.FC = () => {
@@ -21,203 +21,145 @@ export const TemplateShowcase: React.FC = () => {
 
   const filtered = AVAILABLE_TEMPLATES.filter((t) => {
     if (filter === 'all') return true;
-    if (filter === 'rustic') return t.id === 'rustic';
-    if (filter === 'luxury') return t.id === 'royal-gold';
-    if (filter === 'islamic') return t.id === 'islamic';
-    if (filter === 'pastel') return t.id === 'sakura';
-    return true;
+    return t.category === filter;
   });
 
+  const categories = [
+    { id: 'all', label: 'Semua Desain' },
+    { id: 'Botanical & Rustic', label: 'Boho Botanical Masterpiece' },
+  ];
+
   return (
-    <section id="templates" style={{ padding: '70px 0', background: '#ffffff', borderTop: '1px solid #f1f5f9' }}>
+    <section id="templates" className="section section-sunken">
       <div className="container">
-        {/* Section Header */}
         <div style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto 40px' }}>
-          <div style={{ display: 'inline-flex', marginBottom: 12 }}>
-            <span className="badge badge-gold">
-              <Sparkles size={14} color="#2563eb" />
-              Template Siap Pakai Tinggal Pake
-            </span>
+          <div className="section-eyebrow" style={{ justifyContent: 'center' }}>
+            <Layers size={13} />
+            Desain resmi premium
           </div>
-          <h2
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: 'clamp(1.9rem, 3.5vw, 2.7rem)',
-              color: '#0f172a',
-              marginBottom: 12,
-            }}
-          >
-            Desain Mewah Siap Pakai, Bikin Tamu Kagum Mase!
-          </h2>
-          <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
-            Pilih tema yang paling pas sama konsep acara mase. Semuanya mobile-first, enteng dibuka di semua HP, dan gampang diedit foto serta teksnya.
+          <h2 className="section-title">Koleksi undangan digital eksklusif</h2>
+          <p className="section-subtitle" style={{ margin: '12px auto 0' }}>
+            Gate cover 3D book flip, tekstur watercolor wash, animasi dedaunan bergoyang alami,
+            dan soundtrack orkestra romantis — semua sudah teruji di ribuan perangkat.
           </p>
         </div>
 
-        {/* Filter Pills */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: 8,
-            flexWrap: 'wrap',
-            marginBottom: 36,
-          }}
-        >
-          {[
-            { id: 'all', label: 'Semua Koleksi' },
-            { id: 'rustic', label: 'Rustic & Flora' },
-            { id: 'luxury', label: 'Royal Midnight Gold' },
-            { id: 'islamic', label: 'Islami Modern' },
-            { id: 'pastel', label: 'Blush Sakura' },
-          ].map((item) => {
-            const isSelected = filter === item.id;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setFilter(item.id)}
-                className="btn btn-sm"
-                style={{
-                  padding: '7px 16px',
-                  fontSize: '0.82rem',
-                  background: isSelected ? '#0f172a' : '#ffffff',
-                  color: isSelected ? '#ffffff' : '#475569',
-                  border: isSelected ? '1px solid #0f172a' : '1px solid #e2e8f0',
-                  borderRadius: 8,
-                }}
-              >
-                {item.label}
-              </button>
-            );
-          })}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 32 }}>
+          {categories.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setFilter(item.id)}
+              className={`chip ${filter === item.id ? 'active' : ''}`}
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
 
-        {/* Templates Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))',
-            gap: 24,
-          }}
-        >
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 18 }}>
           {filtered.map((tmpl) => (
-            <div
-              key={tmpl.id}
-              className="glass-card"
-              style={{
-                borderRadius: 14,
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              {/* Image Preview */}
-              <div style={{ position: 'relative', height: 230, overflow: 'hidden', background: '#f8fafc' }}>
+            <div key={tmpl.id} className="card card-hover" style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ position: 'relative', height: 210, overflow: 'hidden', background: 'var(--canvas)' }}>
                 <img
                   src={tmpl.previewImage}
                   alt={tmpl.name}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                 />
+
+                {tmpl.tier && (
+                  <span
+                    className="badge"
+                    style={{
+                      position: 'absolute',
+                      top: 10,
+                      left: 10,
+                      background:
+                        tmpl.tier === 'vip' ? '#1e1b4b' : tmpl.tier === 'pro' ? 'var(--ink)' : 'var(--success)',
+                      color: '#fff',
+                      border: 'none',
+                      fontSize: 10,
+                      fontWeight: 700,
+                      letterSpacing: '0.06em',
+                    }}
+                  >
+                    {tmpl.tier.toUpperCase()}
+                  </span>
+                )}
 
                 {tmpl.badge && (
                   <span
                     className="badge"
                     style={{
                       position: 'absolute',
-                      top: 12,
-                      right: 12,
-                      background: '#ffffff',
-                      color: '#0f172a',
-                      border: '1px solid #e2e8f0',
+                      top: 10,
+                      right: 10,
+                      background: 'var(--surface)',
+                      color: 'var(--ink)',
                       boxShadow: 'var(--shadow-sm)',
                     }}
                   >
-                    <Sparkles size={12} color="#2563eb" />
                     {tmpl.badge}
                   </span>
                 )}
 
-                {/* Color Swatches */}
-                <div style={{ position: 'absolute', bottom: 12, left: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <div
-                    style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: '50%',
-                      background: tmpl.themeColor,
-                      border: '2px solid #ffffff',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                    }}
-                    title="Warna Latar Utama"
-                  />
-                  <div
-                    style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: '50%',
-                      background: tmpl.accentColor,
-                      border: '2px solid #ffffff',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                    }}
-                    title="Warna Aksen"
-                  />
+                <div style={{ position: 'absolute', bottom: 10, left: 12, display: 'flex', gap: 5 }}>
+                  {[tmpl.themeColor, tmpl.accentColor, tmpl.bgColor].map((c, i) => (
+                    <span
+                      key={i}
+                      style={{
+                        width: 17,
+                        height: 17,
+                        borderRadius: '50%',
+                        background: c,
+                        border: '2px solid #fff',
+                        boxShadow: '0 1px 3px rgba(16,24,40,0.25)',
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
 
-              {/* Card Body */}
-              <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div style={{ padding: 18, flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
                 <div>
-                  <span
-                    style={{
-                      fontSize: '0.72rem',
-                      textTransform: 'uppercase',
-                      color: '#64748b',
-                      fontWeight: 700,
-                      letterSpacing: '0.05em',
-                      display: 'block',
-                      marginBottom: 4,
-                    }}
-                  >
-                    {tmpl.category}
-                  </span>
-                  <h3
-                    style={{
-                      fontFamily: 'var(--font-heading)',
-                      fontSize: '1.25rem',
-                      color: '#0f172a',
-                      marginBottom: 6,
-                    }}
-                  >
-                    {tmpl.name}
-                  </h3>
-                  <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 18 }}>
-                    {tmpl.description}
-                  </p>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5 }}>
+                    <span style={{ fontSize: 11, textTransform: 'uppercase', color: 'var(--ink-3)', fontWeight: 600, letterSpacing: '0.05em' }}>
+                      {tmpl.category}
+                    </span>
+                    <span style={{ fontSize: 11.5, color: 'var(--ink-3)' }}>{tmpl.styleTag}</span>
+                  </div>
+
+                  <h3 style={{ fontSize: 16.5, fontWeight: 600, lineHeight: 1.3 }}>{tmpl.name}</h3>
+                  <p style={{ fontSize: 13, color: 'var(--ink-2)', lineHeight: 1.55, marginTop: 5 }}>{tmpl.description}</p>
                 </div>
 
-                {/* Actions */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: 8 }}>
-                  <button
-                    type="button"
-                    onClick={() => setPreviewTemplate(tmpl)}
-                    className="btn btn-sm btn-glass"
-                    style={{ fontSize: '0.8rem', borderRadius: 8 }}
-                  >
+                <div
+                  style={{
+                    background: 'var(--surface-hover)',
+                    padding: '8px 11px',
+                    borderRadius: 'var(--radius-sm)',
+                    border: '1px solid var(--border)',
+                    fontSize: 12,
+                    color: 'var(--ink-2)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 3,
+                  }}
+                >
+                  <div>
+                    <strong style={{ color: 'var(--ink)' }}>Ornamen:</strong> {tmpl.ornament}
+                  </div>
+                  <div>
+                    <strong style={{ color: 'var(--ink)' }}>Tipografi:</strong> {tmpl.fontHeading}
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: 8, marginTop: 'auto' }}>
+                  <button type="button" onClick={() => setPreviewTemplate(tmpl)} className="btn btn-sm btn-secondary">
                     <Eye size={14} />
                     Pratinjau
                   </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleUseTemplate(tmpl.id)}
-                    className="btn btn-sm btn-gold"
-                    style={{ fontSize: '0.8rem', borderRadius: 8 }}
-                  >
+                  <button type="button" onClick={() => handleUseTemplate(tmpl.id)} className="btn btn-sm btn-primary">
                     <span>Gunakan</span>
                     <ArrowRight size={14} />
                   </button>
@@ -227,55 +169,14 @@ export const TemplateShowcase: React.FC = () => {
           ))}
         </div>
 
-        {/* Live Preview Modal */}
+        {/* Live preview modal */}
         {previewTemplate && (
-          <div
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(15, 23, 42, 0.65)',
-              zIndex: 1000,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 16,
-            }}
-          >
+          <div className="modal-backdrop" onClick={() => setPreviewTemplate(null)}>
             <div
-              style={{
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                maxHeight: '94vh',
-              }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, maxHeight: '100%' }}
+              onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button */}
-              <button
-                type="button"
-                onClick={() => setPreviewTemplate(null)}
-                style={{
-                  position: 'absolute',
-                  top: -42,
-                  right: 0,
-                  background: '#ffffff',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '50%',
-                  width: 36,
-                  height: 36,
-                  color: '#0f172a',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  boxShadow: 'var(--shadow-sm)',
-                }}
-              >
-                <X size={18} />
-              </button>
-
-              {/* Smartphone Preview Frame */}
-              <div className="phone-mockup" style={{ height: 680 }}>
+              <div className="phone-mockup" style={{ height: 660, maxWidth: '92vw' }}>
                 <div className="phone-notch" />
                 <div className="phone-screen">
                   <InvitationRenderer
@@ -286,16 +187,13 @@ export const TemplateShowcase: React.FC = () => {
                 </div>
               </div>
 
-              {/* Bottom Action inside Modal */}
-              <div style={{ marginTop: 14 }}>
-                <button
-                  type="button"
-                  onClick={() => handleUseTemplate(previewTemplate.id)}
-                  className="btn btn-gold"
-                  style={{ padding: '9px 22px', fontSize: '0.88rem', borderRadius: 8 }}
-                >
-                  <Check size={16} />
-                  Gunakan Template {previewTemplate.name}
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
+                <button type="button" onClick={() => setPreviewTemplate(null)} className="btn btn-secondary">
+                  Tutup
+                </button>
+                <button type="button" onClick={() => handleUseTemplate(previewTemplate.id)} className="btn btn-primary">
+                  <Check size={15} />
+                  Gunakan Template Ini
                 </button>
               </div>
             </div>

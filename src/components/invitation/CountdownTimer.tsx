@@ -61,14 +61,14 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) =>
                 display: 'block',
                 fontFamily: 'var(--font-heading)',
                 fontSize: '1.45rem',
-                fontWeight: 700,
+                fontWeight: 500,
                 color: 'var(--inv-primary)',
                 lineHeight: 1.1,
               }}
             >
               {String(unit.value).padStart(2, '0')}
             </span>
-            <span style={{ fontSize: '0.68rem', textTransform: 'uppercase', color: 'var(--inv-text-muted)', fontWeight: 600 }}>
+            <span style={{ fontSize: '0.68rem', textTransform: 'uppercase', color: 'var(--inv-text-muted)', fontWeight: 500 }}>
               {unit.label}
             </span>
           </div>

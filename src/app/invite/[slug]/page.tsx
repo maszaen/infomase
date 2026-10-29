@@ -1,12 +1,13 @@
 'use client';
 
 import React, { Suspense, useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useSearchParams, useParams } from 'next/navigation';
 import { useInvitationStore } from '@/lib/invitationStore';
 import { publicApi } from '@/lib/api';
 import { InvitationData, RSVPItem } from '@/types/invitation';
 import { InvitationRenderer } from '@/components/invitation/InvitationRenderer';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Lock } from 'lucide-react';
 
 function InvitationContent() {
   const params = useParams();
@@ -14,7 +15,7 @@ function InvitationContent() {
   const slug = (params?.slug as string) || '';
   const guestName = searchParams.get('to') || undefined;
 
-  const { data: localData, isLoaded: localLoaded, addRSVP: addLocalRSVP } = useInvitationStore();
+  const { getInvitationBySlug, data: fallbackData, isLoaded: localLoaded, addRSVP: addLocalRSVP } = useInvitationStore();
   const [invitationData, setInvitationData] = useState<InvitationData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -31,7 +32,7 @@ function InvitationContent() {
           }
         })
         .catch(() => {
-          // If backend offline or slug not found on server, fallback to local store
+          // Fallback to local store
           if (isMounted) {
             setInvitationData(null);
           }
@@ -48,7 +49,8 @@ function InvitationContent() {
     };
   }, [slug, guestName]);
 
-  const activeData = invitationData || localData;
+  const matchedLocal = slug ? getInvitationBySlug(slug) : undefined;
+  const activeData = invitationData || matchedLocal || fallbackData;
 
   const handleAddRSVP = async (item: Omit<RSVPItem, 'id' | 'createdAt'>) => {
     // 1. Submit to backend API if slug exists
@@ -85,25 +87,77 @@ function InvitationContent() {
     );
   }
 
+  if (activeData && activeData.isPublished === false) {
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: '#f8fafc',
+          padding: '24px 16px',
+        }}
+      >
+        <div
+          className="glass-card"
+          style={{
+            maxWidth: 440,
+            width: '100%',
+            padding: '36px 28px',
+            borderRadius: 16,
+            textAlign: 'center',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+          }}
+        >
+          <div
+            style={{
+              width: 54,
+              height: 54,
+              borderRadius: '50%',
+              background: '#fef3c7',
+              border: '1px solid #fde68a',
+              color: '#d97706',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 16px',
+            }}
+          >
+            <Lock size={26} />
+          </div>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 500, color: '#0f172a', marginBottom: 8 }}>
+            Undangan Belum Dipublikasikan
+          </h2>
+          <p style={{ fontSize: '0.86rem', color: '#64748b', lineHeight: 1.6, marginBottom: 24 }}>
+            Undangan digital ini saat ini sedang dalam mode <strong>Draft</strong> atau masa aktif publikasinya belum dibuka oleh pemilik acara.
+          </p>
+          <Link
+            href="/"
+            className="btn btn-gold"
+            style={{ width: '100%', padding: '11px', textDecoration: 'none', display: 'inline-block', borderRadius: 8, fontWeight: 500 }}
+          >
+            Kembali ke Beranda
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
         minHeight: '100vh',
-        background: '#f1f5f9',
+        backgroundColor: '#E6DDD1',
         display: 'flex',
         justifyContent: 'center',
       }}
     >
-      {/* Mobile centered container */}
       <div
         style={{
           width: '100%',
-          maxWidth: 480,
+          maxWidth: 430,
           minHeight: '100vh',
-          background: '#ffffff',
-          boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
-          borderLeft: '1px solid #e2e8f0',
-          borderRight: '1px solid #e2e8f0',
           position: 'relative',
         }}
       >

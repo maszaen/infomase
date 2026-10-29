@@ -177,7 +177,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
     { id: 'galeri', label: 'Galeri Foto', icon: ImageIcon },
     { id: 'kado', label: 'Amplop Digital', icon: Gift },
     { id: 'musik', label: 'Musik Latar', icon: Music },
-  ];
+  ] as const;
 
   const handleAddGalleryPhoto = () => {
     if (!newPhotoUrl.trim()) return;
@@ -196,18 +196,9 @@ export const EditorForm: React.FC<EditorFormProps> = ({
   };
 
   return (
-    <div className="glass-card" style={{ padding: '24px', borderRadius: 14 }}>
+    <div className="studio-content-editor">
       {/* Sub Tabs Bar */}
-      <div
-        style={{
-          display: 'flex',
-          gap: 8,
-          overflowX: 'auto',
-          paddingBottom: 12,
-          marginBottom: 24,
-          borderBottom: '1px solid #e2e8f0',
-        }}
-      >
+      <div className="editor-tabs" aria-label="Bagian konten">
         {subTabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeSubTab === tab.id;
@@ -215,14 +206,9 @@ export const EditorForm: React.FC<EditorFormProps> = ({
             <button
               key={tab.id}
               type="button"
-              onClick={() => setActiveSubTab(tab.id as any)}
-              className={`btn btn-sm ${isActive ? 'btn-gold' : 'btn-glass'}`}
-              style={{
-                borderRadius: 999,
-                fontSize: '0.8rem',
-                padding: '8px 16px',
-                flexShrink: 0,
-              }}
+              onClick={() => setActiveSubTab(tab.id)}
+              className={`tab${isActive ? ' active' : ''}`}
+              aria-pressed={isActive}
             >
               <Icon size={14} />
               {tab.label}
@@ -231,17 +217,24 @@ export const EditorForm: React.FC<EditorFormProps> = ({
         })}
       </div>
 
+      <div className="editor-section-select">
+        <label htmlFor="editor-section" className="form-label">Bagian konten</label>
+        <select id="editor-section" className="form-select" value={activeSubTab} onChange={(e) => setActiveSubTab(e.target.value as typeof activeSubTab)}>
+          {subTabs.map((tab) => <option key={tab.id} value={tab.id}>{tab.label}</option>)}
+        </select>
+      </div>
+
       {/* Upload Toast Notification */}
       {toastMessage && (
         <div
           style={{
             padding: '10px 14px',
-            borderRadius: 8,
-            background: '#ecfdf5',
-            border: '1px solid #a7f3d0',
-            color: '#065f46',
+            borderRadius: 'var(--radius-sm)',
+            background: 'var(--success-bg)',
+            border: '1px solid var(--success-border)',
+            color: 'var(--success)',
             fontSize: '0.82rem',
-            fontWeight: 600,
+            fontWeight: 500,
             marginBottom: 16,
             display: 'flex',
             alignItems: 'center',
@@ -255,39 +248,42 @@ export const EditorForm: React.FC<EditorFormProps> = ({
 
       {/* 1. MEMPELAI TAB */}
       {activeSubTab === 'mempelai' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+        <div className="studio-stack">
           {/* General Title & Slug */}
-          <div style={{ background: '#f8fafc', padding: 18, borderRadius: 12, border: '1px solid #e2e8f0' }}>
-            <h4 style={{ fontSize: '1rem', color: '#0f172a', fontWeight: 600, marginBottom: 12 }}>
-              Judul Undangan &amp; Tautan Slug
+          <div className="editor-section">
+            <h4>
+              Identitas Undangan
             </h4>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
+            <div className="editor-fields">
               <div className="form-group">
-                <label className="form-label">Judul Undangan</label>
+                <label className="form-label" htmlFor="invitation-title">Judul Undangan</label>
                 <input
                   type="text"
                   className="form-input"
+                  id="invitation-title"
                   value={data.title}
                   onChange={(e) => onUpdateGeneral(e.target.value, data.slug)}
                 />
               </div>
               <div className="form-group">
-                <label className="form-label">Slug URL (infomase.id/invite/{data.slug})</label>
+                <label className="form-label" htmlFor="invitation-slug">Tautan Undangan</label>
                 <input
                   type="text"
                   className="form-input"
+                  id="invitation-slug"
                   value={data.slug}
                   onChange={(e) => onUpdateGeneral(data.title, e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))}
                 />
+                <span className="form-hint">/invite/{data.slug}</span>
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
+          <div className="editor-couple-grid">
             {/* Mempelai Pria */}
-            <div style={{ background: '#ffffff', padding: 18, borderRadius: 12, border: '1px solid #e2e8f0' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-                <h4 style={{ fontSize: '1.05rem', color: '#0f172a', fontWeight: 600 }}>Mempelai Pria</h4>
+            <div className="editor-section">
+              <div className="editor-section-heading">
+                <h4>Mempelai Pria</h4>
                 <span className="badge badge-gold">Groom</span>
               </div>
 
@@ -332,10 +328,10 @@ export const EditorForm: React.FC<EditorFormProps> = ({
               </div>
 
               <div className="form-group">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                <div className="editor-field-heading">
                   <label className="form-label" style={{ margin: 0 }}>Foto Pria</label>
                   <label
-                    className="btn btn-sm btn-glass"
+                    className="btn btn-sm btn-secondary"
                     style={{
                       padding: '4px 10px',
                       fontSize: '0.74rem',
@@ -365,8 +361,8 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                 />
                 {/* Preset Picker */}
                 <div style={{ marginTop: 8 }}>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Pilih Foto Siap Pakai:</span>
-                  <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--ink-3)' }}>Pilih Foto Siap Pakai:</span>
+                  <div className="editor-presets">
                     {PRESET_PHOTOS.grooms.map((p, idx) => (
                       <button
                         key={idx}
@@ -377,7 +373,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                           height: 38,
                           borderRadius: 8,
                           overflow: 'hidden',
-                          border: data.groom.photo === p.url ? '2px solid #0f172a' : '1px solid #e2e8f0',
+                          border: data.groom.photo === p.url ? '2px solid var(--ink)' : '1px solid var(--border)',
                           padding: 0,
                           cursor: 'pointer',
                         }}
@@ -402,10 +398,10 @@ export const EditorForm: React.FC<EditorFormProps> = ({
             </div>
 
             {/* Mempelai Wanita */}
-            <div style={{ background: '#ffffff', padding: 18, borderRadius: 12, border: '1px solid #e2e8f0' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-                <h4 style={{ fontSize: '1.05rem', color: '#0f172a', fontWeight: 600 }}>Mempelai Wanita</h4>
-                <span className="badge badge-rose">Bride</span>
+            <div className="editor-section">
+              <div className="editor-section-heading">
+                <h4>Mempelai Wanita</h4>
+                <span className="badge badge-gold">Bride</span>
               </div>
 
               <div className="form-group">
@@ -449,10 +445,10 @@ export const EditorForm: React.FC<EditorFormProps> = ({
               </div>
 
               <div className="form-group">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                <div className="editor-field-heading">
                   <label className="form-label" style={{ margin: 0 }}>Foto Wanita</label>
                   <label
-                    className="btn btn-sm btn-glass"
+                    className="btn btn-sm btn-secondary"
                     style={{
                       padding: '4px 10px',
                       fontSize: '0.74rem',
@@ -482,8 +478,8 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                 />
                 {/* Preset Picker */}
                 <div style={{ marginTop: 8 }}>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Pilih Foto Siap Pakai:</span>
-                  <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--ink-3)' }}>Pilih Foto Siap Pakai:</span>
+                  <div className="editor-presets">
                     {PRESET_PHOTOS.brides.map((p, idx) => (
                       <button
                         key={idx}
@@ -494,7 +490,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                           height: 38,
                           borderRadius: 8,
                           overflow: 'hidden',
-                          border: data.bride.photo === p.url ? '2px solid #0f172a' : '1px solid #e2e8f0',
+                          border: data.bride.photo === p.url ? '2px solid var(--ink)' : '1px solid var(--border)',
                           padding: 0,
                           cursor: 'pointer',
                         }}
@@ -523,9 +519,9 @@ export const EditorForm: React.FC<EditorFormProps> = ({
 
       {/* 2. ACARA TAB */}
       {activeSubTab === 'acara' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          <div style={{ background: '#f8fafc', padding: 16, borderRadius: 12, border: '1px solid #e2e8f0' }}>
-            <label className="form-label" style={{ color: '#0f172a', fontWeight: 600 }}>
+        <div className="studio-stack">
+          <div className="editor-section">
+            <label className="form-label" style={{ color: 'var(--ink)', fontWeight: 500 }}>
               Target Tanggal Countdown (Hari H)
             </label>
             <input
@@ -539,21 +535,16 @@ export const EditorForm: React.FC<EditorFormProps> = ({
           {data.events.map((event, idx) => (
             <div
               key={event.id || idx}
-              style={{
-                background: '#ffffff',
-                border: '1px solid #e2e8f0',
-                borderRadius: 12,
-                padding: 18,
-              }}
+              className="editor-section"
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                <h4 style={{ fontSize: '1rem', color: '#0f172a', fontWeight: 600 }}>Acara #{idx + 1}: {event.title}</h4>
+              <div className="editor-section-heading">
+                <h4>Acara #{idx + 1}: {event.title}</h4>
                 {data.events.length > 1 && (
                   <button
                     type="button"
                     onClick={() => onDeleteEvent(event.id)}
-                    className="btn btn-sm btn-subtle"
-                    style={{ color: '#ef4444' }}
+                    className="btn btn-sm btn-ghost"
+                    style={{ color: 'var(--danger)' }}
                   >
                     <Trash2 size={15} />
                     Hapus
@@ -561,7 +552,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                 )}
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
+              <div className="editor-fields">
                 <div className="form-group">
                   <label className="form-label">Nama Rangkaian Acara</label>
                   <input
@@ -650,7 +641,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                 mapsUrl: 'https://maps.google.com',
               })
             }
-            className="btn btn-glass"
+            className="btn btn-secondary"
             style={{ alignSelf: 'flex-start' }}
           >
             <Plus size={16} />
@@ -661,7 +652,8 @@ export const EditorForm: React.FC<EditorFormProps> = ({
 
       {/* 3. QUOTE TAB */}
       {activeSubTab === 'quote' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div className="editor-section">
+          <h3>Kutipan &amp; Doa</h3>
           <div className="form-group">
             <label className="form-label">Kutipan / Ayat Suci</label>
             <textarea
@@ -696,30 +688,26 @@ export const EditorForm: React.FC<EditorFormProps> = ({
 
       {/* 4. KISAH CINTA TAB */}
       {activeSubTab === 'kisah' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+        <div className="studio-stack">
           {data.stories.map((story, idx) => (
             <div
               key={story.id}
-              style={{
-                background: '#ffffff',
-                border: '1px solid #e2e8f0',
-                borderRadius: 12,
-                padding: 16,
-              }}
+              className="editor-section"
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+              <div className="editor-section-heading">
                 <span className="badge badge-gold">Milestone #{idx + 1}</span>
                 <button
                   type="button"
                   onClick={() => onUpdateStories(data.stories.filter((s) => s.id !== story.id))}
-                  className="btn btn-sm btn-subtle"
-                  style={{ color: '#ef4444' }}
+                  className="btn btn-sm btn-ghost"
+                  style={{ color: 'var(--danger)' }}
+                  aria-label={`Hapus cerita ${idx + 1}`}
                 >
                   <Trash2 size={14} />
                 </button>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 12 }}>
+              <div className="editor-fields editor-fields-story">
                 <div className="form-group">
                   <label className="form-label">Tahun</label>
                   <input
@@ -787,7 +775,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                 },
               ]);
             }}
-            className="btn btn-glass"
+            className="btn btn-secondary"
             style={{ alignSelf: 'flex-start' }}
           >
             <Plus size={16} />
@@ -798,13 +786,13 @@ export const EditorForm: React.FC<EditorFormProps> = ({
 
       {/* 5. GALERI FOTO TAB */}
       {activeSubTab === 'galeri' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div className="studio-stack">
           {/* Add photo card */}
-          <div style={{ background: '#f8fafc', padding: 18, borderRadius: 12, border: '1px solid #e2e8f0' }}>
-            <h4 style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: 600, marginBottom: 12 }}>
+          <div className="editor-section">
+            <h4>
               Tambah Foto ke Galeri
             </h4>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12, marginBottom: 12 }}>
+            <div className="editor-fields" style={{ marginBottom: 14 }}>
               <input
                 type="text"
                 placeholder="URL Gambar (misal dari Unsplash / Cloudinary)"
@@ -821,13 +809,13 @@ export const EditorForm: React.FC<EditorFormProps> = ({
               />
             </div>
             <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-              <button type="button" onClick={handleAddGalleryPhoto} className="btn btn-sm btn-gold">
+              <button type="button" onClick={handleAddGalleryPhoto} className="btn btn-sm btn-primary">
                 <Plus size={15} />
                 Tambahkan via URL
               </button>
 
               <label
-                className="btn btn-sm btn-glass"
+                className="btn btn-sm btn-secondary"
                 style={{
                   cursor: uploadingGallery ? 'not-allowed' : 'pointer',
                   display: 'inline-flex',
@@ -836,7 +824,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                 }}
               >
                 {uploadingGallery ? <Loader2 size={14} className="music-spinning" /> : <UploadCloud size={14} />}
-                {uploadingGallery ? 'Mengunggah ke Server...' : 'Upload Foto Galeri (Bisa Banyak)'}
+                {uploadingGallery ? 'Mengunggah...' : 'Upload Foto'}
                 <input
                   type="file"
                   multiple
@@ -849,9 +837,9 @@ export const EditorForm: React.FC<EditorFormProps> = ({
             </div>
 
             {/* Presets Quick Pick */}
-            <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid #e2e8f0' }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginBottom: 8 }}>
-                Atau pilih langsung foto profesional siap pakai:
+            <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid var(--border)' }}>
+              <span style={{ fontSize: '0.75rem', color: 'var(--ink-3)', display: 'block', marginBottom: 8 }}>
+                Pilih foto siap pakai:
               </span>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 {PRESET_PHOTOS.couples.map((p, idx) => (
@@ -869,7 +857,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                       overflow: 'hidden',
                       width: 50,
                       height: 50,
-                      border: '1px solid #e2e8f0',
+                      border: '1px solid var(--border)',
                       cursor: 'pointer',
                       padding: 0,
                     }}
@@ -883,7 +871,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
           </div>
 
           {/* Current Gallery List */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: 12 }}>
+          <div className="editor-gallery">
             {data.gallery.map((photo) => (
               <div
                 key={photo.id}
@@ -892,7 +880,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                   height: 120,
                   borderRadius: 12,
                   overflow: 'hidden',
-                  border: '1px solid #e2e8f0',
+                  border: '1px solid var(--border)',
                 }}
               >
                 <img src={photo.url} alt="Galeri" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -943,33 +931,28 @@ export const EditorForm: React.FC<EditorFormProps> = ({
 
       {/* 6. KADO & AMPLOP TAB */}
       {activeSubTab === 'kado' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          <h4 style={{ fontSize: '1rem', color: '#0f172a', fontWeight: 600 }}>Akun Rekening Transfer</h4>
-          {data.bankAccounts.map((account, idx) => (
+        <div className="studio-stack">
+                    {data.bankAccounts.map((account, idx) => (
             <div
               key={account.id}
-              style={{
-                background: '#ffffff',
-                border: '1px solid #e2e8f0',
-                borderRadius: 12,
-                padding: 16,
-              }}
+              className="editor-section"
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
+              <div className="editor-section-heading">
                 <span className="badge badge-gold">Rekening #{idx + 1}</span>
                 {data.bankAccounts.length > 1 && (
                   <button
                     type="button"
                     onClick={() => onUpdateBankAccounts(data.bankAccounts.filter((a) => a.id !== account.id))}
-                    className="btn btn-sm btn-subtle"
-                    style={{ color: '#ef4444' }}
+                    className="btn btn-sm btn-ghost"
+                    style={{ color: 'var(--danger)' }}
+                    aria-label={`Hapus rekening ${idx + 1}`}
                   >
                     <Trash2 size={14} />
                   </button>
                 )}
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
+              <div className="editor-fields">
                 <div className="form-group">
                   <label className="form-label">Nama Bank / e-Wallet</label>
                   <input
@@ -1025,7 +1008,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
                 },
               ])
             }
-            className="btn btn-glass"
+            className="btn btn-secondary"
             style={{ alignSelf: 'flex-start' }}
           >
             <Plus size={16} />
@@ -1033,11 +1016,11 @@ export const EditorForm: React.FC<EditorFormProps> = ({
           </button>
 
           {/* Physical Address */}
-          <div style={{ marginTop: 12, paddingTop: 18, borderTop: '1px solid #e2e8f0' }}>
-            <h4 style={{ fontSize: '1rem', color: '#0f172a', fontWeight: 600, marginBottom: 12 }}>
+          <div className="editor-section">
+            <h4>
               Alamat Pengiriman Kado Fisik
             </h4>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
+            <div className="editor-fields">
               <div className="form-group">
                 <label className="form-label">Nama Penerima</label>
                 <input
@@ -1072,7 +1055,8 @@ export const EditorForm: React.FC<EditorFormProps> = ({
 
       {/* 7. MUSIK TAB */}
       {activeSubTab === 'musik' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div className="editor-section">
+          <h3>Musik Latar</h3>
           <div className="form-group">
             <label className="form-label">Judul Lagu</label>
             <input
@@ -1094,10 +1078,10 @@ export const EditorForm: React.FC<EditorFormProps> = ({
           </div>
 
           <div className="form-group">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+            <div className="editor-field-heading">
               <label className="form-label" style={{ margin: 0 }}>URL Audio MP3 (Direct link)</label>
               <label
-                className="btn btn-sm btn-glass"
+                className="btn btn-sm btn-secondary"
                 style={{
                   padding: '4px 10px',
                   fontSize: '0.74rem',
@@ -1124,7 +1108,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({
               value={data.music.url}
               onChange={(e) => onUpdateMusic({ ...data.music, url: e.target.value })}
             />
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>
+            <span style={{ fontSize: '0.72rem', color: 'var(--ink-3)', marginTop: 4 }}>
               Gunakan link audio berformat .mp3 atau upload langsung file lagu romantis pilihan Anda.
             </span>
           </div>

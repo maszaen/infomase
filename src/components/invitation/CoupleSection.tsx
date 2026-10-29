@@ -1,240 +1,107 @@
-import React from 'react';
-import { Heart } from 'lucide-react';
-import { InvitationData } from '@/types/invitation';
+'use client';
 
-const InstagramIcon = ({ size = 14 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-  </svg>
-);
+import React from 'react';
+import { InvitationData } from '@/types/invitation';
 
 interface CoupleSectionProps {
   data: InvitationData;
 }
 
 export const CoupleSection: React.FC<CoupleSectionProps> = ({ data }) => {
-  return (
-    <section id="mempelai" style={{ padding: '36px 16px', textAlign: 'center' }}>
-      {/* Quote Header */}
-      {data.quote && (
-        <div
-          style={{
-            background: 'var(--inv-card)',
-            border: '1px solid var(--inv-border)',
-            borderRadius: 16,
-            padding: '20px 18px',
-            marginBottom: 36,
-            boxShadow: '0 6px 18px rgba(0,0,0,0.04)',
-          }}
-        >
-          <p
-            style={{
-              fontStyle: 'italic',
-              fontSize: '0.85rem',
-              lineHeight: 1.6,
-              color: 'var(--inv-text)',
-              marginBottom: 10,
-            }}
-          >
-            "{data.quote.text}"
-          </p>
-          <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--inv-accent)' }}>
-            {data.quote.source}
-          </span>
-        </div>
-      )}
+  const groomPhoto =
+    data.groom.photo ||
+    '/asset/img/foto_mempelai_dummy.jpg';
 
-      <div style={{ marginBottom: 28 }}>
-        <span
-          style={{
-            fontSize: '0.75rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.2em',
-            color: 'var(--inv-accent)',
-            fontWeight: 700,
-          }}
-        >
-          Pasangan Mempelai
+  const bridePhoto =
+    data.bride.photo ||
+    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80';
+
+  return (
+    <section id="mempelai" className="py-12 px-6 text-center relative overflow-hidden">
+      {/* Section Title */}
+      <div className="mb-8 reveal">
+        <span className="text-[10px] uppercase tracking-[0.3em] text-[#8C735B] font-semibold block mb-1">
+          THE HAPPY COUPLE
         </span>
-        <h2
-          style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '1.9rem',
-            color: 'var(--inv-primary)',
-            marginTop: 4,
-          }}
-        >
-          Maha Suci Allah
+        <h2 className="font-serif text-3xl text-[#382E25] font-semibold">
+          Mempelai Bahagia
         </h2>
-        <p style={{ fontSize: '0.82rem', color: 'var(--inv-text-muted)', marginTop: 4, maxWidth: 300, marginInline: 'auto' }}>
-          Yang telah mempertemukan dan menyatukan kami dalam ikatan pernikahan yang suci.
+        <p className="text-xs text-[#786755] mt-1.5 max-w-xs mx-auto leading-relaxed">
+          Dengan memohon rahmat Allah SWT, kami mengundang Bapak/Ibu/Saudara/i pada pernikahan putra-putri kami:
         </p>
       </div>
 
-      {/* Groom Profile */}
-      <div
-        style={{
-          background: 'var(--inv-card)',
-          border: '1px solid var(--inv-border)',
-          borderRadius: 24,
-          padding: '24px 20px',
-          marginBottom: 24,
-          boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
-        }}
-      >
-        <div
-          style={{
-            width: 140,
-            height: 140,
-            borderRadius: '50%',
-            overflow: 'hidden',
-            margin: '0 auto 16px',
-            border: '4px solid var(--inv-accent)',
-            boxShadow: '0 8px 20px rgba(0,0,0,0.12)',
-          }}
-        >
-          <img
-            src={data.groom.photo}
-            alt={data.groom.fullName}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
+      {/* Groom Profile (Raka) */}
+      <div className="flex flex-col items-center mb-8 reveal-scale delay-100">
+        <div className="relative w-36 h-36 rounded-full p-1 bg-gradient-to-b from-[#E7DAC7] to-[#8C735B] shadow-md mb-3">
+          <div className="w-full h-full rounded-full overflow-hidden bg-white">
+            <img
+              src={groomPhoto}
+              alt={data.groom.fullName || data.groom.name}
+              className="w-full h-full object-cover object-top sepia-[.10]"
+            />
+          </div>
         </div>
-
-        <h3
-          style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '1.45rem',
-            color: 'var(--inv-primary)',
-            marginBottom: 4,
-          }}
-        >
-          {data.groom.fullName}
+        <h3 className="font-serif text-2xl font-bold text-[#382E25]">
+          {data.groom.fullName || `${data.groom.name} Pratama, S.T.`}
         </h3>
-        <p style={{ fontSize: '0.82rem', color: 'var(--inv-text-muted)', marginBottom: 12 }}>
-          Putra dari {data.groom.fatherName} &amp; {data.groom.motherName}
+        <p className="text-xs text-[#786755] mt-1">
+          {data.groom.fatherName && data.groom.motherName
+            ? `Putra dari ${data.groom.fatherName} & ${data.groom.motherName}`
+            : data.groom.bio || 'Putra pertama dari Bapak Surya & Ibu Dewi'}
         </p>
-
-        {data.groom.bio && (
-          <p style={{ fontSize: '0.8rem', color: 'var(--inv-text)', fontStyle: 'italic', marginBottom: 14 }}>
-            "{data.groom.bio}"
-          </p>
-        )}
-
         {data.groom.instagram && (
           <a
             href={`https://instagram.com/${data.groom.instagram.replace('@', '')}`}
             target="_blank"
-            rel="noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              fontSize: '0.8rem',
-              color: 'var(--inv-accent)',
-              fontWeight: 600,
-              padding: '6px 14px',
-              borderRadius: 999,
-              border: '1px solid var(--inv-border)',
-              background: 'rgba(0,0,0,0.03)',
-            }}
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 mt-2 text-xs text-[#8C735B] hover:text-[#79624C] font-medium"
           >
-            <InstagramIcon size={14} />
-            {data.groom.instagram}
+            <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4z" />
+            </svg>
+            <span>{data.groom.instagram}</span>
           </a>
         )}
       </div>
 
-      {/* Heart Separator */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, margin: '20px 0' }}>
-        <div style={{ height: 1, width: 60, background: 'var(--inv-border)' }} />
-        <div
-          style={{
-            width: 38,
-            height: 38,
-            borderRadius: '50%',
-            background: 'var(--inv-accent)',
-            color: '#fff',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-          }}
-        >
-          <Heart size={18} fill="currentColor" />
-        </div>
-        <div style={{ height: 1, width: 60, background: 'var(--inv-border)' }} />
+      {/* Romantic Ampersand Divider */}
+      <div className="my-4 flex items-center justify-center gap-3 reveal delay-150">
+        <span className="w-12 h-[1px] bg-[#D5C6B1]"></span>
+        <span className="font-script text-3xl text-[#8C735B]">&amp;</span>
+        <span className="w-12 h-[1px] bg-[#D5C6B1]"></span>
       </div>
 
-      {/* Bride Profile */}
-      <div
-        style={{
-          background: 'var(--inv-card)',
-          border: '1px solid var(--inv-border)',
-          borderRadius: 24,
-          padding: '24px 20px',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
-        }}
-      >
-        <div
-          style={{
-            width: 140,
-            height: 140,
-            borderRadius: '50%',
-            overflow: 'hidden',
-            margin: '0 auto 16px',
-            border: '4px solid var(--inv-accent)',
-            boxShadow: '0 8px 20px rgba(0,0,0,0.12)',
-          }}
-        >
-          <img
-            src={data.bride.photo}
-            alt={data.bride.fullName}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
+      {/* Bride Profile (Sinta) */}
+      <div className="flex flex-col items-center mt-4 reveal-scale delay-200">
+        <div className="relative w-36 h-36 rounded-full p-1 bg-gradient-to-b from-[#E7DAC7] to-[#8C735B] shadow-md mb-3">
+          <div className="w-full h-full rounded-full overflow-hidden bg-white">
+            <img
+              src={bridePhoto}
+              alt={data.bride.fullName || data.bride.name}
+              className="w-full h-full object-cover object-top sepia-[.10]"
+            />
+          </div>
         </div>
-
-        <h3
-          style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '1.45rem',
-            color: 'var(--inv-primary)',
-            marginBottom: 4,
-          }}
-        >
-          {data.bride.fullName}
+        <h3 className="font-serif text-2xl font-bold text-[#382E25]">
+          {data.bride.fullName || `${data.bride.name} Maharani, S.Pd.`}
         </h3>
-        <p style={{ fontSize: '0.82rem', color: 'var(--inv-text-muted)', marginBottom: 12 }}>
-          Putri dari {data.bride.fatherName} &amp; {data.bride.motherName}
+        <p className="text-xs text-[#786755] mt-1">
+          {data.bride.fatherName && data.bride.motherName
+            ? `Putri dari ${data.bride.fatherName} & ${data.bride.motherName}`
+            : data.bride.bio || 'Putri kedua dari Bapak Budi & Ibu Rina'}
         </p>
-
-        {data.bride.bio && (
-          <p style={{ fontSize: '0.8rem', color: 'var(--inv-text)', fontStyle: 'italic', marginBottom: 14 }}>
-            "{data.bride.bio}"
-          </p>
-        )}
-
         {data.bride.instagram && (
           <a
             href={`https://instagram.com/${data.bride.instagram.replace('@', '')}`}
             target="_blank"
-            rel="noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              fontSize: '0.8rem',
-              color: 'var(--inv-accent)',
-              fontWeight: 600,
-              padding: '6px 14px',
-              borderRadius: 999,
-              border: '1px solid var(--inv-border)',
-              background: 'rgba(0,0,0,0.03)',
-            }}
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 mt-2 text-xs text-[#8C735B] hover:text-[#79624C] font-medium"
           >
-            <InstagramIcon size={14} />
-            {data.bride.instagram}
+            <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4z" />
+            </svg>
+            <span>{data.bride.instagram}</span>
           </a>
         )}
       </div>

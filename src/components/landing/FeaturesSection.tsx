@@ -3,147 +3,134 @@
 import React from 'react';
 import {
   Music,
-  CreditCard,
+  Wallet,
   MapPin,
   MessageSquareHeart,
   Share2,
   Image as ImageIcon,
-  Sparkles,
+  Zap,
 } from 'lucide-react';
 
 export const FeaturesSection: React.FC = () => {
   const features = [
     {
       icon: Music,
-      color: '#0f172a',
-      bgColor: '#f1f5f9',
-      title: 'Musik Latar Syahdu',
-      description: 'Buka undangan langsung disambut alunan lagu romantis pilihan, vibes hajatan mase langsung berasa banget.',
+      title: 'Musik latar syahdu',
+      description:
+        'Undangan terbuka langsung disambut alunan lagu romantis pilihan — vibes hajatan langsung terasa.',
+      tint: 'var(--info-bg)',
+      color: 'var(--info)',
     },
     {
-      icon: CreditCard,
-      color: '#059669',
-      bgColor: '#ecfdf5',
-      title: 'Amplop Digital & QRIS Sat-Set',
-      description: 'Tamu tinggal 1-klik salin rekening (BCA, Mandiri, BSI) atau scan QRIS, tanda kasih langsung meluncur tanpa potongan.',
+      icon: Wallet,
+      title: 'Amplop digital & QRIS',
+      description:
+        'Tamu satu klik salin rekening (BCA, Mandiri, BSI) atau scan QRIS. Tanda kasih langsung cair tanpa potongan.',
+      tint: 'var(--success-bg)',
+      color: 'var(--success)',
     },
     {
       icon: MapPin,
-      color: '#2563eb',
-      bgColor: '#eff6ff',
-      title: 'Google Maps Anti Nyasar',
-      description: 'Petunjuk arah presisi dan tombol simpan ke Google Calendar, gak ada lagi drama tamu nyasar atau lupa hari H.',
+      title: 'Google Maps anti nyasar',
+      description:
+        'Petunjuk arah presisi dan tombol simpan ke Google Calendar. Tidak ada lagi tamu salah lokasi atau lupa hari H.',
+      tint: 'var(--warning-bg)',
+      color: 'var(--warning)',
     },
     {
       icon: MessageSquareHeart,
-      color: '#e11d48',
-      bgColor: '#fff1f2',
-      title: 'RSVP & Tamu Auto Rekap',
-      description: 'Konfirmasi kehadiran otomatis, estimasi jumlah porsi katering, plus doa restu hangat dari tamu yang tampil live.',
+      title: 'RSVP & rekap otomatis',
+      description:
+        'Konfirmasi kehadiran real-time, estimasi porsi katering otomatis, plus doa restu tamu tampil langsung.',
+      tint: 'var(--danger-bg)',
+      color: 'var(--danger)',
     },
     {
       icon: Share2,
-      color: '#7c3aed',
-      bgColor: '#f5f3ff',
-      title: 'Broadcast WhatsApp Personal',
-      description: 'Ketik nama tamu, langsung dapet tautan khusus dan draft pesan WA sopan yang siap disebar sat-set.',
+      title: 'Broadcast WhatsApp personal',
+      description:
+        'Setiap tamu dapat tautan khusus berisi namanya sendiri di cover undangan, plus draft pesan WA sopan siap kirim.',
+      tint: 'var(--info-bg)',
+      color: 'var(--info)',
     },
     {
       icon: ImageIcon,
-      color: '#d97706',
-      bgColor: '#fffbeb',
-      title: 'Galeri Prewed HD & Love Story',
-      description: 'Pamerin foto prewedding resolusi tinggi dengan zoom lightbox dan linimasa momen manis perjalanan cinta kalian.',
+      title: 'Galeri HD & love story',
+      description:
+        'Pamerkan foto prewedding resolusi tinggi dengan lightbox dan linimasa momen perjalanan cinta kalian.',
+      tint: 'var(--success-bg)',
+      color: 'var(--success)',
     },
   ];
 
   return (
-    <section id="fitur" style={{ padding: '70px 0', background: '#f8fafc', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0' }}>
+    <section id="fitur" className="section">
       <div className="container">
-        {/* Header */}
-        <div style={{ textAlign: 'center', maxWidth: 740, margin: '0 auto 46px' }}>
-          <div style={{ display: 'inline-flex', marginBottom: 12 }}>
-            <span className="badge badge-gold">
-              <Sparkles size={14} color="#2563eb" />
-              Fitur Sat-Set Anti Mumet
-            </span>
+        <div style={{ textAlign: 'center', maxWidth: 700, margin: '0 auto 48px' }}>
+          <div className="section-eyebrow" style={{ justifyContent: 'center' }}>
+            <Zap size={13} />
+            Semua fitur dalam satu konsol
           </div>
-          <h2
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: 'clamp(1.9rem, 3.5vw, 2.7rem)',
-              color: '#0f172a',
-              marginBottom: 12,
-            }}
-          >
-            Semua Kebutuhan Hajatan Mase, Beres Sekali Klik!
-          </h2>
-          <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
-            Bikin tamu betah scroll dari atas sampai bawah, amplop cair sat-set, dan gak bakal ada yang salah lokasi acara.
+          <h2 className="section-title">Semua kebutuhan hajatan, beres sekali klik</h2>
+          <p className="section-subtitle" style={{ margin: '12px auto 0' }}>
+            Dibangun agar tamu betah scroll dari atas sampai bawah — dan mase tinggal duduk manis
+            memantau semuanya dari satu dashboard.
           </p>
         </div>
 
-        {/* Feature Cards Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: 20,
-          }}
-        >
-          {features.map((feat, idx) => {
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
+          {features.map((feat) => {
             const Icon = feat.icon;
             return (
-              <div
-                key={idx}
-                className="glass-card"
-                style={{
-                  padding: '28px 24px',
-                  borderRadius: 14,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 14,
-                  background: '#ffffff',
-                }}
-              >
+              <div key={feat.title} className="card card-hover" style={{ padding: 22 }}>
                 <div
                   style={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: 10,
-                    background: feat.bgColor,
-                    border: `1px solid ${feat.color}20`,
+                    width: 38,
+                    height: 38,
+                    borderRadius: 'var(--radius-md)',
+                    background: feat.tint,
                     color: feat.color,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    marginBottom: 14,
                   }}
                 >
-                  <Icon size={22} />
+                  <Icon size={19} />
                 </div>
 
-                <h3
-                  style={{
-                    fontSize: '1.15rem',
-                    color: '#0f172a',
-                    fontWeight: 700,
-                  }}
-                >
-                  {feat.title}
-                </h3>
-
-                <p
-                  style={{
-                    fontSize: '0.86rem',
-                    color: 'var(--text-secondary)',
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {feat.description}
-                </p>
+                <h3 style={{ fontSize: 15.5, fontWeight: 600, marginBottom: 6 }}>{feat.title}</h3>
+                <p style={{ fontSize: 13.5, color: 'var(--ink-2)', lineHeight: 1.6 }}>{feat.description}</p>
               </div>
             );
           })}
+        </div>
+
+        {/* Metrics strip */}
+        <div
+          className="card"
+          style={{
+            marginTop: 48,
+            padding: '28px 24px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+            gap: 24,
+            textAlign: 'center',
+            background: 'var(--ink)',
+            borderColor: 'var(--ink)',
+          }}
+        >
+          {[
+            { value: '150.000+', label: 'Pasangan bahagia' },
+            { value: '4.9/5', label: 'Rating pengguna' },
+            { value: '5 menit', label: 'Rata-rata bikin undangan' },
+            { value: '99,9%', label: 'Uptime tautan undangan' },
+          ].map((m) => (
+            <div key={m.label}>
+              <div style={{ fontSize: 26, fontWeight: 700, color: '#fff', letterSpacing: '-0.02em' }}>{m.value}</div>
+              <div style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.65)', marginTop: 3 }}>{m.label}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

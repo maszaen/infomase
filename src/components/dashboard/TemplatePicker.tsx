@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
-import { AVAILABLE_TEMPLATES } from '@/lib/defaultData';
+import React, { useState } from 'react';
+import { AVAILABLE_TEMPLATES, TemplateMeta } from '@/lib/defaultData';
 import { TemplateId } from '@/types/invitation';
-import { Check, Sparkles } from 'lucide-react';
+import { Check, Sparkles, Search, X } from 'lucide-react';
 
 interface TemplatePickerProps {
   selectedTemplateId: TemplateId;
@@ -15,168 +15,79 @@ export const TemplatePicker: React.FC<TemplatePickerProps> = ({
   selectedTemplateId,
   onSelect,
 }) => {
+  const templateList: TemplateMeta[] = AVAILABLE_TEMPLATES;
+  const [search, setSearch] = useState('');
+  const [activeCategory, setActiveCategory] = useState<string>('all');
+
+  // Categories list
+  const categories = [
+    { id: 'all', label: 'Semua Desain' },
+    { id: 'Botanical & Rustic', label: 'Botanical & Rustic' },
+  ];
+
+  const filteredTemplates = templateList.filter((tmpl) => {
+    const matchesCategory = activeCategory === 'all' || tmpl.category === activeCategory;
+    const matchesSearch =
+      !search.trim() ||
+      tmpl.name.toLowerCase().includes(search.toLowerCase()) ||
+      tmpl.description.toLowerCase().includes(search.toLowerCase()) ||
+      (tmpl.styleTag && tmpl.styleTag.toLowerCase().includes(search.toLowerCase())) ||
+      (tmpl.ornament && tmpl.ornament.toLowerCase().includes(search.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <div>
-        <h3 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-heading)', color: '#0f172a', marginBottom: 4, fontWeight: 700 }}>
-          Pilih Template Undangan
-        </h3>
-        <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)' }}>
-          Pilih tema desain yang paling pas sama konsep acara mase. Klik template untuk langsung menerapkan ke preview.
-        </p>
+    <div className="studio-stack">
+      <div className="studio-section-toolbar">
+        <span className="studio-result-count">{filteredTemplates.length} desain tersedia</span>
+        <div className="search-box">
+          <Search size={14} className="search-icon" />
+          <input type="search" aria-label="Cari template" placeholder="Cari desain template..." value={search} onChange={(e) => setSearch(e.target.value)} className="form-input" />
+          {search && <button type="button" className="search-clear" onClick={() => setSearch('')} aria-label="Hapus pencarian"><X size={13} /></button>}
+        </div>
       </div>
-
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: 16,
-        }}
-      >
-        {AVAILABLE_TEMPLATES.map((tmpl) => {
-          const isSelected = selectedTemplateId === tmpl.id;
-
-          return (
-            <div
-              key={tmpl.id}
-              onClick={() => onSelect(tmpl.id)}
-              className="glass-card"
-              style={{
-                borderRadius: 12,
-                overflow: 'hidden',
-                cursor: 'pointer',
-                border: isSelected ? '2px solid #0f172a' : '1px solid #e2e8f0',
-                background: '#ffffff',
-                boxShadow: isSelected ? 'var(--shadow-sm)' : 'var(--shadow-xs)',
-                transition: 'all 0.15s ease',
-              }}
-            >
-              {/* Image banner */}
-              <div style={{ position: 'relative', height: 160, overflow: 'hidden', background: '#f8fafc' }}>
-                <img
-                  src={tmpl.previewImage}
-                  alt={tmpl.name}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
-
-                {/* Badge if any */}
-                {tmpl.badge && (
-                  <span
-                    className="badge"
-                    style={{
-                      position: 'absolute',
-                      top: 10,
-                      right: 10,
-                      background: '#ffffff',
-                      color: '#0f172a',
-                      border: '1px solid #e2e8f0',
-                      boxShadow: 'var(--shadow-xs)',
-                    }}
-                  >
-                    <Sparkles size={11} color="#2563eb" />
-                    {tmpl.badge}
-                  </span>
-                )}
-
-                {/* Color swatches */}
-                <div style={{ position: 'absolute', bottom: 10, left: 12, display: 'flex', gap: 6 }}>
-                  <div
-                    style={{
-                      width: 18,
-                      height: 18,
-                      borderRadius: '50%',
-                      background: tmpl.themeColor,
-                      border: '2px solid #ffffff',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.15)',
-                    }}
-                    title="Warna Utama"
-                  />
-                  <div
-                    style={{
-                      width: 18,
-                      height: 18,
-                      borderRadius: '50%',
-                      background: tmpl.accentColor,
-                      border: '2px solid #ffffff',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.15)',
-                    }}
-                    title="Warna Aksen"
-                  />
-                </div>
-              </div>
-
-              {/* Template details */}
-              <div style={{ padding: '16px' }}>
-                <span
-                  style={{
-                    fontSize: '0.7rem',
-                    textTransform: 'uppercase',
-                    color: '#64748b',
-                    fontWeight: 700,
-                    letterSpacing: '0.05em',
-                  }}
-                >
-                  {tmpl.category}
-                </span>
-
-                <h4
-                  style={{
-                    fontFamily: 'var(--font-heading)',
-                    fontSize: '1.1rem',
-                    color: '#0f172a',
-                    margin: '4px 0 6px',
-                    fontWeight: 700,
-                  }}
-                >
-                  {tmpl.name}
-                </h4>
-
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 14 }}>
-                  {tmpl.description}
-                </p>
-
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 10, borderTop: '1px solid #f1f5f9' }}>
-                  <span
-                    style={{
-                      fontSize: '0.8rem',
-                      fontWeight: 600,
-                      color: isSelected ? '#0f172a' : '#94a3b8',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 4,
-                    }}
-                  >
-                    {isSelected ? (
-                      <>
-                        <Check size={14} color="#059669" />
-                        Aktif
-                      </>
-                    ) : (
-                      'Pilih Template'
-                    )}
-                  </span>
-
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onSelect(tmpl.id);
-                    }}
-                    className={`btn btn-sm ${isSelected ? 'btn-gold' : 'btn-outline-gold'}`}
-                    style={{ padding: '5px 12px', fontSize: '0.76rem', borderRadius: 6 }}
-                  >
-                    {isSelected ? 'Terpilih' : 'Pilih'}
-                  </button>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+      <div className="studio-filters" aria-label="Kategori template">
+        {categories.map((cat) => (
+          <button key={cat.id} type="button" onClick={() => setActiveCategory(cat.id)} aria-pressed={activeCategory === cat.id} className={`chip${activeCategory === cat.id ? ' active' : ''}`}>
+            {cat.label}
+          </button>
+        ))}
       </div>
+      {filteredTemplates.length === 0 ? (
+        <div className="empty-state studio-empty">
+          <Search size={24} />
+          <span>Tidak ada desain yang cocok dengan pencarian Anda.</span>
+          <button type="button" className="btn btn-sm btn-secondary" onClick={() => { setSearch(''); setActiveCategory('all'); }}>Reset Pencarian</button>
+        </div>
+      ) : (
+        <div className="template-catalog">
+          {filteredTemplates.map((tmpl) => {
+            const isSelected = selectedTemplateId === tmpl.id;
+            return (
+              <article key={tmpl.id} className={`template-design${isSelected ? ' is-selected' : ''}`}>
+                <div className="template-design-image">
+                  <img src={tmpl.previewImage} alt={tmpl.name} />
+                  {tmpl.badge && <span className="badge"><Sparkles size={11} color="var(--brand)" />{tmpl.badge}</span>}
+                </div>
+                <div className="template-design-body">
+                  <span className="template-design-meta">{tmpl.category}</span>
+                  <h3>{tmpl.name}</h3>
+                  <p>{tmpl.description}</p>
+                  <div className="template-design-footer">
+                    <div className="template-swatches" aria-label="Palet warna">
+                      <span style={{ background: tmpl.themeColor }} title="Warna utama" />
+                      <span style={{ background: tmpl.accentColor }} title="Warna aksen" />
+                    </div>
+                    <button type="button" onClick={() => onSelect(tmpl.id)} aria-pressed={isSelected} aria-label={`${isSelected ? 'Template aktif' : 'Pilih template'}: ${tmpl.name}`} className={`btn btn-sm ${isSelected ? 'btn-primary' : 'btn-secondary'}`}>
+                      {isSelected && <Check size={14} />}{isSelected ? 'Terpilih' : 'Pilih Template'}
+                    </button>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

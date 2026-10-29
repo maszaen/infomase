@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { InvitationData, RSVPItem } from '@/types/invitation';
 import { InvitationRenderer } from '../invitation/InvitationRenderer';
-import { ExternalLink, RefreshCw, Smartphone, Monitor, UserCheck } from 'lucide-react';
+import { ExternalLink, RefreshCw, Smartphone, UserCheck } from 'lucide-react';
 
 interface LivePreviewPanelProps {
   data: InvitationData;
@@ -13,107 +13,52 @@ interface LivePreviewPanelProps {
 export const LivePreviewPanel: React.FC<LivePreviewPanelProps> = ({ data, onAddRSVP }) => {
   const [previewGuest, setPreviewGuest] = useState('Budi Santoso & Keluarga');
   const [previewKey, setPreviewKey] = useState(0);
+  const [previewScale, setPreviewScale] = useState(1);
+  const deviceRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const device = deviceRef.current;
+    if (!device) return;
+    const observer = new ResizeObserver(([entry]) => {
+      setPreviewScale(Math.min(1, entry.contentRect.width / 350));
+    });
+    observer.observe(device);
+    return () => observer.disconnect();
+  }, []);
 
   const handleResetPreview = () => {
     setPreviewKey((prev) => prev + 1);
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', gap: 16 }}>
-      {/* Top Preview Controls */}
-      <div
-        className="glass-card"
-        style={{
-          width: '100%',
-          maxWidth: 380,
-          padding: '10px 14px',
-          borderRadius: 14,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 10,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-          <Smartphone size={16} color="#0f172a" />
-          <span style={{ fontWeight: 600, color: '#0f172a' }}>Live Preview</span>
+    <div className="live-preview">
+      <div className="preview-controls">
+        <div className="preview-controls-header">
+          <span className="preview-controls-title"><Smartphone size={15} />Live Preview</span>
+          <div className="studio-actions">
+            <button type="button" onClick={handleResetPreview} className="btn btn-icon btn-sm btn-ghost" title="Reset cover undangan" aria-label="Reset cover undangan">
+              <RefreshCw size={14} />
+            </button>
+            <a href={`/invite/${data.slug}`} target="_blank" rel="noreferrer" className="btn btn-sm btn-secondary" title="Buka undangan layar penuh">
+              <ExternalLink size={13} />Layar Penuh
+            </a>
+          </div>
         </div>
-
-        <div style={{ display: 'flex', gap: 6 }}>
-          <button
-            type="button"
-            onClick={handleResetPreview}
-            className="btn btn-sm btn-glass"
-            style={{ padding: '6px 10px', fontSize: '0.75rem' }}
-            title="Ulangi Buka Undangan"
-          >
-            <RefreshCw size={13} />
-            Reset Cover
-          </button>
-
-          <a
-            href={`/invite/${data.slug}`}
-            target="_blank"
-            rel="noreferrer"
-            className="btn btn-sm btn-gold"
-            style={{ padding: '6px 10px', fontSize: '0.75rem', textDecoration: 'none' }}
-            title="Buka Undangan Layar Penuh"
-          >
-            <ExternalLink size={13} />
-            Layar Penuh
-          </a>
+        <div className="preview-guest">
+          <UserCheck size={14} style={{ flexShrink: 0 }} />
+          <label htmlFor="preview-guest">Tamu</label>
+          <input id="preview-guest" type="text" value={previewGuest} onChange={(e) => setPreviewGuest(e.target.value)} placeholder="Nama tamu di cover..." />
         </div>
       </div>
-
-      {/* Guest Name Simulation Bar */}
-      <div
-        style={{
-          width: '100%',
-          maxWidth: 380,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-          background: '#ffffff',
-          padding: '8px 12px',
-          borderRadius: 10,
-          border: '1px solid #e2e8f0',
-        }}
-      >
-        <UserCheck size={14} color="#0f172a" />
-        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>Tamu Mockup:</span>
-        <input
-          type="text"
-          value={previewGuest}
-          onChange={(e) => setPreviewGuest(e.target.value)}
-          placeholder="Nama tamu di cover..."
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: '#0f172a',
-            fontSize: '0.82rem',
-            fontWeight: 500,
-            width: '100%',
-            outline: 'none',
-          }}
-        />
-      </div>
-
-      {/* Phone Mockup Frame */}
-      <div className="phone-mockup">
-        <div className="phone-notch" />
-        <div className="phone-screen">
-          <InvitationRenderer
-            key={previewKey}
-            data={data}
-            guestName={previewGuest}
-            onAddRSVP={onAddRSVP}
-          />
+      <div className="preview-device" ref={deviceRef} style={{ height: 700 * previewScale }}>
+        <div className="phone-mockup" style={{ transform: `scale(${previewScale})` }}>
+          <div className="phone-notch" />
+          <div className="phone-screen">
+            <InvitationRenderer key={previewKey} data={data} guestName={previewGuest} onAddRSVP={onAddRSVP} />
+          </div>
         </div>
       </div>
-
-      <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center', maxWidth: 320 }}>
-        💡 Preview di atas mencerminkan tampilan sebenarnya pada ponsel tamu Anda secara real-time.
-      </p>
+      <p className="preview-note">Perubahan tampil langsung di preview. Simulasikan nama tamu sebelum membagikan undangan.</p>
     </div>
   );
 };

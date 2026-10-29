@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Star, Quote, Sparkles } from 'lucide-react';
+import { Star, Quote } from 'lucide-react';
 
 export const TestimonialsSection: React.FC = () => {
   const reviews = [
@@ -11,7 +11,7 @@ export const TestimonialsSection: React.FC = () => {
       rating: 5,
       date: 'Pernikahan Oktober 2026',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-      text: 'Desainnya bener-bener bersih dan rapi! Tamu-tamu banyak yang muji karena enteng banget dibuka di HP, gak ada iklan atau pop-up ganggu. Fitur salin nomor rekeningnya juga ngebantu banget bagi yang transfer kado.',
+      text: 'Desainnya bener-bener bersih dan rapi! Tamu-tamu banyak yang memuji karena enteng dibuka di HP, gak ada iklan atau pop-up yang ganggu. Fitur salin nomor rekeningnya juga membantu banget.',
     },
     {
       name: 'dr. Dimas & dr. Nadia',
@@ -19,7 +19,7 @@ export const TestimonialsSection: React.FC = () => {
       rating: 5,
       date: 'Pernikahan September 2026',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-      text: 'Kami pakai tema Islamic Emerald. Sangat anggun dan syar’i namun tetap modern. Generator pesan WhatsApp-nya hemat waktu banget karena kami punya lebih dari 500 kontak untuk diundang.',
+      text: 'Kami pakai tema Botanical. Sangat anggun namun tetap modern. Generator pesan WhatsApp-nya hemat waktu banget karena kami punya lebih dari 500 kontak untuk diundang.',
     },
     {
       name: 'Bagus & Anindita',
@@ -27,95 +27,62 @@ export const TestimonialsSection: React.FC = () => {
       rating: 5,
       date: 'Pernikahan Agustus 2026',
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
-      text: 'Editornya sangat gampang dipake! Bisa ganti foto langsung, preview live di simulator HP langsung berubah seketika. Gak perlu nunggu admin buat ubah typo teks.',
+      text: 'Editornya sangat gampang dipakai! Ganti foto langsung tersimpan, preview live di simulator HP berubah seketika. Gak perlu nunggu admin buat perbaiki typo teks.',
     },
   ];
 
   return (
-    <section id="testimoni" style={{ padding: '70px 0', background: '#ffffff' }}>
+    <section id="testimoni" className="section">
       <div className="container">
-        {/* Header */}
         <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 44px' }}>
-          <div style={{ display: 'inline-flex', marginBottom: 12 }}>
-            <span className="badge badge-gold">
-              <Sparkles size={14} color="#2563eb" />
-              Kisah Bahagia
-            </span>
+          <div className="section-eyebrow" style={{ justifyContent: 'center' }}>
+            <Star size={13} fill="currentColor" />
+            Kisah bahagia
           </div>
-          <h2
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: 'clamp(1.9rem, 3.5vw, 2.7rem)',
-              color: '#0f172a',
-              marginBottom: 12,
-            }}
-          >
-            Dipercaya Oleh Lebih Dari 150.000 Pasangan
-          </h2>
-          <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
-            Lihat cerita dan kesan bahagia para mempelai yang telah menggunakan InfoMase untuk hari sakral mereka.
+          <h2 className="section-title">Dipercaya lebih dari 150.000 pasangan</h2>
+          <p className="section-subtitle" style={{ margin: '12px auto 0' }}>
+            Cerita dan kesan para mempelai yang menggunakan InfoMase di hari sakral mereka.
           </p>
         </div>
 
-        {/* Cards Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: 22,
-          }}
-        >
-          {reviews.map((rev, idx) => (
-            <div
-              key={idx}
-              className="glass-card"
-              style={{
-                padding: '26px 22px',
-                borderRadius: 14,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                background: '#ffffff',
-              }}
-            >
-              <div>
-                {/* Stars & Quote Icon */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-                  <div style={{ display: 'flex', gap: 3, color: '#f59e0b' }}>
-                    {[...Array(rev.rating)].map((_, i) => (
-                      <Star key={i} size={15} fill="currentColor" />
-                    ))}
-                  </div>
-                  <Quote size={20} color="#cbd5e1" />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
+          {reviews.map((rev) => (
+            <figure key={rev.name} className="card card-hover" style={{ padding: 22, display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: 2, color: '#f59e0b' }}>
+                  {[...Array(rev.rating)].map((_, i) => (
+                    <Star key={i} size={14} fill="currentColor" />
+                  ))}
                 </div>
-
-                <p style={{ fontSize: '0.88rem', color: '#0f172a', lineHeight: 1.6, marginBottom: 20 }}>
-                  &quot;{rev.text}&quot;
-                </p>
+                <Quote size={18} color="var(--border-strong)" />
               </div>
 
-              {/* Author Footer */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 14, borderTop: '1px solid #f1f5f9' }}>
-                <div
+              <blockquote style={{ fontSize: 13.5, color: 'var(--ink)', lineHeight: 1.65, flex: 1 }}>
+                &ldquo;{rev.text}&rdquo;
+              </blockquote>
+
+              <figcaption style={{ display: 'flex', alignItems: 'center', gap: 11, paddingTop: 14, borderTop: '1px solid var(--border)' }}>
+                <span
                   style={{
-                    width: 40,
-                    height: 40,
+                    width: 36,
+                    height: 36,
                     borderRadius: '50%',
                     overflow: 'hidden',
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid var(--border)',
                     flexShrink: 0,
+                    display: 'block',
                   }}
                 >
-                  <img src={rev.avatar} alt={rev.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
+                  <img src={rev.avatar} alt={rev.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                </span>
                 <div>
-                  <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>{rev.name}</h4>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                  <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--ink)' }}>{rev.name}</div>
+                  <span style={{ fontSize: 12, color: 'var(--ink-3)' }}>
                     {rev.city} • {rev.date}
                   </span>
                 </div>
-              </div>
-            </div>
+              </figcaption>
+            </figure>
           ))}
         </div>
       </div>

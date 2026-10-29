@@ -1,142 +1,133 @@
 'use client';
 
-import React from 'react';
-import { MailOpen, Heart, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
 import { InvitationData } from '@/types/invitation';
-
-import { formatFullIndonesianDate } from '@/lib/formatDate';
 
 interface EnvelopeCoverProps {
   data: InvitationData;
   guestName?: string;
   onOpen: () => void;
+  isOpened?: boolean;
 }
 
-export const EnvelopeCover: React.FC<EnvelopeCoverProps> = ({ data, guestName, onOpen }) => {
+export const EnvelopeCover: React.FC<EnvelopeCoverProps> = ({
+  data,
+  guestName,
+  onOpen,
+  isOpened = false,
+}) => {
+  const [isFlipping, setIsFlipping] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(isOpened);
+
+  if (isDismissed) return null;
+
+  const handleOpenClick = () => {
+    setIsFlipping(true);
+    onOpen();
+    setTimeout(() => {
+      setIsDismissed(true);
+    }, 1150);
+  };
+
+  const couplePhoto =
+    data.groom.photo ||
+    data.gallery[0]?.url ||
+    '/asset/img/foto_mempelai_dummy.jpg';
+
   return (
     <div
-      style={{
-        minHeight: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        padding: '32px 20px',
-        position: 'relative',
-        background: `radial-gradient(circle at 50% 30%, rgba(212, 175, 55, 0.15) 0%, transparent 70%), var(--inv-bg)`,
-      }}
+      id="gateCover"
+      className="fixed inset-0 z-50 flex items-center justify-center pointer-events-auto"
     >
-      {/* Decorative Ornaments */}
-      <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 10, color: 'var(--inv-accent)' }}>
-        <Sparkles size={16} />
-        <span style={{ fontSize: '0.8rem', letterSpacing: '0.25em', textTransform: 'uppercase', fontWeight: 600 }}>
-          The Wedding Celebration
-        </span>
-        <Sparkles size={16} />
-      </div>
-
-      {/* Main Couple Names */}
-      <h1
-        style={{
-          fontFamily: 'var(--font-heading)',
-          fontSize: '2.5rem',
-          lineHeight: 1.15,
-          color: 'var(--inv-primary)',
-          margin: '8px 0',
-        }}
-      >
-        {data.groom.name} &amp; {data.bride.name}
-      </h1>
-
-      <p style={{ fontSize: '0.9rem', color: 'var(--inv-text-muted)', marginBottom: 28, letterSpacing: '0.05em' }}>
-        {formatFullIndonesianDate(data.countdownDate)}
-      </p>
-
-      {/* Couple Portrait Card with subtle shadow */}
+      {/* 3D Book Cover Page (Flips open to the left like opening a book) */}
       <div
-        style={{
-          position: 'relative',
-          width: 170,
-          height: 230,
-          borderRadius: '999px 999px 24px 24px',
-          overflow: 'hidden',
-          border: '4px solid var(--inv-border)',
-          boxShadow: '0 12px 30px rgba(0,0,0,0.15)',
-          marginBottom: 32,
-        }}
+        id="gatePage"
+        className={`relative w-full max-w-[430px] h-full flex flex-col items-center justify-between overflow-hidden bg-[#FAF7F2] ${
+          isFlipping ? 'book-opened' : ''
+        }`}
       >
-        <img
-          src={data.gallery[0]?.url || data.groom.photo}
-          alt={`${data.groom.name} & ${data.bride.name}`}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        />
+        {/* Book Spine Crease Shadow (Left Edge) */}
+        <div className="absolute left-0 top-0 bottom-0 w-3 pointer-events-none bg-gradient-to-r from-black/15 to-transparent z-40"></div>
+
+        {/* Background Watercolor Wash Texture */}
         <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 60%)',
-          }}
-        />
-      </div>
+          className="absolute inset-0 bg-cover bg-top pointer-events-none opacity-40 z-0"
+          style={{ backgroundImage: "url('/asset/img/bg_watercolor.jpg')" }}
+        ></div>
 
-      {/* Guest Card Box */}
-      <div
-        style={{
-          background: 'var(--inv-card)',
-          border: '1px solid var(--inv-border)',
-          borderRadius: '18px',
-          padding: '20px 24px',
-          maxWidth: '320px',
-          width: '100%',
-          boxShadow: '0 8px 20px rgba(0,0,0,0.06)',
-          marginBottom: 28,
-        }}
-      >
-        <span style={{ fontSize: '0.78rem', color: 'var(--inv-text-muted)', textTransform: 'uppercase', letterSpacing: '0.12em', display: 'block' }}>
-          Kepada Yth. Bapak/Ibu/Saudara/i
-        </span>
-        <h3
-          style={{
-            fontSize: '1.25rem',
-            margin: '8px 0 4px',
-            color: 'var(--inv-primary)',
-            fontFamily: 'var(--font-heading)',
-          }}
+        {/* 1. Upper Half: Couple Photo with Seamless Gradient Fade */}
+        <div className="absolute top-0 left-0 right-0 w-full h-[55%] overflow-hidden pointer-events-none z-10 gate-anim-photo">
+          <img
+            src={couplePhoto}
+            alt="Foto Mempelai"
+            className="w-full h-full object-cover object-top"
+          />
+          {/* Soft Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#FAF7F2]/30 via-50% to-[#FAF7F2]"></div>
+        </div>
+
+        {/* 2. Two Diagonal Corner Bouquets (Top-Right & Bottom-Left) */}
+        {/* Top-Right Corner Bouquet */}
+        <div className="gate-bouquet-top-right gate-anim-fade">
+          <img
+            src="/asset/img/bucket_kanan.png"
+            alt="Botanical Bouquet"
+            className="bouquet-img wind-sway-corner"
+          />
+        </div>
+        {/* Bottom-Left Corner Bouquet */}
+        <div
+          className="gate-bouquet-bottom-left gate-anim-fade"
+          style={{ transform: 'rotate(180deg)', transformOrigin: 'center center' }}
         >
-          {guestName || 'Tamu Undangan Istimewa'}
-        </h3>
-        <p style={{ fontSize: '0.78rem', color: 'var(--inv-text-muted)' }}>
-          Mohon maaf apabila ada kesalahan penulisan nama/gelar
-        </p>
-      </div>
+          <img
+            src="/asset/img/bucket_kanan.png"
+            alt="Botanical Bouquet"
+            className="bouquet-img wind-sway-corner"
+          />
+        </div>
 
-      {/* Open Button with Pulse */}
-      <button
-        onClick={onOpen}
-        className="btn"
-        style={{
-          background: 'var(--inv-primary)',
-          color: '#ffffff',
-          padding: '14px 28px',
-          fontSize: '0.95rem',
-          fontWeight: 600,
-          borderRadius: '999px',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-          border: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 10,
-          cursor: 'pointer',
-        }}
-      >
-        <MailOpen size={18} />
-        Buka Undangan
-      </button>
+        {/* 3. Lower Half: Typography & "Buka Undangan" Button */}
+        <div className="relative z-30 w-full mt-auto flex flex-col items-center justify-center text-center px-6 pb-10 pt-4">
+          {/* Tagline: THE WEDDING OF */}
+          <span className="text-[11px] uppercase tracking-[0.32em] text-[#6E5D4F] font-semibold mb-1 block gate-anim-1">
+            THE WEDDING OF
+          </span>
 
-      <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.75rem', color: 'var(--inv-text-muted)' }}>
-        <Heart size={14} fill="currentColor" color="#e74c3c" />
-        <span>InfoMase Digital Invitation</span>
+          {/* Couple Name in Luxury Calligraphy Script */}
+          <h1 className="font-script text-4xl sm:text-5xl text-[#755B46] tracking-wide mb-3 gate-anim-2">
+            {data.groom.name} &amp; {data.bride.name}
+          </h1>
+
+          {/* Kepada Bapak/Ibu/Saudara/i */}
+          <p className="text-xs text-[#7A6B5D] font-normal mb-1 gate-anim-3">
+            Kepada Bapak/Ibu/Saudara/i
+          </p>
+
+          {/* Dynamic Guest Name */}
+          <div
+            id="coverGuestName"
+            className="font-serif text-xl sm:text-2xl font-semibold text-[#2E251E] tracking-wide mb-5 gate-anim-4"
+          >
+            {guestName || 'Nama Tamu'}
+          </div>
+
+          {/* Action Button: Buka Undangan */}
+          <button
+            onClick={handleOpenClick}
+            className="inline-flex items-center gap-2.5 px-8 py-3 rounded-full bg-[#9C8169] hover:bg-[#866E58] active:scale-95 text-white text-xs sm:text-sm font-medium tracking-wide shadow-lg hover:shadow-xl transition-all cursor-pointer gate-anim-5"
+          >
+            {/* Envelope Icon */}
+            <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              />
+            </svg>
+            <span>Buka Undangan</span>
+          </button>
+        </div>
       </div>
     </div>
   );

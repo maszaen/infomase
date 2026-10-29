@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Image as ImageIcon, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { InvitationData } from '@/types/invitation';
 
 interface GallerySectionProps {
@@ -9,181 +8,166 @@ interface GallerySectionProps {
 }
 
 export const GallerySection: React.FC<GallerySectionProps> = ({ data }) => {
-  const [activePhotoIdx, setActivePhotoIdx] = useState<number | null>(null);
+  const [activePhoto, setActivePhoto] = useState<{ url: string; caption: string } | null>(null);
 
-  if (!data.gallery || data.gallery.length === 0) return null;
+  const defaultPhotos = [
+    {
+      url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1000&q=80',
+      caption: 'Raka & Sinta - Prewedding Outdoor',
+      isTall: true,
+      delay: 'delay-100',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80',
+      caption: 'Momen Manis',
+      isTall: true,
+      delay: 'delay-150',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1000&q=80',
+      caption: 'Senyum Bahagia',
+      isTall: false,
+      delay: 'delay-200',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1000&q=80',
+      caption: 'Simbol Cincin Pernikahan',
+      isTall: false,
+      delay: 'delay-250',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1000&q=80',
+      caption: 'Raka Pratama',
+      isTall: false,
+      delay: 'delay-300',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80',
+      caption: 'Sinta Maharani',
+      isTall: false,
+      delay: 'delay-350',
+    },
+  ];
+
+  const galleryList = (data.gallery && data.gallery.length >= 6)
+    ? data.gallery.slice(0, 6).map((item, idx) => ({
+        url: item.url,
+        caption: item.caption || defaultPhotos[idx].caption,
+        isTall: idx === 0 || idx === 1,
+        delay: defaultPhotos[idx].delay,
+      }))
+    : defaultPhotos;
 
   return (
-    <section id="galeri" style={{ padding: '36px 16px', textAlign: 'center' }}>
-      <div style={{ marginBottom: 24 }}>
-        <span
-          style={{
-            fontSize: '0.75rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.2em',
-            color: 'var(--inv-accent)',
-            fontWeight: 700,
-          }}
-        >
-          Memori Bahagia
+    <section id="galeri" className="py-8 px-6 relative">
+      {/* Top Corner Bouquets (Mekar 1 per 1: Daun/Gandum -> Bunga) */}
+      {/* Left Corner */}
+      <div className="absolute top-2 left-0 w-28 h-28 pointer-events-none select-none z-10 overflow-visible">
+        {/* 1. Daun Palm (daun hijau) - Mekar Pertama */}
+        <div className="absolute inset-0 pointer-events-none reveal-foliage">
+          <div className="absolute bottom-0 -left-[24px] w-22" style={{ transform: 'scaleX(-1)', transformOrigin: 'center' }}>
+            <img src="/asset/img/daun_1.png" alt="Palm" className="botanical-img w-full wind-palm-1 opacity-80" />
+          </div>
+        </div>
+        {/* 2. Bunga Anggrek - Mekar Kedua */}
+        <div className="absolute inset-0 pointer-events-none reveal-flower-pair">
+          <img
+            src="/asset/img/bunga_1.png"
+            alt="Orchid"
+            className="botanical-img absolute bottom-1.5 -left-2.5 w-14 rotate-[10deg] origin-center wind-orchid-1 drop-shadow-sm"
+          />
+        </div>
+      </div>
+
+      {/* Right Corner */}
+      <div className="absolute top-2 right-0 w-28 h-28 pointer-events-none select-none z-10 overflow-visible">
+        {/* 1. Pampas (daun gandum) - Mekar Pertama */}
+        <div className="absolute inset-0 pointer-events-none reveal-foliage">
+          <div className="absolute bottom-0 -right-[24px] w-22" style={{ transform: 'scaleX(-1)', transformOrigin: 'center' }}>
+            <img src="/asset/img/bunga_8.png" alt="Pampas" className="botanical-img w-full wind-pampas-1 opacity-80" />
+          </div>
+        </div>
+        {/* 2. Bunga Anthurium - Mekar Kedua */}
+        <div className="absolute inset-0 pointer-events-none reveal-flower-pair">
+          <img
+            src="/asset/img/bunga_5.png"
+            alt="Anthurium"
+            className="botanical-img absolute bottom-1.5 -right-2.5 w-14 -rotate-[15deg] origin-bottom-right wind-anthurium drop-shadow-sm"
+          />
+        </div>
+      </div>
+
+      <div className="text-center mb-6 pt-4">
+        <span className="text-[10px] uppercase tracking-[0.3em] text-[#8C735B] font-semibold block mb-1">
+          OUR MOMENTS
         </span>
-        <h2
-          style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '1.9rem',
-            color: 'var(--inv-primary)',
-            marginTop: 4,
-          }}
-        >
+        <h3 className="font-serif text-3xl text-[#382E25] font-semibold">
           Galeri Foto
-        </h2>
-        <p style={{ fontSize: '0.82rem', color: 'var(--inv-text-muted)', marginTop: 4 }}>
-          Momen berharga yang terabadikan dalam lembaran kisah kami
+        </h3>
+        <p className="text-xs text-[#786755] mt-1">
+          Potret cinta dan kebahagiaan kami
         </p>
       </div>
 
-      {/* Grid of Photos */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: 10,
-          maxWidth: 360,
-          margin: '0 auto',
-        }}
-      >
-        {data.gallery.map((photo, idx) => (
+      {/* 6-Photo Grid (Masonry 2 Columns) */}
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        {galleryList.map((photo, idx) => (
           <div
-            key={photo.id || idx}
-            onClick={() => setActivePhotoIdx(idx)}
-            style={{
-              position: 'relative',
-              height: idx % 3 === 0 ? 180 : 130,
-              gridColumn: idx % 3 === 0 ? 'span 2' : 'span 1',
-              borderRadius: 16,
-              overflow: 'hidden',
-              cursor: 'pointer',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.08)',
-              border: '2px solid var(--inv-border)',
-              transition: 'transform 0.2s ease',
-            }}
+            key={idx}
+            onClick={() => setActivePhoto({ url: photo.url, caption: photo.caption })}
+            className={`${photo.isTall ? 'aspect-3/4' : 'aspect-square'} rounded-2xl overflow-hidden shadow-xs cursor-pointer group reveal-scale ${photo.delay}`}
           >
             <img
               src={photo.url}
-              alt={photo.caption || 'Foto Pernikahan'}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              alt={photo.caption}
+              className="w-full h-full object-cover group-hover:scale-105 transition duration-500 sepia-[.10]"
             />
-            {photo.caption && (
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 'auto 0 0 0',
-                  padding: '8px 10px',
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)',
-                  color: '#ffffff',
-                  fontSize: '0.72rem',
-                  textAlign: 'left',
-                }}
-              >
-                {photo.caption}
-              </div>
-            )}
           </div>
         ))}
       </div>
 
+      {/* Romantic Quote */}
+      <div className="text-center px-4">
+        <p className="font-serif text-sm text-[#382E25] italic leading-relaxed mb-2">
+          &ldquo;Cinta bukanlah tentang menemukan seseorang yang sempurna, tetapi tentang melihat seseorang yang tidak sempurna dengan cara yang sempurna.&rdquo;
+        </p>
+        <div className="flex items-center justify-center gap-2">
+          <span className="w-8 h-[1px] bg-[#D5C6B1]"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#8C735B]"></span>
+          <span className="w-8 h-[1px] bg-[#D5C6B1]"></span>
+        </div>
+      </div>
+
       {/* Lightbox Modal */}
-      {activePhotoIdx !== null && (
+      {activePhoto && (
         <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0,0,0,0.92)',
-            zIndex: 100,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 16,
-          }}
+          id="lightboxModal"
+          onClick={() => setActivePhoto(null)}
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4"
         >
-          {/* Close button */}
-          <button
-            onClick={() => setActivePhotoIdx(null)}
-            style={{
-              position: 'absolute',
-              top: 20,
-              right: 20,
-              background: 'rgba(255,255,255,0.15)',
-              border: 'none',
-              borderRadius: '50%',
-              width: 40,
-              height: 40,
-              color: '#fff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-            }}
+          <div
+            className="max-w-md w-full bg-[#FAF6F0] rounded-3xl overflow-hidden shadow-2xl border border-[#D5C6B1]"
+            onClick={(e) => e.stopPropagation()}
           >
-            <X size={20} />
-          </button>
-
-          {/* Image */}
-          <div style={{ maxWidth: '90%', maxHeight: '75%', position: 'relative' }}>
-            <img
-              src={data.gallery[activePhotoIdx].url}
-              alt="Preview"
-              style={{
-                maxWidth: '100%',
-                maxHeight: '75vh',
-                borderRadius: 16,
-                boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
-              }}
-            />
-            {data.gallery[activePhotoIdx].caption && (
-              <p style={{ color: '#fff', marginTop: 12, fontSize: '0.88rem' }}>
-                {data.gallery[activePhotoIdx].caption}
+            <div className="relative">
+              <img
+                id="lightboxImg"
+                src={activePhoto.url}
+                alt="Preview"
+                className="w-full max-h-[70vh] object-cover"
+              />
+              <button
+                onClick={() => setActivePhoto(null)}
+                className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center hover:bg-black cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-3 text-center">
+              <p id="lightboxCaption" className="font-serif text-sm text-[#382E25] font-semibold">
+                {activePhoto.caption}
               </p>
-            )}
-          </div>
-
-          {/* Navigation Controls */}
-          <div style={{ display: 'flex', gap: 20, marginTop: 16 }}>
-            <button
-              onClick={() => setActivePhotoIdx((prev) => (prev! > 0 ? prev! - 1 : data.gallery.length - 1))}
-              style={{
-                background: 'rgba(255,255,255,0.2)',
-                border: 'none',
-                borderRadius: '50%',
-                width: 44,
-                height: 44,
-                color: '#fff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-              }}
-            >
-              <ChevronLeft size={22} />
-            </button>
-            <button
-              onClick={() => setActivePhotoIdx((prev) => (prev! < data.gallery.length - 1 ? prev! + 1 : 0))}
-              style={{
-                background: 'rgba(255,255,255,0.2)',
-                border: 'none',
-                borderRadius: '50%',
-                width: 44,
-                height: 44,
-                color: '#fff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-              }}
-            >
-              <ChevronRight size={22} />
-            </button>
+            </div>
           </div>
         </div>
       )}

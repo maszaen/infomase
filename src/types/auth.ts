@@ -1,3 +1,13 @@
+export interface UserSubscription {
+  plan: 'free' | 'pro' | 'vip';
+  planName: string;
+  status: 'active' | 'expired';
+  expiresAt: string;
+  daysRemaining: number;
+  maxInvitations: number;
+  canPublish: boolean;
+}
+
 export interface User {
   id: string;
   name: string;
@@ -7,6 +17,7 @@ export interface User {
   role: 'USER' | 'ADMIN';
   totalInvitations?: number;
   createdAt?: string;
+  subscription?: UserSubscription;
 }
 
 export interface AuthTokens {

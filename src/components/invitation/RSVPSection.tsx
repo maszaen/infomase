@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Send, MessageSquareHeart, CheckCircle, HelpCircle, XCircle, UserCheck } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import { InvitationData, RSVPItem } from '@/types/invitation';
 
 interface RSVPSectionProps {
@@ -11,334 +9,201 @@ interface RSVPSectionProps {
   guestName?: string;
 }
 
+interface LocalWish {
+  id: string;
+  name: string;
+  date: string;
+  attendance: 'hadir' | 'tidak';
+  message: string;
+  likes: number;
+  isLiked?: boolean;
+}
+
 export const RSVPSection: React.FC<RSVPSectionProps> = ({ data, onAddRSVP, guestName }) => {
   const [name, setName] = useState(guestName || '');
-  const [attendance, setAttendance] = useState<'hadir' | 'tidak' | 'ragu'>('hadir');
-  const [pax, setPax] = useState(1);
+  const [attendance, setAttendance] = useState<'hadir' | 'tidak'>('hadir');
   const [message, setMessage] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+
+  const [wishes, setWishes] = useState<LocalWish[]>([
+    {
+      id: 'wish-1',
+      name: 'Andi Saputra',
+      date: '24 Mei 2025',
+      attendance: 'hadir',
+      message: 'Happy wedding Raka & Sinta! Semoga selalu dalam lindungan Allah SWT dan menjadi keluarga yang sakinah mawaddah warahmah.',
+      likes: 14,
+      isLiked: false,
+    },
+    {
+      id: 'wish-2',
+      name: 'Nadia & Dimas',
+      date: '24 Mei 2025',
+      attendance: 'hadir',
+      message: 'Selamat menempuh hidup baru sahabatku tercinta! Bahagia selalu selamanya ya!',
+      likes: 9,
+      isLiked: false,
+    },
+  ]);
+
+  const handleToggleLike = (id: string) => {
+    setWishes((prev) =>
+      prev.map((w) => {
+        if (w.id === id) {
+          const isLiked = !w.isLiked;
+          return {
+            ...w,
+            isLiked,
+            likes: isLiked ? w.likes + 1 : w.likes - 1,
+          };
+        }
+        return w;
+      })
+    );
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !message.trim()) return;
 
-    // Trigger celebratory confetti
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { y: 0.7 },
-      colors: ['#d4af37', '#f43f5e', '#10b981', '#38bdf8'],
-    });
+    const newWish: LocalWish = {
+      id: `wish-${Date.now()}`,
+      name: name.trim(),
+      date: 'Baru saja',
+      attendance,
+      message: message.trim(),
+      likes: 1,
+      isLiked: true,
+    };
+
+    setWishes((prev) => [newWish, ...prev]);
 
     if (onAddRSVP) {
       onAddRSVP({
         guestName: name.trim(),
         attendance,
-        pax,
+        pax: 1,
         message: message.trim(),
       });
     }
 
-    setSubmitted(true);
+    setName('');
     setMessage('');
-    setTimeout(() => {
-      setSubmitted(false);
-    }, 4000);
+    alert('Terima kasih atas ucapan dan doa restunya!');
   };
 
   return (
-    <section id="ucapan" style={{ padding: '36px 16px', textAlign: 'center' }}>
-      <div style={{ marginBottom: 24 }}>
-        <span
-          style={{
-            fontSize: '0.75rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.2em',
-            color: 'var(--inv-accent)',
-            fontWeight: 700,
-          }}
-        >
-          Konfirmasi &amp; Doa
-        </span>
-        <h2
-          style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '1.9rem',
-            color: 'var(--inv-primary)',
-            marginTop: 4,
-          }}
-        >
-          Buku Tamu &amp; RSVP
-        </h2>
-        <p style={{ fontSize: '0.82rem', color: 'var(--inv-text-muted)', marginTop: 4 }}>
-          Mohon konfirmasi kehadiran serta berikan doa restu Anda untuk kami berdua
-        </p>
-      </div>
-
-      {/* RSVP Form */}
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          background: 'var(--inv-card)',
-          border: '1px solid var(--inv-border)',
-          borderRadius: 24,
-          padding: '24px 20px',
-          maxWidth: 360,
-          margin: '0 auto 32px',
-          textAlign: 'left',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
-        }}
-      >
-        {/* Name input */}
-        <div style={{ marginBottom: 14 }}>
-          <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--inv-text)', marginBottom: 6 }}>
-            Nama Anda
-          </label>
-          <input
-            type="text"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Contoh: Bpk. Bambang & Keluarga"
-            style={{
-              width: '100%',
-              padding: '10px 14px',
-              borderRadius: 12,
-              border: '1px solid var(--inv-border)',
-              background: 'rgba(0,0,0,0.02)',
-              fontSize: '0.85rem',
-              color: 'var(--inv-text)',
-              outline: 'none',
-              boxSizing: 'border-box',
-            }}
-          />
+    <section id="ucapan" className="py-8 px-6">
+      <div className="paper-card rounded-3xl p-6 relative overflow-hidden reveal">
+        <div className="text-center mb-6">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-[#8C735B] font-semibold block mb-1">
+            RSVP &amp; UCAPAN
+          </span>
+          <h3 className="font-serif text-2xl text-[#382E25] font-semibold">
+            Konfirmasi &amp; Doa Restu
+          </h3>
+          <p className="text-xs text-[#786755] mt-1">
+            Kehadiran dan doa Anda adalah kado terindah bagi kami
+          </p>
         </div>
 
-        {/* Attendance radio choices */}
-        <div style={{ marginBottom: 16 }}>
-          <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--inv-text)', marginBottom: 8 }}>
-            Konfirmasi Kehadiran
-          </label>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
-            {[
-              { id: 'hadir', label: 'Hadir', icon: CheckCircle, color: '#10b981' },
-              { id: 'ragu', label: 'Ragu-ragu', icon: HelpCircle, color: '#f59e0b' },
-              { id: 'tidak', label: 'Berhalangan', icon: XCircle, color: '#ef4444' },
-            ].map((opt) => {
-              const Icon = opt.icon;
-              const isSelected = attendance === opt.id;
-              return (
-                <button
-                  type="button"
-                  key={opt.id}
-                  onClick={() => setAttendance(opt.id as any)}
-                  style={{
-                    padding: '8px 6px',
-                    borderRadius: 10,
-                    border: isSelected ? `2px solid ${opt.color}` : '1px solid var(--inv-border)',
-                    background: isSelected ? `${opt.color}15` : 'transparent',
-                    color: isSelected ? opt.color : 'var(--inv-text-muted)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 4,
-                    fontSize: '0.72rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                >
-                  <Icon size={16} />
-                  <span>{opt.label}</span>
-                </button>
-              );
-            })}
+        {/* Form Submission */}
+        <form onSubmit={handleSubmit} className="space-y-3 mb-6 reveal delay-100">
+          <div>
+            <label className="block text-[11px] font-bold text-[#382E25] mb-1">
+              Nama Lengkap
+            </label>
+            <input
+              type="text"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Masukkan nama Anda"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#D5C6B1] text-xs text-[#382E25] focus:outline-none focus:ring-1 focus:ring-[#8C735B]"
+            />
           </div>
-        </div>
 
-        {/* Pax selector (if hadir) */}
-        {attendance === 'hadir' && (
-          <div style={{ marginBottom: 14 }}>
-            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--inv-text)', marginBottom: 6 }}>
-              Jumlah Orang yang Hadir
+          <div>
+            <label className="block text-[11px] font-bold text-[#382E25] mb-1">
+              Konfirmasi Kehadiran
             </label>
             <select
-              value={pax}
-              onChange={(e) => setPax(Number(e.target.value))}
-              style={{
-                width: '100%',
-                padding: '9px 12px',
-                borderRadius: 12,
-                border: '1px solid var(--inv-border)',
-                background: 'rgba(0,0,0,0.02)',
-                fontSize: '0.85rem',
-                color: 'var(--inv-text)',
-                outline: 'none',
-              }}
+              value={attendance}
+              onChange={(e) => setAttendance(e.target.value as 'hadir' | 'tidak')}
+              className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#D5C6B1] text-xs text-[#382E25] focus:outline-none focus:ring-1 focus:ring-[#8C735B]"
             >
-              <option value={1}>1 Orang</option>
-              <option value={2}>2 Orang</option>
-              <option value={3}>3 Orang</option>
-              <option value={4}>4 Orang</option>
-              <option value={5}>5+ Orang (Rombongan)</option>
+              <option value="hadir">Ya, Saya Akan Hadir</option>
+              <option value="tidak">Maaf, Tidak Bisa Hadir</option>
             </select>
           </div>
-        )}
 
-        {/* Message / Doa */}
-        <div style={{ marginBottom: 18 }}>
-          <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--inv-text)', marginBottom: 6 }}>
-            Doa &amp; Ucapan Selamat
-          </label>
-          <textarea
-            required
-            rows={3}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Tuliskan ucapan dan doa terbaik Anda untuk kedua mempelai..."
-            style={{
-              width: '100%',
-              padding: '10px 14px',
-              borderRadius: 12,
-              border: '1px solid var(--inv-border)',
-              background: 'rgba(0,0,0,0.02)',
-              fontSize: '0.85rem',
-              color: 'var(--inv-text)',
-              outline: 'none',
-              resize: 'none',
-              boxSizing: 'border-box',
-            }}
-          />
-        </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="btn"
-          style={{
-            width: '100%',
-            background: 'var(--inv-primary)',
-            color: '#ffffff',
-            padding: '12px',
-            fontSize: '0.9rem',
-            fontWeight: 600,
-            borderRadius: 999,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 8,
-            cursor: 'pointer',
-            border: 'none',
-          }}
-        >
-          <Send size={16} />
-          Kirim Ucapan &amp; Konfirmasi
-        </button>
-
-        {submitted && (
-          <div
-            style={{
-              marginTop: 12,
-              padding: '8px 12px',
-              borderRadius: 8,
-              background: '#10b98120',
-              color: '#10b981',
-              fontSize: '0.78rem',
-              textAlign: 'center',
-              fontWeight: 600,
-            }}
-          >
-            ✓ Terima kasih atas doa dan konfirmasinya!
+          <div>
+            <label className="block text-[11px] font-bold text-[#382E25] mb-1">
+              Ucapan &amp; Doa
+            </label>
+            <textarea
+              rows={3}
+              maxLength={200}
+              required
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Tulis ucapan dan doa untuk kedua mempelai..."
+              className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#D5C6B1] text-xs text-[#382E25] focus:outline-none focus:ring-1 focus:ring-[#8C735B] resize-none"
+            />
+            <span className="block text-right text-[10px] text-[#786755] mt-0.5">
+              {message.length}/200
+            </span>
           </div>
-        )}
-      </form>
 
-      {/* Guest Wishes List (Buku Tamu) */}
-      <div style={{ maxWidth: 360, margin: '0 auto', textAlign: 'left' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-          <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--inv-primary)' }}>
-            Doa &amp; Harapan ({data.rsvpList.length})
-          </h4>
-          <span style={{ fontSize: '0.72rem', color: 'var(--inv-text-muted)' }}>
-            {data.rsvpList.filter((r) => r.attendance === 'hadir').length} Tamu Hadir
-          </span>
-        </div>
+          <button
+            type="submit"
+            className="w-full py-2.5 rounded-xl bg-[#8C735B] text-white text-xs font-semibold tracking-wider uppercase shadow hover:bg-[#79624C] transition cursor-pointer"
+          >
+            Kirim Konfirmasi &amp; Ucapan
+          </button>
+        </form>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxHeight: 380, overflowY: 'auto' }}>
-          {data.rsvpList.map((rsvp) => {
-            const badgeBg =
-              rsvp.attendance === 'hadir'
-                ? '#10b98120'
-                : rsvp.attendance === 'ragu'
-                ? '#f59e0b20'
-                : '#ef444420';
-            const badgeColor =
-              rsvp.attendance === 'hadir'
-                ? '#10b981'
-                : rsvp.attendance === 'ragu'
-                ? '#f59e0b'
-                : '#ef4444';
-            const badgeText =
-              rsvp.attendance === 'hadir' ? 'Hadir' : rsvp.attendance === 'ragu' ? 'Ragu' : 'Berhalangan';
-
-            return (
-              <div
-                key={rsvp.id}
-                style={{
-                  background: 'var(--inv-card)',
-                  border: '1px solid var(--inv-border)',
-                  borderRadius: 16,
-                  padding: '14px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.04)',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <div
-                      style={{
-                        width: 28,
-                        height: 28,
-                        borderRadius: '50%',
-                        background: 'rgba(212, 175, 55, 0.2)',
-                        color: 'var(--inv-primary)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '0.75rem',
-                        fontWeight: 700,
-                      }}
-                    >
-                      {rsvp.guestName.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                      <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--inv-text)', display: 'block' }}>
-                        {rsvp.guestName}
-                      </span>
-                      <span style={{ fontSize: '0.68rem', color: 'var(--inv-text-muted)' }}>
-                        {rsvp.createdAt}
-                      </span>
-                    </div>
+        {/* Live Stream Wishes Container */}
+        <div id="wishesContainer" className="space-y-3 max-h-64 overflow-y-auto pr-1 reveal delay-200">
+          {wishes.map((w) => (
+            <div
+              key={w.id}
+              className="p-3.5 rounded-2xl bg-white/95 border border-[#D5C6B1]/70 shadow-xs"
+            >
+              <div className="flex items-center justify-between gap-2 mb-1.5">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-[#8C735B] text-white flex items-center justify-center text-xs font-serif font-semibold">
+                    {w.name.charAt(0).toUpperCase()}
                   </div>
-
-                  <span
-                    style={{
-                      fontSize: '0.68rem',
-                      fontWeight: 600,
-                      padding: '2px 8px',
-                      borderRadius: 999,
-                      background: badgeBg,
-                      color: badgeColor,
-                    }}
-                  >
-                    {badgeText} {rsvp.attendance === 'hadir' && `(${rsvp.pax})`}
-                  </span>
+                  <div>
+                    <h4 className="text-xs font-semibold text-[#382E25]">{w.name}</h4>
+                    <span className="text-[10px] text-[#786755]">{w.date}</span>
+                  </div>
                 </div>
-
-                <p style={{ fontSize: '0.78rem', color: 'var(--inv-text)', lineHeight: 1.45, marginTop: 4 }}>
-                  {rsvp.message}
-                </p>
+                <span
+                  className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                    w.attendance === 'hadir'
+                      ? 'bg-emerald-100 text-emerald-800'
+                      : 'bg-amber-100 text-amber-800'
+                  }`}
+                >
+                  {w.attendance === 'hadir' ? 'Hadir' : 'Tidak Hadir'}
+                </span>
               </div>
-            );
-          })}
+              <p className="text-xs text-[#786755] leading-relaxed mb-2">{w.message}</p>
+              <div className="flex items-center justify-end">
+                <button
+                  type="button"
+                  onClick={() => handleToggleLike(w.id)}
+                  className="inline-flex items-center gap-1 text-xs text-[#8C735B] hover:scale-110 transition cursor-pointer"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
+                    <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
+                  </svg>
+                  <span className="text-[10px]">{w.likes}</span>
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

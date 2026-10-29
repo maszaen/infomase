@@ -47,15 +47,26 @@ export const setStoredUser = (user: User) => {
 };
 
 // Generic Fetcher
+export const getRequestUrl = (endpoint: string): string => {
+  if (endpoint.startsWith('http')) return endpoint;
+  const clean = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  if (typeof window !== 'undefined') {
+    return `/api/proxy${clean}`;
+  }
+  return `${API_BASE}${clean}`;
+};
+
+// Generic Fetcher
 export async function apiFetch<T = any>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
   const token = getToken();
-  const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
+  const url = getRequestUrl(endpoint);
 
   const headers: Record<string, string> = {
     Accept: 'application/json',
+    'ngrok-skip-browser-warning': 'true',
     ...(options.headers as Record<string, string>),
   };
 
@@ -65,7 +76,6 @@ export async function apiFetch<T = any>(
 
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
-    headers['X-Token'] = token;
   }
 
   let res: Response;
@@ -74,7 +84,8 @@ export async function apiFetch<T = any>(
       ...options,
       headers,
     });
-  } catch {
+  } catch (err: any) {
+    console.warn(`[apiFetch error] ${url}:`, err);
     throw new Error(
       `Tidak dapat terhubung ke server backend di "${url}". Pastikan URL backend valid dan tunnel ngrok / web server sedang aktif.`
     );
@@ -86,7 +97,12 @@ export async function apiFetch<T = any>(
     data: null as any,
   }));
 
-  if (!res.ok || !json.success) {
+  const isSuccess =
+    json.success === true ||
+    (json as any).status === true ||
+    (res.ok && json.success !== false && (json as any).status !== false);
+
+  if (!res.ok || !isSuccess) {
     const errorMsg =
       json.message ||
       json.error?.message ||
@@ -106,14 +122,14 @@ export async function apiUpload<T = any>(
   const token = getToken();
   const headers: Record<string, string> = {
     Accept: 'application/json',
+    'ngrok-skip-browser-warning': 'true',
   };
 
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
-    headers['X-Token'] = token;
   }
 
-  const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
+  const url = getRequestUrl(endpoint);
 
   const res = await fetch(url, {
     method: 'POST',
@@ -211,7 +227,19 @@ export const templatesApi = {
 
 // 3. INVITATIONS CRUD API (Owner Dashboard)
 export const invitationsApi = {
-  getAll: async () => {
+  getAll: async (params?: {
+    status?: 'all' | 'draft' | 'published' | 'archived';
+    search?: string;
+    page?: number;
+    limit?: number;
+  }) => {
+    const query = new URLSearchParams();
+    if (params?.status && params.status !== 'all') query.set('status', params.status);
+    if (params?.search) query.set('search', params.search);
+    if (params?.page) query.set('page', String(params.page));
+    if (params?.limit) query.set('limit', String(params.limit));
+
+    const qs = query.toString();
     const res = await apiFetch<Array<{
       id: string;
       slug: string;
@@ -222,7 +250,7 @@ export const invitationsApi = {
       totalGuests?: number;
       totalRsvp?: number;
       updatedAt?: string;
-    }>>('/invitations');
+    }>>(`/invitations${qs ? `?${qs}` : ''}`);
     return res.data;
   },
 
@@ -230,7 +258,11 @@ export const invitationsApi = {
     title: string;
     slug: string;
     templateId: string;
-    countdownDate: string;
+    countdownDate?: string;
+    themeConfig?: Record<string, any>;
+    groom?: any;
+    bride?: any;
+    events?: any[];
   }) => {
     const res = await apiFetch<InvitationData>('/invitations', {
       method: 'POST',
@@ -270,44 +302,59 @@ export const invitationsApi = {
 
   getStats: async (id: string) => {
     const res = await apiFetch<{
-      pageViews: number;
-      uniqueVisitors: number;
-      deviceBreakdown: { mobile: string; desktop: string };
-      attendanceRate: string;
-      daysLeftToEvent: number;
+      pageViews?: number;
+      uniqueVisitors?: number;
+      totalGuests?: number;
+      totalHadir?: number;
+      totalTidakHadir?: number;
+      totalBelumKonfirmasi?: number;
+      totalPax?: number;
+      totalUcapan?: number;
+      deviceBreakdown?: { mobile: string; desktop: string };
+      attendanceRate?: string;
+      daysLeftToEvent?: number;
     }>(`/invitations/${id}/stats`);
     return res.data;
   },
 };
 
-// 4. STORAGE & FILE UPLOAD BRIDGE API
+// 4. STORAGE & FILE UPLOAD BRIDGE API (LIST_API.txt: [5] UPLOAD MEDIA & BERKAS)
 export const uploadApi = {
   uploadPhoto: async (
     invitationId: string,
     file: File,
-    category: 'groom' | 'bride' | 'story' | 'qris' | 'cover'
+    type: 'groom' | 'bride' | 'cover' | 'ogImage' | 'qrCode' | 'story' | 'qris'
   ) => {
     const formData = new FormData();
+    // Support both photo (LIST_API spec) and file (fallback)
+    formData.append('photo', file);
     formData.append('file', file);
-    formData.append('category', category);
+    formData.append('type', type);
+    formData.append('category', type);
 
     const res = await apiUpload<{
       url: string;
-      fileKey: string;
-      size: number;
-      width: number;
-      height: number;
-      format: string;
+      fileName?: string;
+      type?: string;
+      fileKey?: string;
+      size?: number;
+      width?: number;
+      height?: number;
+      format?: string;
     }>(`/invitations/${invitationId}/upload/photo`, formData);
     return res.data;
   },
 
   uploadGalleryBatch: async (invitationId: string, files: File[]) => {
     const formData = new FormData();
-    files.forEach((f) => formData.append('files[]', f));
+    // In LIST_API.txt, param is photos[]
+    files.forEach((f) => {
+      formData.append('photos[]', f);
+      formData.append('files[]', f);
+    });
 
     const res = await apiUpload<Array<{
-      id: string;
+      id?: string;
       url: string;
       caption?: string;
     }>>(`/invitations/${invitationId}/upload/gallery-batch`, formData);
@@ -321,36 +368,41 @@ export const uploadApi = {
     artist?: string
   ) => {
     const formData = new FormData();
+    // In LIST_API.txt, param is audio
+    formData.append('audio', file);
     formData.append('file', file);
     if (title) formData.append('title', title);
     if (artist) formData.append('artist', artist);
 
     const res = await apiUpload<{
       url: string;
+      fileName?: string;
       title?: string;
       durationSeconds?: number;
     }>(`/invitations/${invitationId}/upload/audio`, formData);
     return res.data;
   },
 
-  deleteAsset: async (invitationId: string, fileKey: string) => {
+  deleteAsset: async (invitationId: string, fileUrl: string) => {
+    // In LIST_API.txt, param is fileUrl
     const res = await apiFetch(`/invitations/${invitationId}/assets`, {
       method: 'DELETE',
-      body: JSON.stringify({ fileKey }),
+      body: JSON.stringify({ fileUrl, fileKey: fileUrl }),
     });
     return res.data;
   },
 };
 
-// 5. GUEST MANAGER API
+// 5. GUEST MANAGER API (LIST_API.txt: [6] MANAJEMEN TAMU)
 export const guestsApi = {
   getAll: async (
     invitationId: string,
-    params?: { search?: string; category?: string; page?: number; limit?: number }
+    params?: { search?: string; category?: string; attendance?: string; page?: number; limit?: number }
   ) => {
     const query = new URLSearchParams();
     if (params?.search) query.set('search', params.search);
     if (params?.category && params.category !== 'all') query.set('category', params.category);
+    if (params?.attendance && params.attendance !== 'all') query.set('attendance', params.attendance);
     if (params?.page) query.set('page', String(params.page));
     if (params?.limit) query.set('limit', String(params.limit));
 
@@ -370,21 +422,41 @@ export const guestsApi = {
 
   add: async (
     invitationId: string,
-    guest: { name: string; category: string; phone?: string }
+    guest: { name: string; category: string; phoneNumber?: string; phone?: string; maxPax?: number; notes?: string }
   ) => {
-    const res = await apiFetch<GuestItem>(`/invitations/${invitationId}/guests`, {
-      method: 'POST',
-      body: JSON.stringify(guest),
-    });
+    const payload = {
+      name: guest.name,
+      phoneNumber: guest.phoneNumber || guest.phone || '',
+      phone: guest.phoneNumber || guest.phone || '',
+      category: guest.category,
+      maxPax: guest.maxPax ?? 1,
+      notes: guest.notes ?? '',
+    };
+    const res = await apiFetch<GuestItem & { customInviteLink?: string; guestCode?: string }>(
+      `/invitations/${invitationId}/guests`,
+      {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      }
+    );
     return res.data;
   },
 
-  bulkAdd: async (invitationId: string, guests: Array<{ name: string; category?: string }>) => {
+  bulkAdd: async (
+    invitationId: string,
+    guests: Array<{ name: string; phoneNumber?: string; phone?: string; category?: string }>
+  ) => {
+    const formatted = guests.map((g) => ({
+      name: g.name,
+      category: g.category || 'Umum',
+      phoneNumber: g.phoneNumber || g.phone || '',
+      phone: g.phoneNumber || g.phone || '',
+    }));
     const res = await apiFetch<{ insertedCount: number }>(
       `/invitations/${invitationId}/guests/bulk`,
       {
         method: 'POST',
-        body: JSON.stringify({ guests }),
+        body: JSON.stringify({ guests: formatted }),
       }
     );
     return res.data;
@@ -394,7 +466,8 @@ export const guestsApi = {
     const res = await apiFetch<{
       guestName: string;
       phoneNumber: string;
-      waUrl: string;
+      waLink: string;
+      waUrl?: string;
       message: string;
     }>(`/invitations/${invitationId}/guests/${guestId}/wa-message`);
     return res.data;
@@ -408,14 +481,18 @@ export const guestsApi = {
   },
 };
 
-// 6. RSVP & GUESTBOOK API
+// 6. RSVP & GUESTBOOK API (LIST_API.txt: [7] MANAJEMEN RSVP & BUKU TAMU)
 export const rsvpsApi = {
   getAll: async (
     invitationId: string,
-    params?: { attendance?: string; search?: string; page?: number; limit?: number }
+    params?: { status?: string; attendance?: string; search?: string; page?: number; limit?: number }
   ) => {
     const query = new URLSearchParams();
-    if (params?.attendance && params.attendance !== 'all') query.set('attendance', params.attendance);
+    const statusVal = params?.status || params?.attendance;
+    if (statusVal && statusVal !== 'all') {
+      query.set('status', statusVal.toUpperCase());
+      query.set('attendance', statusVal);
+    }
     if (params?.search) query.set('search', params.search);
     if (params?.page) query.set('page', String(params.page));
     if (params?.limit) query.set('limit', String(params.limit));
@@ -448,7 +525,7 @@ export const rsvpsApi = {
   },
 };
 
-// 7. PUBLIC API (Tamu & Standalone Invitation)
+// 7. PUBLIC API (LIST_API.txt: [8] ENDPOINT PUBLIK)
 export const publicApi = {
   getBySlug: async (slug: string, toGuest?: string) => {
     const query = toGuest ? `?to=${encodeURIComponent(toGuest)}` : '';
@@ -462,14 +539,30 @@ export const publicApi = {
     slug: string,
     payload: {
       guestName: string;
-      attendance: 'hadir' | 'tidak' | 'ragu';
-      pax: number;
+      attendance: string;
+      pax?: number;
+      totalPax?: number;
       message: string;
+      guestCode?: string;
     }
   ) => {
+    const attUpper = (payload.attendance || 'HADIR').toUpperCase();
+    const normalizedAttendance =
+      attUpper === 'HADIR' ? 'HADIR' : attUpper === 'TIDAK' || attUpper === 'TIDAK_HADIR' ? 'TIDAK_HADIR' : 'RAGU';
+    const finalPax = payload.totalPax ?? payload.pax ?? 1;
+
+    const body = {
+      guestName: payload.guestName,
+      attendance: normalizedAttendance,
+      totalPax: finalPax,
+      pax: finalPax,
+      message: payload.message,
+      guestCode: payload.guestCode || '',
+    };
+
     const res = await apiFetch<RSVPItem>(`/public/invitations/${slug}/rsvp`, {
       method: 'POST',
-      body: JSON.stringify(payload),
+      body: JSON.stringify(body),
     });
     return res.data;
   },

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { Heart, Sparkles } from 'lucide-react';
 import { InvitationData } from '@/types/invitation';
 
 interface LoveStorySectionProps {
@@ -9,123 +8,52 @@ interface LoveStorySectionProps {
 }
 
 export const LoveStorySection: React.FC<LoveStorySectionProps> = ({ data }) => {
-  if (!data.stories || data.stories.length === 0) return null;
+  const storyImage =
+    data.stories[0]?.image ||
+    data.gallery[1]?.url ||
+    'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80';
+
+  const milestones =
+    data.stories && data.stories.length > 0
+      ? data.stories.slice(0, 3)
+      : [
+          { id: '1', year: '2020', title: 'Pertama Bertemu' },
+          { id: '2', year: '2022', title: 'Komitmen' },
+          { id: '3', year: '2024', title: 'Lamaran' },
+        ];
 
   return (
-    <section id="kisah" style={{ padding: '36px 16px', textAlign: 'center' }}>
-      <div style={{ marginBottom: 28 }}>
-        <span
-          style={{
-            fontSize: '0.75rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.2em',
-            color: 'var(--inv-accent)',
-            fontWeight: 700,
-          }}
-        >
-          Perjalanan Cinta
+    <section id="kisah" className="py-8 px-6">
+      <div className="paper-card rounded-3xl p-6 text-center relative overflow-hidden reveal">
+        {/* Couple Horizontal Photo */}
+        <div className="w-full h-44 rounded-2xl overflow-hidden mb-5 shadow-xs">
+          <img
+            src={storyImage}
+            alt="Love Story"
+            className="w-full h-full object-cover sepia-[.10]"
+          />
+        </div>
+
+        <span className="text-[10px] uppercase tracking-[0.3em] text-[#8C735B] font-semibold block mb-1">
+          OUR STORY
         </span>
-        <h2
-          style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '1.9rem',
-            color: 'var(--inv-primary)',
-            marginTop: 4,
-          }}
-        >
-          Kisah Kami
-        </h2>
-        <p style={{ fontSize: '0.82rem', color: 'var(--inv-text-muted)', marginTop: 4 }}>
-          Setiap babak cerita yang mengantarkan kami menuju janji suci
+        <h3 className="font-serif text-2xl text-[#382E25] font-semibold mb-3">
+          Kisah Cinta Kami
+        </h3>
+
+        <p className="text-xs text-[#786755] leading-relaxed italic mb-4">
+          &ldquo;Tidak ada kebetulan dalam takdir Allah. Setiap detik perjalanan yang kami lalui adalah persiapan untuk menyatu dalam ikatan yang suci ini.&rdquo;
         </p>
-      </div>
 
-      <div style={{ position: 'relative', maxWidth: 360, margin: '0 auto', textAlign: 'left' }}>
-        {/* Vertical timeline line */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 15,
-            bottom: 15,
-            left: 20,
-            width: 2,
-            background: 'var(--inv-border)',
-          }}
-        />
-
-        {data.stories.map((story) => (
-          <div
-            key={story.id}
-            style={{
-              position: 'relative',
-              paddingLeft: 46,
-              marginBottom: 32,
-            }}
-          >
-            {/* Timeline node icon */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 10,
-                transform: 'translateX(-50%)',
-                width: 26,
-                height: 26,
-                borderRadius: '50%',
-                background: 'var(--inv-primary)',
-                color: '#fff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 0 0 4px var(--inv-bg)',
-              }}
-            >
-              <Heart size={12} fill="currentColor" />
+        {/* Milestones Timeline */}
+        <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[#D5C6B1]/40 text-center reveal delay-200">
+          {milestones.map((st) => (
+            <div key={st.id} className="p-2 rounded-xl bg-white/70">
+              <span className="block text-xs font-bold text-[#8C735B]">{st.year}</span>
+              <span className="text-[10px] text-[#786755]">{st.title}</span>
             </div>
-
-            {/* Story Card */}
-            <div
-              style={{
-                background: 'var(--inv-card)',
-                border: '1px solid var(--inv-border)',
-                borderRadius: 18,
-                padding: '16px',
-                boxShadow: '0 6px 18px rgba(0,0,0,0.05)',
-              }}
-            >
-              <span
-                style={{
-                  display: 'inline-block',
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  color: 'var(--inv-accent)',
-                  marginBottom: 4,
-                }}
-              >
-                Tahun {story.year}
-              </span>
-              <h4
-                style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: '1.15rem',
-                  color: 'var(--inv-primary)',
-                  marginBottom: 6,
-                }}
-              >
-                {story.title}
-              </h4>
-              <p style={{ fontSize: '0.8rem', color: 'var(--inv-text)', lineHeight: 1.5, marginBottom: story.image ? 10 : 0 }}>
-                {story.description}
-              </p>
-
-              {story.image && (
-                <div style={{ width: '100%', height: 140, borderRadius: 12, overflow: 'hidden', marginTop: 10 }}>
-                  <img src={story.image} alt={story.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

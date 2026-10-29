@@ -1,0 +1,360 @@
+================================================================================
+                    INFOMASE DIGITAL WEDDING INVITATION
+                           DAFTAR LENGKAP REST API
+================================================================================
+
+[1] BASE URL & HEADERS
+--------------------------------------------------------------------------------
+Base URL (Localhost) : http://localhost/wedding_digital/api/v1
+Base URL (Ngrok)     : https://elvin-affectional-edwardo.ngrok-free.dev/wedding_digital/api/v1
+
+Headers Standar:
+- Content-Type: application/json
+- Accept: application/json
+- Authorization: Bearer <ACCESS_TOKEN>  (Wajib untuk endpoint non-public)
+- ngrok-skip-browser-warning: true      (Wajib jika menggunakan tunneling ngrok)
+
+
+================================================================================
+[2] AUTHENTICATION & USER PROFILE
+================================================================================
+
+1. Register Akun Baru
+   - Method : POST
+   - URL    : /auth/register
+   - Auth   : Public
+   - Body   :
+     {
+       "name": "Budi Santoso",
+       "email": "budi@example.com",
+       "password": "Password123!",
+       "phoneNumber": "081234567890"
+     }
+   - Output : Data user + accessToken + refreshToken
+
+2. Login
+   - Method : POST
+   - URL    : /auth/login
+   - Auth   : Public
+   - Body   :
+     {
+       "email": "budi@example.com",
+       "password": "Password123!"
+     }
+   - Output : Data user + accessToken + refreshToken
+
+3. Ambil Profil User Login (Me)
+   - Method : GET
+   - URL    : /auth/me
+   - Auth   : Bearer Token
+   - Output : Profil user aktif + total undangan yang dimiliki
+
+4. Refresh Access Token
+   - Method : POST
+   - URL    : /auth/refresh-token
+   - Auth   : Public
+   - Body   :
+     {
+       "refreshToken": "<REFRESH_TOKEN>"
+     }
+   - Output : accessToken baru + expiresIn
+
+5. Logout
+   - Method : POST
+   - URL    : /auth/logout
+   - Auth   : Bearer Token
+   - Output : Pesan konfirmasi logout berhasil
+
+
+================================================================================
+[3] TEMPLATE & KATALOG TEMA
+================================================================================
+
+1. Ambil Semua Katalog Desain/Template Undangan
+   - Method : GET
+   - URL    : /templates
+   - Auth   : Public
+   - Output : List template (Rustic Vintage, Emerald Minimalist, Royal Islamic)
+              dilengkapi preview image, harga, tier, & fitur.
+
+
+================================================================================
+[4] MANAJEMEN UNDANGAN (INVITATIONS CRUD)
+================================================================================
+
+1. Ambil Daftar Undangan Milik User
+   - Method : GET
+   - URL    : /invitations
+   - Auth   : Bearer Token
+   - Query  : ?status=published (opsional: all|draft|published|archived)
+              &search=keyword   (opsional)
+              &page=1           (default: 1)
+              &limit=10         (default: 10)
+   - Output : List ringkas undangan + meta pagination
+
+2. Cek Ketersediaan Slug / URL Undangan
+   - Method : GET
+   - URL    : /invitations/check-slug?slug=<nama-slug>
+   - Auth   : Bearer Token
+   - Output : { "available": true/false, "slug": "nama-slug" }
+
+3. Buat Undangan Baru
+   - Method : POST
+   - URL    : /invitations
+   - Auth   : Bearer Token
+   - Body   :
+     {
+       "title": "The Wedding of Romeo & Juliet",
+       "slug": "romeo-juliet",
+       "templateId": "rustic-vintage",
+       "themeConfig": {
+         "primaryColor": "#d4af37",
+         "fontFamily": "Cinzel",
+         "audioAutoplay": true
+       },
+       "groom": {
+         "name": "Romeo Montague",
+         "fatherName": "Bpk. Montague",
+         "motherName": "Ibu Montague",
+         "instagram": "@romeo",
+         "photo": ""
+       },
+       "bride": {
+         "name": "Juliet Capulet",
+         "fatherName": "Bpk. Capulet",
+         "motherName": "Ibu Capulet",
+         "instagram": "@juliet",
+         "photo": ""
+       },
+       "events": [
+         {
+           "title": "Akad Nikah",
+           "date": "2026-12-25",
+           "startTime": "08:00",
+           "endTime": "10:00",
+           "venueName": "Masjid Agung",
+           "address": "Jl. Mawar No. 1",
+           "mapsUrl": "https://maps.google.com/..."
+         }
+       ]
+     }
+   - Output : Detail lengkap undangan yang baru dibuat
+
+4. Ambil Detail Lengkap 1 Undangan
+   - Method : GET
+   - URL    : /invitations/:id
+   - Auth   : Bearer Token
+   - Output : Objek lengkap undangan (mempelai, acara, cerita, galeri, rekening, musik)
+
+5. Update Data Undangan
+   - Method : PUT
+   - URL    : /invitations/:id
+   - Auth   : Bearer Token
+   - Body   : JSON berformat sama dengan Create Undangan (bisa parsial)
+   - Output : Data undangan yang telah terupdate
+
+6. Hapus Undangan
+   - Method : DELETE
+   - URL    : /invitations/:id
+   - Auth   : Bearer Token
+   - Output : Konfirmasi berhasil dihapus
+
+7. Ambil Statistik Undangan
+   - Method : GET
+   - URL    : /invitations/:id/stats
+   - Auth   : Bearer Token
+   - Output : Total tamu, konfirmasi hadir, tidak hadir, belum konfirmasi,
+              total pax hadir, & total ucapan.
+
+
+================================================================================
+[5] UPLOAD MEDIA & BERKAS
+================================================================================
+
+1. Upload Satu Foto (Avatar Mempelai / Cover / Barcode QRIS / Thumbnail)
+   - Method : POST
+   - URL    : /invitations/:id/upload/photo
+   - Auth   : Bearer Token
+   - Type   : multipart/form-data
+   - Params :
+     * photo (File binary: jpg, jpeg, png, webp, max 5MB)
+     * type  (groom | bride | cover | ogImage | qrCode)
+   - Output : { "url": "https://...", "fileName": "...", "type": "groom" }
+
+2. Upload Galeri Foto Sekaligus (Batch)
+   - Method : POST
+   - URL    : /invitations/:id/upload/gallery-batch
+   - Auth   : Bearer Token
+   - Type   : multipart/form-data
+   - Params :
+     * photos[] (Array berkas foto)
+   - Output : Array URL foto yang berhasil tersimpan
+
+3. Upload Lagu / Musik Latar (BGM) Kustom
+   - Method : POST
+   - URL    : /invitations/:id/upload/audio
+   - Auth   : Bearer Token
+   - Type   : multipart/form-data
+   - Params :
+     * audio (File binary: mp3, m4a, wav, max 10MB)
+   - Output : { "url": "https://...", "fileName": "..." }
+
+4. Hapus Berkas Media dari Server
+   - Method : DELETE
+   - URL    : /invitations/:id/assets
+   - Auth   : Bearer Token
+   - Body   :
+     {
+       "fileUrl": "https://<DOMAIN>/wedding_digital/cc-content/uploads/..."
+     }
+   - Output : Konfirmasi berkas terhapus
+
+
+================================================================================
+[6] MANAJEMEN TAMU (GUEST MANAGER)
+================================================================================
+
+1. Ambil Daftar Tamu Undangan
+   - Method : GET
+   - URL    : /invitations/:id/guests
+   - Auth   : Bearer Token
+   - Query  : ?category=VIP      (opsional: VIP|Keluarga|Teman|Rekan)
+              &attendance=HADIR  (opsional: HADIR|TIDAK_HADIR|BELUM_KONFIRMASI)
+              &search=keyword    (opsional)
+              &page=1            (default: 1)
+              &limit=20          (default: 20)
+   - Output : List tamu, status RSVP, link undangan unik masing-masing
+
+2. Tambah 1 Tamu Baru
+   - Method : POST
+   - URL    : /invitations/:id/guests
+   - Auth   : Bearer Token
+   - Body   :
+     {
+       "name": "Dr. H. Ahmad Fauzi",
+       "phoneNumber": "081298765432",
+       "category": "VIP",
+       "maxPax": 2,
+       "notes": "Meja Utama"
+     }
+   - Output : Data tamu baru + kode unik tamu + custom invite link
+
+3. Tambah Banyak Tamu Sekaligus (Bulk Import)
+   - Method : POST
+   - URL    : /invitations/:id/guests/bulk
+   - Auth   : Bearer Token
+   - Body   :
+     {
+       "guests": [
+         { "name": "Bambang", "phoneNumber": "081111111", "category": "Teman" },
+         { "name": "Siti", "phoneNumber": "082222222", "category": "Keluarga" }
+       ]
+     }
+   - Output : Jumlah berhasil diimport dan data tamu
+
+4. Generate Template Pesan WhatsApp & Link Chat
+   - Method : GET
+   - URL    : /invitations/:id/guests/:guest_id/wa-message
+   - Auth   : Bearer Token
+   - Output :
+     {
+       "guestName": "Dr. H. Ahmad Fauzi",
+       "phoneNumber": "081298765432",
+       "message": "Kepada Yth. Dr. H. Ahmad Fauzi...\nBuka undangan: https://...",
+       "waLink": "https://api.whatsapp.com/send?phone=6281298765432&text=..."
+     }
+
+5. Hapus Tamu
+   - Method : DELETE
+   - URL    : /invitations/:id/guests/:guest_id
+   - Auth   : Bearer Token
+   - Output : Konfirmasi tamu berhasil dihapus
+
+
+================================================================================
+[7] MANAJEMEN RSVP & BUKU TAMU (OWNER VIEW)
+================================================================================
+
+1. Ambil Semua Konfirmasi RSVP & Ucapan
+   - Method : GET
+   - URL    : /invitations/:id/rsvps
+   - Auth   : Bearer Token
+   - Query  : ?status=HADIR   (opsional: HADIR|TIDAK_HADIR|RAGU)
+              &search=keyword (opsional)
+              &page=1         (default: 1)
+              &limit=20       (default: 20)
+   - Output : List RSVP, ucapan, jumlah pax, waktu submit
+
+2. Hapus / Moderasi Ucapan Spam
+   - Method : DELETE
+   - URL    : /invitations/:id/rsvps/:rsvp_id
+   - Auth   : Bearer Token
+   - Output : Konfirmasi berhasil dihapus
+
+3. Export Data RSVP ke CSV
+   - Method : GET
+   - URL    : /invitations/:id/rsvps/export
+   - Auth   : Bearer Token
+   - Output : File download .csv berisi seluruh rekap RSVP
+
+
+================================================================================
+[8] ENDPOINT PUBLIK (UNTUK TAMU / WEBPAGE UNDANGAN)
+================================================================================
+
+1. Ambil Detail Web Undangan Publik
+   - Method : GET
+   - URL    : /public/invitations/:slug
+   - Auth   : Public (Tanpa Token)
+   - Query  : ?to=<kode_tamu_atau_nama_tamu> (opsional untuk personalisasi tamu)
+   - Output : Seluruh informasi acara pernikahan, foto, cerita, info rekening,
+              dan informasi tamu (jika parameter ?to disertakan)
+
+2. Kirim RSVP & Ucapan Doa Restu
+   - Method : POST
+   - URL    : /public/invitations/:slug/rsvp
+   - Auth   : Public (Tanpa Token)
+   - Body   :
+     {
+       "guestName": "Dimas Setiawan",
+       "attendance": "HADIR",
+       "totalPax": 2,
+       "message": "Selamat menempuh hidup baru! Semoga sakinah mawaddah warahmah.",
+       "guestCode": "G-102"
+     }
+   - Output : Konfirmasi data RSVP tersimpan
+
+3. Ambil Daftar Ucapan Doa Restu Publik
+   - Method : GET
+   - URL    : /public/invitations/:slug/wishes
+   - Auth   : Public (Tanpa Token)
+   - Query  : ?page=1&limit=20
+   - Output : List ucapan tamu terformat untuk widget buku tamu di website
+
+
+================================================================================
+[9] FORMAT RESPONSE STANDAR
+================================================================================
+
+Response Sukses (200 / 201):
+-----------------------------
+{
+  "success": true,
+  "message": "Operasi berhasil dijalankan",
+  "data": { ... },
+  "timestamp": "2026-10-26T02:00:00Z"
+}
+
+Response Gagal (400 / 401 / 403 / 404 / 409 / 422 / 500):
+---------------------------------------------------------
+{
+  "success": false,
+  "message": "Pesan kegagalan",
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "details": [
+      { "field": "email", "message": "Format email tidak valid" }
+    ]
+  },
+  "timestamp": "2026-10-26T02:00:00Z"
+}

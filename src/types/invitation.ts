@@ -1,4 +1,7 @@
-export type TemplateId = 'rustic' | 'royal-gold' | 'islamic' | 'sakura';
+export type TemplateId =
+  | 'undangan-1'
+  | 'botanical'
+  | (string & {});
 
 export interface PersonInfo {
   name: string;
@@ -65,6 +68,9 @@ export interface InvitationData {
   slug: string;
   title: string;
   templateId: TemplateId;
+  isPublished?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
   groom: PersonInfo;
   bride: PersonInfo;
   quote: {

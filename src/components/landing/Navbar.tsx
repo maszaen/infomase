@@ -2,185 +2,147 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Sparkles, ArrowRight, Menu, X, User as UserIcon, LogOut } from 'lucide-react';
+import { ArrowRight, Menu, X, LogOut, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '@/lib/authContext';
 
 export const Navbar: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+    document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [mobileMenuOpen]);
+
+  const links = [
+    { href: '#templates', label: 'Template' },
+    { href: '#fitur', label: 'Fitur' },
+    { href: '#demo', label: 'Demo' },
+    { href: '#harga', label: 'Harga' },
+    { href: '#testimoni', label: 'Testimoni' },
+  ];
 
   return (
-    <nav
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
-        transition: 'all 0.2s ease',
-        background: '#ffffff',
-        borderBottom: isScrolled ? '1px solid #e2e8f0' : '1px solid #f1f5f9',
-        padding: '14px 0',
-      }}
-    >
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        {/* Brand Logo */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-          <div
-            style={{
-              width: 34,
-              height: 34,
-              borderRadius: 8,
-              background: '#0f172a',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+    <nav className="landing-nav">
+      <div className="container">
+        <div className="landing-nav-inner">
+          <Link
+            href="/"
+            style={{ display: 'flex', alignItems: 'center', gap: 9, textDecoration: 'none' }}
+            onClick={() => setMobileMenuOpen(false)}
           >
-            <Sparkles size={16} color="#ffffff" />
+            <div
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: 7,
+                background: 'var(--brand)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2v6m0 0 4.5 2.6M12 8 7.5 10.6" />
+                <circle cx="12" cy="12" r="3" />
+                <path d="M12 15v7" />
+              </svg>
+            </div>
+            <span style={{ fontSize: 17, fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em' }}>
+              Info<span style={{ color: 'var(--brand)' }}>Mase</span>
+            </span>
+          </Link>
+
+          <div className="landing-nav-links">
+            {links.map((l) => (
+              <a key={l.href} href={l.href}>
+                {l.label}
+              </a>
+            ))}
           </div>
-          <span
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: '1.35rem',
-              fontWeight: 800,
-              color: '#0f172a',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            Info<span style={{ color: '#2563eb' }}>Mase</span>
-          </span>
-        </Link>
 
-        {/* Desktop Nav Links */}
-        <div style={{ display: 'none', alignItems: 'center', gap: 28 }} className="desktop-nav">
-          <a href="#templates" style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-secondary)', transition: 'color 0.15s ease' }}>
-            Template Desain
-          </a>
-          <a href="#fitur" style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-secondary)', transition: 'color 0.15s ease' }}>
-            Fitur Utama
-          </a>
-          <a href="#demo" style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-secondary)', transition: 'color 0.15s ease' }}>
-            Coba Langsung
-          </a>
-          <a href="#harga" style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-secondary)', transition: 'color 0.15s ease' }}>
-            Pilihan Paket
-          </a>
-          <a href="#testimoni" style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-secondary)', transition: 'color 0.15s ease' }}>
-            Testimoni
-          </a>
-        </div>
-
-        {/* Action Buttons */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          {isAuthenticated ? (
-            <>
-              <div
-                style={{
-                  display: 'none',
-                  alignItems: 'center',
-                  gap: 8,
-                  fontSize: '0.85rem',
-                  color: 'var(--text-primary)',
-                  fontWeight: 600,
-                  marginRight: 4,
-                }}
-                id="user-greeting"
-              >
-                <div
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: '50%',
-                    background: '#f1f5f9',
-                    border: '1px solid #e2e8f0',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#0f172a',
-                  }}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            {isAuthenticated ? (
+              <>
+                <Link href="/dashboard" className="btn btn-sm btn-secondary" style={{ textDecoration: 'none' }}>
+                  <LayoutDashboard size={14} />
+                  <span className="nav-user-label">{user?.name?.split(' ')[0] || 'Konsol'}</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => logout()}
+                  className="btn btn-sm btn-ghost btn-icon"
+                  title="Keluar akun"
                 >
-                  <UserIcon size={14} />
-                </div>
-                <span>{user?.name || 'User'}</span>
-              </div>
+                  <LogOut size={15} />
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="btn btn-sm btn-ghost nav-login-link" style={{ textDecoration: 'none' }}>
+                  Masuk
+                </Link>
+                <Link href="/register" className="btn btn-sm btn-primary" style={{ textDecoration: 'none' }}>
+                  <span>Mulai Gratis</span>
+                  <ArrowRight size={14} />
+                </Link>
+              </>
+            )}
 
-              <Link
-                href="/dashboard"
-                className="btn btn-sm btn-gold"
-                style={{ textDecoration: 'none', borderRadius: 8 }}
-              >
-                <span>Buka Studio</span>
-                <ArrowRight size={14} />
-              </Link>
-
-              <button
-                type="button"
-                onClick={() => logout()}
-                className="btn btn-sm btn-subtle"
-                style={{ padding: '8px', color: 'var(--text-muted)' }}
-                title="Keluar Akun"
-              >
-                <LogOut size={16} />
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                href="/login"
-                className="btn btn-sm btn-subtle"
-                style={{ display: 'none', fontWeight: 600 }}
-                id="nav-dashboard-link"
-              >
-                Masuk
-              </Link>
-
-              <Link
-                href="/register"
-                className="btn btn-sm btn-gold"
-                style={{ textDecoration: 'none', borderRadius: 8 }}
-              >
-                <span>Bikin Undangan Sat-Set</span>
-                <ArrowRight size={14} />
-              </Link>
-            </>
-          )}
-
-          {/* Mobile Menu Toggle */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="btn btn-sm btn-subtle"
-            style={{ padding: '8px', display: 'none' }}
-            id="mobile-menu-btn"
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="btn btn-sm btn-ghost btn-icon landing-mobile-btn"
+              aria-label="Menu"
+            >
+              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
         </div>
       </div>
 
+      {mobileMenuOpen && (
+        <div className="landing-mobile-menu">
+          {isAuthenticated && (
+            <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+              Dashboard Konsol
+            </Link>
+          )}
+          {links.map((l) => (
+            <a key={l.href} href={l.href} onClick={() => setMobileMenuOpen(false)}>
+              {l.label}
+            </a>
+          ))}
+          {!isAuthenticated && (
+            <>
+              <a href="/login" onClick={() => setMobileMenuOpen(false)} style={{ color: 'var(--brand)', fontWeight: 600 }}>
+                Masuk
+              </a>
+              <a
+                href="/register"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  textAlign: 'center',
+                  background: 'var(--brand)',
+                  color: '#fff',
+                  fontWeight: 600,
+                  marginTop: 4,
+                }}
+              >
+                Mulai Gratis
+              </a>
+            </>
+          )}
+        </div>
+      )}
+
       <style jsx>{`
-        @media (min-width: 768px) {
-          .desktop-nav {
-            display: flex !important;
-          }
-          #nav-dashboard-link {
-            display: inline-flex !important;
-          }
-        }
-        @media (max-width: 767px) {
-          #mobile-menu-btn {
-            display: inline-flex !important;
-          }
+        @media (max-width: 560px) {
+          .nav-user-label { display: none; }
+          .nav-login-link { display: none; }
         }
       `}</style>
     </nav>

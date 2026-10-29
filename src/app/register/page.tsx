@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/authContext';
-import { User as UserIcon, Mail, Lock, Phone, Eye, EyeOff, ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
+import { User as UserIcon, Mail, Lock, Phone, Eye, EyeOff, ArrowRight, AlertCircle, Check } from 'lucide-react';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -19,7 +19,6 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // If already logged in, redirect to dashboard
   React.useEffect(() => {
     if (isAuthenticated) {
       router.push('/dashboard');
@@ -51,9 +50,7 @@ export default function RegisterPage() {
       });
       router.push('/dashboard');
     } catch (err: any) {
-      setErrorMessage(
-        err.message || 'Pendaftaran gagal. Pastikan email belum pernah terdaftar sebelumnya.'
-      );
+      setErrorMessage(err.message || 'Pendaftaran gagal. Pastikan email belum pernah terdaftar sebelumnya.');
     } finally {
       setIsLoading(false);
     }
@@ -64,318 +61,328 @@ export default function RegisterPage() {
     router.push('/dashboard');
   };
 
+  const passwordChecks = [
+    { label: 'Minimal 6 karakter', ok: password.length >= 6 },
+    { label: 'Konfirmasi cocok', ok: confirmPassword.length > 0 && password === confirmPassword },
+  ];
+
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: 'var(--bg-secondary)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '32px 16px',
-      }}
-    >
-      {/* Brand Header */}
-      <div style={{ textAlign: 'center', marginBottom: 28 }}>
-        <Link
-          href="/"
+    <div style={{ minHeight: '100vh', display: 'flex', background: 'var(--surface)' }}>
+      {/* Left panel — brand showcase */}
+      <aside
+        className="auth-aside"
+        style={{
+          width: 460,
+          flexShrink: 0,
+          background: 'var(--ink)',
+          color: '#fff',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          padding: 40,
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <div
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 10,
-            textDecoration: 'none',
-            color: 'var(--text-primary)',
-            marginBottom: 10,
+            position: 'absolute',
+            inset: 0,
+            backgroundImage:
+              'linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)',
+            backgroundSize: '44px 44px',
+            maskImage: 'radial-gradient(ellipse 90% 70% at 50% 30%, #000 40%, transparent 100%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 90% 70% at 50% 30%, #000 40%, transparent 100%)',
           }}
-        >
+        />
+
+        <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 9, textDecoration: 'none', position: 'relative' }}>
           <div
             style={{
-              width: 36,
-              height: 36,
-              borderRadius: 10,
-              background: 'var(--primary)',
-              color: '#ffffff',
+              width: 28,
+              height: 28,
+              borderRadius: 7,
+              background: 'var(--brand)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: 800,
-              fontSize: '1rem',
             }}
           >
-            IM
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2v6m0 0 4.5 2.6M12 8 7.5 10.6" />
+              <circle cx="12" cy="12" r="3" />
+              <path d="M12 15v7" />
+            </svg>
           </div>
-          <span style={{ fontSize: '1.4rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
-            InfoMase<span style={{ color: '#2563eb' }}>.id</span>
+          <span style={{ fontSize: 17, fontWeight: 700, color: '#fff', letterSpacing: '-0.02em' }}>
+            Info<span style={{ color: '#6ea8ff' }}>Mase</span>
           </span>
         </Link>
-        <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', maxWidth: 360, margin: '0 auto' }}>
-          Daftar akun gratis, bikin undangan digital sat-set dalam hitungan menit!
-        </p>
-      </div>
 
-      {/* Register Card */}
-      <div
-        className="glass-card"
+        <div style={{ position: 'relative' }}>
+          <h2 style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-0.02em', color: '#fff', lineHeight: 1.3 }}>
+            Mulai gratis. Undangan jadi dalam 5 menit.
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 24 }}>
+            {[
+              'Semua fitur inti gratis tanpa kartu kredit',
+              'Template premium Botanical siap pakai',
+              'Tautan undangan langsung aktif',
+              'Data tersimpan aman di perangkat mase',
+            ].map((t) => (
+              <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, color: 'rgba(255,255,255,0.8)' }}>
+                <span
+                  style={{
+                    width: 18,
+                    height: 18,
+                    borderRadius: '50%',
+                    background: 'rgba(0, 81, 195, 0.35)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Check size={11} color="#6ea8ff" />
+                </span>
+                {t}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ position: 'relative', fontSize: 12.5, color: 'rgba(255,255,255,0.5)' }}>
+          &ldquo;Rata-rata bikin undangan cuma 5 menit.&rdquo; — 150.000+ pasangan
+        </div>
+      </aside>
+
+      {/* Right panel — form */}
+      <main
         style={{
-          width: '100%',
-          maxWidth: 440,
-          padding: '32px 28px',
-          borderRadius: 16,
-          boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '40px 24px',
+          background: 'var(--surface)',
         }}
       >
-        <h2
-          style={{
-            fontSize: '1.25rem',
-            fontWeight: 700,
-            color: 'var(--text-primary)',
-            marginBottom: 4,
-          }}
-        >
-          Buat Akun Baru
-        </h2>
-        <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: 22 }}>
-          Mulai rancang undangan pernikahan impian Anda tanpa ribet.
-        </p>
+        <div style={{ width: '100%', maxWidth: 400 }}>
+          <div style={{ marginBottom: 24 }} className="auth-mobile-brand">
+            <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 9, textDecoration: 'none' }}>
+              <div
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: 7,
+                  background: 'var(--brand)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2v6m0 0 4.5 2.6M12 8 7.5 10.6" />
+                  <circle cx="12" cy="12" r="3" />
+                  <path d="M12 15v7" />
+                </svg>
+              </div>
+              <span style={{ fontSize: 17, fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em' }}>
+                Info<span style={{ color: 'var(--brand)' }}>Mase</span>
+              </span>
+            </Link>
+          </div>
 
-        {errorMessage && (
-          <div
-            style={{
-              padding: '14px',
-              borderRadius: 10,
-              background: '#fef2f2',
-              border: '1px solid #fee2e2',
-              color: '#991b1b',
-              fontSize: '0.82rem',
-              marginBottom: 18,
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-              <AlertCircle size={16} style={{ flexShrink: 0, marginTop: 2 }} />
-              <div>{errorMessage}</div>
-            </div>
+          <h1 style={{ fontSize: 21, fontWeight: 700, letterSpacing: '-0.02em' }}>Buat akun baru</h1>
+          <p style={{ fontSize: 13.5, color: 'var(--ink-2)', margin: '6px 0 24px' }}>
+            Mulai rancang undangan pernikahan impian tanpa ribet.
+          </p>
+
+          {errorMessage && (
             <div
               style={{
-                marginTop: 12,
-                paddingTop: 10,
-                borderTop: '1px dashed #fca5a5',
+                padding: '12px 14px',
+                borderRadius: 'var(--radius-sm)',
+                background: 'var(--danger-bg)',
+                border: '1px solid var(--danger-border)',
+                color: 'var(--danger)',
+                fontSize: 13,
+                marginBottom: 18,
                 display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                gap: 8,
+                flexDirection: 'column',
+                gap: 10,
               }}
             >
-              <span style={{ fontSize: '0.76rem', color: '#7f1d1d' }}>
-                Backend belum siap? Masuk uji coba studio:
-              </span>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 9 }}>
+                <AlertCircle size={15} style={{ flexShrink: 0, marginTop: 2 }} />
+                <span>{errorMessage}</span>
+              </div>
               <button
                 type="button"
                 onClick={handleDemoLogin}
-                style={{
-                  background: '#991b1b',
-                  color: '#ffffff',
-                  border: 'none',
-                  borderRadius: 6,
-                  padding: '6px 12px',
-                  fontSize: '0.76rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
+                className="btn btn-sm btn-danger"
+                style={{ alignSelf: 'flex-start' }}
               >
-                Masuk Mode Demo ➔
+                Masuk Mode Demo
+                <ArrowRight size={13} />
               </button>
             </div>
-          </div>
-        )}
+          )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div className="form-group" style={{ margin: 0 }}>
-            <label className="form-label">Nama Lengkap</label>
-            <div style={{ position: 'relative' }}>
-              <UserIcon
-                size={16}
-                style={{
-                  position: 'absolute',
-                  left: 12,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: 'var(--text-muted)',
-                }}
-              />
-              <input
-                type="text"
-                required
-                placeholder="Contoh: Budi Santoso"
-                className="form-input"
-                style={{ paddingLeft: 38 }}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
+          <form onSubmit={handleSubmit} className="stack-md">
+            <div className="form-group">
+              <label className="form-label">Nama lengkap</label>
+              <div className="input-icon-left">
+                <UserIcon size={15} />
+                <input
+                  type="text"
+                  required
+                  placeholder="Contoh: Budi Santoso"
+                  className="form-input"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="form-group" style={{ margin: 0 }}>
-            <label className="form-label">Alamat Email</label>
-            <div style={{ position: 'relative' }}>
-              <Mail
-                size={16}
-                style={{
-                  position: 'absolute',
-                  left: 12,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: 'var(--text-muted)',
-                }}
-              />
-              <input
-                type="email"
-                required
-                placeholder="budi@example.com"
-                className="form-input"
-                style={{ paddingLeft: 38 }}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+            <div className="form-group">
+              <label className="form-label">Alamat email</label>
+              <div className="input-icon-left">
+                <Mail size={15} />
+                <input
+                  type="email"
+                  required
+                  placeholder="budi@example.com"
+                  className="form-input"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="form-group" style={{ margin: 0 }}>
-            <label className="form-label">Nomor WhatsApp (Opsional)</label>
-            <div style={{ position: 'relative' }}>
-              <Phone
-                size={16}
-                style={{
-                  position: 'absolute',
-                  left: 12,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: 'var(--text-muted)',
-                }}
-              />
-              <input
-                type="tel"
-                placeholder="081234567890"
-                className="form-input"
-                style={{ paddingLeft: 38 }}
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
+            <div className="form-group">
+              <label className="form-label">Nomor WhatsApp (opsional)</label>
+              <div className="input-icon-left">
+                <Phone size={15} />
+                <input
+                  type="tel"
+                  placeholder="081234567890"
+                  className="form-input"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="form-group" style={{ margin: 0 }}>
-            <label className="form-label">Kata Sandi</label>
-            <div style={{ position: 'relative' }}>
-              <Lock
-                size={16}
-                style={{
-                  position: 'absolute',
-                  left: 12,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: 'var(--text-muted)',
-                }}
-              />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                required
-                placeholder="Minimal 6 karakter"
-                className="form-input"
-                style={{ paddingLeft: 38, paddingRight: 38 }}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                style={{
-                  position: 'absolute',
-                  right: 12,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'transparent',
-                  border: 'none',
-                  color: 'var(--text-muted)',
-                  cursor: 'pointer',
-                  padding: 0,
-                  display: 'flex',
-                }}
-              >
-                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
+            <div className="form-group">
+              <label className="form-label">Kata sandi</label>
+              <div className="input-icon-left">
+                <Lock size={15} />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  placeholder="Minimal 6 karakter"
+                  className="form-input"
+                  style={{ paddingRight: 36 }}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: 10,
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'var(--ink-3)',
+                    cursor: 'pointer',
+                    padding: 4,
+                    display: 'flex',
+                    borderRadius: 'var(--radius-xs)',
+                  }}
+                  aria-label="Tampilkan password"
+                >
+                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              </div>
             </div>
-          </div>
 
-          <div className="form-group" style={{ margin: 0 }}>
-            <label className="form-label">Ulangi Kata Sandi</label>
-            <div style={{ position: 'relative' }}>
-              <Lock
-                size={16}
-                style={{
-                  position: 'absolute',
-                  left: 12,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: 'var(--text-muted)',
-                }}
-              />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                required
-                placeholder="Ulangi kata sandi"
-                className="form-input"
-                style={{ paddingLeft: 38 }}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
+            <div className="form-group">
+              <label className="form-label">Ulangi kata sandi</label>
+              <div className="input-icon-left">
+                <Lock size={15} />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  placeholder="Ulangi kata sandi"
+                  className="form-input"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </div>
+
+              {(password || confirmPassword) && (
+                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 3 }}>
+                  {passwordChecks.map((c) => (
+                    <span
+                      key={c.label}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 4,
+                        fontSize: 11.5,
+                        color: c.ok ? 'var(--success)' : 'var(--ink-3)',
+                        fontWeight: 500,
+                      }}
+                    >
+                      <Check size={12} />
+                      {c.label}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="btn btn-gold"
+            <button type="submit" disabled={isLoading} className="btn btn-lg btn-primary" style={{ width: '100%', marginTop: 4 }}>
+              {isLoading ? 'Memproses...' : 'Daftar Akun Sekarang'}
+              {!isLoading && <ArrowRight size={15} />}
+            </button>
+          </form>
+
+          <div
             style={{
-              width: '100%',
-              padding: '11px',
-              fontSize: '0.9rem',
-              fontWeight: 600,
-              marginTop: 6,
+              marginTop: 22,
+              paddingTop: 18,
+              borderTop: '1px solid var(--border)',
+              textAlign: 'center',
+              fontSize: 13,
+              color: 'var(--ink-2)',
             }}
           >
-            {isLoading ? 'Sedang Mendaftarkan...' : 'Daftar Akun Sekarang'}
-            {!isLoading && <ArrowRight size={16} />}
-          </button>
-        </form>
+            Sudah punya akun?{' '}
+            <Link href="/login" style={{ color: 'var(--brand)', fontWeight: 600, textDecoration: 'none' }}>
+              Masuk di sini
+            </Link>
+          </div>
 
-        {/* Login Link */}
-        <div
-          style={{
-            marginTop: 22,
-            paddingTop: 18,
-            borderTop: '1px solid var(--border-default)',
-            textAlign: 'center',
-            fontSize: '0.82rem',
-            color: 'var(--text-secondary)',
-          }}
-        >
-          Sudah memiliki akun InfoMase?{' '}
-          <Link
-            href="/login"
-            style={{ color: 'var(--text-primary)', fontWeight: 600, textDecoration: 'underline' }}
-          >
-            Masuk di Sini
-          </Link>
+          <div style={{ marginTop: 16, textAlign: 'center' }}>
+            <Link href="/" style={{ fontSize: 12.5, color: 'var(--ink-3)', textDecoration: 'none' }}>
+              ← Kembali ke halaman utama
+            </Link>
+          </div>
         </div>
-      </div>
+      </main>
 
-      <div style={{ marginTop: 24, fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-        <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
-          ← Kembali ke Halaman Utama
-        </Link>
-      </div>
+      <style jsx>{`
+        .auth-aside { display: none; }
+
+        @media (min-width: 960px) {
+          .auth-aside { display: flex; }
+          .auth-mobile-brand { display: none; }
+        }
+      `}</style>
     </div>
   );
 }
