@@ -31,7 +31,7 @@ export const TemplateTopOrnament: React.FC<OrnamentProps> = ({ templateId = 'rus
     case 'royal-islamic':
       // Mihrab Arch & Basmalah Calligraphic Ornament
       return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, ...style }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-1-5)', ...style }}>
           <svg width={size * 1.8} height={size * 0.8} viewBox="0 0 140 60" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M70 4C45 4 20 28 20 58H120C120 28 95 4 70 4Z" stroke="#e0c075" strokeWidth="1.5" fill="none" opacity="0.7" />
             <path d="M70 12C50 12 30 32 30 58H110C110 32 90 12 70 12Z" stroke="#e0c075" strokeWidth="1" strokeDasharray="2 2" fill="none" opacity="0.5" />
@@ -68,7 +68,7 @@ export const TemplateTopOrnament: React.FC<OrnamentProps> = ({ templateId = 'rus
       // Swiss Editorial Grid & Monogram Frame
       return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, ...style }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2-5)' }}>
             <div style={{ width: 40, height: 1, background: '#09090b' }} />
             <span style={{ fontSize: '0.68rem', letterSpacing: '0.28em', textTransform: 'uppercase', fontWeight: 500, color: '#09090b' }}>
               VOLUME NO. MMXXVI
@@ -84,7 +84,7 @@ export const TemplateTopOrnament: React.FC<OrnamentProps> = ({ templateId = 'rus
     case 'jawa-keraton':
       // Gunungan Wayang Kulit Silhouette Motif
       return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, ...style }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-1-5)', ...style }}>
           <svg width={size * 1.5} height={size * 1.2} viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M50 4C35 25 15 45 10 74H90C85 45 65 25 50 4Z" fill="#ca8a04" opacity="0.25" stroke="#ca8a04" strokeWidth="1.5" />
             <path d="M50 15C40 30 25 48 22 70H78C75 48 60 30 50 15Z" stroke="#ca8a04" strokeWidth="1" strokeDasharray="2 2" fill="none" />
@@ -103,7 +103,7 @@ export const TemplateTopOrnament: React.FC<OrnamentProps> = ({ templateId = 'rus
     case 'sunda-siger':
       // Mahkota Siger Sunda Silhouette Ornament
       return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, ...style }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-1-5)', ...style }}>
           <svg width={size * 1.6} height={size * 0.9} viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
             {/* Siger Crown Peaks */}
             <path d="M15 60L25 35L40 50L60 15L80 50L95 35L105 60H15Z" fill="#eab308" opacity="0.3" stroke="#ca8a04" strokeWidth="2" />
@@ -166,11 +166,11 @@ export const TemplateTopOrnament: React.FC<OrnamentProps> = ({ templateId = 'rus
     case 'neo-glassmorphism':
       // Futuristic Neon Cyan Cyber Badge
       return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, ...style }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-1-5)', ...style }}>
           <div
             style={{
               padding: '4px 16px',
-              borderRadius: 20,
+              borderRadius: 'var(--radius-xl)',
               background: 'rgba(56, 189, 248, 0.1)',
               border: '1px solid #38bdf8',
               boxShadow: '0 0 12px rgba(56, 189, 248, 0.35)',

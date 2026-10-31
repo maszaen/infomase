@@ -28,7 +28,7 @@ export const FloatingMusicPlayer: React.FC<FloatingMusicPlayerProps> = ({
         onClick={onToggle}
         title={isPlaying ? 'Matikan Musik' : 'Putar Musik'}
         aria-label={isPlaying ? 'Matikan Musik' : 'Putar Musik'}
-        className={`pointer-events-auto w-10 h-10 rounded-full bg-white/95 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.15)] border border-[#D5C6B1] text-[#79624C] flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer ${
+        className={`pointer-events-auto w-10 h-10 rounded-full bg-white/95 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.15)] border border-[var(--art-line)] text-[var(--art-accent-deep)] flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer ${
           !isPlaying ? 'opacity-60 bg-stone-100' : ''
         }`}
       >

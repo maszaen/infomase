@@ -1,50 +1,50 @@
-import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-import { Playfair_Display } from 'next/font/google';
+import type { Metadata, Viewport } from 'next';
+import '@fontsource-variable/archivo/wght.css';
+import '@fontsource-variable/archivo/wght-italic.css';
+import '@fontsource-variable/cormorant-garamond/wght.css';
+import '@fontsource-variable/cormorant-garamond/wght-italic.css';
+import '@fontsource/alex-brush/latin-400.css';
 import './globals.css';
 import { AuthProvider } from '@/lib/authContext';
 
-const archivo = localFont({
-  src: [
-    { path: '../fonts/Archivo-Regular.ttf', weight: '400', style: 'normal' },
-    { path: '../fonts/Archivo-Medium.ttf', weight: '500', style: 'normal' },
-    { path: '../fonts/Archivo-Medium.ttf', weight: '600', style: 'normal' },
-    { path: '../fonts/Archivo-Medium.ttf', weight: '700', style: 'normal' },
-    { path: '../fonts/Archivo-Medium.ttf', weight: '800', style: 'normal' },
-  ],
-  variable: '--font-sans',
-  display: 'swap',
-});
-
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-serif',
-  display: 'swap',
-});
-
 export const metadata: Metadata = {
-  title: 'InfoMase - Bikin Undangan Digital Sat-Set, Tamu Auto Merapat!',
-  description: 'Info acara mase! Bikin undangan digital sat-set, tamu auto merapat. Praktis, mewah, musik romantis autoplay, amplop QRIS langsung cair, dan peta Google Maps anti nyasar.',
-  keywords: ['undangan online', 'undangan pernikahan digital', 'infomase', 'wedding invitation', 'undangan web sat set'],
+  metadataBase: new URL('https://infomase.id'),
+  title: {
+    default: 'InfoMase — Beli template undangan digital, sekali bayar',
+    template: '%s · InfoMase',
+  },
+  description:
+    'Pilih template undangan pernikahan digital, bayar sekali per template, dan undangan itu jadi milik Anda untuk acara tersebut. Editor live, RSVP real-time, amplop digital, dan broadcast WhatsApp personal.',
+  keywords: [
+    'undangan pernikahan digital',
+    'template undangan online',
+    'undangan web',
+    'rsvp online',
+    'infomase',
+  ],
+  openGraph: {
+    type: 'website',
+    locale: 'id_ID',
+    title: 'InfoMase — Beli template undangan digital, sekali bayar',
+    description:
+      'Template undangan pernikahan digital yang bisa Anda beli satu per satu. Sekali bayar, satu undangan, tanpa langganan.',
+  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  // ink-900: the browser chrome should match the dark console header.
+  themeColor: '#14151a',
+  width: 'device-width',
+  initialScale: 1,
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="id" className={`${archivo.variable} ${playfair.variable}`}>
-      <head>
-        <link rel="preconnect" href="https://images.unsplash.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="id">
       <body>
+        <a href="#konten" className="skip-link">
+          Lompat ke konten
+        </a>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

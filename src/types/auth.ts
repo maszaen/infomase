@@ -1,13 +1,8 @@
-export interface UserSubscription {
-  plan: 'free' | 'pro' | 'vip';
-  planName: string;
-  status: 'active' | 'expired';
-  expiresAt: string;
-  daysRemaining: number;
-  maxInvitations: number;
-  canPublish: boolean;
-}
-
+/**
+ * No subscription type exists by design.
+ * Entitlements live in `src/lib/orders.ts` (Order + TemplateLicence) and are
+ * scoped per invitation, not per account.
+ */
 export interface User {
   id: string;
   name: string;
@@ -17,7 +12,6 @@ export interface User {
   role: 'USER' | 'ADMIN';
   totalInvitations?: number;
   createdAt?: string;
-  subscription?: UserSubscription;
 }
 
 export interface AuthTokens {

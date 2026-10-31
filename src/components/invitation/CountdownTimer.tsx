@@ -51,7 +51,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) =>
             style={{
               background: 'var(--inv-card)',
               border: '1px solid var(--inv-border)',
-              borderRadius: 14,
+              borderRadius: 'var(--radius-lg)',
               padding: '12px 6px',
               boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
             }}

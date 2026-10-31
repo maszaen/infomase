@@ -98,13 +98,13 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ data }) => {
       </div>
 
       <div className="text-center mb-6 pt-4">
-        <span className="text-[10px] uppercase tracking-[0.3em] text-[#8C735B] font-semibold block mb-1">
+        <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--art-accent)] font-semibold block mb-1">
           OUR MOMENTS
         </span>
-        <h3 className="font-serif text-3xl text-[#382E25] font-semibold">
+        <h3 className="font-serif text-3xl text-[var(--art-ink)] font-semibold">
           Galeri Foto
         </h3>
-        <p className="text-xs text-[#786755] mt-1">
+        <p className="text-xs text-[var(--art-ink-muted)] mt-1">
           Potret cinta dan kebahagiaan kami
         </p>
       </div>
@@ -128,13 +128,13 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ data }) => {
 
       {/* Romantic Quote */}
       <div className="text-center px-4">
-        <p className="font-serif text-sm text-[#382E25] italic leading-relaxed mb-2">
+        <p className="font-serif text-sm text-[var(--art-ink)] italic leading-relaxed mb-2">
           &ldquo;Cinta bukanlah tentang menemukan seseorang yang sempurna, tetapi tentang melihat seseorang yang tidak sempurna dengan cara yang sempurna.&rdquo;
         </p>
         <div className="flex items-center justify-center gap-2">
-          <span className="w-8 h-[1px] bg-[#D5C6B1]"></span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#8C735B]"></span>
-          <span className="w-8 h-[1px] bg-[#D5C6B1]"></span>
+          <span className="w-8 h-[1px] bg-[var(--art-line)]"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--art-accent)]"></span>
+          <span className="w-8 h-[1px] bg-[var(--art-line)]"></span>
         </div>
       </div>
 
@@ -146,7 +146,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ data }) => {
           className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4"
         >
           <div
-            className="max-w-md w-full bg-[#FAF6F0] rounded-3xl overflow-hidden shadow-2xl border border-[#D5C6B1]"
+            className="max-w-md w-full bg-[var(--art-card)] rounded-3xl overflow-hidden shadow-2xl border border-[var(--art-line)]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative">
@@ -164,7 +164,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ data }) => {
               </button>
             </div>
             <div className="p-3 text-center">
-              <p id="lightboxCaption" className="font-serif text-sm text-[#382E25] font-semibold">
+              <p id="lightboxCaption" className="font-serif text-sm text-[var(--art-ink)] font-semibold">
                 {activePhoto.caption}
               </p>
             </div>
