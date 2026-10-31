@@ -1,4 +1,6 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
+import { connection } from 'next/server';
 import InvitationView from './InvitationView';
 
 /**
@@ -37,6 +39,24 @@ export async function generateMetadata({
   };
 }
 
+const Connection = async () => {
+  await connection();
+  return null;
+};
+
+async function DynamicMarker() {
+  return (
+    <Suspense>
+      <Connection />
+    </Suspense>
+  );
+}
+
 export default function InvitePage() {
-  return <InvitationView />;
+  return (
+    <>
+      <InvitationView />
+      <DynamicMarker />
+    </>
+  );
 }

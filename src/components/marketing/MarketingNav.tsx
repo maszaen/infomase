@@ -57,6 +57,7 @@ export function MarketingNav() {
                 </Link>
                 <Link href="/register" className="btn btn-sm btn-primary">
                   <span className="nav-cta-label">Buat undangan</span>
+                  <span className="nav-cta-short">Buat</span>
                   <ArrowRight size={14} />
                 </Link>
               </>
@@ -95,15 +96,6 @@ export function MarketingNav() {
           )}
         </div>
       )}
-
-      <style jsx>{`
-        @media (max-width: 560px) {
-          .nav-login,
-          .nav-cta-label {
-            display: none;
-          }
-        }
-      `}</style>
     </header>
   );
 }

@@ -180,7 +180,7 @@ export const RSVPSection: React.FC<RSVPSectionProps> = ({ data, onAddRSVP, guest
 
           <button
             type="submit"
-            className="w-full py-2.5 rounded-xl bg-[var(--art-accent)] text-white text-xs font-semibold tracking-wider uppercase shadow hover:bg-[var(--art-accent-deep)] transition cursor-pointer"
+            className="w-full py-2.5 rounded-xl bg-[var(--art-accent-deep)] text-white text-xs font-semibold tracking-wider uppercase shadow hover:bg-[var(--art-ink-deep)] transition cursor-pointer"
           >
             Kirim Konfirmasi &amp; Ucapan
           </button>

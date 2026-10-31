@@ -22,7 +22,7 @@ export function AuthShell({
   footer: React.ReactNode;
 }) {
   return (
-    <div style={{ minHeight: '100dvh', display: 'grid', gridTemplateColumns: '1fr' }} className="auth-grid">
+    <div className="auth-shell">
       {/* Brand column: sells the product, not testimonials we can't verify. */}
       <aside className="auth-aside">
         <div style={{ position: 'relative', zIndex: 1 }}>
@@ -81,23 +81,16 @@ export function AuthShell({
         </p>
       </aside>
 
-      <main
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 'var(--space-10) var(--space-6)',
-          background: 'var(--surface)',
-        }}
-      >
-        <div style={{ width: '100%', maxWidth: 392 }}>
-          <div className="auth-mobile-brand" style={{ marginBottom: 'var(--space-6)' }}>
+      <main className="auth-main">
+        <div className="auth-panel">
+          <div className="auth-mobile-brand">
             <Wordmark size={26} />
           </div>
 
           <h1 style={{ fontSize: 'var(--text-xl)', letterSpacing: '-0.02em' }}>{title}</h1>
-          <p style={{ fontSize: 'var(--text-sm)', marginTop: 'var(--space-1-5)', marginBottom: 'var(--space-6)' }}>{subtitle}</p>
+          <p style={{ fontSize: 'var(--text-sm)', marginTop: 'var(--space-1-5)', marginBottom: 'var(--space-6)' }}>
+            {subtitle}
+          </p>
 
           {children}
 
@@ -121,37 +114,6 @@ export function AuthShell({
           </div>
         </div>
       </main>
-
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-            .auth-grid { grid-template-columns: 1fr; }
-            .auth-aside {
-              display: none;
-              flex-direction: column;
-              justify-content: space-between;
-              padding: var(--space-10);
-              background: var(--ink-900);
-              position: relative;
-              overflow: hidden;
-            }
-            .auth-aside::before {
-              content: '';
-              position: absolute;
-              inset: 0;
-              background:
-                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(15,76,129,0.55), transparent 70%),
-                radial-gradient(ellipse 60% 50% at 90% 90%, rgba(169,117,48,0.35), transparent 70%);
-            }
-            .auth-mobile-brand { display: block; }
-            @media (min-width: 940px) {
-              .auth-grid { grid-template-columns: 460px minmax(0, 1fr); }
-              .auth-aside { display: flex; }
-              .auth-mobile-brand { display: none; }
-            }
-          `,
-        }}
-      />
     </div>
   );
 }

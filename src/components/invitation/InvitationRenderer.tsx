@@ -191,6 +191,7 @@ export const InvitationRenderer: React.FC<InvitationRendererProps> = ({
   return (
     <div
       ref={containerRef}
+      className="artifact"
       style={{
         width: '100%',
         minHeight: '100%',

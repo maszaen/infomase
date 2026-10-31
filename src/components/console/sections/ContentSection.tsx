@@ -107,14 +107,14 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
 
   /* ---------------------------------------------------------- field helpers */
   const sectionCard = (title: string, hint: string | undefined, children: React.ReactNode) => (
-    <section className="card" style={{ padding: 'var(--space-5)' }}>
-      <h2 style={{ fontSize: 'var(--text-sm)', marginBottom: hint ? 2 : 'var(--space-4)' }}>{title}</h2>
-      {hint && (
-        <p className="meta" style={{ marginBottom: 'var(--space-4)' }}>
-          {hint}
-        </p>
-      )}
-      {children}
+    <section className="card">
+      <div className="card-header">
+        <div>
+          <h2 className="card-title">{title}</h2>
+          {hint && <p className="card-subtitle">{hint}</p>}
+        </div>
+      </div>
+      <div className="card-body">{children}</div>
     </section>
   );
 
@@ -157,10 +157,12 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
         const person = role === 'groom' ? inv.groom : inv.bride;
         const label = role === 'groom' ? 'Mempelai pria' : 'Mempelai wanita';
         return (
-          <section key={role} className="card" style={{ padding: 'var(--space-5)' }}>
-            <h2 style={{ fontSize: 'var(--text-sm)', marginBottom: 'var(--space-4)' }}>{label}</h2>
-
-            <div className="row-nowrap" style={{ gap: 'var(--space-4)', alignItems: 'flex-start', marginBottom: 'var(--space-4)' }}>
+          <section key={role} className="card">
+            <div className="card-header">
+              <h2 className="card-title">{label}</h2>
+            </div>
+            <div className="card-body">
+              <div className="row-nowrap" style={{ gap: 'var(--space-4)', alignItems: 'flex-start', marginBottom: 'var(--space-4)' }}>
               <div
                 style={{
                   width: 72,
@@ -306,6 +308,7 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
                   }
                 />
               </div>
+              </div>
             </div>
           </section>
         );
@@ -316,9 +319,9 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
   const renderEvents = () => (
     <div className="stack-4">
       {inv.events.map((event, index) => (
-        <section key={event.id} className="card" style={{ padding: 'var(--space-5)' }}>
-          <div className="row-between" style={{ marginBottom: 'var(--space-4)' }}>
-            <h2 style={{ fontSize: 'var(--text-sm)' }}>
+        <section key={event.id} className="card">
+          <div className="card-header">
+            <h2 className="card-title">
               Acara {index + 1} · {event.title || 'Tanpa judul'}
             </h2>
             {inv.events.length > 1 && (
@@ -333,7 +336,8 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
             )}
           </div>
 
-          <div className="grid-2" style={{ gap: 'var(--space-3)' }}>
+          <div className="card-body">
+            <div className="grid-2" style={{ gap: 'var(--space-3)' }}>
             <div className="form-group">
               <label className="form-label" htmlFor={`${event.id}-title`}>
                 Nama acara
@@ -434,6 +438,7 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
               />
             </div>
           </div>
+          </div>
         </section>
       ))}
 
@@ -507,9 +512,9 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
   const renderStory = () => (
     <div className="stack-4">
       {inv.stories.map((story, index) => (
-        <section key={story.id} className="card" style={{ padding: 'var(--space-5)' }}>
-          <div className="row-between" style={{ marginBottom: 'var(--space-3)' }}>
-            <h2 style={{ fontSize: 'var(--text-sm)' }}>Momen {index + 1}</h2>
+        <section key={story.id} className="card">
+          <div className="card-header">
+            <h2 className="card-title">Momen {index + 1}</h2>
             <button
               type="button"
               className="btn btn-sm btn-ghost btn-icon"
@@ -519,6 +524,7 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
               <Trash2 size={14} />
             </button>
           </div>
+          <div className="card-body">
           <div className="grid-2" style={{ gap: 'var(--space-3)' }}>
             <div className="form-group">
               <label className="form-label" htmlFor={`${story.id}-year`}>
@@ -565,6 +571,7 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
                 )
               }
             />
+          </div>
           </div>
         </section>
       ))}
@@ -689,9 +696,9 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
   const renderGift = () => (
     <div className="stack-4">
       {inv.bankAccounts.map((account, index) => (
-        <section key={account.id} className="card" style={{ padding: 'var(--space-5)' }}>
-          <div className="row-between" style={{ marginBottom: 'var(--space-3)' }}>
-            <h2 style={{ fontSize: 'var(--text-sm)' }}>Rekening {index + 1}</h2>
+        <section key={account.id} className="card">
+          <div className="card-header">
+            <h2 className="card-title">Rekening {index + 1}</h2>
             <button
               type="button"
               className="btn btn-sm btn-ghost btn-icon"
@@ -701,6 +708,7 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
               <Trash2 size={14} />
             </button>
           </div>
+          <div className="card-body">
           <div className="grid-2" style={{ gap: 'var(--space-3)' }}>
             <div className="form-group">
               <label className="form-label" htmlFor={`${account.id}-bank`}>
@@ -767,6 +775,7 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
                 }
               />
             </div>
+          </div>
           </div>
         </section>
       ))}
@@ -927,7 +936,7 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
                 aria-pressed={tab === item.id}
                 onClick={() => setTab(item.id)}
               >
-                <Icon size={13} style={{ verticalAlign: 'calc(var(--space-0-5) * -1)', marginRight: 'var(--space-1)' }} />
+                <Icon size={13} />
                 {item.label}
               </button>
             );
@@ -964,15 +973,8 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
             />
           </div>
 
-          <div
-            style={{
-              height: 560,
-              borderRadius: 'var(--radius-md)',
-              overflow: 'hidden',
-              border: '1px solid var(--border)',
-            }}
-          >
-            <div style={{ width: 375, minWidth: 375, height: '100%', transform: 'scale(0.94)', transformOrigin: 'top left' }}>
+          <div className="content-preview">
+            <div className="content-preview-inner">
               <div className="phone-screen" style={{ height: '100%' }}>
                 <InvitationRenderer data={inv} guestName={previewGuest} defaultOpened />
               </div>

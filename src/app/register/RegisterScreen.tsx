@@ -17,6 +17,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -175,18 +176,37 @@ export default function RegisterPage() {
           <label className="form-label" htmlFor="register-confirm">
             Ulangi kata sandi
           </label>
-          <div className="input-icon-left">
+          <div className="input-icon-left" style={{ position: 'relative' }}>
             <Lock size={15} />
             <input
               id="register-confirm"
-              type={showPassword ? 'text' : 'password'}
+              type={showConfirm ? 'text' : 'password'}
               className="form-input"
               required
               autoComplete="new-password"
               placeholder="Ulangi kata sandi"
+              style={{ paddingRight: 'var(--space-10)' }}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
+            <button
+              type="button"
+              onClick={() => setShowConfirm((v) => !v)}
+              aria-label={showConfirm ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
+              style={{
+                position: 'absolute',
+                right: 8,
+                display: 'flex',
+                padding: 4,
+                border: 'none',
+                background: 'transparent',
+                color: 'var(--ink-400)',
+                cursor: 'pointer',
+                borderRadius: 'var(--radius-xs)',
+              }}
+            >
+              {showConfirm ? <EyeOff size={15} /> : <Eye size={15} />}
+            </button>
           </div>
 
           {(password || confirmPassword) && (

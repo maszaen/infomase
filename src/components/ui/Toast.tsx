@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { AlertCircle, CheckCircle2, Info } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Info, X } from 'lucide-react';
 
 type ToastKind = 'success' | 'error' | 'info';
 interface ToastItem {
@@ -46,7 +46,15 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             {item.kind === 'success' && <CheckCircle2 size={16} />}
             {item.kind === 'error' && <AlertCircle size={16} />}
             {item.kind === 'info' && <Info size={16} />}
-            <span>{item.text}</span>
+            <span style={{ flex: 1, minWidth: 0 }}>{item.text}</span>
+            <button
+              type="button"
+              className="toast-close"
+              aria-label="Tutup notifikasi"
+              onClick={() => setItems((prev) => prev.filter((i) => i.id !== item.id))}
+            >
+              <X size={13} />
+            </button>
           </div>
         ))}
       </div>

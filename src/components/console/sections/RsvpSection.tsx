@@ -46,6 +46,12 @@ export function RsvpSection({ invitationId }: { invitationId: string }) {
   if (!inv) return null;
 
   const rows = inv.rsvpList.filter((item) => filter === 'all' || item.attendance === filter);
+  const counts: Record<'all' | Attendance, number> = {
+    all: inv.rsvpList.length,
+    hadir: stats.hadir,
+    ragu: stats.ragu,
+    tidak: stats.tidak,
+  };
 
   const remove = async (id: string) => {
     try {
@@ -86,75 +92,72 @@ export function RsvpSection({ invitationId }: { invitationId: string }) {
         </div>
       </div>
 
-      <div className="row" style={{ gap: 'var(--space-1-5)' }}>
-        {FILTERS.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            className="chip"
-            aria-pressed={filter === item.id}
-            onClick={() => setFilter(item.id)}
-            style={
-              filter === item.id
-                ? { background: 'var(--ink-900)', borderColor: 'var(--ink-900)', color: 'var(--on-inverse)' }
-                : undefined
-            }
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
-
-      {rows.length === 0 ? (
-        <div className="empty-state card">
-          <MessageSquareHeart size={22} />
-          <h3>Belum ada konfirmasi</h3>
-          <p>Ucapan dan konfirmasi tamu akan muncul di sini begitu mereka membuka undangan.</p>
-        </div>
-      ) : (
-        <div className="stack-2">
-          {rows.map((item) => {
-            const meta = ATTENDANCE_META[item.attendance];
-            const Icon = meta.icon;
-            return (
-              <article
+      <section className="page-section">
+        <div className="section-bar">
+          <div>
+            <h2>Ucapan &amp; konfirmasi</h2>
+            <p>Terbaru lebih dulu. Hapus ucapan yang tidak pantas tampil di undangan.</p>
+          </div>
+          <div className="filter-scroll" role="group" aria-label="Filter konfirmasi">
+            {FILTERS.map((item) => (
+              <button
                 key={item.id}
-                className="card"
-                style={{ display: 'flex', gap: 'var(--space-3)', padding: 'var(--space-4)' }}
+                type="button"
+                className={`chip ${filter === item.id ? 'is-active' : ''}`}
+                aria-pressed={filter === item.id}
+                onClick={() => setFilter(item.id)}
               >
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div className="row" style={{ gap: 8 }}>
-                    <span style={{ fontSize: 'var(--text-sm)', fontWeight: 620, color: 'var(--ink-900)' }}>
-                      {item.guestName}
-                    </span>
-                    <span className={`badge ${meta.badge}`}>
-                      <Icon size={11} /> {meta.label}
-                    </span>
-                    <span className="meta">{item.pax} pax</span>
-                  </div>
-                  {item.message && (
-                    <p style={{ fontSize: 'var(--text-sm)', marginTop: 'var(--space-1-5)', lineHeight: 1.6 }}>
-                      “{item.message}”
-                    </p>
-                  )}
-                  <span className="meta" style={{ display: 'block', marginTop: 'var(--space-1-5)' }}>
-                    {formatRelative(item.createdAt)}
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  className="btn btn-sm btn-ghost btn-icon"
-                  onClick={() => remove(item.id)}
-                  aria-label={`Hapus ucapan dari ${item.guestName}`}
-                  style={{ color: 'var(--danger)', flexShrink: 0 }}
-                >
-                  <Trash2 size={14} />
-                </button>
-              </article>
-            );
-          })}
+                {item.label} ({counts[item.id]})
+              </button>
+            ))}
+          </div>
         </div>
-      )}
+
+        {rows.length === 0 ? (
+          <div className="empty-state card">
+            <MessageSquareHeart size={22} />
+            <h3>{inv.rsvpList.length === 0 ? 'Belum ada konfirmasi' : 'Tidak ada di filter ini'}</h3>
+            <p>
+              {inv.rsvpList.length === 0
+                ? 'Ucapan dan konfirmasi tamu akan muncul di sini begitu mereka membuka undangan.'
+                : 'Pilih filter lain untuk melihat konfirmasi tamu.'}
+            </p>
+          </div>
+        ) : (
+          <div className="record-list">
+            {rows.map((item) => {
+              const meta = ATTENDANCE_META[item.attendance];
+              const Icon = meta.icon;
+              return (
+                <article key={item.id} className="card record rsvp-item">
+                  <div className="record-main">
+                    <div className="record-title-row">
+                      <span className="record-title rsvp-name">{item.guestName}</span>
+                      <span className={`badge ${meta.badge}`}>
+                        <Icon size={11} /> {meta.label}
+                      </span>
+                      <span className="meta">{item.pax} pax</span>
+                    </div>
+                    {item.message && <p className="rsvp-quote">“{item.message}”</p>}
+                    <span className="rsvp-time">{formatRelative(item.createdAt)}</span>
+                  </div>
+                  <div className="record-actions">
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-ghost btn-icon"
+                      onClick={() => remove(item.id)}
+                      aria-label={`Hapus ucapan dari ${item.guestName}`}
+                      style={{ color: 'var(--danger)' }}
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </section>
     </div>
   );
 }

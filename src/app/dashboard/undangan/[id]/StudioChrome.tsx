@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useEffect, use } from 'react';
+import React, { use } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ExternalLink, Lock, ShieldCheck } from 'lucide-react';
+import { EyeOff, ExternalLink, Globe, Lock, ShieldCheck } from 'lucide-react';
 import { ConsolePageHeader } from '@/components/console/ConsolePageHeader';
 import { useInvitationStore } from '@/lib/invitationStore';
-import { getTemplate } from '@/lib/templates';
+import { useToast } from '@/components/ui/Toast';
+import { getTemplate, formatIDR } from '@/lib/templates';
 
 export default function StudioLayout({
   children,
@@ -16,39 +17,70 @@ export default function StudioLayout({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const { invitations, activeId, setActiveInvitation, data, isPublishable } = useInvitationStore();
+  const { invitations, setActiveInvitation, data, isPublishable, togglePublish } = useInvitationStore();
+  const toast = useToast();
 
-  const exists = invitations.some((inv) => inv.id === id);
+  const invitation = invitations.find((inv) => inv.id === id);
 
-  useEffect(() => {
-    if (exists && activeId !== id) setActiveInvitation(id);
-  }, [exists, id, activeId, setActiveInvitation]);
+  React.useEffect(() => {
+    if (invitation) setActiveInvitation(id);
+  }, [invitation, id, setActiveInvitation]);
 
-  if (!exists) {
+  if (!invitation) {
     notFound();
   }
 
-  const invitation = invitations.find((inv) => inv.id === id) ?? data;
   const template = getTemplate(invitation.templateId);
   const publishable = isPublishable(invitation.id);
+
+  const handlePublish = () => {
+    const result = togglePublish(invitation.id);
+    if (!result.ok) {
+      toast('error', 'Lisensi belum aktif untuk undangan ini.');
+      return;
+    }
+    toast(
+      result.isPublished ? 'success' : 'info',
+      result.isPublished
+        ? 'Undangan tayang. Tautan publik sudah bisa dibuka tamu.'
+        : 'Undangan kembali ke draf. Tautan publik dinonaktifkan.'
+    );
+  };
 
   return (
     <>
       <ConsolePageHeader
         title={invitation.title}
         back={{ label: 'Semua undangan', href: '/dashboard' }}
-        description={
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-2xs)' }}>/invite/{invitation.slug}</span>
-        }
+        description={<span style={{ fontFamily: 'var(--font-mono)' }}>/invite/{invitation.slug}</span>}
         actions={
           <>
-            <span className={`badge ${invitation.isPublished ? 'badge-success' : publishable ? '' : 'badge-warning'}`}>
+            <span
+              className={`badge ${
+                invitation.isPublished ? 'badge-success' : publishable ? '' : 'badge-warning'
+              }`}
+            >
               {invitation.isPublished ? 'Tayang' : publishable ? 'Draf' : 'Belum berlisensi'}
             </span>
 
-            <Link href={`/dashboard/undangan/${invitation.id}/design`} className="btn btn-sm btn-secondary">
-              {invitation.isPublished ? 'Kelola tayang' : 'Tayangkan'}
-            </Link>
+            {publishable ? (
+              <button
+                type="button"
+                className={`btn btn-sm ${invitation.isPublished ? 'btn-secondary' : 'btn-primary'}`}
+                onClick={handlePublish}
+              >
+                {invitation.isPublished ? <EyeOff size={13} /> : <Globe size={13} />}
+                <span className="btn-label">{invitation.isPublished ? 'Jadikan draf' : 'Tayangkan'}</span>
+              </button>
+            ) : template ? (
+              <Link
+                href={`/checkout?template=${template.id}&undangan=${invitation.id}`}
+                className="btn btn-sm btn-buy"
+              >
+                <Lock size={13} />
+                <span className="btn-label">Beli {formatIDR(template.price)}</span>
+              </Link>
+            ) : null}
 
             <Link
               href={`/invite/${invitation.slug}`}
@@ -56,43 +88,37 @@ export default function StudioLayout({
               rel="noreferrer"
               className="btn btn-sm btn-ghost"
               aria-label="Buka undangan publik"
+              title="Buka undangan publik"
             >
               <ExternalLink size={14} />
-              <span className="hide-sm">Lihat</span>
+              <span className="btn-label">Lihat</span>
             </Link>
           </>
         }
       />
 
       {template && (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            padding: '5px var(--space-5)',
-            background: publishable ? 'var(--surface)' : 'var(--warning-bg)',
-            borderBottom: `1px solid ${publishable ? 'var(--border-subtle)' : 'var(--warning-border)'}`,
-            fontSize: 'var(--text-2xs)',
-            color: publishable ? 'var(--ink-500)' : 'var(--warning)',
-          }}
-        >
+        <div className={`studio-strip${publishable ? '' : ' is-warning'}`}>
           {publishable ? (
             <>
-              <ShieldCheck size={13} style={{ color: 'var(--success)' }} />
-              Lisensi {template.name} aktif permanen untuk undangan ini.
+              <ShieldCheck size={13} style={{ color: 'var(--success)', flexShrink: 0 }} />
+              <span>
+                Lisensi <b>{template.name}</b> aktif permanen untuk undangan ini.
+              </span>
             </>
           ) : (
             <>
-              <Lock size={13} />
-              Draf. Beli lisensi {template.name} agar tautan bisa dibuka tamu — isi kontennya tetap tersimpan.
+              <Lock size={13} style={{ flexShrink: 0 }} />
+              <span>
+                Draf. Beli lisensi <b>{template.name}</b> agar tautan bisa dibuka tamu — isi konten tetap
+                tersimpan.
+              </span>
             </>
           )}
         </div>
       )}
 
       {children}
-
     </>
   );
 }

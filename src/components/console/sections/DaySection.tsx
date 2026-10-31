@@ -36,6 +36,8 @@ export function DaySection({ invitationId }: { invitationId: string }) {
 
   const guests = inv.guests.filter((g) => g.name.toLowerCase().includes(search.toLowerCase()));
   const checkedCount = Object.values(checkedIn).filter(Boolean).length;
+  const recommended = derived.recommended;
+  const prasmanan = Math.round(recommended * 0.6);
 
   const exportCsv = () => {
     const header = ['Nama', 'Kategori', 'Telepon', 'Status RSVP', 'Pax', 'Pesan'];
@@ -61,139 +63,133 @@ export function DaySection({ invitationId }: { invitationId: string }) {
   return (
     <div className="studio-section">
       {/* ------------------------------------------------------------- catering */}
-      <section className="card" style={{ padding: 'var(--space-5)' }}>
-        <div className="row-between" style={{ marginBottom: 'var(--space-4)' }}>
-          <div>
-            <h2 style={{ fontSize: 'var(--text-sm)' }}>Estimasi porsi katering</h2>
-            <p className="meta">Dihitung dari konfirmasi hadir, bukan dari jumlah tamu yang diundang.</p>
-          </div>
-          <Utensils size={17} style={{ color: 'var(--ink-400)' }} />
-        </div>
-
-        <div className="grid-3" style={{ gap: 'var(--space-4)', marginBottom: 'var(--space-4)' }}>
-          <div>
-            <div className="stat-card-label">Sudah hadir (RSVP)</div>
-            <div className="stat-card-value">{derived.hadir}</div>
-            <div className="stat-card-desc">{derived.pax} pax</div>
-          </div>
-          <div>
-            <div className="stat-card-label">Porsi disarankan</div>
-            <div className="stat-card-value" style={{ color: 'var(--brand)' }}>
-              {derived.recommended}
-            </div>
-            <div className="stat-card-desc">Buffer {Math.round((buffer - 1) * 100)}%</div>
-          </div>
-          <div>
-            <div className="stat-card-label">Rincian</div>
-            <div style={{ fontSize: 'var(--text-sm)', lineHeight: 1.7, marginTop: 4 }}>
-              <div className="row-between">
-                <span>Prasmanan</span>
-                <span className="numeric">{Math.round(derived.recommended * 0.6)}</span>
-              </div>
-              <div className="row-between">
-                <span>Gubukan</span>
-                <span className="numeric">{Math.max(0, derived.recommended - Math.round(derived.recommended * 0.6))}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="form-group" style={{ maxWidth: 320 }}>
-          <label className="form-label" htmlFor="buffer">
-            Buffer untuk keluarga &amp; panitia
-          </label>
-          <select
-            id="buffer"
-            className="form-select"
-            value={buffer}
-            onChange={(e) => setBuffer(Number(e.target.value))}
-          >
-            <option value={1}>Tanpa buffer</option>
-            <option value={1.1}>+10%</option>
-            <option value={1.15}>+15% (disarankan)</option>
-            <option value={1.25}>+25%</option>
-          </select>
-        </div>
-
-        <p className="meta" style={{ marginTop: 'var(--space-3)' }}>
-          Angka ini perkiraan. Konfirmasi final tetap dengan katering Anda.
-        </p>
-      </section>
-
-      {/* ------------------------------------------------------------- check-in */}
       <section className="card">
         <div className="card-header">
           <div>
-            <h2 className="card-title">Check-in tamu</h2>
-            <p className="card-subtitle">
-              {formatFullIndonesianDate(inv.events[0]?.date ?? '')} · {checkedCount} dari {inv.guests.length} tamu
-            </p>
+            <h2 className="card-title">Estimasi porsi katering</h2>
+            <p className="card-subtitle">Dihitung dari konfirmasi hadir, bukan dari jumlah tamu yang diundang.</p>
           </div>
-          <div className="row" style={{ gap: 8 }}>
-            <div className="search-box" style={{ width: 220 }}>
-              <Search size={14} className="search-icon" />
-              <input
-                className="form-input"
-                placeholder="Cari nama…"
-                aria-label="Cari nama tamu"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-            <button type="button" className="btn btn-sm btn-secondary" onClick={exportCsv}>
-              <Download size={13} /> Unduh RSVP
-            </button>
+          <div className="row" style={{ gap: 'var(--space-2)' }}>
+            <select
+              id="buffer"
+              className="form-select"
+              style={{ width: 'auto' }}
+              value={buffer}
+              onChange={(e) => setBuffer(Number(e.target.value))}
+              aria-label="Buffer porsi"
+            >
+              <option value={1}>Tanpa buffer</option>
+              <option value={1.1}>+10%</option>
+              <option value={1.15}>+15% (disarankan)</option>
+              <option value={1.25}>+25%</option>
+            </select>
+            <Utensils size={17} style={{ color: 'var(--ink-400)' }} />
           </div>
         </div>
 
-        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1-5)' }}>
-          {guests.length === 0 ? (
-            <p className="meta">Tidak ada tamu yang cocok.</p>
-          ) : (
-            guests.map((guest) => {
+        <div className="card-body">
+          <div className="catering-grid">
+            <div className="catering-metric">
+              <span className="stat-card-label">Sudah hadir (RSVP)</span>
+              <span className="catering-value">{derived.hadir}</span>
+              <span className="stat-card-desc">{derived.pax} pax</span>
+            </div>
+            <div className="catering-metric">
+              <span className="stat-card-label">Porsi disarankan</span>
+              <span className="catering-value" style={{ color: 'var(--brand)' }}>
+                {recommended}
+              </span>
+              <span className="stat-card-desc">Buffer {Math.round((buffer - 1) * 100)}%</span>
+            </div>
+            <div className="catering-metric">
+              <span className="stat-card-label">Rincian porsi</span>
+              <span className="catering-split">
+                <span>Prasmanan</span>
+                <b className="numeric">{prasmanan}</b>
+              </span>
+              <span className="catering-split">
+                <span>Gubukan</span>
+                <b className="numeric">{Math.max(0, recommended - prasmanan)}</b>
+              </span>
+            </div>
+          </div>
+
+          <p className="meta" style={{ marginTop: 'var(--space-3)' }}>
+            Angka ini perkiraan. Konfirmasi final tetap dengan katering Anda.
+          </p>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- check-in */}
+      <section className="page-section">
+        <div className="section-bar">
+          <div>
+            <h2>Check-in tamu</h2>
+            <p>
+              {formatFullIndonesianDate(inv.events[0]?.date ?? '')} · {checkedCount} dari {inv.guests.length} tamu
+            </p>
+          </div>
+          <button type="button" className="btn btn-sm btn-secondary" onClick={exportCsv}>
+            <Download size={13} /> Unduh RSVP
+          </button>
+        </div>
+
+        <div className="editor-toolbar">
+          <div className="search-box">
+            <Search size={14} className="search-icon" />
+            <input
+              className="form-input"
+              placeholder="Cari nama…"
+              aria-label="Cari nama tamu"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {guests.length === 0 ? (
+          <div className="empty-state card">
+            <Search size={22} />
+            <h3>Tidak ada tamu yang cocok</h3>
+            <p>Ubah kata kunci pencarian atau tambahkan tamu lebih dulu.</p>
+          </div>
+        ) : (
+          <div className="record-list">
+            {guests.map((guest) => {
               const done = Boolean(checkedIn[guest.id]);
               return (
-                <div
-                  key={guest.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 'var(--space-3)',
-                    padding: '8px 10px',
-                    border: '1px solid var(--border)',
-                    borderRadius: 'var(--radius-sm)',
-                    background: done ? 'var(--success-bg)' : 'var(--surface)',
-                    borderColor: done ? 'var(--success-border)' : 'var(--border)',
-                  }}
-                >
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 'var(--text-sm)', fontWeight: 560, color: 'var(--ink-900)' }}>
-                      {guest.name}
+                <div key={guest.id} className={`card record checkin-row ${done ? 'is-done' : ''}`}>
+                  <div className="record-main">
+                    <div className="record-title-row">
+                      <span className="record-title rsvp-name">{guest.name}</span>
+                      {done && <span className="badge badge-success">Hadir</span>}
                     </div>
-                    <div className="meta">
+                    <div className="record-meta">
                       {guest.category}
                       {guest.phone ? ` · ${guest.phone}` : ''}
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    className={`btn btn-sm ${done ? 'btn-success' : 'btn-secondary'}`}
-                    onClick={() => setCheckedIn((prev) => ({ ...prev, [guest.id]: !done }))}
-                    aria-pressed={done}
-                  >
-                    {done ? (
-                      <>
-                        <Check size={12} /> Sudah hadir
-                      </>
-                    ) : (
-                      'Tandai hadir'
-                    )}
-                  </button>
+                  <div className="record-actions">
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => setCheckedIn((prev) => ({ ...prev, [guest.id]: !done }))}
+                      aria-pressed={done}
+                    >
+                      {done ? (
+                        <>
+                          <Check size={12} /> Batalkan
+                        </>
+                      ) : (
+                        'Tandai hadir'
+                      )}
+                    </button>
+                  </div>
                 </div>
               );
-            })
-          )}
-        </div>
+            })}
+          </div>
+        )}
       </section>
     </div>
   );

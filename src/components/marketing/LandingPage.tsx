@@ -120,7 +120,7 @@ function Hero() {
               Lengkap dengan RSVP real-time, amplop digital, dan tautan personal untuk setiap tamu.
             </p>
 
-            <div className="row" style={{ gap: 'var(--space-3)', marginBottom: 'var(--space-5)' }}>
+            <div className="row cta-row" style={{ gap: 'var(--space-3)', marginBottom: 'var(--space-5)' }}>
               <Link href="#template" className="btn btn-lg btn-primary">
                 Lihat template <ArrowRight size={16} />
               </Link>
@@ -636,7 +636,7 @@ function FinalCta() {
           Buat undangan pertama Anda sekarang. Tidak perlu kartu kredit, dan Anda bisa melihat hasilnya di
           layar ponsel sebelum menyebarkan satu tautan pun.
         </p>
-        <div className="row" style={{ justifyContent: 'center', marginTop: 'var(--space-5)', gap: 'var(--space-3)' }}>
+        <div className="row cta-row" style={{ justifyContent: 'center', marginTop: 'var(--space-5)', gap: 'var(--space-3)' }}>
           <Link href="/register" className="btn btn-lg btn-primary">
             Buat undangan <ArrowRight size={16} />
           </Link>

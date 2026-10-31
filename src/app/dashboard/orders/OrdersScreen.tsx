@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, BadgeCheck, Receipt } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Receipt, ShoppingBag, Wallet } from 'lucide-react';
 import { ConsolePageHeader } from '@/components/console/ConsolePageHeader';
 import { useInvitationStore } from '@/lib/invitationStore';
 import { formatIDR, getTemplate } from '@/lib/templates';
@@ -28,26 +28,46 @@ export default function OrdersPage() {
       <div className="page-content stack-6">
         <div className="stats-grid">
           <div className="stat-card">
-            <span className="stat-card-label">Lisensi aktif</span>
+            <div className="row-nowrap" style={{ gap: 8, marginBottom: 4 }}>
+              <span className="stat-icon" style={{ width: 24, height: 24 }}>
+                <BadgeCheck size={14} />
+              </span>
+              <span className="stat-card-label">Lisensi aktif</span>
+            </div>
             <span className="stat-card-value">{licences.length}</span>
             <span className="stat-card-desc">Tanpa tanggal kedaluwarsa</span>
           </div>
           <div className="stat-card">
-            <span className="stat-card-label">Total pembayaran</span>
-            <span className="stat-card-value" style={{ fontSize: 'var(--text-xl)' }}>
+            <div className="row-nowrap" style={{ gap: 8, marginBottom: 4 }}>
+              <span className="stat-icon" style={{ width: 24, height: 24 }}>
+                <Wallet size={14} />
+              </span>
+              <span className="stat-card-label">Total dibayar</span>
+            </div>
+            <span className="stat-card-value" style={{ fontSize: 'var(--text-lg)' }}>
               {formatIDR(totalPaid)}
             </span>
             <span className="stat-card-desc">Termasuk template gratis</span>
           </div>
           <div className="stat-card">
-            <span className="stat-card-label">Undangan bisa tayang</span>
-            <span className="stat-card-value">{licences.length}</span>
-            <span className="stat-card-desc">Tanpa perpanjangan</span>
+            <div className="row-nowrap" style={{ gap: 8, marginBottom: 4 }}>
+              <span className="stat-icon" style={{ width: 24, height: 24 }}>
+                <ShoppingBag size={14} />
+              </span>
+              <span className="stat-card-label">Total pesanan</span>
+            </div>
+            <span className="stat-card-value">{orders.length}</span>
+            <span className="stat-card-desc">Semua status</span>
           </div>
         </div>
 
-        <section>
-          <h2 style={{ fontSize: 'var(--text-md)', marginBottom: 'var(--space-3)' }}>Riwayat pesanan</h2>
+        <section className="page-section">
+          <div className="section-bar">
+            <div>
+              <h2>Riwayat pesanan</h2>
+              <p>Nomor referensi dipakai saat menghubungi dukungan.</p>
+            </div>
+          </div>
 
           {orders.length === 0 ? (
             <div className="empty-state card">
@@ -64,10 +84,10 @@ export default function OrdersPage() {
                 <thead>
                   <tr>
                     <th>Referensi</th>
-                    <th>Undangan</th>
-                    <th>Template</th>
-                    <th>Metode</th>
-                    <th>Tanggal</th>
+                    <th className="col-md">Undangan</th>
+                    <th className="col-md">Template</th>
+                    <th className="col-md">Metode</th>
+                    <th className="col-sm">Tanggal</th>
                     <th>Status</th>
                     <th style={{ textAlign: 'right' }}>Nominal</th>
                   </tr>
@@ -75,11 +95,13 @@ export default function OrdersPage() {
                 <tbody>
                   {orders.map((order) => (
                     <tr key={order.id}>
-                      <td style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-2xs)' }}>{order.reference}</td>
-                      <td>{order.invitationTitle}</td>
-                      <td>{getTemplate(order.templateId)?.name ?? order.templateId}</td>
-                      <td>{formatPaymentMethod(order.method)}</td>
-                      <td>{formatOrderDate(order.paidAt ?? order.createdAt)}</td>
+                      <td style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-2xs)' }}>
+                        {order.reference}
+                      </td>
+                      <td className="col-md">{order.invitationTitle}</td>
+                      <td className="col-md">{getTemplate(order.templateId)?.name ?? order.templateId}</td>
+                      <td className="col-md">{formatPaymentMethod(order.method)}</td>
+                      <td className="col-sm">{formatOrderDate(order.paidAt ?? order.createdAt)}</td>
                       <td>
                         <span className={`badge ${order.status === 'paid' ? 'badge-success' : 'badge-warning'}`}>
                           {formatOrderStatus(order.status)}
@@ -96,39 +118,47 @@ export default function OrdersPage() {
           )}
         </section>
 
-        <section>
-          <h2 style={{ fontSize: 'var(--text-md)', marginBottom: 'var(--space-3)' }}>Lisensi</h2>
+        <section className="page-section">
+          <div className="section-bar">
+            <h2>Lisensi</h2>
+            <span className="badge">{licences.length} aktif</span>
+          </div>
           {licences.length === 0 ? (
             <div className="notice">
               <BadgeCheck size={15} />
               <span>Lisensi muncul setelah Anda membeli template untuk sebuah undangan.</span>
             </div>
           ) : (
-            <div className="stack-2">
-              {licences.map((licence) => (
-                <div
-                  key={licence.id}
-                  className="card"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 'var(--space-3)',
-                    padding: 'var(--space-3) var(--space-4)',
-                    flexWrap: 'wrap',
-                  }}
-                >
-                  <BadgeCheck size={17} style={{ color: 'var(--success)' }} />
-                  <div style={{ flex: 1, minWidth: 200 }}>
-                    <div style={{ fontSize: 'var(--text-sm)', fontWeight: 620 }}>
-                      {getTemplate(licence.templateId)?.name ?? licence.templateId}
+            <div className="record-list">
+              {licences.map((licence) => {
+                const template = getTemplate(licence.templateId);
+                return (
+                  <div key={licence.id} className="card record">
+                    <img src={template?.previewImage ?? ''} alt="" className="thumb thumb-portrait" />
+                    <div className="record-main">
+                      <div className="record-title-row">
+                        <span className="record-title" style={{ cursor: 'default' }}>
+                          {template?.name ?? licence.templateId}
+                        </span>
+                        <span className="badge badge-success">
+                          <BadgeCheck size={11} /> Permanen
+                        </span>
+                      </div>
+                      <div className="record-meta">
+                        Diterbitkan {formatOrderDate(licence.issuedAt)} · permanen
+                      </div>
                     </div>
-                    <div className="meta">
-                      Diterbitkan {formatOrderDate(licence.issuedAt)} · berlaku permanen
+                    <div className="record-actions">
+                      <Link
+                        href={`/dashboard/undangan/${licence.invitationId}/design`}
+                        className="btn btn-sm btn-secondary"
+                      >
+                        Kelola
+                      </Link>
                     </div>
                   </div>
-                  <span className="badge badge-success">Permanen</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </section>

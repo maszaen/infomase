@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Check, Lock, Search, X } from 'lucide-react';
 import { ConsolePageHeader } from '@/components/console/ConsolePageHeader';
+import { useConsoleChrome } from '@/components/console/ConsoleChrome';
 import { useInvitationStore } from '@/lib/invitationStore';
 import {
   TEMPLATE_CATEGORIES,
@@ -15,10 +16,9 @@ import type { TemplateCategory } from '@/lib/templates';
 
 export default function CatalogPage() {
   const { invitations, licences } = useInvitationStore();
+  const { openCreate } = useConsoleChrome();
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState<'all' | TemplateCategory>('all');
-
-  const ownedTemplateIds = new Set(licences.map((l) => l.templateId));
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -51,37 +51,42 @@ export default function CatalogPage() {
       />
 
       <div className="page-content stack-5">
-        <div className="row-between" style={{ gap: 'var(--space-3)' }}>
-          <div className="search-box" style={{ width: 'min(320px, 100%)' }}>
-            <Search size={14} className="search-icon" />
-            <input
-              type="search"
-              className="form-input"
-              placeholder="Cari template…"
-              aria-label="Cari template"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            {query && (
-              <button type="button" className="search-clear" onClick={() => setQuery('')} aria-label="Hapus pencarian">
-                <X size={13} />
-              </button>
-            )}
+        <div className="page-section">
+          <div className="editor-toolbar">
+            <div className="search-box">
+              <Search size={14} className="search-icon" />
+              <input
+                type="search"
+                className="form-input"
+                placeholder="Cari nama, gaya, atau kategori…"
+                aria-label="Cari template"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              {query && (
+                <button
+                  type="button"
+                  className="search-clear"
+                  onClick={() => setQuery('')}
+                  aria-label="Hapus pencarian"
+                >
+                  <X size={13} />
+                </button>
+              )}
+            </div>
+            <span className="meta" style={{ marginLeft: 'auto' }}>
+              {filtered.length} dari {TEMPLATES.length} desain
+            </span>
           </div>
 
-          <div className="row" style={{ gap: 'var(--space-1-5)' }}>
+          <div className="filter-scroll" role="group" aria-label="Filter kategori">
             {availableCategories.map((item) => (
               <button
                 key={item.id}
                 type="button"
-                className="chip"
+                className={`chip${category === item.id ? ' is-active' : ''}`}
                 aria-pressed={category === item.id}
                 onClick={() => setCategory(item.id)}
-                style={
-                  category === item.id
-                    ? { background: 'var(--ink-900)', borderColor: 'var(--ink-900)', color: 'var(--on-inverse)' }
-                    : undefined
-                }
               >
                 {item.label}
               </button>
@@ -106,25 +111,26 @@ export default function CatalogPage() {
             </button>
           </div>
         ) : (
-          <div className="grid-2" style={{ gap: 'var(--space-4)' }}>
+          <div className="template-grid">
             {filtered.map((tpl) => {
-              const owned = ownedTemplateIds.has(tpl.id);
+              const licence = licences.find((l) => l.templateId === tpl.id);
+              const owned = Boolean(licence);
               return (
-                <article key={tpl.id} className="card" style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ position: 'relative', height: 170, background: 'var(--surface-sunken)' }}>
+                <article key={tpl.id} className="card template-card">
+                  <div className="template-card-media">
                     <img
                       src={tpl.previewImage}
                       alt={`Pratinjau ${tpl.name}`}
                       width={400}
-                      height={170}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                      height={168}
+                      loading="lazy"
                     />
                     <span
                       className="badge"
                       style={{
                         position: 'absolute',
-                        top: 10,
-                        left: 10,
+                        top: 8,
+                        left: 8,
                         background: 'var(--surface)',
                         borderColor: 'var(--border)',
                       }}
@@ -132,39 +138,50 @@ export default function CatalogPage() {
                       {tpl.category}
                     </span>
                     {owned && (
-                      <span className="badge badge-success" style={{ position: 'absolute', top: 10, right: 10 }}>
+                      <span className="badge badge-success" style={{ position: 'absolute', top: 8, right: 8 }}>
                         <Check size={11} /> Dimiliki
                       </span>
                     )}
                   </div>
 
-                  <div style={{ padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', flex: 1 }}>
+                  <div className="template-card-body">
                     <div>
-                      <div className="row-between" style={{ gap: 8 }}>
-                        <h2 style={{ fontSize: 'var(--text-base)' }}>{tpl.name}</h2>
-                        <span style={{ fontWeight: 620, fontSize: 'var(--text-sm)' }}>{formatIDR(tpl.price)}</span>
+                      <div className="template-card-head">
+                        <h2 className="template-card-title">{tpl.name}</h2>
+                        <span className="template-card-price">{formatIDR(tpl.price)}</span>
                       </div>
-                      <p style={{ fontSize: 'var(--text-xs)', marginTop: 'var(--space-0-5)' }}>{tpl.tagline}</p>
+                      <p className="template-card-tagline">{tpl.tagline}</p>
                     </div>
 
                     <ul className="tick-list">
                       {tpl.includes.slice(0, 4).map((item) => (
-                        <li key={item} style={{ fontSize: 'var(--text-xs)' }}>
+                        <li key={item}>
                           <Check size={12} /> {item}
                         </li>
                       ))}
                     </ul>
 
-                    <div className="row" style={{ gap: 'var(--space-1-5)', marginTop: 'auto' }}>
-                      {invitations.length > 0 && (
+                    <div className="template-card-actions">
+                      {owned && licence ? (
+                        <Link
+                          href={`/dashboard/undangan/${licence.invitationId}/design`}
+                          className="btn btn-sm btn-secondary"
+                        >
+                          Kelola undangan <ArrowRight size={12} />
+                        </Link>
+                      ) : invitations.length > 0 ? (
                         <Link
                           href={`/checkout?template=${tpl.id}&undangan=${invitations[0].id}`}
                           className="btn btn-sm btn-buy"
                         >
-                          Beli lisensi <ArrowRight size={13} />
+                          Beli lisensi <ArrowRight size={12} />
                         </Link>
+                      ) : (
+                        <button type="button" className="btn btn-sm btn-buy" onClick={openCreate}>
+                          Buat undangan <ArrowRight size={12} />
+                        </button>
                       )}
-                      {tpl.demoSlug && (
+                      {tpl.demoSlug && tpl.demoSlug !== '' && (
                         <Link href={`/invite/${tpl.demoSlug}`} className="btn btn-sm btn-ghost" target="_blank">
                           Pratinjau
                         </Link>
@@ -177,30 +194,36 @@ export default function CatalogPage() {
           </div>
         )}
 
-        <section>
-          <h2 style={{ fontSize: 'var(--text-md)', marginBottom: 4 }}>Dalam pengerjaan</h2>
-          <p className="meta" style={{ marginBottom: 'var(--space-3)' }}>
-            Belum bisa dibeli. Kami menampilkannya supaya Anda tahu arah desainnya.
-          </p>
+        <section className="page-section">
+          <div className="section-bar">
+            <div>
+              <h2>Dalam pengerjaan</h2>
+              <p>Belum bisa dibeli. Kami menampilkannya supaya Anda tahu arah desainnya.</p>
+            </div>
+          </div>
           <div className="grid-3">
             {UPCOMING_TEMPLATES.map((tpl) => (
-              <div key={tpl.id} className="card" style={{ padding: 'var(--space-4)', background: 'var(--surface-sunken)', boxShadow: 'none' }}>
+              <div
+                key={tpl.id}
+                className="card"
+                style={{ padding: 'var(--space-3)', background: 'var(--surface-sunken)', boxShadow: 'none' }}
+              >
                 <div
                   style={{
-                    height: 48,
+                    height: 42,
                     borderRadius: 'var(--radius-sm)',
                     background: `linear-gradient(135deg, ${tpl.palette.primary}, ${tpl.palette.accent})`,
-                    marginBottom: 'var(--space-3)',
-                    opacity: 0.85,
+                    marginBottom: 'var(--space-2-5)',
+                    opacity: 0.9,
                   }}
                 />
                 <div className="row-between" style={{ gap: 8 }}>
                   <h3 style={{ fontSize: 'var(--text-sm)' }}>{tpl.name}</h3>
-                  <span className="badge" style={{ fontSize: 'var(--text-2xs)' }}>
+                  <span className="badge">
                     <Lock size={10} /> Segera
                   </span>
                 </div>
-                <p style={{ fontSize: 'var(--text-xs)', marginTop: 4 }}>{tpl.tagline}</p>
+                <p style={{ fontSize: 'var(--text-xs)', marginTop: 3 }}>{tpl.tagline}</p>
               </div>
             ))}
           </div>

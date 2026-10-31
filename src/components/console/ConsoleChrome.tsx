@@ -34,8 +34,13 @@ export function ConsoleChromeProvider({ children }: { children: React.ReactNode 
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') closeRail();
     };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', onKey);
+    };
   }, [railOpen, closeRail]);
 
   const value = useMemo(

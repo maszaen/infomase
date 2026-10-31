@@ -115,7 +115,7 @@ export const EnvelopeCover: React.FC<EnvelopeCoverProps> = ({
           {/* Action Button: Buka Undangan */}
           <button
             onClick={handleOpenClick}
-            className="inline-flex items-center gap-2.5 px-8 py-3 rounded-full bg-[var(--art-accent-soft)] hover:bg-[var(--art-accent-deep)] active:scale-95 text-white text-xs sm:text-sm font-medium tracking-wide shadow-lg hover:shadow-xl transition-all cursor-pointer gate-anim-5"
+            className="inline-flex items-center gap-2.5 px-8 py-3 rounded-full bg-[var(--art-accent-deep)] hover:bg-[var(--art-ink-deep)] active:scale-95 text-white text-xs sm:text-sm font-medium tracking-wide shadow-lg hover:shadow-xl transition-all cursor-pointer gate-anim-5"
           >
             {/* Envelope Icon */}
             <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">

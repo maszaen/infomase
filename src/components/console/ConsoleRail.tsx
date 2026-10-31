@@ -4,14 +4,17 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  ChevronLeft,
-  CreditCard,
+  CalendarCheck2,
   LayoutGrid,
+  LifeBuoy,
   LogOut,
-  Menu,
+  MessageSquareHeart,
+  FileText,
+  Palette,
   Plus,
   Receipt,
   Star,
+  Users,
   X,
 } from 'lucide-react';
 import { Wordmark } from '@/components/ui/Brand';
@@ -33,21 +36,27 @@ interface ConsoleRailProps {
   onLogout: () => void;
 }
 
-/**
- * Navigation was previously a flat list of six items where three were the same
- * destination. Now there are exactly two levels:
- *   account level  → Ringkasan / Pesanan
- *   invitation level → Studio (Design, Konten, Tamu, RSVP, Hari-H)
- */
+const STUDIO_ITEMS = [
+  { key: 'design', label: 'Desain & lisensi', icon: Palette },
+  { key: 'content', label: 'Konten', icon: FileText },
+  { key: 'guests', label: 'Tamu & WhatsApp', icon: Users },
+  { key: 'rsvp', label: 'RSVP & ucapan', icon: MessageSquareHeart },
+  { key: 'day', label: 'Hari-H', icon: CalendarCheck2 },
+];
+
 export function ConsoleRail({ open, onClose, invitations, activeId, onCreate, onLogout }: ConsoleRailProps) {
   const pathname = usePathname();
   const { user } = useAuth();
   const { data } = useInvitationStore();
 
-  // Studio context comes from the route, so the rail can never disagree with
-  // the page header about which invitation is open.
-  const inStudio = pathname.startsWith('/dashboard/undangan/');
-  const studio = inStudio ? { title: data.title, slug: data.slug } : null;
+  const studioMatch = pathname.match(/^\/dashboard\/undangan\/([^/]+)/);
+  const studioId = studioMatch?.[1];
+  const studioInvitation = studioId ? invitations.find((item) => item.id === studioId) : undefined;
+  const studio = studioInvitation
+    ? { id: studioInvitation.id, title: studioInvitation.title, slug: studioInvitation.slug }
+    : studioId
+      ? { id: studioId, title: data.title, slug: data.slug }
+      : null;
 
   const accountItems = [
     { key: 'overview', label: 'Ringkasan', icon: LayoutGrid, href: '/dashboard' },
@@ -60,75 +69,57 @@ export function ConsoleRail({ open, onClose, invitations, activeId, onCreate, on
 
   return (
     <>
-      <div className={`sidebar-backdrop${open ? ' show' : ''}`} onClick={onClose} aria-hidden={!open} />
+      <div
+        className={`sidebar-backdrop${open ? ' show' : ''}`}
+        onClick={onClose}
+        aria-hidden={!open}
+      />
       <aside className={`rail${open ? ' open' : ''}`} aria-label="Navigasi konsol">
-        <div className="rail-brand">
-          <Wordmark size={24} />
+        <div className="rail-head">
+          <Wordmark size={24} onClick={onClose} />
+          <button
+            type="button"
+            className="btn btn-icon btn-sm btn-ghost rail-close"
+            onClick={onClose}
+            aria-label="Tutup menu"
+          >
+            <X size={16} />
+          </button>
         </div>
 
         {studio ? (
           <>
-            <div style={{ padding: 'var(--space-3) var(--space-3) 0' }}>
-              <Link href="/dashboard" className="btn btn-sm btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }}>
-                <ChevronLeft size={15} /> Semua undangan
-              </Link>
-            </div>
-
-            <div style={{ padding: 'var(--space-3) var(--space-4) var(--space-2)', borderBottom: '1px solid var(--border-subtle)' }}>
-              <span className="label" style={{ fontSize: 'var(--text-2xs)' }}>
-                Sedang diedit
-              </span>
-              <div
-                style={{
-                  fontSize: 'var(--text-sm)',
-                  fontWeight: 620,
-                  color: 'var(--ink-900)',
-                  marginTop: 'var(--space-0-5)',
-                  overflowWrap: 'anywhere',
-                }}
-              >
-                {studio.title}
-              </div>
-              <div
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 'var(--text-2xs)',
-                  color: 'var(--ink-500)',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                /invite/{studio.slug}
-              </div>
+            <div className="rail-context">
+              <span className="rail-context-label">Sedang diedit</span>
+              <div className="rail-context-title">{studio.title}</div>
+              <div className="rail-context-slug">/invite/{studio.slug}</div>
             </div>
 
             <nav className="rail-nav" aria-label="Bagian undangan">
-              {[
-                { key: 'design', label: 'Desain & lisensi' },
-                { key: 'content', label: 'Konten' },
-                { key: 'guests', label: 'Tamu & WhatsApp' },
-                { key: 'rsvp', label: 'RSVP & ucapan' },
-                { key: 'day', label: 'Hari-H' },
-              ].map((item) => (
-                <Link
-                  key={item.key}
-                  href={`/dashboard/undangan/${activeId}/${item.key}`}
-                  className="rail-item"
-                  aria-current={pathname === `/dashboard/undangan/${activeId}/${item.key}` ? 'page' : undefined}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {STUDIO_ITEMS.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.key}
+                    href={`/dashboard/undangan/${studio.id}/${item.key}`}
+                    className="rail-item"
+                    aria-current={
+                      pathname === `/dashboard/undangan/${studio.id}/${item.key}` ? 'page' : undefined
+                    }
+                    onClick={onClose}
+                  >
+                    <Icon size={16} /> {item.label}
+                  </Link>
+                );
+              })}
             </nav>
 
-            <div className="sidebar-footer">
+            <div className="sidebar-footer stack-2">
               <Link
                 href={`/invite/${studio.slug}`}
                 target="_blank"
                 rel="noreferrer"
-                className="btn btn-sm btn-secondary"
-                style={{ width: '100%' }}
+                className="btn btn-sm btn-secondary btn-block"
               >
                 Lihat undangan publik
               </Link>
@@ -160,9 +151,9 @@ export function ConsoleRail({ open, onClose, invitations, activeId, onCreate, on
                   href={`/dashboard/undangan/${inv.id}/content`}
                   className="rail-item"
                   onClick={onClose}
-                  style={{ gap: 8 }}
                 >
                   <span
+                    aria-hidden
                     style={{
                       width: 6,
                       height: 6,
@@ -171,19 +162,11 @@ export function ConsoleRail({ open, onClose, invitations, activeId, onCreate, on
                       flexShrink: 0,
                     }}
                   />
-                  <span
-                    style={{
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {inv.title}
-                  </span>
+                  <span className="text-truncate">{inv.title}</span>
                 </Link>
               ))}
 
-              <button type="button" className="rail-item" onClick={onCreate} style={{ marginTop: 4 }}>
+              <button type="button" className="rail-item" onClick={onCreate}>
                 <Plus size={16} /> Undangan baru
               </button>
 
@@ -194,44 +177,49 @@ export function ConsoleRail({ open, onClose, invitations, activeId, onCreate, on
                 target="_blank"
                 rel="noreferrer"
               >
-                <CreditCard size={16} /> Hubungi dukungan
+                <LifeBuoy size={16} /> Hubungi dukungan
               </a>
             </nav>
 
             <div className="sidebar-footer">
-              <div className="row-nowrap" style={{ gap: 8 }}>
-                <span className="avatar" title={user?.email ?? ''}>
-                  {user?.name?.[0]?.toUpperCase() ?? 'U'}
-                </span>
-                <div style={{ minWidth: 0, flex: 1 }}>
-                  <div
-                    style={{
-                      fontSize: 'var(--text-xs)',
-                      fontWeight: 600,
-                      color: 'var(--ink-900)',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {user?.name ?? 'Tamu'}
+              {user ? (
+                <div className="rail-account">
+                  <span className="avatar" title={user.email}>
+                    {user.name?.[0]?.toUpperCase() ?? 'U'}
+                  </span>
+                  <div className="rail-account-name">
+                    <b>{user.name || 'Akun saya'}</b>
+                    <span>{user.email}</span>
                   </div>
-                  <div
-                    style={{
-                      fontSize: 'var(--text-2xs)',
-                      color: 'var(--ink-500)',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-ghost btn-icon"
+                    onClick={onLogout}
+                    aria-label="Keluar"
+                    title="Keluar"
                   >
-                    {user?.email ?? 'belum masuk'}
+                    <LogOut size={15} />
+                  </button>
+                </div>
+              ) : (
+                <div className="stack-2">
+                  <div className="rail-account">
+                    <span className="avatar">?</span>
+                    <div className="rail-account-name">
+                      <b>Mode baca</b>
+                      <span className="rail-account-hint">Masuk untuk menyimpan perubahan</span>
+                    </div>
+                  </div>
+                  <div className="row" style={{ gap: 6, flexWrap: 'nowrap' }}>
+                    <Link href="/login" className="btn btn-sm btn-primary" style={{ flex: 1 }}>
+                      Masuk
+                    </Link>
+                    <Link href="/register" className="btn btn-sm btn-secondary" style={{ flex: 1 }}>
+                      Daftar
+                    </Link>
                   </div>
                 </div>
-                <button type="button" className="btn btn-sm btn-ghost btn-icon" onClick={onLogout} aria-label="Keluar">
-                  <LogOut size={15} />
-                </button>
-              </div>
+              )}
             </div>
           </>
         )}
@@ -248,7 +236,7 @@ export function RailToggle({ onClick }: { onClick: () => void }) {
       onClick={onClick}
       aria-label="Buka menu navigasi"
     >
-      <Menu size={18} />
+      <LayoutGrid size={18} />
     </button>
   );
 }

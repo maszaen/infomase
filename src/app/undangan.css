@@ -6,23 +6,23 @@
 
 .artifact,
 .mobile-app-container {
-  --art-ink: var(--art-ink);
-  --art-ink-deep: var(--art-ink-deep);
-  --art-ink-deepest: var(--art-ink-deepest);
-  --art-ink-soft: var(--art-ink-soft);
-  --art-ink-mid: var(--art-ink-mid);
-  --art-ink-muted: var(--art-ink-muted);
-  --art-ink-faint: var(--art-ink-faint);
-  --art-ink-faintest: var(--art-ink-faintest);
-  --art-accent: var(--art-accent);
-  --art-accent-deep: var(--art-accent-deep);
-  --art-accent-soft: var(--art-accent-soft);
-  --art-line: var(--art-line);
-  --art-line-soft: var(--art-line-soft);
-  --art-paper: var(--art-paper);
-  --art-paper-warm: var(--art-paper-warm);
-  --art-card: var(--art-card);
-  --art-surface: var(--art-surface);
+  --art-ink: #382e25;
+  --art-ink-deep: #2e251e;
+  --art-ink-deepest: #2b2721;
+  --art-ink-soft: #786755;
+  --art-ink-mid: #6e5d4f;
+  --art-ink-muted: #7a6b5d;
+  --art-ink-faint: #9c8169;
+  --art-ink-faintest: #a68a68;
+  --art-accent: #8c735b;
+  --art-accent-deep: #755b46;
+  --art-accent-soft: #9c8169;
+  --art-line: #d5c6b1;
+  --art-line-soft: #e7dac7;
+  --art-paper: #faf7f2;
+  --art-paper-warm: #faf5ee;
+  --art-card: #faf6f0;
+  --art-surface: #efe8dd;
 }
 
 /* Artifact palette. Scoped to the artifact root (never :root) so the product

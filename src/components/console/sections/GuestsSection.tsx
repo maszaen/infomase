@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { Check, Copy, MessageCircle, Search, Trash2, Upload, UserPlus, X } from 'lucide-react';
 import { useInvitationStore } from '@/lib/invitationStore';
 import { useToast } from '@/components/ui/Toast';
+import { Modal } from '@/components/ui/Modal';
 import { formatFullIndonesianDate } from '@/lib/formatDate';
 import type { GuestCategory } from '@/types/invitation';
 
@@ -47,6 +48,7 @@ export function GuestsSection({ invitationId }: { invitationId: string }) {
   const [copied, setCopied] = useState<string | null>(null);
   const [templateOpen, setTemplateOpen] = useState(false);
   const [messageTemplate, setMessageTemplate] = useState(DEFAULT_MESSAGE);
+  const [pendingDelete, setPendingDelete] = useState<{ id: string; name: string } | null>(null);
 
   const inviteUrl = (slug: string, guestName: string) =>
     `${typeof window !== 'undefined' ? window.location.origin : 'https://infomase.id'}/invite/${slug}?to=${encodeURIComponent(guestName)}`;
@@ -73,6 +75,8 @@ export function GuestsSection({ invitationId }: { invitationId: string }) {
   }, [inv, search, categoryFilter]);
 
   if (!inv) return null;
+
+  const withPhone = inv.guests.filter((guest) => guest.phone).length;
 
   const addSingle = (event: React.FormEvent) => {
     event.preventDefault();
@@ -110,14 +114,21 @@ export function GuestsSection({ invitationId }: { invitationId: string }) {
     }
   };
 
+  const confirmDelete = () => {
+    if (!pendingDelete) return;
+    deleteGuest(pendingDelete.id);
+    toast('info', `${pendingDelete.name} dihapus dari daftar tamu.`);
+    setPendingDelete(null);
+  };
+
   return (
     <div className="studio-section">
       {/* ------------------------------------------------------------ add form */}
-      <section className="card" style={{ padding: 'var(--space-5)' }}>
-        <div className="row-between" style={{ marginBottom: 'var(--space-4)' }}>
+      <section className="card">
+        <div className="card-header">
           <div>
-            <h2 style={{ fontSize: 'var(--text-sm)' }}>Tambah tamu</h2>
-            <p className="meta">Nama tamu dipakai untuk personalisasi cover undangan.</p>
+            <h2 className="card-title">Tambah tamu</h2>
+            <p className="card-subtitle">Nama tamu dipakai untuk personalisasi cover undangan.</p>
           </div>
           <div className="segmented" role="group" aria-label="Mode penambahan tamu">
             <button
@@ -139,260 +150,294 @@ export function GuestsSection({ invitationId }: { invitationId: string }) {
           </div>
         </div>
 
-        {mode === 'single' ? (
-          <form onSubmit={addSingle} className="grid-2" style={{ gap: 'var(--space-3)', alignItems: 'end' }}>
-            <div className="form-group">
-              <label className="form-label" htmlFor="guest-name">
-                Nama tamu
-              </label>
-              <input
-                id="guest-name"
-                className="form-input"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Budi Santoso & Keluarga"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="guest-phone">
-                Nomor WhatsApp
-              </label>
-              <input
-                id="guest-phone"
-                className="form-input"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="0812…"
-                inputMode="tel"
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="guest-category">
-                Kategori
-              </label>
-              <select
-                id="guest-category"
-                className="form-select"
-                value={category}
-                onChange={(e) => setCategory(e.target.value as GuestCategory)}
-              >
-                {CATEGORIES.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <button type="submit" className="btn btn-primary">
-              <UserPlus size={14} /> Tambah
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={addBulk} className="stack-3">
-            <div className="form-group">
-              <label className="form-label" htmlFor="guest-bulk">
-                Satu tamu per baris
-              </label>
-              <textarea
-                id="guest-bulk"
-                className="form-textarea"
-                value={bulkText}
-                onChange={(e) => setBulkText(e.target.value)}
-                placeholder={'Budi Santoso & Keluarga; 08123456789\nDinda Permata; 08987654321'}
-              />
-              <span className="form-hint">
-                Format: <code>Nama; nomor</code>. Nomor telepon opsional.
-              </span>
-            </div>
-            <div className="row" style={{ gap: 'var(--space-2)' }}>
-              <select
-                className="form-select"
-                style={{ width: 180 }}
-                value={bulkCategory}
-                onChange={(e) => setBulkCategory(e.target.value as GuestCategory)}
-                aria-label="Kategori untuk tamu yang diimpor"
-              >
-                {CATEGORIES.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
+        <div className="card-body">
+          {mode === 'single' ? (
+            <form onSubmit={addSingle} className="form-grid-3">
+              <div className="form-group">
+                <label className="form-label" htmlFor="guest-name">
+                  Nama tamu
+                </label>
+                <input
+                  id="guest-name"
+                  className="form-input"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Budi Santoso & Keluarga"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="guest-phone">
+                  Nomor WhatsApp
+                </label>
+                <input
+                  id="guest-phone"
+                  className="form-input"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="0812…"
+                  inputMode="tel"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="guest-category">
+                  Kategori
+                </label>
+                <select
+                  id="guest-category"
+                  className="form-select"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value as GuestCategory)}
+                >
+                  {CATEGORIES.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <button type="submit" className="btn btn-primary">
-                <Upload size={14} /> Impor
+                <UserPlus size={14} /> Tambah
               </button>
-            </div>
-          </form>
-        )}
-      </section>
-
-      {/* --------------------------------------------------------------- toolbar */}
-      <div className="row-between" style={{ gap: 'var(--space-2)' }}>
-        <div className="search-box" style={{ width: 'min(320px, 100%)' }}>
-          <Search size={14} className="search-icon" />
-          <input
-            type="search"
-            className="form-input"
-            placeholder="Cari tamu…"
-            aria-label="Cari tamu"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          {search && (
-            <button type="button" className="search-clear" onClick={() => setSearch('')} aria-label="Hapus pencarian">
-              <X size={13} />
-            </button>
+            </form>
+          ) : (
+            <form onSubmit={addBulk} className="stack-3">
+              <div className="form-group">
+                <label className="form-label" htmlFor="guest-bulk">
+                  Satu tamu per baris
+                </label>
+                <textarea
+                  id="guest-bulk"
+                  className="form-textarea"
+                  value={bulkText}
+                  onChange={(e) => setBulkText(e.target.value)}
+                  placeholder={'Budi Santoso & Keluarga; 08123456789\nDinda Permata; 08987654321'}
+                />
+                <span className="form-hint">
+                  Format: <code>Nama; nomor</code>. Nomor telepon opsional.
+                </span>
+              </div>
+              <div className="row" style={{ gap: 'var(--space-2)', flexWrap: 'wrap' }}>
+                <select
+                  className="form-select"
+                  style={{ width: 180 }}
+                  value={bulkCategory}
+                  onChange={(e) => setBulkCategory(e.target.value as GuestCategory)}
+                  aria-label="Kategori untuk tamu yang diimpor"
+                >
+                  {CATEGORIES.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+                <button type="submit" className="btn btn-primary">
+                  <Upload size={14} /> Impor
+                </button>
+              </div>
+            </form>
           )}
         </div>
-
-        <div className="row" style={{ gap: 'var(--space-1-5)' }}>
-          <button
-            type="button"
-            className="chip"
-            onClick={() => setCategoryFilter('all')}
-            aria-pressed={categoryFilter === 'all'}
-            style={
-              categoryFilter === 'all'
-                ? { background: 'var(--ink-900)', borderColor: 'var(--ink-900)', color: 'var(--on-inverse)' }
-                : undefined
-            }
-          >
-            Semua ({inv.guests.length})
-          </button>
-          {CATEGORIES.map((item) => {
-            const count = inv.guests.filter((g) => g.category === item).length;
-            if (count === 0) return null;
-            return (
-              <button
-                key={item}
-                type="button"
-                className="chip"
-                onClick={() => setCategoryFilter(item)}
-                aria-pressed={categoryFilter === item}
-                style={
-                  categoryFilter === item
-                    ? { background: 'var(--ink-900)', borderColor: 'var(--ink-900)', color: 'var(--on-inverse)' }
-                    : undefined
-                }
-              >
-                {item} ({count})
-              </button>
-            );
-          })}
-        </div>
-
-        <button type="button" className="btn btn-sm btn-ghost" onClick={() => setTemplateOpen((v) => !v)}>
-          <MessageCircle size={13} /> Template pesan
-        </button>
-      </div>
-
-      {templateOpen && (
-        <section className="card" style={{ padding: 'var(--space-5)' }}>
-          <h2 style={{ fontSize: 'var(--text-sm)', marginBottom: 'var(--space-0-5)' }}>Template pesan WhatsApp</h2>
-          <p className="meta" style={{ marginBottom: 'var(--space-3)' }}>
-            Gunakan placeholder <code>{'{guestName}'}</code>, <code>{'{eventDate}'}</code>,{' '}
-            <code>{'{venueName}'}</code>, dan <code>{'{link}'}</code>.
-          </p>
-          <textarea
-            className="form-textarea"
-            style={{ minHeight: 180, fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)' }}
-            value={messageTemplate}
-            onChange={(e) => setMessageTemplate(e.target.value)}
-            aria-label="Template pesan WhatsApp"
-          />
-          <button
-            type="button"
-            className="btn btn-sm btn-secondary"
-            style={{ marginTop: 'var(--space-2)', width: 'fit-content' }}
-            onClick={() => setMessageTemplate(DEFAULT_MESSAGE)}
-          >
-            Kembalikan ke default
-          </button>
-        </section>
-      )}
+      </section>
 
       {/* ------------------------------------------------------------- guest list */}
-      {filtered.length === 0 ? (
-        <div className="empty-state card">
-          <UserPlus size={22} />
-          <h3>{inv.guests.length === 0 ? 'Belum ada tamu' : 'Tidak ada tamu yang cocok'}</h3>
-          <p>
-            {inv.guests.length === 0
-              ? 'Tambahkan tamu satu per satu atau tempel daftar dari spreadsheet Anda.'
-              : 'Ubah kata kunci atau filter kategori.'}
-          </p>
+      <section className="page-section">
+        <div className="section-bar">
+          <div style={{ minWidth: 0 }}>
+            <h2>Daftar tamu</h2>
+            <p>
+              {inv.guests.length} tamu · {withPhone} punya nomor WhatsApp
+            </p>
+          </div>
+          <button
+            type="button"
+            className={`btn btn-sm ${templateOpen ? 'btn-secondary' : 'btn-ghost'}`}
+            onClick={() => setTemplateOpen((value) => !value)}
+            aria-expanded={templateOpen}
+          >
+            <MessageCircle size={13} /> Template pesan
+          </button>
         </div>
-      ) : (
-        <div className="table-wrap">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Nama</th>
-                <th>Kategori</th>
-                <th>WhatsApp</th>
-                <th style={{ textAlign: 'right' }}>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((guest) => (
-                <tr key={guest.id}>
-                  <td style={{ color: 'var(--ink-900)', fontWeight: 560 }}>{guest.name}</td>
-                  <td>
-                    <span className="badge">{guest.category}</span>
-                  </td>
-                  <td style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-2xs)' }}>
-                    {guest.phone || <span style={{ color: 'var(--ink-400)' }}>—</span>}
-                  </td>
-                  <td>
-                    <div className="row-nowrap" style={{ gap: 4, justifyContent: 'flex-end' }}>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-ghost btn-icon"
-                        onClick={() => copyLink(guest.name)}
-                        aria-label={`Salin tautan untuk ${guest.name}`}
-                        title="Salin tautan personal"
-                      >
-                        {copied === guest.name ? <Check size={13} /> : <Copy size={13} />}
-                      </button>
 
-                      {guest.phone ? (
-                        <a
-                          className="btn btn-sm btn-secondary"
-                          href={`https://wa.me/${waNumber(guest.phone)}?text=${encodeURIComponent(buildMessage(guest.name))}`}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <MessageCircle size={12} /> Kirim
-                        </a>
-                      ) : (
-                        <span className="meta" style={{ fontSize: 'var(--text-2xs)' }}>
-                          tanpa nomor
-                        </span>
-                      )}
+        <div className="editor-toolbar">
+          <div className="search-box">
+            <Search size={14} className="search-icon" />
+            <input
+              type="search"
+              className="form-input"
+              placeholder="Cari tamu…"
+              aria-label="Cari tamu"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            {search && (
+              <button type="button" className="search-clear" onClick={() => setSearch('')} aria-label="Hapus pencarian">
+                <X size={13} />
+              </button>
+            )}
+          </div>
 
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-ghost btn-icon"
-                        onClick={() => deleteGuest(guest.id)}
-                        aria-label={`Hapus ${guest.name}`}
-                        style={{ color: 'var(--danger)' }}
-                      >
-                        <Trash2 size={13} />
-                      </button>
-                    </div>
-                  </td>
+          <div className="filter-scroll" role="group" aria-label="Filter kategori">
+            <button
+              type="button"
+              className={`chip ${categoryFilter === 'all' ? 'is-active' : ''}`}
+              onClick={() => setCategoryFilter('all')}
+              aria-pressed={categoryFilter === 'all'}
+            >
+              Semua ({inv.guests.length})
+            </button>
+            {CATEGORIES.map((item) => {
+              const count = inv.guests.filter((g) => g.category === item).length;
+              if (count === 0) return null;
+              return (
+                <button
+                  key={item}
+                  type="button"
+                  className={`chip ${categoryFilter === item ? 'is-active' : ''}`}
+                  onClick={() => setCategoryFilter(item)}
+                  aria-pressed={categoryFilter === item}
+                >
+                  {item} ({count})
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {templateOpen && (
+          <section className="card" style={{ padding: 'var(--space-4)' }}>
+            <div className="section-bar" style={{ marginBottom: 'var(--space-2)' }}>
+              <div>
+                <h2>Template pesan WhatsApp</h2>
+                <p>
+                  Placeholder: <code>{'{guestName}'}</code>, <code>{'{eventDate}'}</code>,{' '}
+                  <code>{'{venueName}'}</code>, <code>{'{link}'}</code>.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="btn btn-sm btn-ghost"
+                onClick={() => setMessageTemplate(DEFAULT_MESSAGE)}
+              >
+                Kembalikan default
+              </button>
+            </div>
+            <textarea
+              className="form-textarea"
+              style={{ minHeight: 168, fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)' }}
+              value={messageTemplate}
+              onChange={(e) => setMessageTemplate(e.target.value)}
+              aria-label="Template pesan WhatsApp"
+            />
+          </section>
+        )}
+
+        {filtered.length === 0 ? (
+          <div className="empty-state card">
+            <UserPlus size={22} />
+            <h3>{inv.guests.length === 0 ? 'Belum ada tamu' : 'Tidak ada tamu yang cocok'}</h3>
+            <p>
+              {inv.guests.length === 0
+                ? 'Tambahkan tamu satu per satu atau tempel daftar dari spreadsheet Anda.'
+                : 'Ubah kata kunci atau filter kategori.'}
+            </p>
+          </div>
+        ) : (
+          <div className="table-wrap">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th className="col-sm">WhatsApp</th>
+                  <th style={{ textAlign: 'right' }}>Aksi</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              <tbody>
+                {filtered.map((guest) => (
+                  <tr key={guest.id}>
+                    <td>
+                      <div className="row" style={{ gap: 6, flexWrap: 'wrap', minWidth: 0 }}>
+                        <span style={{ color: 'var(--ink-900)', fontWeight: 560 }}>{guest.name}</span>
+                        <span className="badge">{guest.category}</span>
+                      </div>
+                      {guest.phone && <span className="only-sm meta">{guest.phone}</span>}
+                    </td>
+                    <td className="col-sm" style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-2xs)' }}>
+                      {guest.phone || <span style={{ color: 'var(--ink-400)' }}>—</span>}
+                    </td>
+                    <td>
+                      <div className="row-nowrap" style={{ gap: 4, justifyContent: 'flex-end' }}>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-ghost btn-icon"
+                          onClick={() => copyLink(guest.name)}
+                          aria-label={`Salin tautan untuk ${guest.name}`}
+                          title="Salin tautan personal"
+                        >
+                          {copied === guest.name ? <Check size={13} /> : <Copy size={13} />}
+                        </button>
 
-      <p className="meta">
-        Menampilkan {filtered.length} dari {inv.guests.length} tamu. Tautan personal membawa nama tamu ke
-        cover undangan melalui parameter <code>?to=</code>.
-      </p>
+                        {guest.phone ? (
+                          <a
+                            className="btn btn-sm btn-secondary"
+                            href={`https://wa.me/${waNumber(guest.phone)}?text=${encodeURIComponent(buildMessage(guest.name))}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <MessageCircle size={12} /> Kirim
+                          </a>
+                        ) : (
+                          <span className="meta" style={{ fontSize: 'var(--text-2xs)' }}>
+                            tanpa nomor
+                          </span>
+                        )}
+
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-ghost btn-icon"
+                          onClick={() => setPendingDelete({ id: guest.id, name: guest.name })}
+                          aria-label={`Hapus ${guest.name}`}
+                          style={{ color: 'var(--danger)' }}
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        <p className="meta">
+          Menampilkan {filtered.length} dari {inv.guests.length} tamu. Tautan personal membawa nama tamu ke cover
+          undangan melalui parameter <code>?to=</code>.
+        </p>
+      </section>
+
+      <Modal
+        open={pendingDelete !== null}
+        onClose={() => setPendingDelete(null)}
+        title="Hapus tamu?"
+        description={pendingDelete ? `“${pendingDelete.name}” akan dihapus dari daftar tamu.` : undefined}
+        size="sm"
+        footer={
+          <>
+            <button type="button" className="btn btn-secondary" onClick={() => setPendingDelete(null)}>
+              Batal
+            </button>
+            <button type="button" className="btn btn-danger-solid" onClick={confirmDelete}>
+              <Trash2 size={14} /> Hapus tamu
+            </button>
+          </>
+        }
+      >
+        <p className="meta">
+          Ucapan dan konfirmasi kehadiran yang sudah masuk tidak ikut terhapus, tetapi tautan personal tamu ini tidak
+          bisa dipakai lagi.
+        </p>
+      </Modal>
     </div>
   );
 }

@@ -1,30 +1,41 @@
 'use client';
 
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Lock } from 'lucide-react';
 import { InvitationProvider, useInvitationStore } from '@/lib/invitationStore';
 import { InvitationRenderer } from '@/components/invitation/InvitationRenderer';
 import { publicApi } from '@/lib/api';
 import type { InvitationData, RSVPItem } from '@/types/invitation';
 
+const subscribeNoop = () => () => {};
+
 function InvitationContent() {
   const params = useParams();
-  const searchParams = useSearchParams();
   const slug = (params?.slug as string) ?? '';
-  const guestName = searchParams.get('to') ?? undefined;
 
   const { getInvitationBySlug, addRSVP, isLoaded } = useInvitationStore();
   const [remoteData, setRemoteData] = useState<InvitationData | null>(null);
   const [checkedRemote, setCheckedRemote] = useState(false);
+  const mounted = useSyncExternalStore(
+    subscribeNoop,
+    () => true,
+    () => false
+  );
+  const guestName = useSyncExternalStore(
+    subscribeNoop,
+    () => new URLSearchParams(window.location.search).get('to') ?? undefined,
+    () => undefined
+  );
 
   useEffect(() => {
     if (!slug) return;
     let active = true;
+    const to = new URLSearchParams(window.location.search).get('to') ?? undefined;
 
     publicApi
-      .getBySlug(slug, guestName)
+      .getBySlug(slug, to)
       .then((res) => {
         if (active && res) setRemoteData(res);
       })
@@ -38,7 +49,7 @@ function InvitationContent() {
     return () => {
       active = false;
     };
-  }, [slug, guestName]);
+  }, [slug]);
 
   const localCopy = slug ? getInvitationBySlug(slug) : undefined;
   const invitation = remoteData ?? localCopy;
@@ -55,7 +66,7 @@ function InvitationContent() {
   };
 
   // Wait for local hydration + one remote attempt before deciding "not found".
-  if (!isLoaded || (!checkedRemote && !localCopy)) {
+  if (!mounted || !isLoaded || (!checkedRemote && !localCopy)) {
     return (
       <div
         style={{
@@ -113,8 +124,8 @@ function InvitationContent() {
   }
 
   return (
-    <div style={{ minHeight: '100dvh', background: 'var(--artifact-paper-deep)', display: 'flex', justifyContent: 'center' }}>
-      <div style={{ width: '100%', maxWidth: 430, minHeight: '100dvh', position: 'relative' }}>
+    <div className="invite-stage">
+      <div className="invite-column">
         <InvitationRenderer data={invitation} guestName={guestName} onAddRSVP={handleAddRSVP} />
       </div>
     </div>
