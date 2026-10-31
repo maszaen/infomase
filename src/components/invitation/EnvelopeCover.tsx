@@ -42,7 +42,7 @@ export const EnvelopeCover: React.FC<EnvelopeCoverProps> = ({
       {/* 3D Book Cover Page (Flips open to the left like opening a book) */}
       <div
         id="gatePage"
-        className={`relative w-full max-w-[430px] h-full flex flex-col items-center justify-between overflow-hidden bg-[#FAF7F2] ${
+        className={`relative w-full max-w-[430px] h-full flex flex-col items-center justify-between overflow-hidden bg-[var(--art-paper)] ${
           isFlipping ? 'book-opened' : ''
         }`}
       >
@@ -63,7 +63,7 @@ export const EnvelopeCover: React.FC<EnvelopeCoverProps> = ({
             className="w-full h-full object-cover object-top"
           />
           {/* Soft Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#FAF7F2]/30 via-50% to-[#FAF7F2]"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--art-paper)]/30 via-50% to-[var(--art-paper)]"></div>
         </div>
 
         {/* 2. Two Diagonal Corner Bouquets (Top-Right & Bottom-Left) */}
@@ -90,24 +90,24 @@ export const EnvelopeCover: React.FC<EnvelopeCoverProps> = ({
         {/* 3. Lower Half: Typography & "Buka Undangan" Button */}
         <div className="relative z-30 w-full mt-auto flex flex-col items-center justify-center text-center px-6 pb-10 pt-4">
           {/* Tagline: THE WEDDING OF */}
-          <span className="text-[11px] uppercase tracking-[0.32em] text-[#6E5D4F] font-semibold mb-1 block gate-anim-1">
+          <span className="text-[11px] uppercase tracking-[0.32em] text-[var(--art-ink-muted)] font-semibold mb-1 block gate-anim-1">
             THE WEDDING OF
           </span>
 
           {/* Couple Name in Luxury Calligraphy Script */}
-          <h1 className="font-script text-4xl sm:text-5xl text-[#755B46] tracking-wide mb-3 gate-anim-2">
+          <h1 className="font-script text-4xl sm:text-5xl text-[var(--art-ink-soft)] tracking-wide mb-3 gate-anim-2">
             {data.groom.name} &amp; {data.bride.name}
           </h1>
 
           {/* Kepada Bapak/Ibu/Saudara/i */}
-          <p className="text-xs text-[#7A6B5D] font-normal mb-1 gate-anim-3">
+          <p className="text-xs text-[var(--art-ink-faintest)] font-normal mb-1 gate-anim-3">
             Kepada Bapak/Ibu/Saudara/i
           </p>
 
           {/* Dynamic Guest Name */}
           <div
             id="coverGuestName"
-            className="font-serif text-xl sm:text-2xl font-semibold text-[#2E251E] tracking-wide mb-5 gate-anim-4"
+            className="font-serif text-xl sm:text-2xl font-semibold text-[var(--art-ink-deepest)] tracking-wide mb-5 gate-anim-4"
           >
             {guestName || 'Nama Tamu'}
           </div>
@@ -115,7 +115,7 @@ export const EnvelopeCover: React.FC<EnvelopeCoverProps> = ({
           {/* Action Button: Buka Undangan */}
           <button
             onClick={handleOpenClick}
-            className="inline-flex items-center gap-2.5 px-8 py-3 rounded-full bg-[#9C8169] hover:bg-[#866E58] active:scale-95 text-white text-xs sm:text-sm font-medium tracking-wide shadow-lg hover:shadow-xl transition-all cursor-pointer gate-anim-5"
+            className="inline-flex items-center gap-2.5 px-8 py-3 rounded-full bg-[var(--art-accent-soft)] hover:bg-[var(--art-accent-deep)] active:scale-95 text-white text-xs sm:text-sm font-medium tracking-wide shadow-lg hover:shadow-xl transition-all cursor-pointer gate-anim-5"
           >
             {/* Envelope Icon */}
             <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">

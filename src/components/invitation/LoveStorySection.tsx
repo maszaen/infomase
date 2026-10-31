@@ -34,23 +34,23 @@ export const LoveStorySection: React.FC<LoveStorySectionProps> = ({ data }) => {
           />
         </div>
 
-        <span className="text-[10px] uppercase tracking-[0.3em] text-[#8C735B] font-semibold block mb-1">
+        <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--art-accent)] font-semibold block mb-1">
           OUR STORY
         </span>
-        <h3 className="font-serif text-2xl text-[#382E25] font-semibold mb-3">
+        <h3 className="font-serif text-2xl text-[var(--art-ink)] font-semibold mb-3">
           Kisah Cinta Kami
         </h3>
 
-        <p className="text-xs text-[#786755] leading-relaxed italic mb-4">
+        <p className="text-xs text-[var(--art-ink-muted)] leading-relaxed italic mb-4">
           &ldquo;Tidak ada kebetulan dalam takdir Allah. Setiap detik perjalanan yang kami lalui adalah persiapan untuk menyatu dalam ikatan yang suci ini.&rdquo;
         </p>
 
         {/* Milestones Timeline */}
-        <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[#D5C6B1]/40 text-center reveal delay-200">
+        <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[var(--art-line)]/40 text-center reveal delay-200">
           {milestones.map((st) => (
             <div key={st.id} className="p-2 rounded-xl bg-white/70">
-              <span className="block text-xs font-bold text-[#8C735B]">{st.year}</span>
-              <span className="text-[10px] text-[#786755]">{st.title}</span>
+              <span className="block text-xs font-bold text-[var(--art-accent)]">{st.year}</span>
+              <span className="text-[10px] text-[var(--art-ink-muted)]">{st.title}</span>
             </div>
           ))}
         </div>

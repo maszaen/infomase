@@ -236,32 +236,32 @@ export const InvitationRenderer: React.FC<InvitationRendererProps> = ({
 
           {/* Center Typography & Content */}
           <div className="relative z-20 flex flex-col items-center justify-center my-auto px-4 max-w-[320px] mx-auto text-center pt-10 pb-6">
-            <span className="text-[11px] sm:text-xs uppercase tracking-[0.35em] text-[#6E5D4F] font-semibold mb-3 block reveal">
+            <span className="text-[11px] sm:text-xs uppercase tracking-[0.35em] text-[var(--art-ink-muted)] font-semibold mb-3 block reveal">
               THE WEDDING OF
             </span>
 
-            <h1 className="font-serif text-4xl sm:text-5xl text-[#2E251E] font-normal tracking-wide leading-tight mb-2 reveal delay-100">
-              {data.groom.name} <span className="font-light italic text-[#755B46]">&amp;</span> {data.bride.name}
+            <h1 className="font-serif text-4xl sm:text-5xl text-[var(--art-ink-deepest)] font-normal tracking-wide leading-tight mb-2 reveal delay-100">
+              {data.groom.name} <span className="font-light italic text-[var(--art-ink-soft)]">&amp;</span> {data.bride.name}
             </h1>
 
             <div className="flex items-center justify-center gap-2.5 w-24 mx-auto mb-5 opacity-70 reveal delay-150">
-              <span className="h-px bg-[#8C735B] flex-1"></span>
-              <span className="text-[#8C735B] text-xs">❖</span>
-              <span className="h-px bg-[#8C735B] flex-1"></span>
+              <span className="h-px bg-[var(--art-accent)] flex-1"></span>
+              <span className="text-[var(--art-accent)] text-xs">❖</span>
+              <span className="h-px bg-[var(--art-accent)] flex-1"></span>
             </div>
 
-            <p className="text-xs sm:text-[13px] text-[#5C5046] leading-relaxed max-w-[270px] mx-auto mb-6 font-normal reveal delay-200">
+            <p className="text-xs sm:text-[13px] text-[var(--art-ink-mid)] leading-relaxed max-w-[270px] mx-auto mb-6 font-normal reveal delay-200">
               Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan kami:
             </p>
 
             <div className="mb-7 flex flex-col items-center reveal delay-250">
-              <span className="text-[11px] uppercase tracking-[0.28em] text-[#554A40] font-semibold mb-1">
+              <span className="text-[11px] uppercase tracking-[0.28em] text-[var(--art-ink-soft)] font-semibold mb-1">
                 {dayName}
               </span>
-              <span className="font-serif text-5xl sm:text-6xl font-normal text-[#2E251E] tracking-tight leading-none my-0.5">
+              <span className="font-serif text-5xl sm:text-6xl font-normal text-[var(--art-ink-deepest)] tracking-tight leading-none my-0.5">
                 {dateNum}
               </span>
-              <span className="text-[11px] uppercase tracking-[0.28em] text-[#554A40] font-semibold mt-1">
+              <span className="text-[11px] uppercase tracking-[0.28em] text-[var(--art-ink-soft)] font-semibold mt-1">
                 {monthYearStr}
               </span>
             </div>
@@ -273,7 +273,7 @@ export const InvitationRenderer: React.FC<InvitationRendererProps> = ({
                 handleScrollTo('mempelai');
                 if (!isPlayingMusic) playMusic();
               }}
-              className="inline-flex items-center gap-2 px-7 py-2.5 rounded-full bg-[#3D3831] hover:bg-[#2B2721] text-white text-xs font-medium tracking-wider shadow-md hover:shadow-lg active:scale-95 transition-all reveal delay-300 cursor-pointer"
+              className="inline-flex items-center gap-2 px-7 py-2.5 rounded-full bg-[var(--art-ink-deep)] hover:bg-[var(--art-ink-deep)] text-white text-xs font-medium tracking-wider shadow-md hover:shadow-lg active:scale-95 transition-all reveal delay-300 cursor-pointer"
             >
               <span>Buka Undangan</span>
               <svg
@@ -306,7 +306,7 @@ export const InvitationRenderer: React.FC<InvitationRendererProps> = ({
         <section className="brown-card py-10 px-6 text-center relative overflow-hidden reveal">
           <div className="w-10 h-10 mx-auto rounded-full bg-white/15 flex items-center justify-center mb-3">
             <svg
-              className="w-5 h-5 text-[#FAF5EE]"
+              className="w-5 h-5 text-[var(--art-paper-warm)]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -318,11 +318,11 @@ export const InvitationRenderer: React.FC<InvitationRendererProps> = ({
             </svg>
           </div>
 
-          <p className="font-serif text-base sm:text-lg leading-relaxed text-[#FAF5EE] italic mb-4 max-w-sm mx-auto">
+          <p className="font-serif text-base sm:text-lg leading-relaxed text-[var(--art-paper-warm)] italic mb-4 max-w-sm mx-auto">
             &ldquo;{data.quote.text}&rdquo;
           </p>
 
-          <span className="text-xs uppercase tracking-widest text-[#EADBCE] font-semibold block">
+          <span className="text-xs uppercase tracking-widest text-[var(--art-line-soft)] font-semibold block">
             ({data.quote.source})
           </span>
         </section>
@@ -367,7 +367,7 @@ export const InvitationRenderer: React.FC<InvitationRendererProps> = ({
             ============================================================== */}
         <section className="py-12 px-6 text-center relative overflow-hidden">
           {/* Circular Thank You Couple Photo */}
-          <div className="relative w-36 h-36 mx-auto rounded-full p-1 bg-gradient-to-b from-[#E7DAC7] to-[#8C735B] shadow-md mb-4 reveal-scale">
+          <div className="relative w-36 h-36 mx-auto rounded-full p-1 bg-gradient-to-b from-[var(--art-line-soft)] to-[var(--art-accent)] shadow-md mb-4 reveal-scale">
             <div className="w-full h-full rounded-full overflow-hidden bg-white">
               <img
                 src={closingCouplePhoto}
@@ -377,16 +377,16 @@ export const InvitationRenderer: React.FC<InvitationRendererProps> = ({
             </div>
           </div>
 
-          <p className="text-xs text-[#786755] leading-relaxed max-w-xs mx-auto mb-4 reveal delay-100">
+          <p className="text-xs text-[var(--art-ink-muted)] leading-relaxed max-w-xs mx-auto mb-4 reveal delay-100">
             Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu bagi kami.
           </p>
 
-          <p className="text-xs font-semibold text-[#8C735B] mb-1 reveal delay-150">
+          <p className="text-xs font-semibold text-[var(--art-accent)] mb-1 reveal delay-150">
             Wassalamu&apos;alaikum Warahmatullahi Wabarakatuh
           </p>
-          <p className="text-[11px] text-[#786755] mb-4">Kami yang berbahagia,</p>
+          <p className="text-[11px] text-[var(--art-ink-muted)] mb-4">Kami yang berbahagia,</p>
 
-          <h3 className="font-script text-4xl text-[#755B46] mb-8 reveal delay-200">
+          <h3 className="font-script text-4xl text-[var(--art-ink-soft)] mb-8 reveal delay-200">
             {data.groom.name} &amp; {data.bride.name}
           </h3>
 
@@ -432,8 +432,8 @@ export const InvitationRenderer: React.FC<InvitationRendererProps> = ({
           </div>
 
           {/* Copyright Bar */}
-          <div className="pt-6 border-t border-[#D5C6B1]/40 text-center reveal-fade delay-250">
-            <p className="text-[10px] text-[#8C735B] tracking-wider uppercase font-medium">
+          <div className="pt-6 border-t border-[var(--art-line)]/40 text-center reveal-fade delay-250">
+            <p className="text-[10px] text-[var(--art-accent)] tracking-wider uppercase font-medium">
               &copy; 2025 The Wedding of {data.groom.name} &amp; {data.bride.name}
             </p>
           </div>

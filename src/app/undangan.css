@@ -4,17 +4,42 @@
    3D Book Gate Cover, and Exact Pixel-Perfect Matching CSS
    ========================================================== */
 
+.artifact,
+.mobile-app-container {
+  --art-ink: var(--art-ink);
+  --art-ink-deep: var(--art-ink-deep);
+  --art-ink-deepest: var(--art-ink-deepest);
+  --art-ink-soft: var(--art-ink-soft);
+  --art-ink-mid: var(--art-ink-mid);
+  --art-ink-muted: var(--art-ink-muted);
+  --art-ink-faint: var(--art-ink-faint);
+  --art-ink-faintest: var(--art-ink-faintest);
+  --art-accent: var(--art-accent);
+  --art-accent-deep: var(--art-accent-deep);
+  --art-accent-soft: var(--art-accent-soft);
+  --art-line: var(--art-line);
+  --art-line-soft: var(--art-line-soft);
+  --art-paper: var(--art-paper);
+  --art-paper-warm: var(--art-paper-warm);
+  --art-card: var(--art-card);
+  --art-surface: var(--art-surface);
+}
+
+/* Artifact palette. Scoped to the artifact root (never :root) so the product
+   UI cannot inherit a wedding colour, and so a second template can override
+   these same names on its own wrapper. */
+
 /* Typography Helpers */
 .font-script {
-  font-family: 'Alex Brush', 'Great Vibes', cursive !important;
+  font-family: var(--font-script), cursive !important;
 }
 
 .font-serif {
-  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-family: var(--font-display), Georgia, serif !important;
 }
 
 .font-sans {
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-family: var(--font-ui), sans-serif !important;
 }
 
 .font-mono {
@@ -28,7 +53,7 @@
   margin-left: auto;
   margin-right: auto;
   min-height: 100vh;
-  background-color: #FAF7F2;
+  background-color: var(--art-paper);
   background-image:
     linear-gradient(rgba(250, 247, 242, 0.45), rgba(250, 247, 242, 0.45)),
     url('/asset/img/bg_watercolor.jpg');
@@ -39,7 +64,7 @@
   position: relative;
   overflow-x: clip;
   padding-bottom: 76px;
-  color: #382E25;
+  color: var(--art-ink);
   font-family: 'Plus Jakarta Sans', sans-serif;
   box-sizing: border-box;
 }
@@ -67,8 +92,8 @@
 }
 
 .brown-card {
-  background: linear-gradient(145deg, #9C8169, #866E58);
-  color: #FAF5EE;
+  background: linear-gradient(145deg, var(--art-accent-soft), var(--art-accent-deep));
+  color: var(--art-paper-warm);
 }
 
 /* ==========================================================
@@ -653,7 +678,7 @@
 .pr-1 { padding-right: 0.25rem; }
 
 /* Colors: Backgrounds */
-.bg-white { background-color: #ffffff; }
+.bg-white { background-color: var(--art-surface); }
 .bg-white\/15 { background-color: rgba(255, 255, 255, 0.15); }
 .bg-white\/70 { background-color: rgba(255, 255, 255, 0.70); }
 .bg-white\/80 { background-color: rgba(255, 255, 255, 0.80); }
@@ -662,59 +687,76 @@
 .bg-black\/20 { background-color: rgba(0, 0, 0, 0.20); }
 .bg-black\/70 { background-color: rgba(0, 0, 0, 0.70); }
 .bg-black\/85 { background-color: rgba(0, 0, 0, 0.85); }
-.bg-\[\#FAF7F2\] { background-color: #FAF7F2; }
-.bg-\[\#FAF5EE\] { background-color: #FAF5EE; }
-.bg-\[\#FAF6F0\] { background-color: #FAF6F0; }
-.bg-\[\#E7DAC7\] { background-color: #E7DAC7; }
-.bg-\[\#EFE8DD\] { background-color: #EFE8DD; }
-.bg-\[\#D5C6B1\] { background-color: #D5C6B1; }
-.bg-\[\#9C8169\] { background-color: #9C8169; }
-.bg-\[\#8C735B\] { background-color: #8C735B; }
-.bg-\[\#79624C\] { background-color: #79624C; }
-.bg-\[\#3D3831\] { background-color: #3D3831; }
-.bg-\[\#382E25\] { background-color: #382E25; }
-.bg-\[\#A68A68\] { background-color: #A68A68; }
-.bg-emerald-100 { background-color: #d1fae5; }
-.bg-amber-100 { background-color: #fef3c7; }
+.bg-\[var\(--art-paper\)\] { background-color: var(--art-paper); }
+.bg-\[var\(--art-paper-warm\)\] { background-color: var(--art-paper-warm); }
+.bg-\[var\(--art-card\)\] { background-color: var(--art-card); }
+.bg-\[var\(--art-line-soft\)\] { background-color: var(--art-line-soft); }
+.bg-\[var\(--art-line-soft\)\] { background-color: var(--art-line-soft); }
+.bg-\[var\(--art-line\)\] { background-color: var(--art-line); }
+.bg-\[var\(--art-accent-soft\)\] { background-color: var(--art-accent-soft); }
+.bg-\[var\(--art-accent\)\] { background-color: var(--art-accent); }
+.bg-\[var\(--art-accent-deep\)\] { background-color: var(--art-accent-deep); }
+.bg-\[var\(--art-ink-deep\)\] { background-color: var(--art-ink-deep); }
+.bg-\[var\(--art-ink\)\] { background-color: var(--art-ink); }
+.bg-\[var\(--art-ink-faint\)\] { background-color: var(--art-ink-faint); }
+.bg-emerald-100 { background-color: var(--success-bg); }
+.bg-amber-100 { background-color: var(--warning-bg); }
 
-.hover\:bg-\[\#866E58\]:hover { background-color: #866E58; }
-.hover\:bg-\[\#79624C\]:hover { background-color: #79624C; }
-.hover\:bg-\[\#8C735B\]:hover { background-color: #8C735B; }
-.hover\:bg-\[\#2B2721\]:hover { background-color: #2B2721; }
-.hover\:bg-black:hover { background-color: #000000; }
+.hover\:bg-\[var\(--art-accent-deep\)\]:hover { background-color: var(--art-accent-deep); }
+.hover\:bg-\[var\(--art-accent-deep\)\]:hover { background-color: var(--art-accent-deep); }
+.hover\:bg-\[var\(--art-accent\)\]:hover { background-color: var(--art-accent); }
+.hover\:bg-\[var\(--art-ink-deep\)\]:hover { background-color: var(--art-ink-deep); }
+.hover\:bg-black:hover { background-color: rgba(0, 0, 0, 0.06); }
+
+.bg-\[var\(--art-ink-deepest\)\] { background-color: var(--art-ink-deepest); }
+.bg-\[var\(--art-ink-soft\)\] { background-color: var(--art-ink-soft); }
+.bg-\[var\(--art-ink-mid\)\] { background-color: var(--art-ink-mid); }
+.bg-\[var\(--art-ink-muted\)\] { background-color: var(--art-ink-muted); }
+.bg-\[var\(--art-ink-faintest\)\] { background-color: var(--art-ink-faintest); }
+.bg-\[var\(--art-surface\)\] { background-color: var(--art-surface); }
+.text-\[var\(--art-ink-deep\)\] { color: var(--art-ink-deep); }
+.text-\[var\(--art-ink-faint\)\] { color: var(--art-ink-faint); }
+.text-\[var\(--art-accent-soft\)\] { color: var(--art-accent-soft); }
+.text-\[var\(--art-line\)\] { color: var(--art-line); }
+.text-\[var\(--art-paper\)\] { color: var(--art-paper); }
+.text-\[var\(--art-card\)\] { color: var(--art-card); }
+.text-\[var\(--art-surface\)\] { color: var(--art-surface); }
+.border-\[var\(--art-ink\)\] { border-color: var(--art-ink); }
+.border-\[var\(--art-ink-soft\)\] { border-color: var(--art-ink-soft); }
+.border-\[var\(--art-accent-deep\)\] { border-color: var(--art-accent-deep); }
 
 /* Colors: Text */
-.text-white { color: #ffffff; }
-.text-\[\#2E251E\] { color: #2E251E; }
-.text-\[\#382E25\] { color: #382E25; }
-.text-\[\#554A40\] { color: #554A40; }
-.text-\[\#5C5046\] { color: #5C5046; }
-.text-\[\#6E5D4F\] { color: #6E5D4F; }
-.text-\[\#755B46\] { color: #755B46; }
-.text-\[\#786755\] { color: #786755; }
-.text-\[\#79624C\] { color: #79624C; }
-.text-\[\#7A6B5D\] { color: #7A6B5D; }
-.text-\[\#8C735B\] { color: #8C735B; }
-.text-\[\#EADBCE\] { color: #EADBCE; }
-.text-\[\#FAF5EE\] { color: #FAF5EE; }
-.text-emerald-800 { color: #065f46; }
-.text-amber-800 { color: #92400e; }
-.text-blue-800 { color: #1e40af; }
-.text-amber-700 { color: #b45309; }
+.text-white { color: var(--art-surface); }
+.text-\[var\(--art-ink-deepest\)\] { color: var(--art-ink-deepest); }
+.text-\[var\(--art-ink\)\] { color: var(--art-ink); }
+.text-\[var\(--art-ink-soft\)\] { color: var(--art-ink-soft); }
+.text-\[var\(--art-ink-mid\)\] { color: var(--art-ink-mid); }
+.text-\[var\(--art-ink-muted\)\] { color: var(--art-ink-muted); }
+.text-\[var\(--art-ink-soft\)\] { color: var(--art-ink-soft); }
+.text-\[var\(--art-ink-muted\)\] { color: var(--art-ink-muted); }
+.text-\[var\(--art-accent-deep\)\] { color: var(--art-accent-deep); }
+.text-\[var\(--art-ink-faintest\)\] { color: var(--art-ink-faintest); }
+.text-\[var\(--art-accent\)\] { color: var(--art-accent); }
+.text-\[var\(--art-line-soft\)\] { color: var(--art-line-soft); }
+.text-\[var\(--art-paper-warm\)\] { color: var(--art-paper-warm); }
+.text-emerald-800 { color: var(--success); }
+.text-amber-800 { color: var(--warning); }
+.text-blue-800 { color: var(--brand); }
+.text-amber-700 { color: var(--warning); }
 
-.hover\:text-\[\#79624C\]:hover { color: #79624C; }
-.hover\:text-white:hover { color: #ffffff; }
+.hover\:text-\[var\(--art-accent-deep\)\]:hover { color: var(--art-accent-deep); }
+.hover\:text-white:hover { color: var(--art-surface); }
 
 /* Gradients */
 .bg-gradient-to-b { background-image: linear-gradient(to bottom, var(--tw-gradient-stops, transparent, transparent)); }
 .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops, transparent, transparent)); }
 .from-transparent { --tw-gradient-from: transparent; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent); }
 .from-black\/15 { --tw-gradient-from: rgba(0, 0, 0, 0.15); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent); }
-.from-\[\#E7DAC7\] { --tw-gradient-from: #E7DAC7; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent); }
-.via-\[\#FAF7F2\]\/30 { --tw-gradient-stops: var(--tw-gradient-from), rgba(250, 247, 242, 0.3) 50%, var(--tw-gradient-to, transparent); }
+.from-\[var\(--art-line-soft\)\] { --tw-gradient-from: var(--art-line-soft); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent); }
+.via-\[var\(--art-paper\)\]\/30 { --tw-gradient-stops: var(--tw-gradient-from), rgba(250, 247, 242, 0.3) 50%, var(--tw-gradient-to, transparent); }
 .via-50\% { --tw-gradient-via-position: 50%; }
-.to-\[\#FAF7F2\] { --tw-gradient-to: #FAF7F2; }
-.to-\[\#8C735B\] { --tw-gradient-to: #8C735B; }
+.to-\[var\(--art-paper\)\] { --tw-gradient-to: var(--art-paper); }
+.to-\[var\(--art-accent\)\] { --tw-gradient-to: var(--art-accent); }
 .to-transparent { --tw-gradient-to: transparent; }
 
 /* Typography Formatting */
@@ -771,12 +813,12 @@
 /* Borders & Rounding */
 .border { border-width: 1px; border-style: solid; border-color: rgba(215, 201, 182, 0.55); }
 .border-t { border-top-width: 1px; border-top-style: solid; }
-.border-\[\#8C735B\] { border-color: #8C735B; }
-.border-\[\#D5C6B1\] { border-color: #D5C6B1; }
-.border-\[\#D5C6B1\]\/40 { border-color: rgba(213, 198, 177, 0.4); }
-.border-\[\#D5C6B1\]\/60 { border-color: rgba(213, 198, 177, 0.6); }
-.border-\[\#D5C6B1\]\/70 { border-color: rgba(213, 198, 177, 0.7); }
-.border-\[\#E8DFD4\] { border-color: #E8DFD4; }
+.border-\[var\(--art-accent\)\] { border-color: var(--art-accent); }
+.border-\[var\(--art-line\)\] { border-color: var(--art-line); }
+.border-\[var\(--art-line\)\]\/40 { border-color: rgba(213, 198, 177, 0.4); }
+.border-\[var\(--art-line\)\]\/60 { border-color: rgba(213, 198, 177, 0.6); }
+.border-\[var\(--art-line\)\]\/70 { border-color: rgba(213, 198, 177, 0.7); }
+.border-\[var\(--art-line-soft\)\] { border-color: var(--art-line-soft); }
 .border-white\/10 { border-color: rgba(255, 255, 255, 0.1); }
 
 .rounded-xl { border-radius: 0.75rem; }
@@ -881,5 +923,34 @@
 
 /* Form input focus styles */
 .focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
-.focus\:ring-1:focus { --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color); --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color); box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), 0 0 #0000; }
-.focus\:ring-\[\#8C735B\]:focus { --tw-ring-color: #8C735B; }
+.focus\:ring-1:focus { --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color); --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color); box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), 0 0 transparent; }
+.focus\:ring-\[var\(--art-accent\)\]:focus { --tw-ring-color: var(--art-accent); }
+
+/* Breakpoint variants used by the artifact components. */
+@media (min-width: 640px) {
+  .sm\:text-xs { font-size: 0.75rem; line-height: 1.5; }
+  .sm\:text-sm { font-size: 0.875rem; line-height: 1.5; }
+  .sm\:text-lg { font-size: 1.125rem; line-height: 1.4; }
+  .sm\:text-2xl { font-size: 1.5rem; line-height: 1.25; }
+  .sm\:text-5xl { font-size: 3rem; line-height: 1.05; }
+  .sm\:text-6xl { font-size: 3.75rem; line-height: 1; }
+}
+
+/* Hover / focus / group variants that the artifact markup relies on. */
+.hover\:bg-\[var\(--art-accent-deep\)\]:hover { background-color: var(--art-accent-deep); }
+.hover\:bg-\[var\(--art-ink-deep\)\]:hover { background-color: var(--art-ink-deep); }
+.hover\:text-\[var\(--art-accent-deep\)\]:hover { color: var(--art-accent-deep); }
+.focus\:ring-\[var\(--art-accent\)\]:focus { --tw-ring-color: var(--art-accent); }
+.focus\:ring-1:focus { box-shadow: 0 0 0 1px var(--tw-ring-color, var(--art-accent)); }
+.hover\:scale-110:hover { transform: scale(1.10); }
+.hover\:shadow-lg:hover { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.10); }
+.hover\:shadow-xl:hover { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15); }
+.hover\:bg-black:hover { background-color: rgba(0, 0, 0, 0.06); }
+.group:hover .group-hover\:scale-105 { transform: scale(1.05); }
+
+/* Misc utilities referenced by the artifact components. */
+.-mt-14 { margin-top: -3.5rem; }
+.h-0 { height: 0; }
+.botanical-img { pointer-events: none; user-select: none; }
+.shadow-\[0_10px_35px_rgba\(0\,0\,0\,0\.20\)\] { box-shadow: 0 10px 35px rgba(0, 0, 0, 0.20); }
+.shadow-\[0_4px_16px_rgba\(0\,0\,0\,0\.15\)\] { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); }

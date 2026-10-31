@@ -76,7 +76,7 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ data }) => {
     <section id="acara" className="py-8 px-6">
       {/* Brown Header Card with Countdown */}
       <div className="brown-card rounded-t-3xl p-6 text-center relative overflow-hidden reveal">
-        <span className="text-[10px] uppercase tracking-[0.3em] text-[#EADBCE] font-semibold block mb-1">
+        <span className="text-[10px] uppercase tracking-[0.3em] text-[var(--art-line-soft)] font-semibold block mb-1">
           SAVE THE DATE
         </span>
         <h3 className="font-serif text-3xl font-bold tracking-wider mb-4">
@@ -89,25 +89,25 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ data }) => {
             <span id="cd-days" className="font-serif text-2xl font-bold block leading-none">
               {timeLeft.days}
             </span>
-            <span className="text-[9px] uppercase tracking-wider text-[#EADBCE]">HARI</span>
+            <span className="text-[9px] uppercase tracking-wider text-[var(--art-line-soft)]">HARI</span>
           </div>
           <div className="bg-black/20 rounded-xl p-2 border border-white/10">
             <span id="cd-hours" className="font-serif text-2xl font-bold block leading-none">
               {timeLeft.hours}
             </span>
-            <span className="text-[9px] uppercase tracking-wider text-[#EADBCE]">JAM</span>
+            <span className="text-[9px] uppercase tracking-wider text-[var(--art-line-soft)]">JAM</span>
           </div>
           <div className="bg-black/20 rounded-xl p-2 border border-white/10">
             <span id="cd-minutes" className="font-serif text-2xl font-bold block leading-none">
               {timeLeft.minutes}
             </span>
-            <span className="text-[9px] uppercase tracking-wider text-[#EADBCE]">MENIT</span>
+            <span className="text-[9px] uppercase tracking-wider text-[var(--art-line-soft)]">MENIT</span>
           </div>
           <div className="bg-black/20 rounded-xl p-2 border border-white/10">
             <span id="cd-seconds" className="font-serif text-2xl font-bold block leading-none">
               {timeLeft.seconds}
             </span>
-            <span className="text-[9px] uppercase tracking-wider text-[#EADBCE]">DETIK</span>
+            <span className="text-[9px] uppercase tracking-wider text-[var(--art-line-soft)]">DETIK</span>
           </div>
         </div>
       </div>
@@ -125,28 +125,28 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ data }) => {
 
         {/* Akad Nikah Details */}
         <div className="text-center mb-6 reveal delay-150">
-          <div className="w-9 h-9 mx-auto rounded-full bg-[#EFE8DD] text-[#8C735B] flex items-center justify-center mb-2 reveal-scale delay-200">
+          <div className="w-9 h-9 mx-auto rounded-full bg-[var(--art-line-soft)] text-[var(--art-accent)] flex items-center justify-center mb-2 reveal-scale delay-200">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
           </div>
-          <h4 className="font-serif text-2xl font-bold text-[#382E25] reveal delay-200">
+          <h4 className="font-serif text-2xl font-bold text-[var(--art-ink)] reveal delay-200">
             {akadEvent.title}
           </h4>
-          <p className="text-xs text-[#786755] font-medium mt-1 reveal delay-250">
+          <p className="text-xs text-[var(--art-ink-muted)] font-medium mt-1 reveal delay-250">
             Sabtu, 24 Mei 2025
           </p>
-          <p className="text-xs font-bold text-[#8C735B] mt-0.5 reveal delay-250">
+          <p className="text-xs font-bold text-[var(--art-accent)] mt-0.5 reveal delay-250">
             Pukul {akadEvent.startTime} - {akadEvent.endTime}
           </p>
-          <p className="text-xs text-[#786755] mt-1 reveal delay-300">
+          <p className="text-xs text-[var(--art-ink-muted)] mt-1 reveal delay-300">
             {akadEvent.locationName}, {akadEvent.address}
           </p>
           <a
             href={akadEvent.mapsUrl || 'https://maps.google.com/?q=Gedung+Graha+Saka+Yogyakarta'}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 mt-3 px-4 py-1.5 rounded-full bg-[#8C735B] text-white text-[11px] font-medium shadow hover:bg-[#79624C] reveal-scale delay-300"
+            className="inline-flex items-center gap-1.5 mt-3 px-4 py-1.5 rounded-full bg-[var(--art-accent)] text-white text-[11px] font-medium shadow hover:bg-[var(--art-accent-deep)] reveal-scale delay-300"
           >
             <span>Buka Google Maps</span> &#x2197;
           </a>
@@ -154,36 +154,36 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ data }) => {
 
         {/* Divider line */}
         <div className="my-6 flex items-center justify-center gap-3 reveal-fade delay-300">
-          <span className="w-16 h-[1px] bg-[#D5C6B1]"></span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#8C735B]"></span>
-          <span className="w-16 h-[1px] bg-[#D5C6B1]"></span>
+          <span className="w-16 h-[1px] bg-[var(--art-line)]"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--art-accent)]"></span>
+          <span className="w-16 h-[1px] bg-[var(--art-line)]"></span>
         </div>
 
         {/* Resepsi Details */}
         <div className="text-center mb-4 reveal delay-350">
-          <div className="w-9 h-9 mx-auto rounded-full bg-[#EFE8DD] text-[#8C735B] flex items-center justify-center mb-2 reveal-scale delay-350">
+          <div className="w-9 h-9 mx-auto rounded-full bg-[var(--art-line-soft)] text-[var(--art-accent)] flex items-center justify-center mb-2 reveal-scale delay-350">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <circle cx="9" cy="12" r="5" strokeWidth="1.8"/>
               <circle cx="15" cy="12" r="5" strokeWidth="1.8"/>
             </svg>
           </div>
-          <h4 className="font-serif text-2xl font-bold text-[#382E25] reveal delay-350">
+          <h4 className="font-serif text-2xl font-bold text-[var(--art-ink)] reveal delay-350">
             {resepsiEvent.title}
           </h4>
-          <p className="text-xs text-[#786755] font-medium mt-1 reveal delay-400">
+          <p className="text-xs text-[var(--art-ink-muted)] font-medium mt-1 reveal delay-400">
             Sabtu, 24 Mei 2025
           </p>
-          <p className="text-xs font-bold text-[#8C735B] mt-0.5 reveal delay-400">
+          <p className="text-xs font-bold text-[var(--art-accent)] mt-0.5 reveal delay-400">
             Pukul {resepsiEvent.startTime} - {resepsiEvent.endTime}
           </p>
-          <p className="text-xs text-[#786755] mt-1 reveal delay-400">
+          <p className="text-xs text-[var(--art-ink-muted)] mt-1 reveal delay-400">
             {resepsiEvent.locationName}, {resepsiEvent.address}
           </p>
           <a
             href={resepsiEvent.mapsUrl || 'https://maps.google.com/?q=Gedung+Graha+Saka+Yogyakarta'}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 mt-3 px-4 py-1.5 rounded-full bg-[#8C735B] text-white text-[11px] font-medium shadow hover:bg-[#79624C] reveal-scale delay-450"
+            className="inline-flex items-center gap-1.5 mt-3 px-4 py-1.5 rounded-full bg-[var(--art-accent)] text-white text-[11px] font-medium shadow hover:bg-[var(--art-accent-deep)] reveal-scale delay-450"
           >
             <span>Buka Google Maps</span> &#x2197;
           </a>
