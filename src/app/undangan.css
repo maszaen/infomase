@@ -37,7 +37,7 @@
   background-repeat: repeat-y;
   box-shadow: 0 20px 60px -15px rgba(50, 40, 30, 0.25), 0 0 1px 1px rgba(210, 195, 175, 0.4);
   position: relative;
-  overflow-x: hidden;
+  overflow-x: clip;
   padding-bottom: 76px;
   color: #382E25;
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -514,6 +514,7 @@
 .relative { position: relative; }
 .absolute { position: absolute; }
 .fixed { position: fixed; }
+.sticky { position: sticky; }
 .inset-0 { inset: 0px; }
 .top-0 { top: 0px; }
 .top-2 { top: 0.5rem; }

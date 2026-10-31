@@ -13,7 +13,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
 }) => {
   return (
     <nav
-      className="fixed bottom-4 left-0 right-0 max-w-[430px] mx-auto z-40 pointer-events-none px-4 flex items-center justify-center"
+      className="sticky bottom-4 left-0 right-0 max-w-[430px] mx-auto z-40 pointer-events-none px-4 flex items-center justify-center -mt-14"
       style={{
         opacity: isVisible ? 1 : 0,
         pointerEvents: isVisible ? 'auto' : 'none',

@@ -16,7 +16,7 @@ export const FloatingMusicPlayer: React.FC<FloatingMusicPlayerProps> = ({
   return (
     <div
       id="musicControlWrap"
-      className="fixed top-4 left-0 right-0 max-w-[430px] mx-auto z-40 pointer-events-none px-4 flex justify-end"
+      className="sticky top-4 left-0 right-0 max-w-[430px] mx-auto z-40 pointer-events-none px-4 flex justify-end h-0 overflow-visible"
       style={{
         opacity: isVisible ? 1 : 0,
         pointerEvents: isVisible ? 'auto' : 'none',

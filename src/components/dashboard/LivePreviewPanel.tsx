@@ -20,7 +20,7 @@ export const LivePreviewPanel: React.FC<LivePreviewPanelProps> = ({ data, onAddR
     const device = deviceRef.current;
     if (!device) return;
     const observer = new ResizeObserver(([entry]) => {
-      setPreviewScale(Math.min(1, entry.contentRect.width / 350));
+      setPreviewScale(Math.min(1, entry.contentRect.width / 375));
     });
     observer.observe(device);
     return () => observer.disconnect();
@@ -50,7 +50,7 @@ export const LivePreviewPanel: React.FC<LivePreviewPanelProps> = ({ data, onAddR
           <input id="preview-guest" type="text" value={previewGuest} onChange={(e) => setPreviewGuest(e.target.value)} placeholder="Nama tamu di cover..." />
         </div>
       </div>
-      <div className="preview-device" ref={deviceRef} style={{ height: 700 * previewScale }}>
+      <div className="preview-device" ref={deviceRef} style={{ height: 720 * previewScale }}>
         <div className="phone-mockup" style={{ transform: `scale(${previewScale})` }}>
           <div className="phone-notch" />
           <div className="phone-screen">

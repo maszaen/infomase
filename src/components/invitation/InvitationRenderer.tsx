@@ -196,7 +196,7 @@ export const InvitationRenderer: React.FC<InvitationRendererProps> = ({
         minHeight: '100%',
         position: 'relative',
         backgroundColor: '#E6DDD1',
-        overflowX: 'hidden',
+        overflowX: 'clip',
       }}
     >
       {/* 3D Gate Cover / Pintu Masuk Overlay */}
