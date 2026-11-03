@@ -2,16 +2,11 @@
 
 import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Check, Lock, Search, X } from 'lucide-react';
+import { ArrowRight, Check, Search, X } from 'lucide-react';
 import { ConsolePageHeader } from '@/components/console/ConsolePageHeader';
 import { useConsoleChrome } from '@/components/console/ConsoleChrome';
 import { useInvitationStore } from '@/lib/invitationStore';
-import {
-  TEMPLATE_CATEGORIES,
-  TEMPLATES,
-  UPCOMING_TEMPLATES,
-  formatIDR,
-} from '@/lib/templates';
+import { TEMPLATE_CATEGORIES, TEMPLATES, formatIDR } from '@/lib/templates';
 import type { TemplateCategory } from '@/lib/templates';
 
 export default function CatalogPage() {
@@ -193,41 +188,6 @@ export default function CatalogPage() {
             })}
           </div>
         )}
-
-        <section className="page-section">
-          <div className="section-bar">
-            <div>
-              <h2>Dalam pengerjaan</h2>
-              <p>Belum bisa dibeli. Kami menampilkannya supaya Anda tahu arah desainnya.</p>
-            </div>
-          </div>
-          <div className="grid-3">
-            {UPCOMING_TEMPLATES.map((tpl) => (
-              <div
-                key={tpl.id}
-                className="card"
-                style={{ padding: 'var(--space-3)', background: 'var(--surface-sunken)', boxShadow: 'none' }}
-              >
-                <div
-                  style={{
-                    height: 42,
-                    borderRadius: 'var(--radius-sm)',
-                    background: `linear-gradient(135deg, ${tpl.palette.primary}, ${tpl.palette.accent})`,
-                    marginBottom: 'var(--space-2-5)',
-                    opacity: 0.9,
-                  }}
-                />
-                <div className="row-between" style={{ gap: 8 }}>
-                  <h3 style={{ fontSize: 'var(--text-sm)' }}>{tpl.name}</h3>
-                  <span className="badge">
-                    <Lock size={10} /> Segera
-                  </span>
-                </div>
-                <p style={{ fontSize: 'var(--text-xs)', marginTop: 3 }}>{tpl.tagline}</p>
-              </div>
-            ))}
-          </div>
-        </section>
       </div>
     </>
   );

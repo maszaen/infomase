@@ -17,7 +17,7 @@ export default function StudioLayout({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const { invitations, setActiveInvitation, data, isPublishable, togglePublish } = useInvitationStore();
+  const { invitations, setActiveInvitation, isPublishable, togglePublish } = useInvitationStore();
   const toast = useToast();
 
   const invitation = invitations.find((inv) => inv.id === id);
@@ -51,7 +51,6 @@ export default function StudioLayout({
     <>
       <ConsolePageHeader
         title={invitation.title}
-        back={{ label: 'Semua undangan', href: '/dashboard' }}
         description={<span style={{ fontFamily: 'var(--font-mono)' }}>/invite/{invitation.slug}</span>}
         actions={
           <>

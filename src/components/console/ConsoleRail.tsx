@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   CalendarCheck2,
+  ChevronLeft,
   LayoutGrid,
   LifeBuoy,
   LogOut,
@@ -89,6 +90,12 @@ export function ConsoleRail({ open, onClose, invitations, activeId, onCreate, on
 
         {studio ? (
           <>
+            <nav className="rail-nav rail-nav-top" aria-label="Navigasi konsol">
+              <Link href="/dashboard" className="rail-item" onClick={onClose}>
+                <ChevronLeft size={16} /> Semua undangan
+              </Link>
+            </nav>
+
             <div className="rail-context">
               <span className="rail-context-label">Sedang diedit</span>
               <div className="rail-context-title">{studio.title}</div>

@@ -47,11 +47,14 @@ export interface TemplateMeta {
   /** Ships with the platform today. */
   status: 'available' | 'coming-soon';
   badge?: string;
+  /** Numerical alias corresponding to developer repo folders (undangan_1 .. undangan_8) */
+  folderId?: string;
 }
 
 export const TEMPLATES: TemplateMeta[] = [
   {
     id: 'boho-botanical',
+    folderId: 'undangan_1',
     name: 'Boho Botanical',
     tagline: 'Aquarel hangat, dedaunan bergoyang, dan gate cover 3D.',
     category: 'Botanical & Rustic',
@@ -79,32 +82,220 @@ export const TEMPLATES: TemplateMeta[] = [
     status: 'available',
     badge: 'Gratis untuk dicoba',
   },
-];
-
-/** Design directions we are building — shown as non-purchasable teasers. */
-export const UPCOMING_TEMPLATES: Array<
-  Pick<TemplateMeta, 'id' | 'name' | 'tagline' | 'category' | 'palette'>
-> = [
   {
-    id: 'sunda-siger',
-    name: 'Sunda Siger',
-    tagline: 'Siger dan motif kawung untuk akad bernuansa sakral.',
-    category: 'Traditional Nusantara',
-    palette: { primary: '#8C2F39', accent: '#C9A227', surface: '#FBF6EE', ink: '#2E1D1B' },
-  },
-  {
-    id: 'jawa-keraton',
-    name: 'Jawa Keraton',
-    tagline: 'Gunungan wayang, batik sogan, tipografi serif klasik.',
-    category: 'Traditional Nusantara',
-    palette: { primary: '#3E2723', accent: '#B45309', surface: '#FEFCE8', ink: '#3E2723' },
-  },
-  {
-    id: 'modern-minimal',
-    name: 'Modern Minimal',
-    tagline: 'Grid lapang, satu aksen, tanpa ornamen.',
+    id: 'modern-minimalist',
+    folderId: 'undangan_2',
+    name: 'Modern Minimalist',
+    tagline: 'Editorial Kinfolk bersih, aksen sage olive, dan tipografi kontemporer.',
     category: 'Modern Minimal',
-    palette: { primary: '#14151A', accent: '#0F4C81', surface: '#FFFFFF', ink: '#14151A' },
+    price: 49000,
+    compareAt: 99000,
+    includes: [
+      'Editorial layout bergaya majalah Kinfolk & Vogue',
+      'Harmoni palet sage olive & warm ivory',
+      'Animasi buket flora & daun melayang lembut',
+      'Buku tamu interaktif, galeri foto & tanda kasih',
+      '1 undangan · aktif permanen',
+    ],
+    palette: {
+      primary: '#727464',
+      accent: '#7F8170',
+      surface: '#FAF8F5',
+      ink: '#0C0D0C',
+    },
+    typography: {
+      heading: 'Cormorant Garamond',
+      body: 'Plus Jakarta Sans',
+    },
+    ornament: 'Minimalist foliage, sage ampersand, editorial hair lines',
+    previewImage: '/template/undangan_2/img/foto_editorial_hero.jpg',
+    demoSlug: 'raka-sinta-sage',
+    status: 'available',
+    badge: 'Populer',
+  },
+  {
+    id: 'tropical-beach',
+    folderId: 'undangan_3',
+    name: 'Tropical Beach',
+    tagline: 'Nuansa pantai eksotis, semilir dedaunan palem tropis, dan palet ocean teal.',
+    category: 'Botanical & Rustic',
+    price: 49000,
+    compareAt: 99000,
+    includes: [
+      'Tema pesisir pantai & desiran ombak laut',
+      'Perpaduan ocean teal, palm green & warm sand gold',
+      'Animasi buket flora tropis & monstera hidup',
+      'Countdown ribbon, peta Google Maps & amplop digital',
+      '1 undangan · aktif permanen',
+    ],
+    palette: {
+      primary: '#284B56',
+      accent: '#D4A362',
+      surface: '#FAF6EE',
+      ink: '#1A323B',
+    },
+    typography: {
+      heading: 'Cormorant Garamond',
+      body: 'Plus Jakarta Sans',
+    },
+    ornament: 'Tropical palm leaves, monstera, coastal sand gold',
+    previewImage: '/template/undangan_3/img/mempelai/couple_beach_full.jpg',
+    demoSlug: 'raka-sinta-beach',
+    status: 'available',
+  },
+  {
+    id: 'luxury-islamic',
+    folderId: 'undangan_4',
+    name: 'Luxury Islamic',
+    tagline: 'Mihrab islami agung, kaligrafi basmalah, dan aksen emas klasik.',
+    category: 'Luxury Classic',
+    price: 79000,
+    compareAt: 149000,
+    includes: [
+      'Arsitektur bingkai lengkung mihrab islami',
+      'Ornamen kaligrafi basmalah & kutipan suci Ar-Rum',
+      'Palet emas klasik berpadu hijau agung',
+      'Fitur amplop digital lengkap QRIS & nomor rekening',
+      '1 undangan · aktif permanen',
+    ],
+    palette: {
+      primary: '#1B4D3E',
+      accent: '#D4AF37',
+      surface: '#F7FAF8',
+      ink: '#132A22',
+    },
+    typography: {
+      heading: 'Cormorant Garamond',
+      body: 'Archivo',
+    },
+    ornament: 'Mihrab arch, calligraphic basmalah, gold borders',
+    previewImage: '/template/undangan_4/LUXURY-09-FOTO.jpg',
+    demoSlug: 'habib-adiba',
+    status: 'available',
+    badge: 'Spesial Islami',
+  },
+  {
+    id: 'misty-mountain',
+    folderId: 'undangan_5',
+    name: 'Misty Mountain',
+    tagline: 'Kabut pegunungan pinus sejuk, ketenangan alam alpine, dan palet pine mist.',
+    category: 'Botanical & Rustic',
+    price: 49000,
+    compareAt: 99000,
+    includes: [
+      'Visual latar kabut pegunungan pinus alami',
+      'Nuansa pine emerald, cedar gold & mist white',
+      'Animasi dahan cemara & efek dedaunan lembut',
+      'Galeri bento, cerita cinta & konfirmasi kehadiran',
+      '1 undangan · aktif permanen',
+    ],
+    palette: {
+      primary: '#1E352B',
+      accent: '#C59A45',
+      surface: '#F3F6F2',
+      ink: '#0F1D17',
+    },
+    typography: {
+      heading: 'Cormorant Garamond',
+      body: 'Plus Jakarta Sans',
+    },
+    ornament: 'Pine needles, mountain mist wash, cedar branches',
+    previewImage: '/template/undangan_5/img/bg/mountain_bg.jpg',
+    demoSlug: 'arga-maya',
+    status: 'available',
+  },
+  {
+    id: 'royal-maroon',
+    folderId: 'undangan_6',
+    name: 'The Royal Maroon',
+    tagline: 'Kemewahan beludru maroon istana, lampu gantung kristal, dan ornamen emas royal.',
+    category: 'Luxury Classic',
+    price: 79000,
+    compareAt: 149000,
+    includes: [
+      'Ambience beludru maroon istana kerajaan & antique gold',
+      'Lampu gantung chandelier kristal bergoyang & pilar megah',
+      'Bingkai medali kerajaan berhias ukiran sudut emas',
+      'Pemutar musik piringan hitam otomatis & amplop hadiah',
+      '1 undangan · aktif permanen',
+    ],
+    palette: {
+      primary: '#5A1018',
+      accent: '#C49A55',
+      surface: '#FAF5EE',
+      ink: '#3B080D',
+    },
+    typography: {
+      heading: 'Cormorant Garamond',
+      body: 'Plus Jakarta Sans',
+    },
+    ornament: 'Crystal chandelier, royal pillars, antique gold filigree',
+    previewImage: '/template/undangan_6/img/mempelai/mempelai_maroon_royal.jpg',
+    demoSlug: 'raka-sinta-royal',
+    status: 'available',
+    badge: 'Mewah',
+  },
+  {
+    id: 'pawiwahan-agung',
+    folderId: 'undangan_7',
+    name: 'Pawiwahan Agung',
+    tagline: 'Adat Jawa Pendopo Kraton megah, batik Megamendung, gunungan & iringan gamelan.',
+    category: 'Traditional Nusantara',
+    price: 89000,
+    compareAt: 159000,
+    includes: [
+      'Arsitektur panggung desktop 3-kolom Pendopo Kraton',
+      'Motif batik Megamendung, Gunungan & Wayang Kulit',
+      'Format tiket acara perforated stub sobek emas',
+      'Iringan audio gamelan tradisional Jawa autentik',
+      '1 undangan · aktif permanen',
+    ],
+    palette: {
+      primary: '#8C531B',
+      accent: '#B87333',
+      surface: '#FDF9F3',
+      ink: '#3B230C',
+    },
+    typography: {
+      heading: 'Cormorant Garamond',
+      body: 'Plus Jakarta Sans',
+    },
+    ornament: 'Gunungan wayang kulit, batik megamendung, tirai gebyog kraton',
+    previewImage: '/template/undangan_7/preview-undangan-batik.webp',
+    demoSlug: 'habib-adiba-jawa',
+    status: 'available',
+    badge: 'Adat Nusantara',
+  },
+  {
+    id: 'pawiwahan-pethak',
+    folderId: 'undangan_8',
+    name: 'Pawiwahan Pethak',
+    tagline: 'Adat Jawa klasik pethak putih suci, ronce melati keraton, dan renda gebyog.',
+    category: 'Traditional Nusantara',
+    price: 89000,
+    compareAt: 159000,
+    includes: [
+      'Panggung adat Jawa pethak bernuansa putih suci',
+      'Batik Kawung putih, roncen melati gantung & mandala cakra',
+      'Efek kelopak sekar melati berjatuhan lembut',
+      'Iringan gending gamelan, amplop kado & RSVP tamu',
+      '1 undangan · aktif permanen',
+    ],
+    palette: {
+      primary: '#5A5348',
+      accent: '#BFA575',
+      surface: '#FAF9F6',
+      ink: '#2E2A24',
+    },
+    typography: {
+      heading: 'Cormorant Garamond',
+      body: 'Plus Jakarta Sans',
+    },
+    ornament: 'Roncen sekar melati, mandala kawung cakra, wayang kulit pethak',
+    previewImage: '/template/undangan_8/cover-jawa-putih.jpg',
+    demoSlug: 'habib-adiba-pethak',
+    status: 'available',
+    badge: 'Adat Nusantara',
   },
 ];
 
@@ -116,9 +307,59 @@ export const TEMPLATE_CATEGORIES: Array<{ id: 'all' | TemplateCategory; label: s
   { id: 'Luxury Classic', label: 'Klasik mewah' },
 ];
 
+/** Mapping aliases like "undangan_1", "undangan-1", "1" to canonical template IDs */
+export const TEMPLATE_ALIASES: Record<string, string> = {
+  'undangan_1': 'boho-botanical',
+  'undangan-1': 'boho-botanical',
+  '1': 'boho-botanical',
+  'boho-botanical': 'boho-botanical',
+
+  'undangan_2': 'modern-minimalist',
+  'undangan-2': 'modern-minimalist',
+  '2': 'modern-minimalist',
+  'modern-minimalist': 'modern-minimalist',
+
+  'undangan_3': 'tropical-beach',
+  'undangan-3': 'tropical-beach',
+  '3': 'tropical-beach',
+  'tropical-beach': 'tropical-beach',
+
+  'undangan_4': 'luxury-islamic',
+  'undangan-4': 'luxury-islamic',
+  '4': 'luxury-islamic',
+  'luxury-islamic': 'luxury-islamic',
+
+  'undangan_5': 'misty-mountain',
+  'undangan-5': 'misty-mountain',
+  '5': 'misty-mountain',
+  'misty-mountain': 'misty-mountain',
+
+  'undangan_6': 'royal-maroon',
+  'undangan-6': 'royal-maroon',
+  '6': 'royal-maroon',
+  'royal-maroon': 'royal-maroon',
+
+  'undangan_7': 'pawiwahan-agung',
+  'undangan-7': 'pawiwahan-agung',
+  '7': 'pawiwahan-agung',
+  'pawiwahan-agung': 'pawiwahan-agung',
+
+  'undangan_8': 'pawiwahan-pethak',
+  'undangan-8': 'pawiwahan-pethak',
+  '8': 'pawiwahan-pethak',
+  'pawiwahan-pethak': 'pawiwahan-pethak',
+};
+
+export function normalizeTemplateId(id: string | undefined | null): string {
+  if (!id) return 'boho-botanical';
+  const clean = id.trim().toLowerCase();
+  return TEMPLATE_ALIASES[clean] || (TEMPLATES.some((t) => t.id === clean) ? clean : 'boho-botanical');
+}
+
 export function getTemplate(id: string | undefined | null): TemplateMeta | undefined {
   if (!id) return undefined;
-  return TEMPLATES.find((t) => t.id === id);
+  const canonicalId = normalizeTemplateId(id);
+  return TEMPLATES.find((t) => t.id === canonicalId) || TEMPLATES[0];
 }
 
 export function formatIDR(amount: number): string {

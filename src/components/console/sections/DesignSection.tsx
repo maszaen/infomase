@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ArrowRight, Check, Crown, Lock, Palette, ShieldCheck } from 'lucide-react';
 import { useInvitationStore } from '@/lib/invitationStore';
 import { useToast } from '@/components/ui/Toast';
-import { TEMPLATES, UPCOMING_TEMPLATES, formatIDR, getTemplate } from '@/lib/templates';
+import { TEMPLATES, formatIDR, getTemplate } from '@/lib/templates';
 import { formatOrderDate } from '@/lib/orders';
 
 export function DesignSection({ invitationId }: { invitationId: string }) {
@@ -163,41 +163,6 @@ export function DesignSection({ invitationId }: { invitationId: string }) {
               </article>
             );
           })}
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------- roadmap */}
-      <section className="page-section">
-        <div className="section-bar">
-          <div>
-            <h2>Desain berikutnya</h2>
-            <p>Sedang dikerjakan. Pembelian Anda hari ini tidak terpengaruh oleh rilis ini.</p>
-          </div>
-        </div>
-
-        <div className="grid-3">
-          {UPCOMING_TEMPLATES.map((tpl) => (
-            <div
-              key={tpl.id}
-              className="card"
-              style={{ padding: 'var(--space-3)', background: 'var(--surface-sunken)', boxShadow: 'none' }}
-            >
-              <div
-                style={{
-                  height: 52,
-                  borderRadius: 'var(--radius-sm)',
-                  background: `linear-gradient(135deg, ${tpl.palette.primary} 0%, ${tpl.palette.accent} 100%)`,
-                  marginBottom: 'var(--space-2-5)',
-                  opacity: 0.9,
-                }}
-              />
-              <div className="row-between" style={{ gap: 8 }}>
-                <h3 style={{ fontSize: 'var(--text-sm)' }}>{tpl.name}</h3>
-                <span className="badge">Segera</span>
-              </div>
-              <p style={{ fontSize: 'var(--text-xs)', marginTop: 3 }}>{tpl.tagline}</p>
-            </div>
-          ))}
         </div>
       </section>
     </div>

@@ -1,25 +1,22 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-import { ChevronLeft, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { useConsoleChrome } from './ConsoleChrome';
 
 interface ConsolePageHeaderProps {
   title: string;
   description?: React.ReactNode;
   actions?: React.ReactNode;
-  /** Breadcrumb back link, e.g. "Semua undangan". */
-  back?: { label: string; href: string };
   eyebrow?: string;
 }
 
 /**
- * One header per page: breadcrumb, title, optional meta, actions. The bar
+ * One header per page: eyebrow, title, optional meta, actions. The bar
  * grows instead of clipping so long invitation titles and multi-button
  * action groups never overlap the content on narrow screens.
  */
-export function ConsolePageHeader({ title, description, actions, back, eyebrow }: ConsolePageHeaderProps) {
+export function ConsolePageHeader({ title, description, actions, eyebrow }: ConsolePageHeaderProps) {
   const { openRail } = useConsoleChrome();
 
   return (
@@ -34,12 +31,7 @@ export function ConsolePageHeader({ title, description, actions, back, eyebrow }
       </button>
 
       <div className="topbar-title">
-        {back ? (
-          <Link href={back.href} className="console-crumb">
-            <ChevronLeft size={12} aria-hidden />
-            {back.label}
-          </Link>
-        ) : eyebrow ? (
+        {eyebrow ? (
           <span className="label" style={{ fontSize: 'var(--text-2xs)' }}>
             {eyebrow}
           </span>

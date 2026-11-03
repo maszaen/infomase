@@ -973,12 +973,12 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
             />
           </div>
 
-          <div className="content-preview">
-            <div className="content-preview-inner">
-              <div className="phone-screen" style={{ height: '100%' }}>
-                <InvitationRenderer data={inv} guestName={previewGuest} defaultOpened />
-              </div>
+          <div className="content-preview-phone">
+            <div className="phone-notch" aria-hidden="true" />
+            <div className="phone-screen">
+              <InvitationRenderer data={inv} guestName={previewGuest} defaultOpened />
             </div>
+            <div className="phone-home-bar" aria-hidden="true" />
           </div>
         </div>
       </aside>

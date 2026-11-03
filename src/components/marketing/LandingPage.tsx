@@ -335,7 +335,14 @@ function TemplateShowcase() {
           </p>
         </div>
 
-        <div className="grid-2" style={{ gap: 'var(--space-5)' }}>
+        <div
+          className="grid-2"
+          style={{
+            gap: 'var(--space-5)',
+            maxWidth: TEMPLATES.length === 1 ? 720 : undefined,
+            marginRight: TEMPLATES.length === 1 ? 'auto' : undefined,
+          }}
+        >
           {TEMPLATES.map((tpl) => (
             <article key={tpl.id} className="card" style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
               <div style={{ position: 'relative', height: 240, background: 'var(--surface-sunken)' }}>
@@ -396,31 +403,6 @@ function TemplateShowcase() {
               </div>
             </article>
           ))}
-
-          <article
-            className="card"
-            style={{
-              padding: 'var(--space-5)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              borderStyle: 'dashed',
-              background: 'transparent',
-              gap: 'var(--space-3)',
-            }}
-          >
-            <span className="badge" style={{ alignSelf: 'flex-start' }}>
-              Sedang dibuat
-            </span>
-            <h3 style={{ fontSize: 'var(--text-lg)' }}>Tradisional Nusantara &amp; modern minimal</h3>
-            <p style={{ fontSize: 'var(--text-sm)' }}>
-              Siger Sunda, gunungan Jawa, dan layout minimalis sedang dikerjakan. Beli template yang sudah
-              tersedia hari ini; desain baru tidak mengubah lisensi Anda.
-            </p>
-            <Link href="/register" className="btn btn-secondary btn-block" style={{ width: 'fit-content' }}>
-              Beri tahu saya <ArrowRight size={14} />
-            </Link>
-          </article>
         </div>
       </div>
     </section>

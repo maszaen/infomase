@@ -1,0 +1,28 @@
+/* ==========================================================================
+   Template 3 — Tropical Beach Wedding (Ocean Teal & Coastal Sand)
+   Scoped to .template-tropical-beach
+   ========================================================================== */
+
+.template-tropical-beach {
+  --theme-ocean: #284B56;
+  --theme-palm: #5B8A68;
+  --theme-sand: #D4A362;
+  --theme-shell: #FAF6EE;
+  --theme-lagoon: #C4DFE6;
+}
+
+.template-tropical-beach .coastal-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 163, 98, 0.35);
+  box-shadow: 0 10px 30px -8px rgba(27, 59, 71, 0.12);
+}
+
+@keyframes beachBreeze {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg) translateY(-2px); }
+}
+
+.template-tropical-beach .anim-breeze {
+  animation: beachBreeze 5s ease-in-out infinite;
+}

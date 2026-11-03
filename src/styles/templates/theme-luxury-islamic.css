@@ -1,0 +1,22 @@
+/* ==========================================================================
+   Template 4 — Luxury Islamic (Emerald & Classic Gold)
+   Scoped to .template-luxury-islamic
+   ========================================================================== */
+
+.template-luxury-islamic {
+  --theme-emerald: #1B4D3E;
+  --theme-emerald-deep: #132A22;
+  --theme-gold: #D4AF37;
+  --theme-gold-light: #F3DEB8;
+  --theme-cream: #F7FAF8;
+}
+
+.template-luxury-islamic .mihrab-arch {
+  border-radius: 120px 120px 20px 20px;
+}
+
+.template-luxury-islamic .islamic-card {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 12px 30px -8px rgba(19, 42, 34, 0.15);
+}

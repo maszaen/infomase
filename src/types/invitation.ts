@@ -76,6 +76,15 @@ export interface GuestItem {
   phone?: string;
 }
 
+export interface WhatsAppMessageTemplate {
+  id: string;
+  name: string;
+  body: string;
+  /** Categories mapped to automatically use this template when sending via WhatsApp. */
+  assignedCategories: GuestCategory[];
+  isDefault?: boolean;
+}
+
 export interface InvitationData {
   id: string;
   slug: string;
@@ -110,4 +119,5 @@ export interface InvitationData {
   };
   rsvpList: RSVPItem[];
   guests: GuestItem[];
+  waTemplates?: WhatsAppMessageTemplate[];
 }

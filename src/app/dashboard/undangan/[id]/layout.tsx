@@ -1,3 +1,4 @@
+import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
 import StudioChrome from './StudioChrome';
 
@@ -14,5 +15,15 @@ export default function StudioLayout({
   children: React.ReactNode;
   params: Promise<{ id: string }>;
 }) {
-  return <StudioChrome params={params}>{children}</StudioChrome>;
+  return (
+    <Suspense
+      fallback={
+        <div className="page-content">
+          <span className="meta">Memuat studio…</span>
+        </div>
+      }
+    >
+      <StudioChrome params={params}>{children}</StudioChrome>
+    </Suspense>
+  );
 }

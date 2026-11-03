@@ -45,4 +45,5 @@ next-env.d.ts
 *.rar
 *.patch
 .studio-*
-/undangan_1/
+/.audit/
+/undangan_*/

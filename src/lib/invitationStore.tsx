@@ -10,6 +10,7 @@ import {
   LoveStory,
   GalleryPhoto,
   BankAccount,
+  WhatsAppMessageTemplate,
 } from '@/types/invitation';
 import { DEMO_INVITATION, DEMO_SLUG } from './defaultData';
 import {
@@ -25,7 +26,7 @@ import {
   saveLicences,
   saveOrders,
 } from './orders';
-import { getTemplate } from './templates';
+import { getTemplate, TEMPLATES } from './templates';
 
 const INVITATIONS_KEY = 'infomase_invitations_v3';
 const ACTIVE_ID_KEY = 'infomase_active_invitation_v3';
@@ -90,6 +91,7 @@ interface InvitationStoreValue {
   deleteRSVP(id: string): void;
   addGuest(guest: Omit<GuestItem, 'id'>): void;
   deleteGuest(id: string): void;
+  updateWaTemplates(templates: WhatsAppMessageTemplate[]): void;
   resetToDefault(): void;
 }
 
@@ -359,7 +361,23 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
   );
 
   const getInvitationBySlug = useCallback(
-    (slug: string) => invitations.find((i) => i.slug === slug),
+    (slug: string) => {
+      const found = invitations.find((i) => i.slug === slug);
+      if (found) return found;
+
+      const tpl = TEMPLATES.find((t) => t.demoSlug === slug);
+      if (tpl) {
+        return {
+          ...DEMO_INVITATION,
+          id: `demo-${tpl.id}`,
+          slug: tpl.demoSlug || slug,
+          title: `Demo — ${tpl.name}`,
+          templateId: tpl.id,
+          isPublished: true,
+        };
+      }
+      return undefined;
+    },
     [invitations]
   );
 
@@ -431,6 +449,9 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
   const deleteGuest = (id: string) =>
     updateActive((prev) => ({ ...prev, guests: prev.guests.filter((g) => g.id !== id) }));
 
+  const updateWaTemplates = (templates: WhatsAppMessageTemplate[]) =>
+    updateActive((prev) => ({ ...prev, waTemplates: templates }));
+
   const resetToDefault = () =>
     updateActive((prev) => ({
       ...DEMO_INVITATION,
@@ -476,6 +497,7 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
     deleteRSVP,
     addGuest,
     deleteGuest,
+    updateWaTemplates,
     resetToDefault,
   };
 

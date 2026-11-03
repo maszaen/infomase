@@ -1,0 +1,29 @@
+/* ==========================================================================
+   Template 8 — Pawiwahan Pethak (Adat Jawa Putih Suci & Roncen Melati)
+   Scoped to .template-pawiwahan-pethak
+   ========================================================================== */
+
+.template-pawiwahan-pethak {
+  --pearl-050: #ffffff;
+  --pearl-100: #fcfaf5;
+  --pearl-200: #f2eadb;
+  --prada-500: #bc9144;
+  --prada-400: #d7b46f;
+  --ink-900: #2b2218;
+}
+
+.template-pawiwahan-pethak .pethak-card {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(188, 145, 68, 0.35);
+  box-shadow: 0 10px 30px -8px rgba(43, 34, 24, 0.08);
+}
+
+@keyframes melatiSway {
+  0%, 100% { transform: rotate(-2.5deg); }
+  50% { transform: rotate(2.5deg); }
+}
+
+.template-pawiwahan-pethak .anim-melati {
+  animation: melatiSway 4.5s ease-in-out infinite;
+  transform-origin: top center;
+}

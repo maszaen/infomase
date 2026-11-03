@@ -1,4 +1,61 @@
-import { InvitationData } from '@/types/invitation';
+import { InvitationData, WhatsAppMessageTemplate } from '@/types/invitation';
+
+export const DEFAULT_WA_TEMPLATES: WhatsAppMessageTemplate[] = [
+  {
+    id: 'wa-tpl-formal',
+    name: 'Formal & Keluarga',
+    isDefault: true,
+    assignedCategories: ['Keluarga', 'VIP', 'Umum'],
+    body: `Kepada Yth. {guestName}
+
+Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu pada acara pernikahan kami:
+
+*{groomName} & {brideName}*
+📅 {eventDate}
+⏰ Pukul {eventTime}
+📍 {venueName}
+
+Detail acara dan konfirmasi kehadiran dapat diakses melalui tautan berikut:
+{link}
+
+Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir. Terima kasih.`,
+  },
+  {
+    id: 'wa-tpl-casual',
+    name: 'Santai (Sahabat)',
+    assignedCategories: ['Sahabat'],
+    body: `Halo {guestName}! 👋
+
+Kami mau berbagi kabar bahagia nih. InsyaAllah kami akan melangsungkan pernikahan:
+
+*{groomName} & {brideName}*
+📅 {eventDate} ({eventTime})
+📍 {venueName}
+
+Cek info lengkap dan isi konfirmasi kehadiran (RSVP) di link undangan khusus buat kamu ya:
+{link}
+
+Ditunggu banget kehadirannya, sampai ketemu di hari bahagia kami! ✨`,
+  },
+  {
+    id: 'wa-tpl-colleague',
+    name: 'Rekan Kerja / Kolega',
+    assignedCategories: ['Teman Kantor'],
+    body: `Selamat pagi/siang {guestName},
+
+Melalui pesan ini, kami ingin mengundang rekan-rekan untuk hadir di acara pernikahan kami:
+
+*{groomName} & {brideName}*
+Hari/Tanggal: {eventDate}
+Waktu: {eventTime}
+Tempat: {venueName}
+
+Tautan undangan digital & RSVP:
+{link}
+
+Terima kasih banyak atas perhatian dan doa restunya.`,
+  },
+];
 
 /**
  * Seed data for the public demo invitation.
@@ -174,6 +231,7 @@ export const DEMO_INVITATION: InvitationData = {
     { id: 'guest-2', name: 'Dinda Permata', category: 'Sahabat', phone: '089876543210' },
     { id: 'guest-3', name: 'Rekan Kantor Teknik', category: 'Teman Kantor', phone: '085712345678' },
   ],
+  waTemplates: DEFAULT_WA_TEMPLATES,
 };
 
 export const PRESET_PHOTOS = {

@@ -1,0 +1,28 @@
+/* ==========================================================================
+   Template 5 — Misty Mountain & Alpine (Highland Pine & Cedar Gold)
+   Scoped to .template-misty-mountain
+   ========================================================================== */
+
+.template-misty-mountain {
+  --theme-mountain: #1E352B;
+  --theme-pine: #36594B;
+  --theme-cedar: #C59A45;
+  --theme-mist: #E8EDE7;
+  --theme-edelweiss: #FAF9F5;
+}
+
+.template-misty-mountain .alpine-card {
+  background: rgba(250, 249, 245, 0.94);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(54, 89, 75, 0.20);
+  box-shadow: 0 10px 25px -8px rgba(18, 36, 28, 0.10);
+}
+
+@keyframes mistFloat {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 0.95; transform: scale(1.02); }
+}
+
+.template-misty-mountain .anim-mist {
+  animation: mistFloat 6s ease-in-out infinite;
+}

@@ -1,4 +1,5 @@
 @import './undangan.css';
+@import '../styles/templates/index.css';
 
 /* ==========================================================================
    InfoMase design system
@@ -1433,6 +1434,11 @@ table.table {
   overflow-y: auto;
 }
 
+.rail-nav-top {
+  flex: 0 0 auto;
+  padding-bottom: 0;
+}
+
 .sidebar-item,
 .rail-item {
   display: flex;
@@ -1448,6 +1454,7 @@ table.table {
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
   text-align: left;
+  text-decoration: none;
   cursor: pointer;
   transition:
     background-color var(--dur-fast) var(--ease-out),
@@ -1547,22 +1554,6 @@ table.table {
   align-items: center;
   gap: var(--space-2);
   flex-shrink: 0;
-}
-
-.console-crumb {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  width: fit-content;
-  max-width: 100%;
-  color: var(--ink-500);
-  font-size: var(--text-2xs);
-  line-height: 1.3;
-  text-decoration: none;
-}
-
-.console-crumb:hover {
-  color: var(--brand);
 }
 
 @media (max-width: 720px) {
@@ -2220,19 +2211,6 @@ table.table {
 /* ==========================================================================
    Console section scaffolding (studio)
    ========================================================================== */
-
-.studio-tabs {
-  display: flex;
-  gap: var(--space-1);
-  margin-bottom: var(--space-5);
-  border-bottom: 1px solid var(--border);
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.studio-tabs::-webkit-scrollbar {
-  display: none;
-}
 
 .studio-section {
   display: flex;
@@ -2950,7 +2928,6 @@ table.table {
   .table td {
     padding-inline: 10px;
   }
-  .studio-tabs,
   .editor-subnav,
   .filter-scroll {
     -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
@@ -2977,17 +2954,6 @@ table.table {
 .stat-icon {
   width: 28px;
   height: 28px;
-}
-
-/* ---- Studio tabs ----------------------------------------------------- */
-
-.studio-tabs {
-  margin-bottom: var(--space-4);
-}
-
-.studio-tabs .tab {
-  padding: 7px 10px;
-  gap: 6px;
 }
 
 .studio-strip {

@@ -1,0 +1,35 @@
+/* ==========================================================================
+   Template 7 — Pawiwahan Agung (Adat Jawa Keraton & Batik Sogan)
+   Scoped to .template-pawiwahan-agung
+   ========================================================================== */
+
+.template-pawiwahan-agung {
+  --sogan-950: #1f130b;
+  --sogan-900: #2b1b10;
+  --sogan-800: #3e2818;
+  --sogan-700: #593e28;
+  --sogan-600: #7a5537;
+  --prada-500: #c8984c;
+  --prada-400: #dfb66e;
+  --prada-300: #f2d59b;
+  --ivory-100: #fbf8f3;
+  --ivory-200: #f3ece0;
+  --ink-900: #2c1d12;
+  --ink-600: #66503e;
+}
+
+.template-pawiwahan-agung .kraton-card {
+  background: rgba(251, 248, 243, 0.96);
+  border: 1px solid rgba(200, 152, 76, 0.45);
+  box-shadow: 0 10px 30px -8px rgba(31, 19, 11, 0.15);
+}
+
+@keyframes gununganSway {
+  0%, 100% { transform: rotate(-3deg) translateY(0); }
+  50% { transform: rotate(3deg) translateY(-3px); }
+}
+
+.template-pawiwahan-agung .anim-gunungan {
+  animation: gununganSway 6s ease-in-out infinite;
+  transform-origin: bottom center;
+}

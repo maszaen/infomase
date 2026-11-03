@@ -1,0 +1,37 @@
+/* ==========================================================================
+   Template 2 — Modern Minimalist (Sage Olive & Ivory Editorial)
+   Scoped to .template-modern-minimalist
+   ========================================================================== */
+
+.template-modern-minimalist {
+  --theme-sage: #727464;
+  --theme-sage-muted: #7F8170;
+  --theme-ivory: #D8D3C5;
+  --theme-ivory-light: #FAF8F5;
+  --theme-charcoal: #0C0D0C;
+}
+
+.template-modern-minimalist .editorial-card {
+  background: linear-gradient(145deg, rgba(248, 246, 242, 0.96), rgba(238, 233, 224, 0.92));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(127, 129, 112, 0.35);
+  box-shadow: 0 12px 35px -10px rgba(12, 13, 12, 0.08);
+}
+
+.template-modern-minimalist .font-script {
+  font-family: 'Alex Brush', cursive !important;
+}
+
+.template-modern-minimalist .font-serif {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+}
+
+@keyframes swayFoliage {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  50% { transform: rotate(3deg) translateY(-3px); }
+}
+
+.template-modern-minimalist .anim-sway {
+  animation: swayFoliage 4s ease-in-out infinite;
+}

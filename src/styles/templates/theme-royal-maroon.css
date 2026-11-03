@@ -1,0 +1,30 @@
+/* ==========================================================================
+   Template 6 — The Royal Maroon (Velvet Burgundy & Royal Gold)
+   Scoped to .template-royal-maroon
+   ========================================================================== */
+
+.template-royal-maroon {
+  --theme-maroon: #3B080D;
+  --theme-burgundy: #5A1018;
+  --theme-royal-wine: #790F25;
+  --theme-antique-gold: #C49A55;
+  --theme-champagne: #E8C995;
+  --theme-ivory-royal: #F5E8D8;
+}
+
+.template-royal-maroon .royal-card {
+  background: rgba(59, 8, 13, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(196, 154, 85, 0.40);
+  box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.45);
+}
+
+@keyframes chandelierSway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+.template-royal-maroon .anim-chandelier {
+  animation: chandelierSway 5s ease-in-out infinite;
+  transform-origin: top center;
+}

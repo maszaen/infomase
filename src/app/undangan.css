@@ -82,6 +82,14 @@
   position: relative;
 }
 
+.phone-screen #home {
+  min-height: 750px;
+}
+
+.phone-screen .mobile-app-container {
+  min-height: 750px;
+}
+
 /* Elegant Cards */
 .paper-card {
   background: linear-gradient(145deg, rgba(255, 253, 250, 0.94), rgba(249, 244, 237, 0.90));
@@ -948,9 +956,102 @@
 .hover\:bg-black:hover { background-color: rgba(0, 0, 0, 0.06); }
 .group:hover .group-hover\:scale-105 { transform: scale(1.05); }
 
-/* Misc utilities referenced by the artifact components. */
+/*Misc utilities referenced by the artifact components. */
 .-mt-14 { margin-top: -3.5rem; }
 .h-0 { height: 0; }
 .botanical-img { pointer-events: none; user-select: none; }
 .shadow-\[0_10px_35px_rgba\(0\,0\,0\,0\.20\)\] { box-shadow: 0 10px 35px rgba(0, 0, 0, 0.20); }
 .shadow-\[0_4px_16px_rgba\(0\,0\,0\,0\.15\)\] { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); }
+
+/* Studio live phone preview overrides */
+.studio-split {
+  grid-template-columns: minmax(0, 1fr) 416px;
+}
+
+.wa-templates-split {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+@media (max-width: 1180px) {
+  .studio-split {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 960px) {
+  .wa-templates-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.content-preview-phone {
+  position: relative;
+  width: 382px;
+  max-width: 100%;
+  height: 772px;
+  margin-inline: auto;
+  padding: 6px;
+  overflow: hidden;
+  background: #0f1115;
+  border: 6px solid #1e2128;
+  border-radius: 42px;
+  box-shadow:
+    0 24px 52px -16px rgb(20 21 26 / 0.36),
+    inset 0 0 0 1px rgb(255 255 255 / 0.08);
+}
+
+.content-preview-phone .phone-notch {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  z-index: 60;
+  width: 92px;
+  height: 22px;
+  border-radius: 20px;
+  background: #0f1115;
+  transform: translateX(-50%);
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+
+.content-preview-phone .phone-screen {
+  width: 100%;
+  height: 100%;
+  border-radius: 32px;
+  overflow-x: clip;
+  overflow-y: auto;
+  background: #faf7f2;
+  scrollbar-width: thin;
+}
+
+.content-preview-phone .phone-home-bar {
+  position: absolute;
+  bottom: 11px;
+  left: 50%;
+  z-index: 60;
+  width: 118px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgb(20 21 26 / 0.28);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.content-preview-phone #gateCover {
+  position: absolute !important;
+  inset: 0 !important;
+}
+
+@media (max-width: 440px) {
+  .content-preview-phone {
+    width: 100%;
+    height: 680px;
+    border-radius: 34px;
+  }
+  .content-preview-phone .phone-screen {
+    border-radius: 26px;
+  }
+}
