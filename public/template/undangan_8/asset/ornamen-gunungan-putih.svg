@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 340" fill="none">
+  <defs>
+    <linearGradient id="pearlBody" x1="120" y1="10" x2="120" y2="328" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="52%" stop-color="#F8F4EC"/>
+      <stop offset="100%" stop-color="#EDE4D3"/>
+    </linearGradient>
+    <linearGradient id="pradaGold" x1="30" y1="14" x2="210" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E6CB92"/>
+      <stop offset="48%" stop-color="#C49A4E"/>
+      <stop offset="100%" stop-color="#9A732E"/>
+    </linearGradient>
+    <linearGradient id="softGoldFill" x1="120" y1="30" x2="120" y2="310" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F5E6C4" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#D5B06A" stop-opacity="0.35"/>
+    </linearGradient>
+    <filter id="softDrop" x="-12%" y="-8%" width="124%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#5C492E" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#softDrop)">
+    <!-- Outer Sacred Kayon Silhouette -->
+    <path d="M120 12 C136 48 168 98 194 148 C218 194 222 238 202 276 C188 302 164 314 120 316 C76 314 52 302 38 276 C18 238 22 194 46 148 C72 98 104 48 120 12 Z"
+          fill="url(#pearlBody)" stroke="url(#pradaGold)" stroke-width="3.2"/>
+
+    <!-- Scalloped Inner Filigree Rim -->
+    <path d="M120 26 C134 58 162 104 185 150 C206 192 209 232 191 267 C179 289 158 301 120 303 C82 301 61 289 49 267 C31 232 34 192 55 150 C78 104 106 58 120 26 Z"
+          fill="url(#softGoldFill)" stroke="url(#pradaGold)" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+    <!-- Inner Pearl Medallion Core -->
+    <path d="M120 42 C132 70 155 112 175 154 C193 190 195 227 180 257 C169 277 150 288 120 290 C90 288 71 277 60 257 C45 227 47 190 65 154 C85 112 108 70 120 42 Z"
+          fill="#FFFEFA" stroke="#D8BA7C" stroke-width="1.2"/>
+
+    <!-- Kalpataru Tree of Life Central Trunk -->
+    <path d="M120 58 L120 220" stroke="url(#pradaGold)" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Crown Sekar Melati Blossom -->
+    <circle cx="120" cy="56" r="8" fill="#FFFFFF" stroke="url(#pradaGold)" stroke-width="2"/>
+    <circle cx="120" cy="56" r="3" fill="#C49A4E"/>
+
+    <!-- Symmetrical Swirling Batik Lung-lungan Branches -->
+    <path d="M120 96 C102 88 86 98 84 114 C82 128 96 135 106 126" stroke="url(#pradaGold)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M120 96 C138 88 154 98 156 114 C158 128 144 135 134 126" stroke="url(#pradaGold)" stroke-width="2" stroke-linecap="round"/>
+
+    <path d="M120 138 C94 128 68 142 66 164 C64 182 82 192 96 180" stroke="url(#pradaGold)" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M120 138 C146 128 172 142 174 164 C176 182 158 192 144 180" stroke="url(#pradaGold)" stroke-width="2.2" stroke-linecap="round"/>
+
+    <!-- Twin Garuda / Lar Wings Flanking Base -->
+    <path d="M88 232 C62 222 48 198 54 176 C62 192 76 202 92 206" fill="#F6EFE2" stroke="url(#pradaGold)" stroke-width="1.8"/>
+    <path d="M152 232 C178 222 192 198 186 176 C178 192 164 202 148 206" fill="#F6EFE2" stroke="url(#pradaGold)" stroke-width="1.8"/>
+
+    <!-- Kawung Quartet Motifs -->
+    <g fill="#FFFFFF" stroke="url(#pradaGold)" stroke-width="1.4">
+      <ellipse cx="92" cy="112" rx="6" ry="3.5" transform="rotate(-25 92 112)"/>
+      <ellipse cx="148" cy="112" rx="6" ry="3.5" transform="rotate(25 148 112)"/>
+      <ellipse cx="78" cy="162" rx="7" ry="4" transform="rotate(-20 78 162)"/>
+      <ellipse cx="162" cy="162" rx="7" ry="4" transform="rotate(20 162 162)"/>
+    </g>
+
+    <!-- Sacred Pendopo Joglo Sanctuary at Base -->
+    <polygon points="82,226 120,202 158,226" fill="#F4EBDC" stroke="url(#pradaGold)" stroke-width="2" stroke-linejoin="round"/>
+    <polygon points="74,234 120,218 166,234" fill="#FFFFFF" stroke="url(#pradaGold)" stroke-width="1.8" stroke-linejoin="round"/>
+    <rect x="88" y="234" width="64" height="44" rx="3" fill="#FAF6EE" stroke="url(#pradaGold)" stroke-width="1.8"/>
+    <path d="M108 278 V248 C108 241 132 241 132 248 V278" fill="#FFFFFF" stroke="url(#pradaGold)" stroke-width="1.8"/>
+    <line x1="120" y1="243" x2="120" y2="278" stroke="url(#pradaGold)" stroke-width="1.4"/>
+    <rect x="78" y="278" width="84" height="7" rx="3" fill="url(#pradaGold)"/>
+
+    <!-- Kayon Handle & Pearl Cloud Pedestal -->
+    <rect x="115" y="315" width="10" height="18" rx="4" fill="url(#pradaGold)"/>
+    <path d="M64 316 C80 304 102 306 120 314 C138 306 160 304 176 316 C158 324 82 324 64 316 Z"
+          fill="#FFFFFF" stroke="url(#pradaGold)" stroke-width="1.6"/>
+  </g>
+</svg>

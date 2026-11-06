@@ -1,0 +1,923 @@
+/* Smooth scrolling & completely invisible scrollbars */
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html, body, .mobile-app-container, * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Hide scrollbars universally (Chrome, Safari, Edge, Opera) */
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ==========================================================
+   MODERN MINIMALIST BOTANICAL WEDDING — SAGE & IVORY EDITORIAL
+   Editorial Style inspired by Kinfolk & Vogue Weddings
+   
+   Palette:
+   🟢 Sage Olive: #727464 (Background canvas desktop, deep accents)
+   🟢 Muted Sage: #7F8170 (Hairline borders, editorial subtitles, badges)
+   🤍 Warm Ivory: #D8D3C5 (Website body, editorial canvas)
+   🖤 Deep Charcoal: #0C0D0C (Editorial typography, contrast buttons)
+   ========================================================== */
+
+/* Outer Desktop Background: Sage Olive */
+body {
+  background-color: #727464;
+  color: #0C0D0C;
+  overflow-x: hidden;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Mobile App Canvas Container (Exact Mobile Phone Frame): Warm Ivory */
+.mobile-app-container {
+  width: 100%;
+  max-width: 430px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 100vh;
+  background-color: #D8D3C5;
+  box-shadow: 0 25px 80px -15px rgba(12, 13, 12, 0.45), 0 0 1px 1px rgba(127, 129, 112, 0.35);
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 0;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Alternating Section Backgrounds (Cream #D8D3C5 & Sage #A2A796) */
+.bg-section-cream {
+  background-color: #D8D3C5;
+}
+
+.bg-section-sage {
+  background-color: #A2A796;
+}
+
+#gatePage {
+  background-color: #D8D3C5;
+  background-image: 
+    linear-gradient(180deg, 
+      #A2A796 0%, 
+      #A2A796 22%, 
+      #BAC0B1 36%, 
+      #C8CCC0 50%, 
+      #D4D3C9 64%, 
+      #D8D3C5 78%, 
+      #D8D3C5 100%
+    );
+  position: relative;
+}
+
+/* Hero / Cover Section */
+#home {
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+}
+
+/* Typography Helpers */
+.font-script {
+  font-family: 'Alex Brush', 'Great Vibes', cursive;
+}
+
+.font-serif {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* ==========================================================
+   EDITORIAL CARDS & DESIGN ELEMENTS
+   ========================================================== */
+
+.editorial-card {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(145deg, rgba(248, 246, 242, 0.96), rgba(238, 233, 224, 0.92));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(127, 129, 112, 0.35);
+  box-shadow: 0 12px 35px -10px rgba(12, 13, 12, 0.08);
+}
+
+/* Strictly Constrained Botanical Accent Sizes (Never covers content) */
+.botanical-accent {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  width: 46px;
+  max-width: 46px;
+  height: auto;
+}
+
+.botanical-accent img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.botanical-accent-sm {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  width: 36px;
+  max-width: 36px;
+  height: auto;
+}
+
+.botanical-accent-sm img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.botanical-accent-xs {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  width: 28px;
+  max-width: 28px;
+  height: auto;
+}
+
+.botanical-accent-xs img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.editorial-card-sage {
+  background: linear-gradient(145deg, #727464, #5D6052);
+  color: #FAF8F5;
+  border: 1px solid rgba(216, 211, 197, 0.25);
+  box-shadow: 0 14px 40px -12px rgba(12, 13, 12, 0.20);
+}
+
+.editorial-pill {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 600;
+}
+
+.editorial-date-box {
+  background: rgba(240, 236, 228, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(127, 129, 112, 0.35);
+  box-shadow: 0 4px 20px -4px rgba(12, 13, 12, 0.07);
+}
+
+.editorial-line {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(127, 129, 112, 0.45), transparent);
+}
+
+/* Asymmetrical & Polaroid Photo Frames */
+.editorial-photo-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 30px -8px rgba(12, 13, 12, 0.15);
+  border: 1px solid rgba(127, 129, 112, 0.30);
+  background: #FAF8F5;
+}
+
+/* ==========================================================
+   BOTANICAL WIND SWAY ANIMATIONS
+   ========================================================== */
+
+@keyframes windBouquetTopLeft {
+  0%, 100% {
+    transform: rotate(-1deg) scale(1);
+  }
+  50% {
+    transform: rotate(3deg) scale(1.02);
+  }
+}
+
+.wind-sway-corner {
+  animation: windBouquetTopLeft 4.6s ease-in-out infinite;
+  transform-origin: top left;
+}
+
+@keyframes breezeLeaf {
+  0%, 100% {
+    transform: rotate(-3.5deg);
+  }
+  40% {
+    transform: rotate(3deg);
+  }
+  75% {
+    transform: rotate(-1deg);
+  }
+}
+
+@keyframes breezeLeafAlt {
+  0%, 100% {
+    transform: scaleX(-1) rotate(3.5deg);
+  }
+  40% {
+    transform: scaleX(-1) rotate(-3deg);
+  }
+  75% {
+    transform: scaleX(-1) rotate(1deg);
+  }
+}
+
+.wind-palm-1 {
+  animation: breezeLeaf 4.2s ease-in-out infinite;
+  transform-origin: bottom left;
+}
+
+.wind-palm-2 {
+  animation: breezeLeafAlt 4.5s ease-in-out infinite;
+  transform-origin: bottom right;
+}
+
+/* 3D Embossed Luxury Wax Seal Monogram */
+.editorial-wax-seal,
+.coastal-wax-seal {
+  background: radial-gradient(circle at 35% 35%, #F8E2B8 0%, #D4A362 50%, #9E7332 88%, #7A531E 100%);
+  box-shadow: 0 10px 24px -4px rgba(12, 13, 12, 0.40),
+              inset 0 2px 4px rgba(255, 255, 255, 0.65),
+              inset 0 -2px 4px rgba(60, 40, 15, 0.45);
+}
+
+/* ==========================================================
+   3D BOOK COVER FLIP OPEN ANIMATION ("BUKA BUKU")
+   ========================================================== */
+
+#gateCover {
+  perspective: 1600px;
+  -webkit-perspective: 1600px;
+}
+
+#gatePage {
+  transform-origin: left center;
+  -webkit-transform-origin: left center;
+  transition: transform 1.15s cubic-bezier(0.3, 0, 0.15, 1), opacity 0.85s ease, box-shadow 1.15s ease;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  box-shadow: 0 25px 80px -15px rgba(12, 13, 12, 0.45), 0 0 1px 1px rgba(127, 129, 112, 0.35);
+}
+
+#gatePage.book-opened {
+  transform: rotateY(-115deg) scale(0.96);
+  opacity: 0;
+  box-shadow: -40px 15px 60px rgba(12, 13, 12, 0.40);
+  pointer-events: none;
+}
+
+/* ==========================================================
+   SMOOTH ENTRANCE & SCROLL REVEAL ANIMATIONS
+   ========================================================== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-fade {
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
+}
+.reveal-fade.is-revealed {
+  opacity: 1;
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.90);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-scale.is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-left.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(32px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-right.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ==========================================================
+   BOTANICAL POP SLOW REVEAL (EFEK POP MEKAR PERLAHAN)
+   Bukan sekadar fade in/out biasa, melainkan mekar 'Pop Slow'
+   dengan kurva overshoot organik lembut (scale 0 -> 1)
+   langsung dari titik poros/tembok asalnya.
+   ========================================================== */
+.reveal-botanical {
+  opacity: 0;
+  transform: scale(0.5);
+  scale: 0.5;
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.15s cubic-bezier(0.34, 1.35, 0.64, 1),
+              scale 1.15s cubic-bezier(0.34, 1.35, 0.64, 1);
+  will-change: opacity, transform, scale;
+}
+.reveal-botanical.is-revealed {
+  opacity: 0.95;
+  transform: scale(1);
+  scale: 1;
+}
+
+/* Stagger Delay Classes */
+.delay-75  { transition-delay: 0.08s; }
+.delay-100 { transition-delay: 0.15s; }
+.delay-150 { transition-delay: 0.22s; }
+.delay-200 { transition-delay: 0.30s; }
+.delay-250 { transition-delay: 0.38s; }
+.delay-300 { transition-delay: 0.45s; }
+
+/* Gate Cover Animations (Slow, Serene & Elegant) */
+@keyframes gateFadeUpSlow {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gatePhotoSoft {
+  0% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cornerBouquetFloatIn {
+  0% {
+    opacity: 0;
+    transform: translate(-22px, -22px) scale(0.90);
+    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  }
+  60% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.10));
+  }
+}
+
+.gate-anim-photo {
+  animation: gatePhotoSoft 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.gate-anim-1 { animation: gateFadeUpSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both; }
+.gate-anim-2 { animation: gateFadeUpSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both; }
+.gate-anim-3 { animation: gateFadeUpSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.70s both; }
+.gate-anim-4 { animation: gateFadeUpSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.95s both; }
+.gate-anim-5 { animation: gateFadeUpSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.20s both; }
+
+/* Corner Bouquets Sequential Staggered Entrance (Bergantian & Slow) */
+.gate-anim-bouquet-tl {
+  animation: cornerBouquetFloatIn 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.20s both;
+}
+.gate-anim-bouquet-tr {
+  animation: cornerBouquetFloatIn 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both;
+}
+.gate-anim-bouquet-bl {
+  animation: cornerBouquetFloatIn 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.50s both;
+}
+.gate-anim-bouquet-br {
+  animation: cornerBouquetFloatIn 2.2s cubic-bezier(0.16, 1, 0.3, 1) 2.15s both;
+}
+
+/* Gentle Natural Wind Sway Breeze (Goyang-goyang Kena Angin) */
+@keyframes naturalBreezeSway1 {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  30% {
+    transform: rotate(3deg) scale(1.02);
+  }
+  65% {
+    transform: rotate(-2.2deg) scale(0.99);
+  }
+  85% {
+    transform: rotate(1deg) scale(1.01);
+  }
+}
+
+@keyframes naturalBreezeSway2 {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  35% {
+    transform: rotate(-3.2deg) scale(1.025);
+  }
+  70% {
+    transform: rotate(2deg) scale(0.99);
+  }
+  90% {
+    transform: rotate(-1deg) scale(1.005);
+  }
+}
+
+.sway-breeze-1 {
+  animation: naturalBreezeSway1 5.4s ease-in-out infinite;
+  transform-origin: 15% 15%;
+  will-change: transform;
+}
+
+.sway-breeze-2 {
+  animation: naturalBreezeSway2 6.2s ease-in-out 0.8s infinite;
+  transform-origin: 15% 15%;
+  will-change: transform;
+}
+
+.sway-breeze-3 {
+  animation: naturalBreezeSway1 5.8s ease-in-out 1.6s infinite;
+  transform-origin: 15% 15%;
+  will-change: transform;
+}
+
+.sway-breeze-4 {
+  animation: naturalBreezeSway2 6.6s ease-in-out 2.4s infinite;
+  transform-origin: 15% 15%;
+  will-change: transform;
+}
+
+/* ==========================================================
+   LATERAL BOTANICAL WIND BREEZE (ZERO VERTICAL NAIK-TURUN)
+   Pure lateral horizontal wind sway using skewX and translateX.
+   Leaves sway naturally side-to-side without any vertical jumping/bouncing!
+   ========================================================== */
+@keyframes botanicalLateralSwayBL {
+  0%, 100% {
+    transform: skewX(0deg) translateX(0);
+  }
+  30% {
+    transform: skewX(2.8deg) translateX(2.5px);
+  }
+  65% {
+    transform: skewX(-2.2deg) translateX(-1.8px);
+  }
+  85% {
+    transform: skewX(1.4deg) translateX(1px);
+  }
+}
+
+@keyframes botanicalLateralSwayTR {
+  0%, 100% {
+    transform: skewX(0deg) translateX(0);
+  }
+  35% {
+    transform: skewX(-2.8deg) translateX(-2.5px);
+  }
+  70% {
+    transform: skewX(2.2deg) translateX(1.8px);
+  }
+  90% {
+    transform: skewX(-1.4deg) translateX(-1px);
+  }
+}
+
+.sway-lateral-bl {
+  animation: botanicalLateralSwayBL 6.2s ease-in-out infinite;
+  transform-origin: 5% 5%;
+  will-change: transform;
+}
+
+.sway-lateral-tr {
+  animation: botanicalLateralSwayTR 6.8s ease-in-out 0.8s infinite;
+  transform-origin: 5% 5%;
+  will-change: transform;
+}
+
+@keyframes gateFadeOnly {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.gate-anim-fade {
+  animation: gateFadeOnly 2.2s ease-out 0.2s both;
+}
+
+.music-disc-spin {
+  animation: musicDiscRotate 3.5s linear infinite;
+}
+
+@keyframes musicDiscRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================
+   HERO SECTION EXCLUSIVE ENTRANCE ANIMATIONS (AFTER GATE OPENS)
+   ========================================================== */
+
+/* 1. Base Hero Animated Element */
+#home .hero-anim {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* 2. Masthead Badge & Subtitle - Smooth Fade Down */
+#home .hero-anim-down {
+  transform: translateY(-18px) scale(0.96);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-down.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 3. Couple Names (Raka & Sinta) - Gentle Fade Up with Scale */
+#home .hero-anim-title {
+  transform: translateY(22px) scale(0.94);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-title.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 4. Main Arch Portrait Frame - Elegant Rise & Bloom */
+#home .hero-anim-main-photo {
+  transform: translateY(30px) scale(0.93);
+  transition: opacity 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-main-photo.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 4b. Botanical Flower Behind Arch - Smooth Bloom Rise (Stem Hidden Behind Arch) */
+#home .hero-anim-flower {
+  transform: scale(0.85) translate(-3px, 6px) rotate(-35deg);
+  transition: opacity 0.9s cubic-bezier(0.34, 1.35, 0.64, 1),
+              transform 0.9s cubic-bezier(0.34, 1.35, 0.64, 1);
+}
+#home .hero-anim-flower.is-revealed {
+  opacity: 1;
+  transform: scale(1) translate(0, 0) rotate(-24deg);
+}
+
+/* 5. Floating Wax Seal Stamp - Snappy Physical Wax Pop */
+#home .hero-anim-stamp {
+  transform: scale(0.2) rotate(-30deg);
+  transition: opacity 0.85s cubic-bezier(0.34, 1.45, 0.64, 1),
+              transform 0.85s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+#home .hero-anim-stamp.is-revealed {
+  opacity: 1;
+  transform: scale(1) rotate(-6deg);
+}
+
+/* 6. Floating Candid Story Frame - Spring Float Slide */
+#home .hero-anim-candid {
+  transform: translate(25px, 25px) scale(0.8) rotate(-4deg);
+  transition: opacity 0.95s cubic-bezier(0.34, 1.35, 0.64, 1),
+              transform 0.95s cubic-bezier(0.34, 1.35, 0.64, 1);
+}
+#home .hero-anim-candid.is-revealed {
+  opacity: 1;
+  transform: translate(0, 0) scale(1) rotate(3deg);
+}
+
+/* 7. Bottom Quote - Soft Rise */
+#home .hero-anim-quote {
+  transform: translateY(18px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-quote.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 8. Mouse Scroll Indicator - Spring Pop Rise */
+#home .hero-anim-mouse {
+  transform: translateY(22px) scale(0.75);
+  transition: opacity 0.9s cubic-bezier(0.34, 1.35, 0.64, 1),
+              transform 0.9s cubic-bezier(0.34, 1.35, 0.64, 1);
+}
+#home .hero-anim-mouse.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 9. Hero Staggered Transition Delays */
+#home .hero-delay-1 { transition-delay: 180ms; }
+#home .hero-delay-2 { transition-delay: 300ms; }
+#home .hero-delay-3 { transition-delay: 420ms; }
+#home .hero-delay-4 { transition-delay: 500ms; }
+#home .hero-delay-5 { transition-delay: 660ms; }
+#home .hero-delay-6 { transition-delay: 760ms; }
+#home .hero-delay-7 { transition-delay: 860ms; }
+#home .hero-delay-8 { transition-delay: 960ms; }
+#home .hero-delay-flower { transition-delay: 950ms; }
+#home .hero-delay-stamp { transition-delay: 1050ms; }
+
+/* 10. Mouse Scroll Indicator Continuous Floating & Wheel Scroll */
+.mouse-scroll-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: mouseSoftBounce 2.5s ease-in-out infinite;
+}
+
+@keyframes mouseSoftBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+.mouse-scroll-wheel {
+  animation: mouseWheelMove 1.8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes mouseWheelMove {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 0.25;
+  }
+  80%, 100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Fallback if #home elements use standard .reveal */
+#home .reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+#home .reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================
+   BOTANICAL STEM-ANCHORED WIND SWAY
+   Pangkal batang mepet di tepi/sudut (tembok).
+   Anchor point (transform-origin) tepat di pangkal batang,
+   sehingga batang tetap diam di tembok dan daun yang bergoyang ditiup angin.
+   ========================================================== */
+
+/* 1. Anchored at Top-Right Wall (Pangkal Batang di Pojok Kanan Atas) */
+@keyframes swayStemTR {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(3.4deg);
+  }
+  70% {
+    transform: rotate(-2.6deg);
+  }
+}
+
+.botanical-stem-tr {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  top: -2px;
+  right: -2px;
+  width: 42px;
+  max-width: 42px;
+  transform-origin: 95% 5%;
+  animation: swayStemTR 6.5s ease-in-out infinite;
+  will-change: transform;
+}
+.botanical-stem-tr img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 2. Anchored at Bottom-Left Wall (Pangkal Batang di Pojok Kiri Bawah) */
+@keyframes swayStemBL {
+  0%, 100% {
+    rotate: 0deg;
+  }
+  35% {
+    rotate: -3.4deg;
+  }
+  70% {
+    rotate: 2.6deg;
+  }
+}
+
+.botanical-stem-bl {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  bottom: -2px;
+  left: -2px;
+  width: 42px;
+  max-width: 42px;
+  transform-origin: 5% 95%;
+  animation: swayStemBL 6.8s ease-in-out infinite;
+  will-change: transform;
+}
+.botanical-stem-bl img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Anchored at Bottom-Right Wall (Pangkal Batang di Pojok Kanan Bawah) */
+@keyframes swayStemBR {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(3.4deg);
+  }
+  70% {
+    transform: rotate(-2.6deg);
+  }
+}
+
+.botanical-stem-br {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  bottom: -2px;
+  right: -2px;
+  width: 42px;
+  max-width: 42px;
+  transform-origin: 95% 95%;
+  animation: swayStemBR 6.8s ease-in-out infinite;
+  will-change: transform;
+}
+.botanical-stem-br img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+/* 3. Anchored at Top-Left Wall (Pangkal Batang di Pojok Kiri Atas) */
+@keyframes swayStemTL {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(-3.2deg);
+  }
+  70% {
+    transform: rotate(2.4deg);
+  }
+}
+
+.botanical-stem-tl {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  top: -2px;
+  left: -2px;
+  width: 42px;
+  max-width: 42px;
+  transform-origin: 5% 5%;
+  animation: swayStemTL 6.4s ease-in-out infinite;
+  will-change: transform;
+}
+.botanical-stem-tl img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 4. Anchored at Left Wall Edge (Pangkal Batang di Tepi Kiri) */
+@keyframes swayStemLeft {
+  0%, 100% {
+    rotate: 0deg;
+  }
+  35% {
+    rotate: 2.8deg;
+  }
+  70% {
+    rotate: -2.2deg;
+  }
+}
+
+.botanical-stem-left {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  left: -3px;
+  width: 40px;
+  max-width: 40px;
+  transform-origin: 5% 90%;
+  animation: swayStemLeft 6.2s ease-in-out infinite;
+  will-change: transform;
+}
+.botanical-stem-left img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 5. Anchored at Right Wall Edge (Pangkal Batang di Tepi Kanan) */
+@keyframes swayStemRight {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(-2.8deg);
+  }
+  70% {
+    transform: rotate(2.2deg);
+  }
+}
+
+.botanical-stem-right {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  right: -3px;
+  width: 40px;
+  max-width: 40px;
+  transform-origin: 95% 90%;
+  animation: swayStemRight 6.4s ease-in-out infinite;
+  will-change: transform;
+}
+.botanical-stem-right img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Fallback utility for arbitrary flip classes */
+.scale-x-\[-1\] {
+  transform: scaleX(-1);
+}
+.scale-y-\[-1\] {
+  transform: scaleY(-1);
+}

@@ -1,0 +1,852 @@
+/* ==========================================================
+   UNDANGAN PERNIKAHAN — VERSI GUNUNG & ALPINE PINE FOREST
+   Highland Misty Pine, Alpine Ridge & Edelweiss Luxury Edition
+   ========================================================== */
+
+/* Smooth scrolling & completely invisible scrollbars */
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html, body, .mobile-app-container, * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Hide scrollbars universally (Chrome, Safari, Edge, Opera) */
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ==========================================================
+   ALPINE MOUNTAIN & PINE FOREST PALETTE
+   🌲 Deep Highland Pine: #1E352B / #152A22
+   🏔️ Misty Alpine Sage: #5A7266 / #E8EDE7
+   🌼 Edelweiss Cream: #FAF9F5 / #EDF1E9
+   ✨ Warm Cedar Gold: #C59A45 / #A67C2C
+   ========================================================== */
+
+/* Outer Desktop Background: Highland Misty Evergreen Atmosphere */
+body {
+  background-color: #244135;
+  background-image: radial-gradient(circle at 50% 20%, #446857 0%, #2D4C3E 45%, #1F382D 80%, #13241C 100%);
+  color: #1E352B;
+  overflow-x: hidden;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Mobile App Canvas Container (Exact Mobile Phone Frame 430px): Edelweiss Cream */
+.mobile-app-container {
+  width: 100%;
+  max-width: 430px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 100vh;
+  background-color: #FAF9F5;
+  box-shadow: 0 25px 70px -12px rgba(18, 36, 28, 0.40), 0 0 1px 1px rgba(255, 255, 255, 0.40);
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 0;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Alternating Section Backgrounds: Edelweiss Cream (#FAF9F5) & Highland Fog (#E8EDE7) */
+.bg-section-cream {
+  background-color: #FAF9F5;
+}
+
+.bg-section-sage {
+  background-color: #E8EDE7;
+}
+
+#gatePage {
+  position: relative;
+  background-color: #E8EDE7;
+  background-image: url('../asset/img/bg/mountain_bg.jpg');
+  background-size: cover;
+  background-position: center bottom;
+  box-shadow: 0 25px 80px -15px rgba(12, 24, 18, 0.45);
+}
+
+/* Hero / Cover Section — Luxury Alpine Mountain & Pine Atmosphere */
+#home,
+.hero-beach-bg,
+.hero-mountain-bg {
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+  background-color: #FAF9F5;
+  background-image: 
+    linear-gradient(180deg, 
+      rgba(250, 249, 245, 0.92) 0%, 
+      rgba(250, 249, 245, 0.76) 22%, 
+      rgba(250, 249, 245, 0.65) 55%, 
+      rgba(250, 249, 245, 0.88) 85%,
+      #FAF9F5 100%
+    ),
+    url('../asset/img/bg/mountain_bg.jpg') !important;
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+}
+
+/* Footer / Epilogue Section — Luxury Alpine Mountain & Sunset Atmosphere */
+#terimakasih,
+.footer-beach-bg,
+.footer-mountain-bg {
+  position: relative;
+  background-color: #FAF9F5;
+  background-image: 
+    linear-gradient(180deg, 
+      #FAF9F5 0%, 
+      rgba(250, 249, 245, 0.88) 15%, 
+      rgba(250, 249, 245, 0.72) 40%, 
+      rgba(250, 249, 245, 0.62) 65%, 
+      rgba(250, 249, 245, 0.88) 90%,
+      #FAF9F5 100%
+    ),
+    url('../asset/img/bg/mountain_bg.jpg') !important;
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+}
+
+/* Typography Helpers */
+.font-script {
+  font-family: 'Alex Brush', 'Great Vibes', cursive;
+}
+
+.font-serif {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* ==========================================================
+   CARDS & CONTAINERS DESIGN SYSTEM
+   ========================================================== */
+
+.tropical-date-box,
+.alpine-date-box {
+  background: rgba(255, 255, 255, 0.70);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(197, 154, 69, 0.45);
+  box-shadow: 0 4px 18px -2px rgba(30, 53, 43, 0.12);
+}
+
+/* Asymmetrical Sail & Arch Frames */
+.coastal-sail-left,
+.alpine-sail-left {
+  border-radius: 70px 18px 70px 18px !important;
+  border: 2px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 16px 38px -8px rgba(25, 45, 36, 0.14) !important;
+}
+
+.coastal-sail-right,
+.alpine-sail-right {
+  border-radius: 18px 70px 18px 70px !important;
+  border: 2px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 16px 38px -8px rgba(25, 45, 36, 0.14) !important;
+}
+
+/* 1. Frosted Glass & Pearl Alpine Cards */
+.coastal-card,
+.alpine-card {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.97), rgba(235, 242, 237, 0.93));
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 16px 38px -8px rgba(25, 45, 36, 0.14), 0 2px 6px rgba(25, 45, 36, 0.05);
+}
+
+.coastal-card-teal,
+.alpine-card-pine {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(145deg, #152A22, #1E352B);
+  color: #FAF9F5;
+  border: 1px solid rgba(197, 154, 69, 0.45);
+  box-shadow: 0 18px 45px -10px rgba(15, 30, 24, 0.38);
+}
+
+.coastal-card-sand,
+.alpine-card-cedar {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(145deg, #4A3A2A, #7A5E3F);
+  color: #FAF9F5;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 18px 45px -10px rgba(74, 58, 42, 0.32);
+}
+
+/* 2. Alpine Badges & Accents */
+.coastal-badge-gold,
+.alpine-badge-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.875rem;
+  border-radius: 9999px;
+  background: rgba(197, 154, 69, 0.15);
+  border: 1px solid rgba(197, 154, 69, 0.45);
+  color: #A67C2C;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 700;
+}
+
+/* 3. Luxury Buttons */
+.coastal-btn-primary,
+.alpine-btn-primary {
+  background: linear-gradient(135deg, #244135, #152A22);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 20px rgba(25, 45, 36, 0.28);
+  transition: all 0.3s ease;
+}
+
+.coastal-btn-primary:hover,
+.alpine-btn-primary:hover {
+  background: linear-gradient(135deg, #152A22, #0D1C16);
+  box-shadow: 0 8px 25px rgba(25, 45, 36, 0.38);
+  transform: translateY(-1px);
+}
+
+.coastal-btn-sand,
+.alpine-btn-cedar {
+  background: linear-gradient(135deg, #C59A45, #A67C2C);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.30);
+  box-shadow: 0 6px 20px rgba(166, 124, 44, 0.28);
+  transition: all 0.3s ease;
+}
+
+.coastal-btn-sand:hover,
+.alpine-btn-cedar:hover {
+  background: linear-gradient(135deg, #A67C2C, #85611E);
+  box-shadow: 0 8px 25px rgba(166, 124, 44, 0.38);
+  transform: translateY(-1px);
+}
+
+/* 4. Unified Floating Island Countdown Bar */
+.coastal-countdown-island,
+.alpine-countdown-island {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.97), rgba(235, 242, 237, 0.93));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 26px;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 16px 38px -8px rgba(25, 45, 36, 0.14);
+}
+
+/* Alpine Wax Seal - Physical Embossed Warm Cedar Gold */
+.coastal-wax-seal,
+.alpine-wax-seal {
+  background: radial-gradient(circle at 35% 35%, #F5DEB3 0%, #C59A45 50%, #946F25 88%, #6B4E14 100%);
+  box-shadow: 0 10px 24px -4px rgba(21, 42, 34, 0.42),
+              inset 0 2px 4px rgba(255, 255, 255, 0.65),
+              inset 0 -2px 4px rgba(50, 35, 10, 0.45);
+}
+
+/* ==========================================================
+   3D DOUBLE DOOR (PINTU 2 DAUN) OPENING ANIMATION
+   Identical physics, keyframes, and timing to undangan_3
+   ========================================================== */
+
+#gateCover.doors-opened,
+#gatePage.doors-opened {
+  perspective: 1600px;
+  -webkit-perspective: 1600px;
+}
+
+/* Frosted Glass Card: Rich Frosted Blur */
+.gate-frosted-card {
+  background: rgba(255, 255, 255, 0.58) !important;
+  backdrop-filter: blur(20px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+  box-shadow: 0 12px 40px rgba(20, 42, 32, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.8) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Standby State: Door leaves are hidden until opened */
+.gate-door-leaf {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.gate-door-left {
+  left: 0;
+  transform-origin: left center;
+  -webkit-transform-origin: left center;
+}
+
+.gate-door-right {
+  right: 0;
+  transform-origin: right center;
+  -webkit-transform-origin: right center;
+}
+
+.gate-door-bg {
+  position: absolute;
+  top: 0;
+  width: 200%;
+  height: 100%;
+  background-color: #E8EDE7;
+  background-image: url('../asset/img/bg/mountain_bg.jpg');
+  background-size: cover;
+  background-position: center bottom;
+}
+
+.gate-door-bg-left {
+  left: 0;
+}
+
+.gate-door-bg-right {
+  right: 0;
+}
+
+/* Center Card Fast Fade Animation */
+#gateCenterCard {
+  transition: opacity 0.18s ease-out, transform 0.20s ease-out;
+}
+
+#gatePage.doors-opened #gateCenterCard,
+#gatePage.book-opened #gateCenterCard {
+  transform: scale(0.96) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.18s ease-out, transform 0.20s ease-out, visibility 0s 0.18s !important;
+}
+
+/* WHEN DOORS OPEN: Door leaves active & swing open in 3D */
+#gatePage.doors-opened .gate-door-leaf,
+#gatePage.book-opened .gate-door-leaf {
+  display: block;
+}
+
+#gatePage.doors-opened .gate-door-left,
+#gatePage.book-opened .gate-door-left {
+  animation: doorSwingLeft 1.25s cubic-bezier(0.25, 1, 0.45, 1) forwards;
+}
+
+#gatePage.doors-opened .gate-door-right,
+#gatePage.book-opened .gate-door-right {
+  animation: doorSwingRight 1.25s cubic-bezier(0.25, 1, 0.45, 1) forwards;
+}
+
+@keyframes doorSwingLeft {
+  0% {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+    box-shadow: none;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(-105deg) scale(0.96);
+    opacity: 0;
+    box-shadow: none;
+  }
+}
+
+@keyframes doorSwingRight {
+  0% {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+    box-shadow: none;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(105deg) scale(0.96);
+    opacity: 0;
+    box-shadow: none;
+  }
+}
+
+/* Bouquets Swing Open with Their Respective Door Sides */
+.gate-swing-tl,
+.gate-swing-tr,
+.gate-swing-bl,
+.gate-swing-br,
+.botanical-top-layer {
+  z-index: 40 !important;
+  pointer-events: none !important;
+  overflow: visible !important;
+}
+
+/* Ornamen cover awal (#gatePage) langsung hilang seketika saat buka undangan, tanpa ikut terbuka/berputar seperti buku */
+#gatePage.doors-opened .gate-swing-tl,
+#gatePage.doors-opened .gate-swing-tr,
+#gatePage.doors-opened .gate-swing-bl,
+#gatePage.doors-opened .gate-swing-br,
+#gatePage.book-opened .gate-swing-tl,
+#gatePage.book-opened .gate-swing-tr,
+#gatePage.book-opened .gate-swing-bl,
+#gatePage.book-opened .gate-swing-br {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  animation: none !important;
+  transition: opacity 0.18s ease-out, visibility 0s 0.18s !important;
+}
+
+#gatePage.doors-opened {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+/* ==========================================================
+   SMOOTH ENTRANCE & SCROLL REVEAL ANIMATIONS
+   Exact same parameters and easing curves as in undangan_3
+   ========================================================== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(42px);
+  transition: opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-fade {
+  opacity: 0;
+  transition: opacity 1.35s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity;
+}
+.reveal-fade.is-revealed {
+  opacity: 1;
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal-scale.is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal-left.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal-right.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Botanical Pop Slow Reveal (Same organic curve) */
+.reveal-botanical {
+  opacity: 0;
+  transform: scale(0.6);
+  scale: 0.6;
+  transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 1.45s cubic-bezier(0.25, 1.20, 0.45, 1),
+              scale 1.45s cubic-bezier(0.25, 1.20, 0.45, 1);
+  will-change: opacity, transform, scale;
+}
+.reveal-botanical.is-revealed {
+  opacity: 0.95;
+  transform: scale(1);
+  scale: 1;
+}
+
+/* Stagger Delay Classes */
+.delay-75  { transition-delay: 0.12s; }
+.delay-100 { transition-delay: 0.20s; }
+.delay-150 { transition-delay: 0.32s; }
+.delay-200 { transition-delay: 0.45s; }
+.delay-250 { transition-delay: 0.58s; }
+.delay-300 { transition-delay: 0.70s; }
+
+/* Gate Cover Animations */
+@keyframes gateFadeUpSlow {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes gateCardFade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes gatePhotoSoft {
+  0% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Corner Bouquets Entrance */
+@keyframes bouquetFloatInTL {
+  0% {
+    opacity: 0;
+    transform: translate(-36px, -36px) scale(0.88);
+  }
+  60% { opacity: 0.85; }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes bouquetFloatInTR {
+  0% {
+    opacity: 0;
+    transform: translate(36px, -36px) scale(0.88);
+  }
+  60% { opacity: 0.85; }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes bouquetFloatInBL {
+  0% {
+    opacity: 0;
+    transform: translate(-36px, 36px) scale(0.88);
+  }
+  60% { opacity: 0.85; }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes bouquetFloatInBR {
+  0% {
+    opacity: 0;
+    transform: translate(36px, 36px) scale(0.88);
+  }
+  60% { opacity: 0.85; }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.gate-anim-photo {
+  animation: gatePhotoSoft 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.gate-anim-1 { animation: gateCardFade 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+.gate-anim-2 { animation: gateFadeUpSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both; }
+.gate-anim-3 { animation: gateFadeUpSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.70s both; }
+.gate-anim-4 { animation: gateFadeUpSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.95s both; }
+.gate-anim-5 { animation: gateFadeUpSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.20s both; }
+
+.gate-anim-bouquet-tl {
+  animation: bouquetFloatInTL 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.20s both;
+}
+.gate-anim-bouquet-tr {
+  animation: bouquetFloatInTR 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.65s both;
+}
+.gate-anim-bouquet-bl {
+  animation: bouquetFloatInBL 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.10s both;
+}
+.gate-anim-bouquet-br {
+  animation: bouquetFloatInBR 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.55s both;
+}
+
+/* Natural Wind Sway Animations */
+@keyframes naturalBreezeSway1 {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  30% {
+    transform: rotate(3deg) scale(1.02);
+  }
+  65% {
+    transform: rotate(-2.2deg) scale(0.99);
+  }
+  85% {
+    transform: rotate(1deg) scale(1.01);
+  }
+}
+
+@keyframes naturalBreezeSway2 {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  35% {
+    transform: rotate(-3.2deg) scale(1.025);
+  }
+  70% {
+    transform: rotate(2deg) scale(0.99);
+  }
+  90% {
+    transform: rotate(-1deg) scale(1.005);
+  }
+}
+
+/* Lateral Botanical Wind Sway */
+@keyframes botanicalLateralSwayBL {
+  0%, 100% {
+    transform: skewX(0deg) translateX(0);
+  }
+  30% {
+    transform: skewX(2.8deg) translateX(2.5px);
+  }
+  65% {
+    transform: skewX(-2.2deg) translateX(-1.8px);
+  }
+  85% {
+    transform: skewX(1.4deg) translateX(1px);
+  }
+}
+
+@keyframes botanicalLateralSwayTR {
+  0%, 100% {
+    transform: skewX(0deg) translateX(0);
+  }
+  35% {
+    transform: skewX(-2.8deg) translateX(-2.5px);
+  }
+  70% {
+    transform: skewX(2.2deg) translateX(1.8px);
+  }
+  90% {
+    transform: skewX(-1.4deg) translateX(-1px);
+  }
+}
+
+.sway-lateral-bl {
+  animation: botanicalLateralSwayBL 6.2s ease-in-out infinite;
+  transform-origin: 0% 100%;
+  will-change: transform;
+}
+
+.sway-lateral-tr {
+  animation: botanicalLateralSwayTR 6.8s ease-in-out 0.8s infinite;
+  transform-origin: 100% 0%;
+  will-change: transform;
+}
+
+.sway-lateral-seam-tr {
+  animation: botanicalLateralSwayTR 6.8s ease-in-out 0.8s infinite;
+  transform-origin: 100% 50%;
+  will-change: transform;
+}
+
+/* Music Disc Rotation */
+.music-disc-spin {
+  animation: musicDiscRotate 3.5s linear infinite;
+}
+
+@keyframes musicDiscRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Anchor Point Corner Sways */
+@keyframes swayAnchorTL {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(2.4deg); }
+  65% { transform: rotate(-1.6deg); }
+}
+
+@keyframes swayAnchorTR {
+  0%, 100% { transform: rotate(0deg); }
+  35% { transform: rotate(-2.4deg); }
+  70% { transform: rotate(1.6deg); }
+}
+
+@keyframes swayAnchorBL {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-2.4deg); }
+  65% { transform: rotate(1.6deg); }
+}
+
+@keyframes swayAnchorBR {
+  0%, 100% { transform: rotate(0deg); }
+  35% { transform: rotate(2.4deg); }
+  70% { transform: rotate(-1.6deg); }
+}
+
+.sway-anchor-tl {
+  transform-origin: 0% 0%;
+  animation: swayAnchorTL 5.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+.sway-anchor-tr {
+  transform-origin: 100% 0%;
+  animation: swayAnchorTR 6.2s ease-in-out 0.6s infinite;
+  will-change: transform;
+}
+
+.sway-anchor-bl {
+  transform-origin: 0% 100%;
+  animation: swayAnchorBL 6.5s ease-in-out 1.2s infinite;
+  will-change: transform;
+}
+
+.sway-anchor-br {
+  transform-origin: 100% 100%;
+  animation: swayAnchorBR 6.0s ease-in-out 1.8s infinite;
+  will-change: transform;
+}
+
+/* ==========================================================
+   HERO SECTION ENTRANCE ANIMATIONS (AFTER GATE OPENS)
+   ========================================================== */
+
+#home .hero-anim {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* 2. Masthead Badge & Subtitle - Smooth Fade Down */
+#home .hero-anim-down {
+  transform: translateY(-18px) scale(0.96);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-down.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 3. Couple Names (Arga & Maya) - Gentle Fade Up with Scale */
+#home .hero-anim-title {
+  transform: translateY(22px) scale(0.94);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-title.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 4. Main Arch Portrait Frame - Elegant Rise & Bloom */
+#home .hero-anim-main-photo {
+  transform: translateY(30px) scale(0.93);
+  transition: opacity 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-main-photo.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 5. Floating Wax Seal Stamp - Snappy Physical Wax Pop */
+#home .hero-anim-stamp {
+  transform: scale(0.2) rotate(-30deg);
+  transition: opacity 0.85s cubic-bezier(0.34, 1.45, 0.64, 1),
+              transform 0.85s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+#home .hero-anim-stamp.is-revealed {
+  opacity: 1;
+  transform: scale(1) rotate(-6deg);
+}
+
+/* 6. Floating Bottom-Right Candid Frame */
+#home .hero-anim-candid {
+  transform: translate(25px, 25px) scale(0.8) rotate(-4deg);
+  transition: opacity 0.95s cubic-bezier(0.34, 1.35, 0.64, 1),
+              transform 0.95s cubic-bezier(0.34, 1.35, 0.64, 1);
+}
+#home .hero-anim-candid.is-revealed {
+  opacity: 1;
+  transform: translate(0, 0) scale(1) rotate(4deg);
+}
+
+/* 7. Bottom Quote - Soft Rise */
+#home .hero-anim-quote {
+  transform: translateY(18px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-quote.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 8. Mouse Scroll Indicator - Spring Pop Rise */
+#home .hero-anim-mouse {
+  transform: translateY(22px) scale(0.75);
+  transition: opacity 0.9s cubic-bezier(0.34, 1.35, 0.64, 1),
+              transform 0.9s cubic-bezier(0.34, 1.35, 0.64, 1);
+}
+#home .hero-anim-mouse.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 9. Hero Staggered Transition Delays */
+#home .hero-delay-1 { transition-delay: 180ms; }
+#home .hero-delay-2 { transition-delay: 300ms; }
+#home .hero-delay-3 { transition-delay: 420ms; }
+#home .hero-delay-4 { transition-delay: 500ms; }
+#home .hero-delay-5 { transition-delay: 660ms; }
+#home .hero-delay-6 { transition-delay: 780ms; }
+#home .hero-delay-7 { transition-delay: 900ms; }
+#home .hero-delay-8 { transition-delay: 1020ms; }
+
+/* Mouse Wheel Bouncing Indicator */
+@keyframes mouseWheelMove {
+  0% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(6px); opacity: 0.3; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.mouse-scroll-wheel {
+  animation: mouseWheelMove 2s ease-in-out infinite;
+}

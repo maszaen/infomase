@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const BACKEND_BASE =
   process.env.BACKEND_API_URL ||
   process.env.NEXT_PUBLIC_API_URL ||
-  'https://elvin-affectional-edwardo.ngrok-free.dev/wedding_digital/api/v1';
+  'http://localhost:8000/wedding_digital/api/v1';
 
 
 async function getPath(context: any): Promise<string[]> {

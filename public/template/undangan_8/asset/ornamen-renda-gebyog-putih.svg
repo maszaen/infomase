@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 120" preserveAspectRatio="none" fill="none">
+  <defs>
+    <linearGradient id="lacePearl" x1="440" y1="0" x2="440" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.96"/>
+      <stop offset="100%" stop-color="#F4EEE2"/>
+    </linearGradient>
+    <linearGradient id="laceGold" x1="0" y1="40" x2="880" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#DFC48D"/>
+      <stop offset="50%" stop-color="#C49A4E"/>
+      <stop offset="100%" stop-color="#DFC48D"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Scalloped Kraton Gebyog Lace Silhouette -->
+  <path d="M0 120 V54 C48 54 72 82 120 82 C168 82 192 48 240 48 C288 48 316 76 364 76 C402 76 420 20 440 12 C460 20 478 76 516 76 C564 76 592 48 640 48 C688 48 712 82 760 82 C808 82 832 54 880 54 V120 Z"
+        fill="url(#lacePearl)"/>
+
+  <!-- Fine Gold Prada Trim Following the Scallop -->
+  <path d="M0 54 C48 54 72 82 120 82 C168 82 192 48 240 48 C288 48 316 76 364 76 C402 76 420 20 440 12 C460 20 478 76 516 76 C564 76 592 48 640 48 C688 48 712 82 760 82 C808 82 832 54 880 54"
+        stroke="url(#laceGold)" stroke-width="2.2"/>
+
+  <path d="M0 66 C48 66 72 92 120 92 C168 92 192 60 240 60 C288 60 316 86 364 86 C402 86 422 36 440 28 C458 36 478 86 516 86 C564 86 592 60 640 60 C688 60 712 92 760 92 C808 92 832 66 880 66"
+        stroke="url(#laceGold)" stroke-width="1.1" stroke-dasharray="4 4" opacity="0.8"/>
+
+  <!-- Central Sekar Truntum Jewel -->
+  <circle cx="440" cy="48" r="8" fill="#FFFFFF" stroke="url(#laceGold)" stroke-width="1.8"/>
+  <circle cx="440" cy="48" r="3.2" fill="#C49A4E"/>
+  <circle cx="240" cy="68" r="5" fill="#FFFFFF" stroke="url(#laceGold)" stroke-width="1.5"/>
+  <circle cx="640" cy="68" r="5" fill="#FFFFFF" stroke="url(#laceGold)" stroke-width="1.5"/>
+</svg>

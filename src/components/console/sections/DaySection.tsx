@@ -40,6 +40,14 @@ export function DaySection({ invitationId }: { invitationId: string }) {
   const prasmanan = Math.round(recommended * 0.6);
 
   const exportCsv = () => {
+    const sanitizeCell = (raw: string | number) => {
+      let str = String(raw ?? '').replace(/[\r\n;]+/g, ' ').replace(/"/g, '""');
+      if (/^[=+\-@\t\r]/.test(str)) {
+        str = `'${str}`;
+      }
+      return `"${str}"`;
+    };
+
     const header = ['Nama', 'Kategori', 'Telepon', 'Status RSVP', 'Pax', 'Pesan'];
     const rows = inv.rsvpList.map((r) => [
       r.guestName,
@@ -47,10 +55,10 @@ export function DaySection({ invitationId }: { invitationId: string }) {
       '',
       r.attendance,
       String(r.pax),
-      r.message.replace(/[\r\n;]+/g, ' '),
+      r.message,
     ]);
-    const csv = [header, ...rows].map((row) => row.map((cell) => `"${cell}"`).join(';')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const csv = [header, ...rows].map((row) => row.map(sanitizeCell).join(';')).join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     anchor.href = url;

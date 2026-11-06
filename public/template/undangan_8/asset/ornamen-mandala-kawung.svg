@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" fill="none">
+  <defs>
+    <linearGradient id="kawungGold" x1="20" y1="20" x2="300" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E7CD96"/>
+      <stop offset="50%" stop-color="#C59B50"/>
+      <stop offset="100%" stop-color="#9E7630"/>
+    </linearGradient>
+  </defs>
+
+  <g opacity="0.88">
+    <circle cx="160" cy="160" r="148" stroke="url(#kawungGold)" stroke-width="1.2" stroke-dasharray="3 5"/>
+    <circle cx="160" cy="160" r="134" stroke="url(#kawungGold)" stroke-width="1.5"/>
+    <circle cx="160" cy="160" r="108" stroke="url(#kawungGold)" stroke-width="1" stroke-dasharray="6 4"/>
+    <circle cx="160" cy="160" r="82" fill="#FFFFFF" fill-opacity="0.45" stroke="url(#kawungGold)" stroke-width="1.4"/>
+
+    <!-- 12-Pointed Batik Truntum Star Petals -->
+    <g stroke="url(#kawungGold)" stroke-width="1.35" fill="#FFFEFA" fill-opacity="0.72">
+      <path d="M160 12 C168 32 168 46 160 58 C152 46 152 32 160 12 Z"/>
+      <path d="M160 308 C168 288 168 274 160 262 C152 274 152 288 160 308 Z"/>
+      <path d="M12 160 C32 152 46 152 58 160 C46 168 32 168 12 160 Z"/>
+      <path d="M308 160 C288 152 274 152 262 160 C274 168 288 168 308 160 Z"/>
+
+      <path d="M55 55 C74 64 84 74 88 88 C74 84 64 74 55 55 Z"/>
+      <path d="M265 265 C246 256 236 246 232 232 C246 236 256 246 265 265 Z"/>
+      <path d="M265 55 C256 74 246 84 232 88 C236 74 246 64 265 55 Z"/>
+      <path d="M55 265 C64 246 74 236 88 232 C84 246 74 256 55 265 Z"/>
+    </g>
+
+    <!-- Classic Four-Lobe Batik Kawung Core -->
+    <g stroke="url(#kawungGold)" stroke-width="1.5" fill="#FAF6EE" fill-opacity="0.68">
+      <ellipse cx="160" cy="120" rx="20" ry="36"/>
+      <ellipse cx="160" cy="200" rx="20" ry="36"/>
+      <ellipse cx="120" cy="160" rx="36" ry="20"/>
+      <ellipse cx="200" cy="160" rx="36" ry="20"/>
+    </g>
+
+    <!-- Truntum Pearl Dots -->
+    <g fill="#C59B50">
+      <circle cx="160" cy="120" r="3"/>
+      <circle cx="160" cy="200" r="3"/>
+      <circle cx="120" cy="160" r="3"/>
+      <circle cx="200" cy="160" r="3"/>
+      <circle cx="160" cy="160" r="5"/>
+    </g>
+  </g>
+</svg>

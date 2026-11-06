@@ -1,0 +1,2643 @@
+/* ==========================================================================
+   Undangan 8 — Pawiwahan Pethak (Adat Jawa Batik Putih & Sekar Melati)
+   Desktop 3-Column Kraton Stage (Mirrors Undangan 7) | 3D Gebyog White Batik
+   ========================================================================== */
+
+@font-face {
+  font-family: "TangerineLocal";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../asset/tangerine.woff2") format("woff2");
+}
+
+:root {
+  --pearl-050: #ffffff;
+  --pearl-100: #fcfaf5;
+  --pearl-150: #f8f4eb;
+  --pearl-200: #f2eadb;
+  --pearl-300: #e6dac4;
+  --prada-700: #78551a;
+  --prada-600: #966e28;
+  --prada-500: #bc9144;
+  --prada-400: #d7b46f;
+  --prada-300: #ecd49f;
+  --ink-900: #2b2218;
+  --ink-700: #4a3b2a;
+  --ink-500: #6f5d48;
+  --font-script: "TangerineLocal", cursive;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --stream-w: 440px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--ink-900);
+  background: var(--pearl-200);
+  line-height: 1.6;
+  overflow-x: clip;
+}
+
+body.is-locked {
+  overflow: hidden;
+  height: 100dvh;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+/* ==========================================================================
+   KEYFRAME ANIMATIONS (INSPIRED BY UNDANGAN 1 - 7, COMPOSITOR-ONLY)
+   ========================================================================== */
+
+/* 1. Hanging Roncen Melati Pendulum Sway (Ref: Undangan 6 Chandelier & Undangan 1 Wind) */
+@keyframes roncenPendulumLeft {
+  0%, 100% { transform: rotate(-2.8deg); }
+  50% { transform: rotate(2.6deg); }
+}
+
+@keyframes roncenPendulumRight {
+  0%, 100% { transform: scaleX(-1) rotate(-2.8deg); }
+  50% { transform: scaleX(-1) rotate(2.6deg); }
+}
+
+/* 2. Corner Sekar Melati & Batik Leaf Breeze (Ref: Undangan 1 & 2 Bouquet Wind) */
+@keyframes bouquetSwayTL {
+  0%, 100% { transform: rotate(-1.5deg) scale(1); }
+  50% { transform: rotate(2.5deg) scale(1.025); }
+}
+
+@keyframes bouquetSwayTR {
+  0%, 100% { transform: scaleX(-1) rotate(-1.5deg) scale(1); }
+  50% { transform: scaleX(-1) rotate(2.5deg) scale(1.025); }
+}
+
+@keyframes bouquetSwayBL {
+  0%, 100% { transform: scaleY(-1) rotate(-1.5deg) scale(1); }
+  50% { transform: scaleY(-1) rotate(2.5deg) scale(1.025); }
+}
+
+@keyframes bouquetSwayBR {
+  0%, 100% { transform: scale(-1, -1) rotate(-1.5deg) scale(1); }
+  50% { transform: scale(-1, -1) rotate(2.5deg) scale(1.025); }
+}
+
+/* 3. Sacred Batik Kawung Mandala Slow Rotation */
+@keyframes mandalaSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* 4. Gunungan Kayon Pethak Sway & Flank Motion (Ref: Undangan 7) */
+@keyframes gununganSway {
+  0%, 100% { transform: rotate(-3deg) translateY(0); }
+  50% { transform: rotate(3deg) translateY(-4px); }
+}
+
+@keyframes gununganFlankLeft {
+  0%, 100% { transform: rotate(-14deg) translateY(0); }
+  50% { transform: rotate(-7deg) translateY(-4px); }
+}
+
+@keyframes gununganFlankRight {
+  0%, 100% { transform: scaleX(-1) rotate(-14deg) translateY(0); }
+  50% { transform: scaleX(-1) rotate(-7deg) translateY(-4px); }
+}
+
+/* 5. Symmetrical Wayang Rama & Shinta Dalang Motion */
+@keyframes wayangDalangLeft {
+  0%, 100% { transform: rotate(-4deg) translateY(0); }
+  50% { transform: rotate(2deg) translateY(-5px); }
+}
+
+@keyframes wayangDalangRight {
+  0%, 100% { transform: scaleX(-1) rotate(-4deg) translateY(0); }
+  50% { transform: scaleX(-1) rotate(2deg) translateY(-5px); }
+}
+
+/* 6. Gate Initial Stagger Entrance (Ref: Undangan 2 & 6) */
+@keyframes gateRiseIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 7. Falling Jasmine Petals (Kelopak Melati Gugur) */
+@keyframes melatiFall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.72;
+  }
+  85% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate3d(var(--drift-x, 28px), 108vh, 0) rotate(320deg);
+    opacity: 0;
+  }
+}
+
+/* 8. Audio Vinyl Disc & Gold Sheen */
+@keyframes discSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseRing {
+  0% { transform: scale(1); opacity: 0.65; }
+  100% { transform: scale(1.48); opacity: 0; }
+}
+
+@keyframes goldSheen {
+  0%, 72% { transform: translateX(-130%) skewX(-22deg); }
+  100% { transform: translateX(230%) skewX(-22deg); }
+}
+
+/* ==========================================================================
+   AMBIENT FALLING MELATI PETALS
+   ========================================================================== */
+.melati-petals {
+  position: fixed;
+  inset: 0;
+  z-index: 1250;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.melati-petal {
+  position: absolute;
+  top: -24px;
+  width: var(--sz, 11px);
+  height: calc(var(--sz, 11px) * 1.38);
+  border-radius: 65% 35% 65% 35% / 65% 35% 65% 35%;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #f6efe0 72%, #e3d2b3 100%);
+  border: 0.5px solid rgba(196, 154, 78, 0.38);
+  box-shadow: 0 3px 8px rgba(120, 85, 26, 0.12);
+  opacity: 0;
+  animation: melatiFall var(--dur, 12s) linear var(--delay, 0s) infinite;
+}
+
+body.is-page-hidden .melati-petal {
+  animation-play-state: paused;
+}
+
+/* ==========================================================================
+   PINTU GEBYOG BATIK PUTIH 3D (DOUBLE-DOOR GATE COVER)
+   ========================================================================== */
+.gate-cover {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 1600px;
+  transition: visibility 1.15s ease, opacity 0.95s ease;
+}
+
+.gate-door {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(250, 246, 237, 0.72) 55%, rgba(242, 234, 219, 0.88) 100%),
+    url("../asset/bg-batik-putih-halus.jpg") center / cover no-repeat;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.42, 1), opacity 0.95s ease;
+}
+
+.gate-door--left {
+  left: 0;
+  transform-origin: left center;
+  box-shadow: inset -10px 0 28px rgba(130, 98, 45, 0.08);
+}
+
+.gate-door--right {
+  right: 0;
+  transform-origin: right center;
+  box-shadow: inset 10px 0 28px rgba(130, 98, 45, 0.08);
+}
+
+.gate-door__filigree {
+  position: absolute;
+  inset: 16px 12px;
+  border: 1px solid rgba(188, 145, 68, 0.36);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.gate-seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  z-index: 2;
+  background: linear-gradient(180deg, transparent, var(--prada-400) 20%, var(--prada-500) 50%, var(--prada-400) 80%, transparent);
+  transition: opacity 0.25s ease;
+}
+
+.gate-stage {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: var(--stream-w);
+  height: 100dvh;
+  padding: 24px 24px 32px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  color: var(--ink-900);
+  transition: transform 0.65s ease, opacity 0.45s ease;
+}
+
+.gate-cover.is-opening .gate-door--left {
+  transform: rotateY(-104deg) scale(0.97);
+  opacity: 0;
+}
+
+.gate-cover.is-opening .gate-door--right {
+  transform: rotateY(104deg) scale(0.97);
+  opacity: 0;
+}
+
+.gate-cover.is-opening .gate-seam {
+  opacity: 0;
+}
+
+.gate-cover.is-opening .gate-stage {
+  transform: scale(0.96);
+  opacity: 0;
+}
+
+.gate-cover.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Gate Entrance Cascade */
+.gate-anim-1 { animation: gateRiseIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.08s backwards; }
+.gate-anim-2 { animation: gateRiseIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s backwards; }
+.gate-anim-3 { animation: gateRiseIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.32s backwards; }
+.gate-anim-4 { animation: gateRiseIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.44s backwards; }
+
+/* Gate Hanging Roncen Melati & Corner Bouquets */
+.gate-roncen {
+  position: absolute;
+  top: -4px;
+  width: 82px;
+  pointer-events: none;
+  transform-origin: top center;
+  z-index: 1;
+}
+
+.gate-roncen--tl {
+  left: 6px;
+  animation: roncenPendulumLeft 5.4s ease-in-out infinite;
+}
+
+.gate-roncen--tr {
+  right: 6px;
+  animation: roncenPendulumRight 5.8s ease-in-out infinite;
+}
+
+.gate-bouquet {
+  position: absolute;
+  bottom: -16px;
+  width: 148px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.94;
+}
+
+.gate-bouquet--bl {
+  left: -16px;
+  transform-origin: bottom left;
+  animation: bouquetSwayBL 5.2s ease-in-out infinite;
+}
+
+.gate-bouquet--br {
+  right: -16px;
+  transform-origin: bottom right;
+  animation: bouquetSwayBR 5.6s ease-in-out infinite;
+}
+
+.gate-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.gate-gunungan-crest {
+  width: 36px;
+  height: auto;
+  animation: gununganSway 5.2s ease-in-out infinite;
+}
+
+.gate-kicker {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--prada-600);
+}
+
+.gate-medallion-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px 0 2px;
+}
+
+.gate-mandala-halo {
+  position: absolute;
+  width: 268px;
+  height: 268px;
+  opacity: 0.55;
+  pointer-events: none;
+  animation: mandalaSpin 44s linear infinite;
+}
+
+.gate-flank-gunungan {
+  width: 54px;
+  pointer-events: none;
+  z-index: 1;
+  transform-origin: bottom center;
+}
+
+.gate-flank-gunungan--left {
+  margin-right: -14px;
+  align-self: flex-end;
+  animation: gununganFlankLeft 5.4s ease-in-out infinite;
+}
+
+.gate-flank-gunungan--right {
+  margin-left: -14px;
+  align-self: flex-end;
+  animation: gununganFlankRight 5.4s ease-in-out infinite 0.3s;
+}
+
+.gate-arch-medallion {
+  position: relative;
+  z-index: 2;
+  width: min(202px, 50vw);
+  aspect-ratio: 3 / 3.85;
+  padding: 7px;
+  border-radius: 999px 999px 26px 26px;
+  background: linear-gradient(155deg, #ffffff 0%, var(--prada-300) 45%, var(--prada-500) 100%);
+  box-shadow:
+    0 18px 42px rgba(92, 68, 28, 0.2),
+    0 0 0 1px rgba(188, 145, 68, 0.42);
+}
+
+.gate-arch-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px 999px 20px 20px;
+  overflow: hidden;
+  border: 2px solid #ffffff;
+}
+
+.gate-arch-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.gate-identity {
+  position: relative;
+  z-index: 2;
+}
+
+.gate-couple-script {
+  margin: 2px 0 0;
+  font-family: var(--font-script);
+  font-size: clamp(3rem, 11vw, 3.85rem);
+  font-weight: 700;
+  line-height: 0.98;
+  color: var(--ink-900);
+}
+
+.gate-couple-script span {
+  color: var(--prada-500);
+  font-family: var(--font-serif);
+  font-size: 0.6em;
+  font-style: italic;
+}
+
+.gate-date-line {
+  margin: 2px 0 0;
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--ink-500);
+}
+
+.gate-guest-card {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 326px;
+  margin-top: 4px;
+  padding: 14px 18px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(188, 145, 68, 0.42);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 14px 32px rgba(92, 68, 28, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.gate-guest-label {
+  font-size: 0.73rem;
+  color: var(--ink-500);
+}
+
+.gate-guest-name {
+  font-family: var(--font-serif);
+  font-size: 1.32rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  letter-spacing: 0.02em;
+  word-break: break-word;
+}
+
+/* ==========================================================================
+   BUTTONS (CHAMPAGNE PRADA GOLD & PEARL OUTLINE)
+   ========================================================================== */
+.btn-prada-gold {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 4px;
+  padding: 11px 25px;
+  border: 1px solid rgba(150, 110, 40, 0.35);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ead19b 0%, var(--prada-500) 58%, #9a712a 100%);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(64, 44, 12, 0.35);
+  font-weight: 700;
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(188, 145, 68, 0.34);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.btn-prada-gold::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 42%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  animation: goldSheen 4.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.btn-prada-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(188, 145, 68, 0.46);
+}
+
+.btn-prada-gold--full {
+  width: 100%;
+  padding: 13px 24px;
+}
+
+.btn-outline-pearl {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1.5px solid var(--prada-500);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--prada-700);
+  font-size: 0.82rem;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(120, 85, 26, 0.08);
+  transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease;
+}
+
+.btn-outline-pearl:hover {
+  background: var(--prada-500);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   CENTERED DESKTOP 3-COLUMN STAGE + TWIN KRATON WINGS (MIRRORS UNDANGAN 7)
+   ========================================================================== */
+.kraton-shell {
+  display: flex;
+  justify-content: center;
+  min-block-size: 100dvh;
+  background: var(--pearl-200);
+}
+
+.kraton-wing {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .kraton-shell {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, var(--stream-w)) 1fr;
+    grid-template-areas: "wing-left stream wing-right";
+    align-items: start;
+  }
+
+  .invitation-stream {
+    grid-area: stream;
+  }
+
+  .kraton-wing {
+    display: grid;
+    place-items: safe center;
+    position: sticky;
+    top: 0;
+    block-size: 100dvh;
+    padding: 28px 20px;
+    overflow: clip;
+    background:
+      radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.88), rgba(244, 237, 224, 0.82) 72%),
+      url("../asset/bg-batik-putih-halus.jpg") center / cover no-repeat;
+  }
+
+  .kraton-wing--left {
+    grid-area: wing-left;
+    border-inline-end: 1px solid rgba(188, 145, 68, 0.34);
+  }
+
+  .kraton-wing--right {
+    grid-area: wing-right;
+    border-inline-start: 1px solid rgba(188, 145, 68, 0.34);
+  }
+
+  .wing-roncen {
+    position: absolute;
+    top: -4px;
+    inline-size: 92px;
+    pointer-events: none;
+    transform-origin: top center;
+    z-index: 1;
+  }
+
+  .wing-roncen--tl {
+    left: 18px;
+    animation: roncenPendulumLeft 5.8s ease-in-out infinite;
+  }
+
+  .wing-roncen--tr {
+    right: 18px;
+    animation: roncenPendulumRight 6.2s ease-in-out infinite;
+  }
+
+  .wing-bouquet {
+    position: absolute;
+    bottom: 22px;
+    inline-size: 170px;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.9;
+  }
+
+  .wing-bouquet--bl {
+    left: -14px;
+    transform-origin: bottom left;
+    animation: bouquetSwayBL 5.6s ease-in-out infinite;
+  }
+
+  .wing-bouquet--br {
+    right: -14px;
+    transform-origin: bottom right;
+    animation: bouquetSwayBR 6s ease-in-out infinite;
+  }
+
+  .wing-lace {
+    position: absolute;
+    inset-inline: 0;
+    bottom: -4px;
+    inline-size: 100%;
+    block-size: 56px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .wing-card {
+    position: relative;
+    z-index: 2;
+    inline-size: 100%;
+    max-inline-size: 276px;
+    padding: 24px 20px 22px;
+    border-radius: 26px;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(188, 145, 68, 0.38);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 22px 50px rgba(92, 68, 28, 0.12);
+    color: var(--ink-900);
+    text-align: center;
+  }
+
+  .wing-mandala-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  .wing-mandala {
+    display: none;
+  }
+
+  .wing-photo-arch {
+    position: relative;
+    z-index: 1;
+    inline-size: 168px;
+    aspect-ratio: 3 / 4;
+    padding: 5px;
+    border-radius: 999px 999px 18px 18px;
+    background: linear-gradient(160deg, #ffffff, var(--prada-300), var(--prada-500));
+    box-shadow: 0 12px 26px rgba(92, 68, 28, 0.14);
+  }
+
+  .wing-photo-arch img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    border-radius: 999px 999px 14px 14px;
+    border: 1.5px solid #ffffff;
+  }
+
+  .wing-crest {
+    inline-size: 30px;
+    margin: 0 auto 6px;
+    animation: gununganSway 5.5s ease-in-out infinite;
+  }
+
+  .wing-kicker {
+    margin: 0;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--prada-600);
+  }
+
+  .wing-couple {
+    margin: 4px 0 6px;
+    font-family: var(--font-script);
+    font-size: 3.25rem;
+    line-height: 0.96;
+    color: var(--ink-900);
+  }
+
+  .wing-couple span {
+    font-family: var(--font-serif);
+    font-size: 0.56em;
+    font-style: italic;
+    color: var(--prada-500);
+  }
+
+  .wing-date,
+  .wing-philosophy {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 0.94rem;
+    line-height: 1.42;
+    color: var(--ink-500);
+  }
+
+  .wing-philosophy {
+    font-style: italic;
+  }
+}
+
+.invitation-stream {
+  position: relative;
+  inline-size: 100%;
+  max-inline-size: var(--stream-w);
+  min-block-size: 100dvh;
+  background: var(--pearl-100);
+  box-shadow: 0 0 64px rgba(82, 62, 30, 0.18);
+  overflow-x: clip;
+}
+
+/* ==========================================================================
+   FLOATING GAMELAN DISC BUTTON (EXACT UNDANGAN 7 SPEC — WHITE BATIK THEME)
+   ========================================================================== */
+.music-fab {
+  position: fixed;
+  top: 18px;
+  right: max(14px, calc(50% - (var(--stream-w) / 2) + 14px));
+  z-index: 90;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--prada-400);
+  background: #ffffff;
+  color: #9a6f24;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px rgba(92, 68, 28, 0.18);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.music-fab:hover {
+  transform: scale(1.06);
+  box-shadow: 0 8px 24px rgba(92, 68, 28, 0.26);
+}
+
+.music-fab i {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.music-fab.is-playing i {
+  animation: discSpin 9s linear infinite;
+}
+
+.music-fab__ring {
+  display: none;
+}
+
+/* ==========================================================================
+   SHARED SECTION TYPOGRAPHY & MULTI-DIRECTIONAL SCROLL REVEALS
+   (Ref: Undangan 2, 6, 7 — Serene glide + Botanical Pop-Slow Overshoot)
+   ========================================================================== */
+.sec {
+  position: relative;
+  padding: 60px 24px;
+}
+
+.sec-heading {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sec-kicker {
+  display: inline-block;
+  font-size: 0.71rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--prada-600);
+}
+
+.sec-title {
+  margin: 6px 0 10px;
+  font-family: var(--font-serif);
+  font-size: 2.08rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ink-900);
+}
+
+.sec-desc {
+  margin: 8px auto 0;
+  max-width: 340px;
+  font-size: 0.86rem;
+  color: var(--ink-500);
+}
+
+.batik-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.batik-divider span {
+  width: 54px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--prada-500), transparent);
+}
+
+.batik-divider img {
+  width: 22px;
+  height: auto;
+}
+
+.sec-lace-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 48px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Scroll Reveal Variants */
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-scale {
+  opacity: 0;
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal { transform: translateY(30px); }
+.reveal-left { transform: translateX(-32px); }
+.reveal-right { transform: translateX(32px); }
+.reveal-scale { transform: scale(0.92); }
+
+.reveal.is-visible,
+.reveal-left.is-visible,
+.reveal-right.is-visible,
+.reveal-scale.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* Botanical Pop-Slow Ornament Reveal (Ref: Undangan 2 & 6) */
+.reveal-ornament {
+  opacity: 0;
+  scale: 0.62;
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 1.35s cubic-bezier(0.25, 1.2, 0.45, 1);
+}
+
+.reveal-ornament.is-visible {
+  opacity: 0.95;
+  scale: 1;
+}
+
+.delay-1 { transition-delay: 0.14s; }
+.delay-2 { transition-delay: 0.28s; }
+.delay-3 { transition-delay: 0.42s; }
+
+/* ==========================================================================
+   1. HERO SECTION: RONCEN MELATI CANOPY + PENDOPO TRIPTYCH + COUNTDOWN
+   ========================================================================== */
+.sec--hero {
+  padding-top: 52px;
+  padding-bottom: 68px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(252, 250, 245, 0.78) 60%, rgba(248, 244, 235, 0.94) 100%),
+    url("../asset/bg-batik-putih-halus.jpg") top center / cover no-repeat;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-roncen {
+  position: absolute;
+  top: -6px;
+  width: 78px;
+  pointer-events: none;
+  transform-origin: top center;
+  z-index: 1;
+}
+
+.hero-roncen--left {
+  left: 4px;
+  animation: roncenPendulumLeft 5.6s ease-in-out infinite;
+}
+
+.hero-roncen--right {
+  right: 4px;
+  animation: roncenPendulumRight 6s ease-in-out infinite;
+}
+
+.hero-crown {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-crest-stage {
+  position: relative;
+  width: 118px;
+  height: 112px;
+  margin: 0 auto 6px;
+  display: grid;
+  place-items: center;
+}
+
+.hero-mandala {
+  position: absolute;
+  width: 118px;
+  height: 118px;
+  opacity: 0.62;
+  pointer-events: none;
+  animation: mandalaSpin 38s linear infinite;
+}
+
+.hero-gunungan {
+  position: relative;
+  z-index: 1;
+  width: 74px;
+  animation: gununganSway 5.5s ease-in-out infinite;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--prada-600);
+}
+
+.hero-script-title {
+  margin: 4px 0 2px;
+  font-family: var(--font-script);
+  font-size: 3.95rem;
+  line-height: 0.98;
+  color: var(--ink-900);
+}
+
+.hero-script-title span {
+  font-family: var(--font-serif);
+  font-size: 0.56em;
+  font-style: italic;
+  color: var(--prada-500);
+}
+
+.hero-subdate {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--ink-500);
+}
+
+/* Triple Arch Collage */
+.triptych-arches {
+  position: relative;
+  z-index: 2;
+  margin: 24px 0 22px;
+  display: grid;
+  grid-template-columns: 1fr 1.28fr 1fr;
+  align-items: end;
+  gap: 10px;
+}
+
+.triptych-item {
+  margin: 0;
+  padding: 4px;
+  border-radius: 999px 999px 16px 16px;
+  background: linear-gradient(180deg, #ffffff 0%, var(--prada-300) 48%, var(--prada-500) 100%);
+  box-shadow: 0 14px 28px rgba(92, 68, 28, 0.14);
+}
+
+.triptych-item img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 999px 999px 12px 12px;
+  border: 1.5px solid #ffffff;
+}
+
+.triptych-item--side img {
+  aspect-ratio: 3 / 4.3;
+}
+
+.triptych-item--center img {
+  aspect-ratio: 3 / 4.55;
+}
+
+/* Pearl & Gold Countdown Ribbon */
+.countdown-ribbon {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(188, 145, 68, 0.45);
+  box-shadow: 0 14px 30px rgba(92, 68, 28, 0.1);
+}
+
+.cd-pill {
+  padding: 9px 4px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, var(--pearl-150) 100%);
+  border: 1px solid rgba(188, 145, 68, 0.26);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cd-pill strong {
+  font-family: var(--font-serif);
+  font-size: 1.58rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--prada-700);
+}
+
+.cd-pill span {
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.hero-cta-wrap {
+  position: relative;
+  z-index: 2;
+  margin-top: 18px;
+}
+
+/* ==========================================================================
+   2. FALSAFAH & AYAT SUCI: MOTHER-OF-PEARL SEKAR JAGAD PLAQUE
+   ========================================================================== */
+.sec--quote {
+  padding-top: 26px;
+  padding-bottom: 40px;
+  background: var(--pearl-150);
+}
+
+.pearl-plaque {
+  position: relative;
+  padding: 7px;
+  border-radius: 26px;
+  background: linear-gradient(145deg, #ffffff 0%, var(--prada-300) 52%, var(--prada-400) 100%);
+  box-shadow: 0 16px 38px rgba(92, 68, 28, 0.12);
+}
+
+.plaque-corner {
+  position: absolute;
+  width: 92px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.plaque-corner--tr {
+  top: -14px;
+  right: -12px;
+  transform-origin: top right;
+  animation: bouquetSwayTR 5.2s ease-in-out infinite;
+}
+
+.plaque-corner--bl {
+  bottom: -14px;
+  left: -12px;
+  transform-origin: bottom left;
+  animation: bouquetSwayBL 5.6s ease-in-out infinite;
+}
+
+.pearl-plaque__inner {
+  position: relative;
+  z-index: 2;
+  padding: 30px 22px;
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(252, 249, 242, 0.92)),
+    url("../asset/bg-kartu-batik-putih.jpg") center / cover no-repeat;
+  border: 1px solid rgba(188, 145, 68, 0.35);
+  text-align: center;
+  color: var(--ink-900);
+}
+
+.plaque-crest {
+  width: 30px;
+  margin: 0 auto 10px;
+}
+
+.salam-title {
+  margin: 0 0 8px;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--prada-700);
+}
+
+.salam-intro {
+  margin: 0 0 16px;
+  font-size: 0.84rem;
+  color: var(--ink-500);
+}
+
+.quran-verse {
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(188, 145, 68, 0.45);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.03rem;
+  line-height: 1.56;
+  color: var(--ink-700);
+}
+
+.quran-verse cite {
+  display: block;
+  margin-top: 10px;
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--prada-600);
+}
+
+/* ==========================================================================
+   3. PROFIL MEMPELAI: DIAGONAL SEKAR MELATI + ALTERNATING ARCH CARDS
+   ========================================================================== */
+.sec--couple {
+  position: relative;
+  z-index: 3;
+  overflow: visible;
+  background:
+    linear-gradient(180deg, rgba(252, 250, 245, 0.9), rgba(255, 255, 255, 0.86)),
+    url("../asset/bg-batik-putih-halus.jpg") center / cover no-repeat;
+}
+
+.couple-corner {
+  position: absolute;
+  width: 126px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.couple-corner--tl {
+  top: -46px;
+  left: -12px;
+  transform-origin: top left;
+  animation: bouquetSwayTL 5.4s ease-in-out infinite;
+}
+
+.couple-corner--br {
+  bottom: -46px;
+  right: -12px;
+  transform-origin: bottom right;
+  animation: bouquetSwayBR 5.8s ease-in-out infinite;
+}
+
+.couple-card {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 142px 1fr;
+  align-items: center;
+  gap: 18px;
+  padding: 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(188, 145, 68, 0.34);
+  box-shadow: 0 14px 32px rgba(92, 68, 28, 0.08);
+}
+
+.couple-card--bride {
+  grid-template-columns: 1fr 142px;
+  text-align: right;
+}
+
+.couple-card--bride .couple-card__media {
+  order: 2;
+}
+
+.couple-card--bride .couple-card__body {
+  order: 1;
+}
+
+.couple-card__media {
+  position: relative;
+}
+
+.couple-arch-frame {
+  padding: 5px;
+  border-radius: 999px 999px 18px 18px;
+  background: linear-gradient(160deg, #ffffff, var(--prada-300), var(--prada-500));
+  box-shadow: 0 8px 20px rgba(92, 68, 28, 0.12);
+}
+
+.couple-arch-frame img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 999px 999px 14px 14px;
+  border: 1.5px solid #ffffff;
+}
+
+.couple-role-badge {
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffffff, var(--pearl-150));
+  color: var(--prada-700);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--prada-400);
+  box-shadow: 0 4px 10px rgba(92, 68, 28, 0.12);
+}
+
+.couple-script-name {
+  margin: 0 0 6px;
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ink-900);
+}
+
+.couple-parents {
+  margin: 0 0 12px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--ink-500);
+}
+
+.couple-parents strong {
+  color: var(--ink-900);
+}
+
+.couple-ig {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6.5px;
+  height: 29px;
+  padding: 0 13px 0 11px;
+  border-radius: 999px;
+  background: var(--pearl-150);
+  border: 1px solid rgba(188, 145, 68, 0.38);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--prada-700);
+  text-decoration: none;
+  vertical-align: middle;
+  box-sizing: border-box;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.couple-ig:hover {
+  background: var(--prada-500);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.couple-ig__icon,
+.couple-ig svg {
+  width: 13.5px;
+  height: 13.5px;
+  display: block;
+  flex-shrink: 0;
+  stroke: currentColor;
+}
+
+.couple-ig span {
+  display: inline-block;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  transform: translateY(-0.5px);
+}
+
+.couple-ig i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  transform: translateY(1.5px);
+}
+
+.couple-ampersand {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.amp-line {
+  width: 62px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--prada-400), transparent);
+}
+
+.amp-medallion {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+}
+
+.amp-mandala {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.72;
+  animation: mandalaSpin 34s linear infinite;
+}
+
+.amp-glyph {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-script);
+  font-size: 2.55rem;
+  line-height: 1;
+  color: var(--prada-600);
+}
+
+@media (max-width: 375px) {
+  .couple-card,
+  .couple-card--bride {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .couple-card--bride .couple-card__media,
+  .couple-card--bride .couple-card__body {
+    order: unset;
+  }
+  .couple-card__media {
+    max-width: 165px;
+    margin: 0 auto 8px;
+  }
+}
+
+/* ==========================================================================
+   4. RANGKAIAN ACARA: JAVANESE ALMANAC + PERFORATED BATIK PUTIH TICKETS
+   ========================================================================== */
+.sec--events {
+  padding-bottom: 76px;
+  background: var(--pearl-150);
+}
+
+.almanac-banner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-bottom: 22px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(248, 242, 229, 0.94)),
+    url("../asset/bg-kartu-batik-putih.jpg") center / cover no-repeat;
+  color: var(--ink-900);
+  border: 1px solid rgba(188, 145, 68, 0.45);
+  box-shadow: 0 12px 26px rgba(92, 68, 28, 0.08);
+  text-align: center;
+}
+
+.almanac-col {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--prada-700);
+}
+
+.almanac-day {
+  padding: 0 20px;
+  border-left: 1px solid rgba(188, 145, 68, 0.4);
+  border-right: 1px solid rgba(188, 145, 68, 0.4);
+  display: flex;
+  flex-direction: column;
+}
+
+.almanac-day strong {
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  line-height: 1;
+  color: var(--ink-900);
+}
+
+.almanac-day span {
+  font-size: 0.73rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--prada-600);
+}
+
+.event-ticket {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  margin-bottom: 16px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(188, 145, 68, 0.35);
+  box-shadow: 0 12px 28px rgba(92, 68, 28, 0.08);
+}
+
+.event-ticket__stub {
+  position: relative;
+  padding: 18px 10px;
+  background: linear-gradient(180deg, #faf5ea 0%, #efe4ce 100%);
+  color: var(--prada-700);
+  border-right: 2px dashed rgba(188, 145, 68, 0.55);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.event-ticket__stub i {
+  font-size: 1.15rem;
+  color: var(--prada-500);
+  margin-bottom: 4px;
+}
+
+.stub-time {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink-900);
+}
+
+.event-ticket__stub small {
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--ink-500);
+}
+
+.event-ticket__main {
+  padding: 18px 18px 18px 20px;
+}
+
+.ticket-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--prada-600);
+}
+
+.ticket-title {
+  margin: 2px 0 6px;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--ink-900);
+}
+
+.ticket-venue {
+  margin: 0 0 12px;
+  font-size: 0.8rem;
+  line-height: 1.48;
+  color: var(--ink-500);
+}
+
+.ticket-venue strong {
+  color: var(--ink-900);
+}
+
+.ticket-map-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 15px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ead19b 0%, var(--prada-500) 100%);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(64, 44, 12, 0.28);
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ticket-map-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(188, 145, 68, 0.35);
+}
+
+/* Live Stream Strip */
+.stream-card {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 20px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(248, 243, 232, 0.94)),
+    url("../asset/bg-kartu-batik-putih.jpg") center / cover no-repeat;
+  color: var(--ink-900);
+  border: 1px solid rgba(188, 145, 68, 0.42);
+  box-shadow: 0 10px 24px rgba(92, 68, 28, 0.08);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.stream-card__icon {
+  flex: 0 0 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--pearl-150), var(--prada-300));
+  color: var(--prada-700);
+  display: grid;
+  place-items: center;
+}
+
+.stream-card__info h3 {
+  margin: 0 0 4px;
+  font-family: var(--font-serif);
+  font-size: 1.24rem;
+  color: var(--ink-900);
+}
+
+.stream-card__info p {
+  margin: 0 0 10px;
+  font-size: 0.78rem;
+  color: var(--ink-500);
+}
+
+.btn-stream {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--prada-700);
+  border-bottom: 1.5px solid var(--prada-500);
+  padding-bottom: 2px;
+}
+
+/* ==========================================================================
+   5. KISAH CINTA: VERTICAL PRADA GOLD SPINE TIMELINE
+   ========================================================================== */
+.sec--story {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(250, 246, 238, 0.9)),
+    url("../asset/bg-batik-putih-halus.jpg") top center / cover no-repeat;
+}
+
+.kraton-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 18px;
+  position: relative;
+  border-left: 2px solid rgba(188, 145, 68, 0.5);
+}
+
+.tl-entry {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 22px;
+}
+
+.tl-entry:last-child {
+  margin-bottom: 0;
+}
+
+.tl-marker {
+  position: absolute;
+  left: -35px;
+  top: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid var(--prada-500);
+  color: var(--prada-700);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 12px rgba(92, 68, 28, 0.14);
+}
+
+.tl-card {
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(188, 145, 68, 0.3);
+  box-shadow: 0 10px 24px rgba(92, 68, 28, 0.07);
+}
+
+.tl-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.tl-head img {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 1.5px solid var(--prada-400);
+}
+
+.tl-chapter {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--prada-600);
+}
+
+.tl-head h3 {
+  margin: 1px 0 0;
+  font-family: var(--font-serif);
+  font-size: 1.32rem;
+  color: var(--ink-900);
+}
+
+.tl-card p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--ink-500);
+}
+
+/* ==========================================================================
+   6. GALERI MOMEN: CINEMA VIDEO + ASYMMETRIC PEARL BENTO GRID
+   ========================================================================== */
+.sec--gallery {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--pearl-200) 0%, var(--pearl-150) 100%);
+}
+
+.gallery-roncen--tr {
+  position: absolute;
+  top: -6px;
+  right: 8px;
+  width: 72px;
+  pointer-events: none;
+  transform-origin: top center;
+  animation: roncenPendulumRight 6s ease-in-out infinite;
+}
+
+.video-frame {
+  margin-bottom: 18px;
+  padding: 5px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #ffffff 0%, var(--prada-300) 50%, var(--prada-500) 100%);
+  box-shadow: 0 14px 32px rgba(92, 68, 28, 0.14);
+}
+
+.video-frame__ratio {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #1d1812;
+}
+
+.video-frame__ratio iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.bento-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.bento-tile {
+  padding: 6px;
+  border: 1px solid rgba(188, 145, 68, 0.42);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(92, 68, 28, 0.09);
+  cursor: pointer;
+  position: relative;
+  aspect-ratio: 1 / 1;
+}
+
+.bento-tile--featured {
+  grid-row: span 2;
+  aspect-ratio: auto;
+  height: 100%;
+}
+
+.bento-tile--wide {
+  grid-column: span 2;
+  aspect-ratio: 16 / 9;
+}
+
+.bento-tile img {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  border: 3.5px solid #ffffff;
+  box-sizing: border-box;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 2px 10px rgba(70, 50, 20, 0.12);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bento-tile:hover img {
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   7. TANDA KASIH: TABBED AMPLOP BATIK PUTIH & KADO FISIK (1:1 UNDANGAN 7)
+   ========================================================================== */
+.sec--gift {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(252, 249, 242, 0.92)),
+    url("../asset/bg-batik-putih-halus.jpg") center / cover no-repeat;
+}
+
+.gift-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 5px;
+  margin-bottom: 18px;
+  border-radius: 999px;
+  background: var(--pearl-200);
+  border: 1px solid rgba(188, 145, 68, 0.32);
+}
+
+.gift-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-500);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.gift-tab.is-active {
+  background: linear-gradient(135deg, #d8ad52 0%, #bd8c2e 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(189, 140, 46, 0.32);
+}
+
+.atm-batik-card {
+  padding: 22px;
+  border-radius: 22px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.85), rgba(252, 248, 239, 0.9)),
+    url("../asset/bg-kartu-batik-putih.jpg") center / cover no-repeat;
+  border: 1px solid rgba(188, 145, 68, 0.45);
+  box-shadow: 0 16px 34px rgba(92, 68, 28, 0.12);
+}
+
+.atm-batik-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.atm-chip {
+  width: 44px;
+  height: auto;
+}
+
+.atm-bank-logo {
+  width: 96px;
+  height: auto;
+}
+
+.atm-batik-card__number {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.atm-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-500);
+}
+
+.atm-batik-card__number strong {
+  font-family: var(--font-serif);
+  font-size: 1.95rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-900);
+}
+
+.atm-holder {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--prada-700);
+}
+
+.btn-copy-kraton,
+.btn-copy-pearl {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #d8ad52 0%, #bd8c2e 100%);
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(189, 140, 46, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-copy-kraton:hover,
+.btn-copy-pearl:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(188, 145, 68, 0.36);
+}
+
+.parcel-card {
+  padding: 22px;
+  border-radius: 22px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(252, 248, 239, 0.92)),
+    url("../asset/bg-kartu-batik-putih.jpg") center / cover no-repeat;
+  border: 1px solid rgba(188, 145, 68, 0.45);
+  box-shadow: 0 16px 34px rgba(92, 68, 28, 0.1);
+}
+
+.parcel-card__badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #d8ad52 0%, #bd8c2e 100%);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(189, 140, 46, 0.25);
+}
+
+.parcel-card h3 {
+  margin: 0 0 12px;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: var(--ink-900);
+}
+
+.parcel-details {
+  margin: 0 0 16px;
+}
+
+.parcel-details div {
+  display: grid;
+  grid-template-columns: 95px 1fr;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(188, 145, 68, 0.35);
+  font-size: 0.82rem;
+}
+
+.parcel-details dt {
+  color: var(--ink-500);
+}
+
+.parcel-details dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+/* ==========================================================================
+   8. RSVP & DOA RESTU
+   ========================================================================== */
+.sec--rsvp {
+  background: var(--pearl-150);
+}
+
+.rsvp-scoreboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.score-box {
+  padding: 13px;
+  border-radius: 18px;
+  text-align: center;
+  border: 1px solid rgba(188, 145, 68, 0.34);
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(92, 68, 28, 0.06);
+}
+
+.score-box strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  line-height: 1.05;
+  color: var(--prada-700);
+}
+
+.score-box span {
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--ink-500);
+}
+
+.kraton-form {
+  padding: 20px;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid rgba(188, 145, 68, 0.34);
+  box-shadow: 0 12px 28px rgba(92, 68, 28, 0.08);
+}
+
+.form-field {
+  margin-bottom: 14px;
+}
+
+.form-field label,
+.presence-group legend {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-900);
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(188, 145, 68, 0.38);
+  background: var(--pearl-100);
+  color: var(--ink-900);
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: var(--prada-500);
+  background: #ffffff;
+}
+
+.presence-group {
+  border: 0;
+  padding: 0;
+  margin: 0 0 14px;
+}
+
+.presence-pills {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.presence-pill input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.presence-pill span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(188, 145, 68, 0.32);
+  background: var(--pearl-100);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--ink-500);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.presence-pill input:checked + span {
+  background: linear-gradient(135deg, #fbf4e3, var(--prada-300));
+  border-color: var(--prada-500);
+  color: var(--ink-900);
+}
+
+.rsvp-feedback {
+  margin: 0 0 12px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.rsvp-feedback.is-error {
+  background: #fdecec;
+  color: #982626;
+}
+
+.rsvp-feedback.is-ok {
+  background: #edf7ed;
+  color: #1f5e28;
+}
+
+.wishes-feed {
+  margin-top: 18px;
+  max-height: 340px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+.wish-card {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(188, 145, 68, 0.28);
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 12px;
+}
+
+.wish-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pearl-150), var(--prada-300));
+  border: 1px solid var(--prada-400);
+  color: var(--prada-700);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1rem;
+  display: grid;
+  place-items: center;
+}
+
+.wish-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.wish-author {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--ink-900);
+}
+
+.wish-badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--pearl-200);
+  color: var(--ink-500);
+}
+
+.wish-badge--hadir {
+  background: #e7f4e8;
+  color: #1f5e28;
+}
+
+.wish-text {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--ink-500);
+  word-break: break-word;
+}
+
+.wish-time {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.68rem;
+  color: #96836d;
+}
+
+/* ==========================================================================
+   9. PENUTUP / MATUR NUWUN: 100VH FULL-SCREEN CURTAIN STAGE (DESKTOP & MOBILE)
+   ========================================================================== */
+.sec--closing {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 38px 20px 88px;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(246, 239, 226, 0.94) 100%),
+    url("../asset/bg-batik-putih-halus.jpg") center / cover no-repeat;
+  overflow: hidden;
+}
+
+.closing-roncen {
+  position: absolute;
+  top: 0;
+  width: 70px;
+  pointer-events: none;
+  transform-origin: top center;
+}
+
+.closing-roncen--left {
+  left: 8px;
+  animation: roncenPendulumLeft 5.6s ease-in-out infinite;
+}
+
+.closing-roncen--right {
+  right: 8px;
+  animation: roncenPendulumRight 6s ease-in-out infinite;
+}
+
+.closing-frame-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.closing-oval-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.closing-mandala {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  opacity: 0.52;
+  pointer-events: none;
+  animation: mandalaSpin 42s linear infinite;
+}
+
+.closing-oval {
+  position: relative;
+  z-index: 2;
+  width: min(164px, 40vw);
+  padding: 5px;
+  border-radius: 999px;
+  background: linear-gradient(160deg, #ffffff 0%, var(--prada-300) 48%, var(--prada-500) 100%);
+  box-shadow: 0 14px 32px rgba(92, 68, 28, 0.16);
+}
+
+.closing-oval img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 999px;
+  border: 2px solid #ffffff;
+}
+
+.closing-wayang-flank {
+  position: relative;
+  z-index: 3;
+  width: min(72px, 18vw);
+  pointer-events: none;
+  transform-origin: bottom center;
+}
+
+.closing-wayang-flank--left {
+  margin-right: -16px;
+  animation: wayangDalangLeft 6.4s ease-in-out infinite;
+}
+
+.closing-wayang-flank--right {
+  margin-left: -16px;
+  animation: wayangDalangRight 6.4s ease-in-out infinite 0.4s;
+}
+
+.closing-copy {
+  position: relative;
+  z-index: 3;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.closing-thanks {
+  margin: 0 auto 10px;
+  max-width: 330px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ink-500);
+}
+
+.closing-salam {
+  margin: 0 0 10px;
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--prada-700);
+}
+
+.closing-kicker {
+  margin: 0 0 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--prada-600);
+}
+
+.closing-couple {
+  margin: 0;
+  font-family: var(--font-script);
+  font-size: clamp(2.3rem, 6vw, 3.2rem);
+  line-height: 1.05;
+  color: var(--ink-900);
+}
+
+.closing-couple span {
+  font-family: var(--font-serif);
+  font-size: 0.56em;
+  font-style: italic;
+  color: var(--prada-500);
+}
+
+.closing-stage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 185px;
+  pointer-events: none;
+}
+
+.closing-bouquet {
+  position: absolute;
+  bottom: 18px;
+  width: 138px;
+  z-index: 2;
+}
+
+.closing-bouquet--bl {
+  left: -16px;
+  transform-origin: bottom left;
+  animation: bouquetSwayBL 5.4s ease-in-out infinite;
+}
+
+.closing-bouquet--br {
+  right: -16px;
+  transform-origin: bottom right;
+  animation: bouquetSwayBR 5.8s ease-in-out infinite;
+}
+
+.closing-lace {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 54px;
+  z-index: 3;
+}
+
+/* ==========================================================================
+   FLOATING PEARL-CHAMPAGNE CAPSULE DOCK NAVBAR (1:1 UNDANGAN 7 COMPATIBLE)
+   ========================================================================== */
+.kraton-dock {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 95;
+  inline-size: min(360px, calc(100% - 28px));
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 28px rgba(82, 62, 30, 0.16);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+}
+
+.dock-link {
+  padding: 6px 4px;
+  border-radius: 999px;
+  color: #5c442c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: background 0.22s ease, color 0.22s ease, transform 0.18s ease;
+}
+
+.dock-link i {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.dock-link.is-active {
+  background: linear-gradient(135deg, #d8ad52 0%, #bd8c2e 100%);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(189, 140, 46, 0.35);
+}
+
+.dock-link:not(.is-active):hover {
+  color: var(--prada-600);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATION
+   ========================================================================== */
+.kraton-toast {
+  position: fixed;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1300;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--ink-900);
+  color: var(--prada-300);
+  border: 1px solid rgba(215, 180, 111, 0.5);
+  font-size: 0.78rem;
+  font-weight: 600;
+  box-shadow: 0 10px 26px rgba(43, 34, 24, 0.28);
+}
+
+/* ==========================================================================
+   NATIVE <dialog> LIGHTBOX (ANIMATED TOP-LAYER PER MODERN-WEB-GUIDANCE)
+   ========================================================================== */
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+.lightbox-dialog {
+  width: min(92vw, 560px);
+  max-height: 90dvh;
+  margin: auto;
+  padding: 14px;
+  border: 1px solid rgba(188, 145, 68, 0.45);
+  border-radius: 24px;
+  background: var(--pearl-100);
+  color: var(--ink-900);
+  box-shadow: 0 24px 60px rgba(34, 25, 15, 0.42);
+  opacity: 0;
+  transform: scale(0.92);
+  transition-property: opacity, transform, display, overlay;
+  transition-duration: 0.28s;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-behavior: allow-discrete;
+}
+
+.lightbox-dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background-color: rgba(34, 25, 15, 0);
+  backdrop-filter: blur(5px);
+  transition-property: background-color, display, overlay;
+  transition-duration: 0.28s;
+  transition-timing-function: ease-out;
+  transition-behavior: allow-discrete;
+}
+
+:is(dialog.lightbox-dialog[open]):where(:not([data-closing])) {
+  opacity: 1;
+  transform: scale(1);
+
+  @starting-style {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  &::backdrop {
+    background-color: rgba(34, 25, 15, 0.82);
+
+    @starting-style {
+      background-color: rgba(34, 25, 15, 0);
+    }
+  }
+}
+
+.lightbox-dialog__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.lightbox-counter {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--prada-700);
+}
+
+.lightbox-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(188, 145, 68, 0.4);
+  background: #ffffff;
+  color: var(--ink-900);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.lightbox-dialog__stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-figure {
+  margin: 0;
+  text-align: center;
+}
+
+.lightbox-figure img {
+  max-height: 72dvh;
+  width: auto;
+  margin: 0 auto;
+  border-radius: 16px;
+  border: 2px solid #ffffff;
+  object-fit: contain;
+  box-shadow: 0 10px 26px rgba(43, 34, 24, 0.14);
+}
+
+.lightbox-caption {
+  margin-top: 8px;
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--ink-700);
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(188, 145, 68, 0.45);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--prada-700);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(43, 34, 24, 0.16);
+}
+
+.lightbox-nav--prev { left: 8px; }
+.lightbox-nav--next { right: 8px; }
+
+/* ==========================================================================
+   ACCESSIBILITY: PREFERS-REDUCED-MOTION (CASE-BY-CASE PER MODERN-WEB-GUIDANCE)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .melati-petals {
+    display: none;
+  }
+
+  .gate-roncen,
+  .gate-bouquet,
+  .gate-gunungan-crest,
+  .gate-mandala-halo,
+  .gate-flank-gunungan,
+  .wing-roncen,
+  .wing-bouquet,
+  .wing-mandala,
+  .wing-crest,
+  .hero-roncen,
+  .hero-mandala,
+  .hero-gunungan,
+  .plaque-corner,
+  .couple-corner,
+  .amp-mandala,
+  .gallery-roncen--tr,
+  .closing-roncen,
+  .closing-mandala,
+  .closing-wayang-flank,
+  .closing-bouquet,
+  .btn-prada-gold::after,
+  .music-fab.is-playing i {
+    animation: none;
+  }
+
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale,
+  .reveal-ornament {
+    transform: none;
+    scale: 1;
+    transition-duration: 0.15s;
+  }
+
+  .lightbox-dialog {
+    transform: none;
+    transition-duration: 0.1s;
+  }
+
+  @starting-style {
+    :is(dialog.lightbox-dialog[open]):where(:not([data-closing])) {
+      transform: none;
+    }
+  }
+}

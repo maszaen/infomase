@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#2B1B10" />
+  <title>Pawiwahan Agung — Habib &amp; Adiba</title>
+  <meta name="description" content="Undangan Pernikahan Adat Jawa &amp; Batik Kraton — Habib Yulianto &amp; Adiba Putri Syakila, Senin 28 Desember 2026." />
+
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Pawiwahan Agung — Habib &amp; Adiba" />
+  <meta property="og:description" content="Senin, 28 Desember 2026 • Kediri, Jawa Timur" />
+  <meta property="og:image" content="asset/preview-undangan-batik.webp" />
+
+  <link rel="icon" href="asset/favicon-batik-32.png" sizes="32x32" />
+  <link rel="icon" href="asset/favicon-batik-192.png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="asset/favicon-batik-192.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="is-locked">
+
+  <!-- =====================================================================
+       TIRAI PEMBUKA GEBYOG KRATON (SPLIT CURTAIN GATE COVER)
+       ===================================================================== -->
+  <section id="gate-cover" class="gate-cover" aria-label="Sampul Undangan">
+    <div class="gate-curtain gate-curtain--left" aria-hidden="true"></div>
+    <div class="gate-curtain gate-curtain--right" aria-hidden="true"></div>
+
+    <div class="gate-stage">
+      <img src="asset/ornamen-awan-megamendung-mini.webp" alt="" class="gate-cloud gate-cloud--tl" decoding="async" />
+      <img src="asset/ornamen-awan-megamendung-tiga.webp" alt="" class="gate-cloud gate-cloud--tr" decoding="async" />
+
+      <div class="gate-header">
+        <img src="asset/ornamen-gunungan-batik.webp" alt="" class="gate-gunungan-crest" decoding="async" />
+        <p class="gate-kicker">Serat Ulem Pawiwahan</p>
+      </div>
+
+      <div class="gate-arch-medallion">
+        <div class="gate-arch-inner">
+          <img src="asset/cover-sepeda-onthel-batik.jpg" alt="Habib &amp; Adiba" fetchpriority="high" decoding="async" />
+        </div>
+        <img src="asset/ornamen-wayang-batik.webp" alt="" class="gate-wayang-accent" decoding="async" />
+      </div>
+
+      <div class="gate-identity">
+        <h1 class="gate-couple-script">Habib <span>&amp;</span> Adiba</h1>
+        <p class="gate-date-line">Senin • 28 Desember 2026</p>
+      </div>
+
+      <div class="gate-guest-card">
+        <span class="gate-guest-label">Kepada Yth. Bapak/Ibu/Saudara/i</span>
+        <strong id="guest-name" class="gate-guest-name">Tamu Kehormatan</strong>
+        <button type="button" id="btn-open-gate" class="btn-kraton-gold">
+          <i class="fas fa-envelope-open-text" aria-hidden="true"></i>
+          <span>Buka Undangan</span>
+        </button>
+      </div>
+
+      <img src="asset/ornamen-lembah-batik-2.png" alt="" class="gate-valley" decoding="async" />
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       CENTERED STREAM + TWIN FLANKING KRATON WINGS ON DESKTOP (>= 1024px)
+       ===================================================================== -->
+  <div class="kraton-shell">
+
+    <!-- LEFT STICKY WING: ROYAL PORTRAIT & MONOGRAM -->
+    <aside class="kraton-wing kraton-wing--left" aria-hidden="true">
+      <img src="asset/ornamen-awan-megamendung-1.webp" alt="" class="wing-cloud wing-cloud--tl" />
+      <div class="wing-card wing-card--portrait">
+        <div class="wing-photo-arch">
+          <img src="asset/galeri-jawa-04.jpg" alt="" />
+        </div>
+        <img src="asset/ornamen-gunungan-batik.webp" alt="" class="wing-crest" />
+        <p class="wing-kicker">Serat Ulem Pawiwahan</p>
+        <h2 class="wing-couple">Habib <span>&amp;</span> Adiba</h2>
+        <p class="wing-date">Senin, 28 Desember 2026<br />Kediri, Jawa Timur</p>
+      </div>
+      <img src="asset/ornamen-lembah-batik-1.png" alt="" class="wing-valley" />
+    </aside>
+
+    <!-- CENTER SCROLLABLE INVITATION STREAM -->
+    <main id="invitation-stream" class="invitation-stream">
+
+      <!-- FLOATING GAMELAN AUDIO BUTTON (TOP-RIGHT OF STREAM) -->
+      <button type="button" id="btn-music" class="music-fab" aria-label="Putar atau jeda musik Gamelan" title="Musik Gamelan">
+        <span class="music-fab__ring"></span>
+        <i id="music-icon" class="fas fa-compact-disc" aria-hidden="true"></i>
+      </button>
+      <audio id="bg-audio" preload="metadata" playsinline>
+        <source src="asset/gamelan.mp3" type="audio/mpeg" />
+      </audio>
+
+      <!-- =================================================================
+           1. HERO SECTION: TRIPLE PENDOPO ARCH + COUNTDOWN RIBBON
+           ================================================================= -->
+      <section id="beranda" class="sec sec--hero">
+        <img src="asset/ornamen-awan-megamendung-1.webp" alt="" class="float-cloud float-cloud--left" decoding="async" />
+        <img src="asset/ornamen-awan-megamendung-tiga.webp" alt="" class="float-cloud float-cloud--right" decoding="async" />
+
+        <div class="hero-crown reveal">
+          <img src="asset/ornamen-gunungan-awan-batik.webp" alt="Gunungan Kayon Batik" class="hero-gunungan" decoding="async" />
+          <p class="eyebrow">The Royal Javanese Wedding of</p>
+          <h2 class="hero-script-title">Habib <span>&amp;</span> Adiba</h2>
+          <p class="hero-subdate">28 . 12 . 2026 — Kediri, Jawa Timur</p>
+        </div>
+
+        <!-- Triple Pendopo Arch Collage -->
+        <div class="triptych-arches reveal">
+          <figure class="triptych-item triptych-item--side">
+            <img src="asset/galeri-jawa-01.jpg" alt="Habib &amp; Adiba di Candi Bentar" loading="eager" decoding="async" />
+          </figure>
+          <figure class="triptych-item triptych-item--center">
+            <img src="asset/quotes-jalan-keraton-batik.jpg" alt="Habib &amp; Adiba Lurik Batik" loading="eager" decoding="async" />
+          </figure>
+          <figure class="triptych-item triptych-item--side">
+            <img src="asset/galeri-jawa-07.jpg" alt="Habib &amp; Adiba Pendopo Batik" loading="eager" decoding="async" />
+          </figure>
+        </div>
+
+        <!-- Integrated Kraton Countdown Ribbon -->
+        <div class="countdown-ribbon reveal" data-target="2026-12-28T03:00:00Z">
+          <div class="cd-pill">
+            <strong id="cd-days">00</strong>
+            <span>Hari</span>
+          </div>
+          <div class="cd-pill">
+            <strong id="cd-hours">00</strong>
+            <span>Jam</span>
+          </div>
+          <div class="cd-pill">
+            <strong id="cd-mins">00</strong>
+            <span>Menit</span>
+          </div>
+          <div class="cd-pill">
+            <strong id="cd-secs">00</strong>
+            <span>Detik</span>
+          </div>
+        </div>
+
+        <div class="hero-cta-wrap reveal">
+          <a class="btn-outline-sogan"
+             href="https://www.google.com/calendar/render?action=TEMPLATE&amp;text=The+Wedding+of+Habib+%26+Adiba&amp;dates=20261228T080000/20261228T130000&amp;details=Tanpa+mengurangi+rasa+hormat,+kami+mengundang+Anda+untuk+menghadiri+acara+pernikahan+kami.&amp;location=Kediri,+Jawa+Timur"
+             target="_blank" rel="noopener noreferrer">
+            <i class="far fa-calendar-check" aria-hidden="true"></i>
+            <span>Simpan ke Kalender</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           2. FALSAFAH & AYAT SUCI: SOGAN VELVET PLAQUE
+           ================================================================= -->
+      <section class="sec sec--quote">
+        <div class="sogan-plaque reveal">
+          <div class="sogan-plaque__inner">
+            <img src="asset/ornamen-gunungan-batik.webp" alt="" class="plaque-crest" loading="lazy" decoding="async" />
+            <p class="salam-title">Assalamu’alaikum Wr. Wb.</p>
+            <p class="salam-intro">
+              Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta’ala, perkenankan kami merangkai ikatan suci pernikahan putra-putri kami:
+            </p>
+            <blockquote class="quran-verse">
+              “Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.”
+              <cite>— QS. Ar-Rum : 21 —</cite>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           3. PROFIL MEMPELAI: ALTERNATING EDITORIAL ARCH CARDS
+           ================================================================= -->
+      <section id="mempelai" class="sec sec--couple">
+        <img src="asset/ornamen-awan-megamendung-mini.webp" alt="" class="couple-cloud couple-cloud--left" aria-hidden="true" decoding="async" />
+        <img src="asset/ornamen-awan-megamendung-mini.webp" alt="" class="couple-cloud couple-cloud--right" aria-hidden="true" decoding="async" />
+
+        <div class="sec-heading reveal">
+          <span class="sec-kicker">Mempelai Berbahagia</span>
+          <h2 class="sec-title">Putra &amp; Putri Terbaik</h2>
+          <div class="batik-divider"><span></span><img src="asset/ornamen-gunungan-batik.webp" alt="" /><span></span></div>
+        </div>
+
+        <!-- Mempelai Pria (Left-Aligned Portrait Layout) -->
+        <article class="couple-card couple-card--groom reveal">
+          <div class="couple-card__media">
+            <div class="couple-arch-frame">
+              <img src="asset/mempelai-pria-jawa.jpg" alt="Habib Yulianto" loading="lazy" decoding="async" />
+            </div>
+            <span class="couple-role-badge">Mempelai Pria</span>
+          </div>
+          <div class="couple-card__body">
+            <h3 class="couple-script-name">Habib Yulianto</h3>
+            <p class="couple-parents">
+              Putra Pertama dari<br />
+              <strong>Bapak Putra</strong> &amp; <strong>Ibu Putri</strong>
+            </p>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="couple-ig">
+              <i class="fab fa-instagram" aria-hidden="true"></i>
+              <span>@habibyulianto</span>
+            </a>
+          </div>
+        </article>
+
+        <div class="couple-ampersand reveal" aria-hidden="true">
+          <span class="amp-line"></span>
+          <span class="amp-glyph">&amp;</span>
+          <span class="amp-line"></span>
+        </div>
+
+        <!-- Mempelai Wanita (Right-Aligned Mirrored Layout) -->
+        <article class="couple-card couple-card--bride reveal">
+          <div class="couple-card__media">
+            <div class="couple-arch-frame">
+              <img src="asset/mempelai-wanita-jawa.jpg" alt="Adiba Putri Syakila" loading="lazy" decoding="async" />
+            </div>
+            <span class="couple-role-badge">Mempelai Wanita</span>
+          </div>
+          <div class="couple-card__body">
+            <h3 class="couple-script-name">Adiba Putri Syakila</h3>
+            <p class="couple-parents">
+              Putri Pertama dari<br />
+              <strong>Bapak Putra</strong> &amp; <strong>Ibu Putri</strong>
+            </p>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="couple-ig">
+              <i class="fab fa-instagram" aria-hidden="true"></i>
+              <span>@adibasyakila</span>
+            </a>
+          </div>
+        </article>
+      </section>
+
+      <!-- =================================================================
+           4. RANGKAIAN ACARA: PERFORATED KRATON TICKET PASSES
+           ================================================================= -->
+      <section id="acara" class="sec sec--events">
+        <div class="sec-heading reveal">
+          <span class="sec-kicker">Wanci &amp; Panggenan</span>
+          <h2 class="sec-title">Rangkaian Pawiwahan</h2>
+          <div class="batik-divider"><span></span><img src="asset/ornamen-gunungan-batik.webp" alt="" /><span></span></div>
+        </div>
+
+        <!-- Javanese Almanac Date Strip -->
+        <div class="almanac-banner reveal">
+          <div class="almanac-col">SENIN</div>
+          <div class="almanac-day">
+            <strong>28</strong>
+            <span>Desember</span>
+          </div>
+          <div class="almanac-col">2026</div>
+        </div>
+
+        <!-- Ticket 1: Akad Nikah -->
+        <article class="event-ticket reveal">
+          <div class="event-ticket__stub">
+            <i class="fas fa-ring" aria-hidden="true"></i>
+            <span class="stub-time">08.00</span>
+            <small>WIB</small>
+          </div>
+          <div class="event-ticket__main">
+            <span class="ticket-tag">Prosesi Suci</span>
+            <h3 class="ticket-title">Akad Nikah</h3>
+            <p class="ticket-venue">
+              <strong>Kediaman Mempelai Wanita</strong><br />
+              Ds Pagu, Wates, Kediri, Jawa Timur
+            </p>
+            <a href="https://maps.app.goo.gl/GgLwpE6Qq8GZYBJh9" target="_blank" rel="noopener noreferrer" class="ticket-map-btn">
+              <i class="fas fa-map-marked-alt" aria-hidden="true"></i>
+              <span>Petunjuk Lokasi</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Ticket 2: Resepsi -->
+        <article class="event-ticket reveal">
+          <div class="event-ticket__stub">
+            <i class="fas fa-Glass-cheers fas fa-award" aria-hidden="true"></i>
+            <span class="stub-time">10.00</span>
+            <small>WIB – Selesai</small>
+          </div>
+          <div class="event-ticket__main">
+            <span class="ticket-tag">Tasyakuran &amp; Pahargyan</span>
+            <h3 class="ticket-title">Resepsi Pernikahan</h3>
+            <p class="ticket-venue">
+              <strong>Kediaman Mempelai Wanita</strong><br />
+              Ds Pagu, Wates, Kediri, Jawa Timur
+            </p>
+            <a href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" class="ticket-map-btn">
+              <i class="fas fa-map-marked-alt" aria-hidden="true"></i>
+              <span>Petunjuk Lokasi</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Live Streaming Strip -->
+        <div class="stream-card reveal">
+          <div class="stream-card__icon">
+            <i class="fas fa-video" aria-hidden="true"></i>
+          </div>
+          <div class="stream-card__info">
+            <h3>Live Streaming Virtual</h3>
+            <p>Saksikan prosesi pernikahan kami secara daring bagi kerabat yang berhalangan hadir langsung.</p>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="btn-stream">
+              <span>Gabung Siaran Langsung</span>
+              <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           5. KISAH CINTA: VERTICAL GOLD SPINE TIMELINE WITH VIGNETTES
+           ================================================================= -->
+      <section id="kisah" class="sec sec--story">
+        <div class="sec-heading reveal">
+          <span class="sec-kicker">Lampah Tresna</span>
+          <h2 class="sec-title">Untaian Kisah Kami</h2>
+          <div class="batik-divider"><span></span><img src="asset/ornamen-gunungan-batik.webp" alt="" /><span></span></div>
+        </div>
+
+        <ol class="kraton-timeline">
+          <li class="tl-entry reveal">
+            <div class="tl-marker"><span>I</span></div>
+            <div class="tl-card">
+              <div class="tl-head">
+                <img src="asset/galeri-jawa-08.jpg" alt="Awal Cerita" loading="lazy" decoding="async" />
+                <div>
+                  <span class="tl-chapter">Babak Pertama</span>
+                  <h3>Awal Cerita</h3>
+                </div>
+              </div>
+              <p>Berawal dari pertemuan sederhana di bangku kuliah, percakapan hangat tentang mimpi dan keluarga menumbuhkan rasa saling menghormati yang tulus di antara kami.</p>
+            </div>
+          </li>
+
+          <li class="tl-entry reveal">
+            <div class="tl-marker"><span>II</span></div>
+            <div class="tl-card">
+              <div class="tl-head">
+                <img src="asset/galeri-jawa-06.jpg" alt="Lamaran" loading="lazy" decoding="async" />
+                <div>
+                  <span class="tl-chapter">Babak Kedua</span>
+                  <h3>khitbah &amp; Lamaran</h3>
+                </div>
+              </div>
+              <p>Dengan restu kedua keluarga besar, kami mengikat janji keseriusan dalam prosesi lamaran penuh khidmat untuk melangkah menuju ibadah terpanjang.</p>
+            </div>
+          </li>
+
+          <li class="tl-entry reveal">
+            <div class="tl-marker"><span>III</span></div>
+            <div class="tl-card">
+              <div class="tl-head">
+                <img src="asset/galeri-jawa-02.jpg" alt="Pawiwahan" loading="lazy" decoding="async" />
+                <div>
+                  <span class="tl-chapter">28 Desember 2026</span>
+                  <h3>Pawiwahan Suci</h3>
+                </div>
+              </div>
+              <p>InsyaAllah pada hari yang diberkahi ini kami menyempurnakan separuh agama dalam ikatan suci pernikahan adat Jawa yang sakinah, mawaddah, warahmah.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- =================================================================
+           6. GALERI MOMEN: CINEMA VIDEO + ASYMMETRIC BENTO GRID
+           ================================================================= -->
+      <section id="galeri" class="sec sec--gallery">
+        <div class="sec-heading reveal">
+          <span class="sec-kicker">Potret Kebahagiaan</span>
+          <h2 class="sec-title">Galeri Momen</h2>
+          <div class="batik-divider"><span></span><img src="asset/ornamen-gunungan-batik.webp" alt="" /><span></span></div>
+        </div>
+
+        <!-- Cinema Video Frame -->
+        <div class="video-frame reveal" data-duck-music="1">
+          <div class="video-frame__ratio">
+            <iframe id="wedding-yt-iframe"
+              src="https://www.youtube-nocookie.com/embed/8h7pbb4A4JI?playsinline=1&amp;rel=0&amp;iv_load_policy=3&amp;modestbranding=1&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=8h7pbb4A4JI&amp;enablejsapi=1"
+              title="Video Prewedding Habib &amp; Adiba"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+              loading="lazy"></iframe>
+          </div>
+        </div>
+
+        <!-- Asymmetric Kraton Bento Grid (8 Photos) -->
+        <div class="bento-gallery reveal">
+          <button type="button" class="bento-tile bento-tile--featured" data-gallery-idx="0" aria-label="Buka foto galeri 1">
+            <img src="asset/galeri-jawa-01.jpg" alt="Potret Gapura Candi Bentar &amp; Keris" loading="lazy" decoding="async" />
+          </button>
+          <button type="button" class="bento-tile" data-gallery-idx="1" aria-label="Buka foto galeri 2">
+            <img src="asset/galeri-jawa-02.jpg" alt="Potret Tangga Bata Merah" loading="lazy" decoding="async" />
+          </button>
+          <button type="button" class="bento-tile" data-gallery-idx="2" aria-label="Buka foto galeri 3">
+            <img src="asset/galeri-jawa-03.jpg" alt="Salam Sembah Adat Jawa" loading="lazy" decoding="async" />
+          </button>
+          <button type="button" class="bento-tile bento-tile--wide" data-gallery-idx="3" aria-label="Buka foto galeri 4">
+            <img src="asset/galeri-jawa-08.jpg" alt="Potret Lurik &amp; Sepeda Onthel Keraton" loading="lazy" decoding="async" />
+          </button>
+          <button type="button" class="bento-tile" data-gallery-idx="4" aria-label="Buka foto galeri 5">
+            <img src="asset/galeri-jawa-04.jpg" alt="Potret Gebyog Ukiran Jepara" loading="lazy" decoding="async" />
+          </button>
+          <button type="button" class="bento-tile" data-gallery-idx="5" aria-label="Buka foto galeri 6">
+            <img src="asset/galeri-jawa-05.jpg" alt="Potret Intim Busana Jawa" loading="lazy" decoding="async" />
+          </button>
+          <button type="button" class="bento-tile" data-gallery-idx="6" aria-label="Buka foto galeri 7">
+            <img src="asset/galeri-jawa-06.jpg" alt="Bermain Gamelan Saron di Pendopo" loading="lazy" decoding="async" />
+          </button>
+          <button type="button" class="bento-tile" data-gallery-idx="7" aria-label="Buka foto galeri 8">
+            <img src="asset/galeri-jawa-07.jpg" alt="Pendopo Kain Batik Tulis Kraton" loading="lazy" decoding="async" />
+          </button>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           7. TANDA KASIH: TABBED AMPLOP BATIK & KADO FISIK
+           ================================================================= -->
+      <section id="hadiah" class="sec sec--gift">
+        <div class="sec-heading reveal">
+          <span class="sec-kicker">Tali Asih</span>
+          <h2 class="sec-title">Amplop &amp; Tanda Kasih</h2>
+          <p class="sec-desc">Doa restu Anda merupakan karunia terindah bagi kami. Namun apabila memberi adalah ungkapan tanda kasih, Anda dapat menyalurkannya melalui:</p>
+        </div>
+
+        <div class="gift-tabs reveal" role="tablist" aria-label="Pilihan Tanda Kasih">
+          <button type="button" role="tab" aria-selected="true" aria-controls="panel-rekening" id="tab-rekening" class="gift-tab is-active">
+            <i class="fas fa-credit-card" aria-hidden="true"></i>
+            <span>Transfer Bank</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="panel-kado" id="tab-kado" class="gift-tab">
+            <i class="fas fa-gift" aria-hidden="true"></i>
+            <span>Kirim Hadiah</span>
+          </button>
+        </div>
+
+        <!-- Panel 1: Kartu ATM Batik -->
+        <div id="panel-rekening" role="tabpanel" aria-labelledby="tab-rekening" class="gift-panel is-active reveal">
+          <div class="atm-batik-card">
+            <div class="atm-batik-card__top">
+              <img src="asset/chip-atm-emas.png" alt="Chip Kartu" class="atm-chip" loading="lazy" decoding="async" />
+              <img src="asset/logo-bca-batik.webp" alt="Bank BCA" class="atm-bank-logo" loading="lazy" decoding="async" />
+            </div>
+            <div class="atm-batik-card__number">
+              <span class="atm-label">Nomor Rekening BCA</span>
+              <strong id="rek-number">12345678</strong>
+              <span class="atm-holder">a.n. Habib Yulianto</span>
+            </div>
+            <button type="button" class="btn-copy-kraton" data-copy="12345678" data-toast="Nomor rekening berhasil disalin">
+              <i class="far fa-copy" aria-hidden="true"></i>
+              <span>Salin Nomor Rekening</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Panel 2: Alamat Kirim Kado -->
+        <div id="panel-kado" role="tabpanel" aria-labelledby="tab-kado" class="gift-panel" hidden>
+          <div class="parcel-card">
+            <div class="parcel-card__badge">
+              <i class="fas fa-box-open" aria-hidden="true"></i>
+            </div>
+            <h3>Alamat Pengiriman Kado</h3>
+            <dl class="parcel-details">
+              <div><dt>Penerima</dt><dd>Habib Yulianto</dd></div>
+              <div><dt>No. Telepon</dt><dd>1234567890</dd></div>
+              <div><dt>Alamat</dt><dd>Ds Pagu, Kec. Wates, Kab. Kediri, Jawa Timur</dd></div>
+            </dl>
+            <button type="button" class="btn-copy-kraton" data-copy="Habib Yulianto - 1234567890 - Ds Pagu, Kec. Wates, Kab. Kediri, Jawa Timur" data-toast="Alamat pengiriman berhasil disalin">
+              <i class="far fa-copy" aria-hidden="true"></i>
+              <span>Salin Alamat Lengkap</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           8. RSVP & DOA RESTU: ATTENDANCE SUMMARY + INTERACTIVE WALL
+           ================================================================= -->
+      <section id="ucapan" class="sec sec--rsvp">
+        <div class="sec-heading reveal">
+          <span class="sec-kicker">Buku Tamu &amp; Konfirmasi</span>
+          <h2 class="sec-title">Doa &amp; Restu</h2>
+          <div class="batik-divider"><span></span><img src="asset/ornamen-gunungan-batik.webp" alt="" /><span></span></div>
+        </div>
+
+        <!-- Live Attendance Counter -->
+        <div class="rsvp-scoreboard reveal" aria-label="Ringkasan Konfirmasi Kehadiran">
+          <div class="score-box score-box--hadir">
+            <strong id="count-hadir">0</strong>
+            <span>InsyaAllah Hadir</span>
+          </div>
+          <div class="score-box score-box--absen">
+            <strong id="count-absen">0</strong>
+            <span>Berhalangan</span>
+          </div>
+        </div>
+
+        <!-- RSVP Form -->
+        <form id="rsvp-form" class="kraton-form reveal" novalidate>
+          <div class="form-field">
+            <label for="rsvp-name">Nama Lengkap</label>
+            <input type="text" id="rsvp-name" name="name" maxlength="80" placeholder="Tuliskan nama Anda" required />
+          </div>
+
+          <fieldset class="presence-group">
+            <legend>Konfirmasi Kehadiran</legend>
+            <div class="presence-pills">
+              <label class="presence-pill">
+                <input type="radio" name="presence" value="Hadir" checked />
+                <span><i class="fas fa-check-circle" aria-hidden="true"></i> InsyaAllah Hadir</span>
+              </label>
+              <label class="presence-pill">
+                <input type="radio" name="presence" value="Tidak Hadir" />
+                <span><i class="fas fa-times-circle" aria-hidden="true"></i> Belum Bisa Hadir</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="form-field">
+            <label for="rsvp-msg">Ucapan &amp; Doa Restu</label>
+            <textarea id="rsvp-msg" name="message" rows="3" maxlength="600" placeholder="Tuliskan untaian doa terbaik untuk kedua mempelai..." required></textarea>
+          </div>
+
+          <p id="rsvp-feedback" class="rsvp-feedback" role="status" aria-live="polite" hidden></p>
+
+          <button type="submit" class="btn-kraton-gold btn-kraton-gold--full">
+            <i class="fas fa-paper-plane" aria-hidden="true"></i>
+            <span>Kirim Doa &amp; Konfirmasi</span>
+          </button>
+        </form>
+
+        <!-- Guestbook Wishes Feed -->
+        <div id="wishes-feed" class="wishes-feed reveal" aria-live="polite"></div>
+      </section>
+
+      <!-- =================================================================
+           9. PENUTUP / MATUR NUWUN: ROYAL ARCH + TWIN GUNUNGAN + WAYANG
+           ================================================================= -->
+      <footer class="sec sec--closing">
+        <div class="closing-frame-wrap reveal">
+          <img src="asset/ornamen-gunungan-batik.webp" alt="" class="closing-gunungan closing-gunungan--left" loading="lazy" decoding="async" />
+          <div class="closing-oval">
+            <img src="asset/footer-onthel-keraton.jpg" alt="Habib &amp; Adiba" loading="lazy" decoding="async" />
+          </div>
+          <img src="asset/ornamen-gunungan-batik.webp" alt="" class="closing-gunungan closing-gunungan--right" loading="lazy" decoding="async" />
+        </div>
+
+        <div class="closing-copy reveal">
+          <p class="closing-thanks">
+            Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kedua mempelai.
+          </p>
+          <p class="closing-salam">Wassalamu’alaikum Wr. Wb.</p>
+          <p class="closing-kicker">Matur Nuwun • Kami yang berbahagia</p>
+          <h2 class="closing-couple">Habib <span>&amp;</span> Adiba</h2>
+        </div>
+
+        <div class="closing-stage" aria-hidden="true">
+          <img src="asset/ornamen-awan-megamendung-mini.webp" alt="" class="closing-cloud" loading="lazy" decoding="async" />
+          <img src="asset/ornamen-wayang-batik.webp" alt="" class="closing-wayang" loading="lazy" decoding="async" />
+          <img src="asset/ornamen-lembah-batik-1.png" alt="" class="closing-valley" loading="lazy" decoding="async" />
+        </div>
+      </footer>
+
+      <!-- =================================================================
+           FLOATING ESPRESSO-GOLD CAPSULE DOCK NAVBAR
+           ================================================================= -->
+      <nav class="kraton-dock" aria-label="Navigasi Seksi Undangan">
+        <a href="#beranda" class="dock-link is-active" data-nav="beranda">
+          <i class="fas fa-home" aria-hidden="true"></i>
+          <span>Beranda</span>
+        </a>
+        <a href="#mempelai" class="dock-link" data-nav="mempelai">
+          <i class="fas fa-heart" aria-hidden="true"></i>
+          <span>Mempelai</span>
+        </a>
+        <a href="#acara" class="dock-link" data-nav="acara">
+          <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+          <span>Acara</span>
+        </a>
+        <a href="#galeri" class="dock-link" data-nav="galeri">
+          <i class="fas fa-images" aria-hidden="true"></i>
+          <span>Galeri</span>
+        </a>
+        <a href="#ucapan" class="dock-link" data-nav="ucapan">
+          <i class="fas fa-comment-dots" aria-hidden="true"></i>
+          <span>Ucapan</span>
+        </a>
+      </nav>
+
+    </main>
+
+    <!-- RIGHT STICKY WING: ROYAL PORTRAIT & MONOGRAM (MATCHING LEFT) -->
+    <aside class="kraton-wing kraton-wing--right" aria-hidden="true">
+      <img src="asset/ornamen-awan-megamendung-tiga.webp" alt="" class="wing-cloud wing-cloud--tr" />
+      <div class="wing-card wing-card--portrait">
+        <div class="wing-photo-arch">
+          <img src="asset/galeri-jawa-04.jpg" alt="" />
+        </div>
+        <img src="asset/ornamen-gunungan-batik.webp" alt="" class="wing-crest" />
+        <p class="wing-kicker">Serat Ulem Pawiwahan</p>
+        <h2 class="wing-couple">Habib <span>&amp;</span> Adiba</h2>
+        <p class="wing-date">Senin, 28 Desember 2026<br />Kediri, Jawa Timur</p>
+      </div>
+      <img src="asset/ornamen-lembah-batik-2.png" alt="" class="wing-valley" />
+    </aside>
+  </div>
+
+  <!-- GLOBAL TOAST -->
+  <div id="kraton-toast" class="kraton-toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- NATIVE MODAL DIALOG LIGHTBOX (PER MODERN-WEB-GUIDANCE) -->
+  <dialog id="lightbox-dialog" class="lightbox-dialog" closedby="any" aria-labelledby="lightbox-caption">
+    <div class="lightbox-dialog__bar">
+      <span id="lightbox-counter" class="lightbox-counter">1 / 8</span>
+      <form method="dialog">
+        <button type="submit" class="lightbox-icon-btn" aria-label="Tutup galeri" autofocus>
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+      </form>
+    </div>
+
+    <div class="lightbox-dialog__stage">
+      <button type="button" id="lb-prev" class="lightbox-nav lightbox-nav--prev" aria-label="Foto sebelumnya">
+        <i class="fas fa-chevron-left" aria-hidden="true"></i>
+      </button>
+      <figure class="lightbox-figure">
+        <img id="lightbox-img" src="asset/galeri-jawa-01.jpg" alt="" />
+        <figcaption id="lightbox-caption" class="lightbox-caption"></figcaption>
+      </figure>
+      <button type="button" id="lb-next" class="lightbox-nav lightbox-nav--next" aria-label="Foto berikutnya">
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+      </button>
+    </div>
+  </dialog>
+
+  <script src="js/script.js"></script>
+  <!-- Universal InfoMase Template Bridge -->
+  <script src="../template-bridge.js"></script>
+</body>
+</html>

@@ -1,0 +1,2336 @@
+/* Smooth scrolling & completely invisible scrollbars */
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html, body, .mobile-app-container, * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Hide scrollbars universally (Chrome, Safari, Edge, Opera) */
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ==========================================================
+   TROPICAL BEACH WEDDING — OCEAN TEAL & COASTAL SAND PALETTE
+   Inspired by Luxury Destination Beach Weddings
+   
+   Harmonious Coastal Palette:
+   🌊 Ocean Teal: #284B56 (Desktop canvas, CTA buttons, primary title)
+   🌊 Deep Coastal Slate: #1A323B (Desktop background anchor, contrast)
+   🌴 Palm Green: #5B8A68 (Tropical botanicals, ampersands, badges)
+   🏖️ Warm Sand Gold: #D4A362 (Dividers, star flourishes, card borders)
+   🐚 Shell Cream: #FAF6EE (Clean, breezy coastal mobile canvas)
+   🌊 Coastal Lagoon: #C4DFE6 (Fresh coastal lagoon alternating section background)
+   ========================================================== */
+
+/* Outer Desktop Background: Fresh Tropical Ocean Teal (Cerahan & Selaras dengan Nuansa Pantai) */
+body {
+  background-color: #3B080D;
+  background-image: radial-gradient(circle at 50% 30%, #5A1018 0%, #3B080D 50%, #21100F 100%);
+  color: #F5E8D8;
+  overflow-x: hidden;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Mobile App Canvas Container (Exact Mobile Phone Frame): Shell Cream */
+.mobile-app-container {
+  width: 100%;
+  max-width: 430px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 100vh;
+  background-color: #2A060E;
+  box-shadow: 0 0 80px rgba(33, 16, 15, 0.75);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Alternating Section Backgrounds (Shell Cream #FAF6EE & Coastal Lagoon #C4DFE6) */
+.bg-section-cream {
+  background-color: #FAF6EE;
+}
+
+.bg-section-sage {
+  background-color: #C4DFE6;
+}
+
+/* #gatePage styled in double-door section below */
+
+/* Hero / Cover Section — Royal Classic Maroon Atmosphere with Seamless Gradient Fade-Out */
+#home,
+.royal-hero-canvas,
+.hero-beach-bg {
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+#home::before,
+.royal-hero-canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(ellipse at 50% 20%, #681422 0%, #460C14 45%, #2A060E 80%, transparent 100%);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, rgba(0, 0, 0, 0.4) 70%, transparent 98%);
+  mask-image: linear-gradient(to bottom, black 0%, black 45%, rgba(0, 0, 0, 0.4) 70%, transparent 98%);
+}
+
+/* Footer / Epilogue Section — Royal Classic Maroon Atmosphere with Seamless Gradient Fade-In */
+#terimakasih,
+.royal-footer-canvas,
+.footer-beach-bg {
+  position: relative;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+#terimakasih::before,
+.royal-footer-canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(ellipse at 50% 80%, #681422 0%, #460C14 45%, #2A060E 80%, transparent 100%);
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 2%, rgba(0, 0, 0, 0.4) 30%, black 55%, black 100%);
+  mask-image: linear-gradient(to bottom, transparent 2%, rgba(0, 0, 0, 0.4) 30%, black 55%, black 100%);
+}
+
+
+
+
+/* Typography Helpers */
+.font-script {
+  font-family: 'Alex Brush', 'Great Vibes', cursive;
+}
+
+.font-serif {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* ==========================================================
+   EDITORIAL CARDS & DESIGN ELEMENTS
+   ========================================================== */
+
+.editorial-card {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(145deg, rgba(248, 246, 242, 0.96), rgba(238, 233, 224, 0.92));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(127, 129, 112, 0.35);
+  box-shadow: 0 12px 35px -10px rgba(12, 13, 12, 0.08);
+}
+
+/* Strictly Constrained Botanical Accent Sizes (Never covers content) */
+.botanical-accent {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  width: 46px;
+  max-width: 46px;
+  height: auto;
+}
+
+.botanical-accent img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.botanical-accent-sm {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  width: 36px;
+  max-width: 36px;
+  height: auto;
+}
+
+.botanical-accent-sm img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.botanical-accent-xs {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  width: 28px;
+  max-width: 28px;
+  height: auto;
+}
+
+.botanical-accent-xs img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.editorial-card-sage {
+  background: linear-gradient(145deg, #727464, #5D6052);
+  color: #FAF8F5;
+  border: 1px solid rgba(216, 211, 197, 0.25);
+  box-shadow: 0 14px 40px -12px rgba(12, 13, 12, 0.20);
+}
+
+.editorial-pill {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 600;
+}
+
+.tropical-date-box {
+  background: rgba(255, 255, 255, 0.60);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(212, 163, 98, 0.45);
+  box-shadow: 0 4px 18px -2px rgba(40, 75, 86, 0.10);
+}
+
+.editorial-date-box {
+  background: rgba(240, 236, 228, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(127, 129, 112, 0.35);
+  box-shadow: 0 4px 20px -4px rgba(12, 13, 12, 0.07);
+}
+
+.editorial-line {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(127, 129, 112, 0.45), transparent);
+}
+
+/* Asymmetrical & Polaroid Photo Frames */
+.editorial-photo-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 30px -8px rgba(12, 13, 12, 0.15);
+  border: 1px solid rgba(127, 129, 112, 0.30);
+  background: #FAF8F5;
+}
+
+/* ==========================================================
+   BOTANICAL WIND SWAY ANIMATIONS
+   ========================================================== */
+
+@keyframes windBouquetTopLeft {
+  0%, 100% {
+    transform: rotate(-1deg) scale(1);
+  }
+  50% {
+    transform: rotate(3deg) scale(1.02);
+  }
+}
+
+.wind-sway-corner {
+  animation: windBouquetTopLeft 4.6s ease-in-out infinite;
+  transform-origin: top left;
+}
+
+@keyframes breezeLeaf {
+  0%, 100% {
+    transform: rotate(-3.5deg);
+  }
+  40% {
+    transform: rotate(3deg);
+  }
+  75% {
+    transform: rotate(-1deg);
+  }
+}
+
+@keyframes breezeLeafAlt {
+  0%, 100% {
+    transform: scaleX(-1) rotate(3.5deg);
+  }
+  40% {
+    transform: scaleX(-1) rotate(-3deg);
+  }
+  75% {
+    transform: scaleX(-1) rotate(1deg);
+  }
+}
+
+.wind-palm-1 {
+  animation: breezeLeaf 4.2s ease-in-out infinite;
+  transform-origin: bottom left;
+}
+
+.wind-palm-2 {
+  animation: breezeLeafAlt 4.5s ease-in-out infinite;
+  transform-origin: bottom right;
+}
+
+/* Hidden Scrollbar (Universal No-Scrollbar Styling) */
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ==========================================================
+   3D DOUBLE DOOR (PINTU 2 DAUN) ROYAL CLASSIC MAROON & GOLD
+   - Menggunakan Palet Luxury Classic (Deep Maroon #3B080D, Burgundy #5A1018,
+     Royal Wine #790F25, Antique Gold #C49A55, Champagne Gold #E8C995,
+     Ivory Cream #F5E8D8, Dark Espresso #21100F)
+   - Chandelier kristal emas (lampu_2.png) berayun lembut di puncak kubah
+   - Ornamen pembatas emas (pembatas.png) & buket bunga marun (bucket_bunga.png)
+   - Pintu 2 daun terbelah rapi di tengah dengan seam emas halus, berayun 3D keluar saat "Buka Undangan" diklik
+   ========================================================== */
+
+#gateCover {
+  /* Transparent container so the opening 3D doors reveal #home in real time */
+  background: transparent;
+  pointer-events: auto;
+  transition: opacity 0.4s ease;
+}
+
+#gateCover.gate-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#gatePage {
+  position: relative;
+  background-color: #3B080D;
+  background-image: none !important;
+  box-shadow: 0 0 80px rgba(33, 16, 15, 0.75);
+}
+
+#gatePage.doors-opened {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  /* Pertahankan overflow: hidden agar tidak memicu reflow saat animasi */
+  overflow: hidden !important;
+}
+
+/* Maroon Palace Canvas: Rich Velvet Gradient & Depth */
+
+/* Single Thick Royal Gold Outer Frame (Matching Image Reference: Solid 4px-5px) */
+.gate-gold-frame {
+  border-color: #E2BC72;
+  border-width: 4px;
+  box-shadow: 0 0 16px rgba(226, 188, 114, 0.40), inset 0 0 8px rgba(226, 188, 114, 0.25);
+}
+
+@media (min-width: 640px) {
+  .gate-gold-frame {
+    border-width: 5px;
+  }
+}
+
+.gate-maroon-canvas {
+  background-color: #3B080D;
+  background: radial-gradient(ellipse at 50% 25%, #5A1018 0%, #3B080D 50%, #21100F 100%);
+  box-shadow: inset 0 0 90px rgba(21, 16, 15, 0.85);
+}
+
+/* Architectural Cathedral Palace Vault Ribs */
+.gate-vault-arch {
+  background-image: radial-gradient(circle at 50% -15%, rgba(121, 15, 37, 0.65) 0%, rgba(90, 16, 24, 0.3) 50%, transparent 80%);
+  mask-image: radial-gradient(ellipse at 50% 0%, black 70%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 0%, black 70%, transparent 100%);
+}
+
+/* Royal Chandelier Gentle Sway Ambient Animation */
+.gate-anim-chandelier {
+  animation: chandelierGentleSway 5s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+@keyframes chandelierGentleSway {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(0.9deg);
+  }
+  75% {
+    transform: rotate(-0.9deg);
+  }
+}
+
+/* Velvet Botanical Cluster Breathing Animation */
+
+/* ==========================================================
+   GATE CORNER BOUQUETS: STAGGERED SLOW POP-UP & ORGANIC WIND SWAY
+   ========================================================== */
+
+/* 1. Staggered Slow Pop-Up Reveal Entrance (Slow & Majestic 2.3s) */
+.gate-flower-entrance-left {
+  animation: gateFlowerPopSlow 2.3s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+  will-change: opacity, transform;
+}
+
+.gate-flower-entrance-right {
+  animation: gateFlowerPopSlow 2.3s cubic-bezier(0.16, 1, 0.3, 1) 0.70s both;
+  will-change: opacity, transform;
+}
+
+@keyframes gateFlowerPopSlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.35) translateY(36px);
+  }
+  65% {
+    opacity: 0.95;
+    transform: scale(1.025) translateY(-3px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* L-Corner Floral Specific Orientation: Align L-Corner with Web Corner */
+.gate-flower-l-left,
+.footer-flower-l-left {
+  transform: scaleY(-1);
+}
+
+.gate-flower-l-right,
+.footer-flower-l-right {
+  transform: scale(-1, -1);
+}
+
+/* 2. Organic Gentle Wind Sway (L-Corner Floral Natural Breeze) */
+.gate-flower-sway-left {
+  transform-origin: bottom left;
+  animation: gateFlowerWindSwayLeft 5.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes gateFlowerWindSwayLeft {
+  0%, 100% {
+    transform: rotate(0deg) translate(0, 0);
+  }
+  30% {
+    transform: rotate(1.8deg) translate(1px, -1px);
+  }
+  70% {
+    transform: rotate(-1.2deg) translate(-1px, 0.5px);
+  }
+}
+
+.gate-flower-sway-right {
+  transform-origin: bottom right;
+  animation: gateFlowerWindSwayRight 5.8s ease-in-out 0.6s infinite;
+  will-change: transform;
+}
+
+@keyframes gateFlowerWindSwayRight {
+  0%, 100% {
+    transform: rotate(0deg) translate(0, 0);
+  }
+  35% {
+    transform: rotate(-1.8deg) translate(-1px, -1px);
+  }
+  75% {
+    transform: rotate(1.2deg) translate(1px, 0.5px);
+  }
+}
+
+.gate-anim-flower-sway {
+  animation: flowerGentleBreathe 4.5s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes flowerGentleBreathe {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.018);
+  }
+}
+
+/* ==========================================================
+   DOUBLE DOOR LEAVES (PINTU 2 DAUN) 3D MECHANISM
+   ========================================================== */
+.gate-door-leaf {
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.gate-door-left {
+  left: 0;
+  transform-origin: left center;
+  -webkit-transform-origin: left center;
+}
+
+.gate-door-right {
+  right: 0;
+  transform-origin: right center;
+  -webkit-transform-origin: right center;
+}
+
+.gate-door-inner {
+  position: absolute;
+  top: 0;
+  width: 200%;
+  height: 100%;
+}
+
+.gate-door-inner-left {
+  left: 0;
+}
+
+.gate-door-inner-right {
+  left: -100%;
+}
+
+/* Center Interactive Card Fast Fade on Open */
+#gateCenterCard {
+  transition: opacity 0.18s ease-out, transform 0.20s ease-out;
+}
+
+#gatePage.doors-opened #gateCenterCard {
+  transform: scale(0.95) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.18s ease-out, transform 0.20s ease-out, visibility 0s 0.18s !important;
+}
+
+/* ==============================================================
+   ROYAL VELVET CURTAIN TRANSITION SUITE (ORGANIC FABRIC DRAPE)
+   Kelenturan Alami Kain Beludru Istana — Bebas Garis Putih & Bebas Stutter
+   ============================================================== */
+
+/* Sembunyikan pintu lama saat tirai aktif */
+#gatePage.doors-opened .gate-door-leaf {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Container Tirai Panggung Istana */
+.gate-curtain-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.gate-curtain-overlay.curtain-closing,
+.gate-curtain-overlay.curtain-opening {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Panel Tirai Utama Kiri & Kanan (51% lebar untuk overlap rapat presisi di tengah) */
+.gate-curtain-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 51%;
+  height: 100%;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  
+  /* Tekstur Beludru Silinder 3D Mewah (Pure Velvet Tones, Bebas Garis Putih) */
+  background: 
+    linear-gradient(180deg, rgba(0, 0, 0, 0.70) 0%, transparent 14%, transparent 80%, rgba(0, 0, 0, 0.75) 100%),
+    repeating-linear-gradient(
+      to right,
+      #120204 0px,
+      #250409 8px,
+      #4A0A15 18px,
+      #751123 28px,
+      #8C162B 33px,
+      #751123 38px,
+      #4A0A15 48px,
+      #250409 58px,
+      #120204 66px
+    );
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.85);
+}
+
+.gate-curtain-left {
+  left: 0;
+  transform-origin: top left;
+  transform: translate3d(-102%, 0, 0) skewX(-3.0deg);
+}
+
+.gate-curtain-right {
+  right: 0;
+  transform-origin: top right;
+  transform: translate3d(102%, 0, 0) skewX(3.0deg);
+}
+
+/* Rumbai Renda Emas di Bawah Tirai */
+.curtain-bottom-fringe {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 18px;
+  background: repeating-linear-gradient(
+    to right,
+    #8A652B 0px,
+    #E8C995 2px,
+    #1F0E0F 3px,
+    #E8C995 4px,
+    #8A652B 6px
+  );
+  border-top: 1.5px solid #F3DEB8;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  z-index: 15;
+}
+
+/* Lis Emas & Bayangan Tepi Tengah Tirai Kiri */
+.gate-curtain-left .curtain-gold-trim {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    #8A652B 0%,
+    #E8C995 25%,
+    #FFF4DC 50%,
+    #E8C995 75%,
+    #8A652B 100%
+  );
+  box-shadow: 0 0 10px rgba(232, 201, 149, 0.60), inset -1px 0 1px rgba(0, 0, 0, 0.5);
+  z-index: 20;
+}
+
+.gate-curtain-left .curtain-shadow-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -14px;
+  width: 16px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), transparent);
+  pointer-events: none;
+  z-index: 19;
+}
+
+/* Lis Emas & Bayangan Tepi Tengah Tirai Kanan */
+.gate-curtain-right .curtain-gold-trim {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    #8A652B 0%,
+    #E8C995 25%,
+    #FFF4DC 50%,
+    #E8C995 75%,
+    #8A652B 100%
+  );
+  box-shadow: 0 0 10px rgba(232, 201, 149, 0.60), inset 1px 0 1px rgba(0, 0, 0, 0.5);
+  z-index: 20;
+}
+
+.gate-curtain-right .curtain-shadow-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -14px;
+  width: 16px;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.8), transparent);
+  pointer-events: none;
+  z-index: 19;
+}
+
+/* ==============================================================
+   FASE 1: MENUTUP DENGAN KELENTURAN ALAMI KAIN (0.70s PURE 2-KEYFRAME)
+   Kemiringan tegas saat ditarik menutup — Mulus Flawless Tanpa Stop-Stop
+   ============================================================== */
+.curtain-closing .gate-curtain-left {
+  animation: curtainCloseLeftCurved 0.70s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+.curtain-closing .gate-curtain-right {
+  animation: curtainCloseRightCurved 0.70s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+@keyframes curtainCloseLeftCurved {
+  0% {
+    transform: translate3d(-102%, 0, 0) skewX(-3.0deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) skewX(0deg);
+  }
+}
+
+@keyframes curtainCloseRightCurved {
+  0% {
+    transform: translate3d(102%, 0, 0) skewX(3.0deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) skewX(0deg);
+  }
+}
+
+/* ==============================================================
+   FASE 2: MEMBUKA DENGAN SIBIKAN ANGGUN PANGGUNG (0.95s PURE 2-KEYFRAME)
+   Satu sapuan mulus kontinyu langsung menyibak ke tepi tanpa jeda
+   ============================================================== */
+.curtain-opening .gate-curtain-left {
+  animation: curtainOpenLeftCurved 0.95s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+.curtain-opening .gate-curtain-right {
+  animation: curtainOpenRightCurved 0.95s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+@keyframes curtainOpenLeftCurved {
+  0% {
+    transform: translate3d(0, 0, 0) skewX(0deg);
+  }
+  100% {
+    transform: translate3d(-112%, 0, 0) skewX(1.8deg);
+  }
+}
+
+@keyframes curtainOpenRightCurved {
+  0% {
+    transform: translate3d(0, 0, 0) skewX(0deg);
+  }
+  100% {
+    transform: translate3d(112%, 0, 0) skewX(-1.8deg);
+  }
+}
+
+/* 3D Dynamic Shading overlay during swing */
+.door-shade-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 45;
+  transition: opacity 0.3s ease;
+}
+
+.door-shade-left {
+  background: linear-gradient(to right, transparent 30%, rgba(33, 16, 15, 0.75) 100%);
+}
+
+.door-shade-right {
+  background: linear-gradient(to left, transparent 30%, rgba(33, 16, 15, 0.75) 100%);
+}
+
+#gatePage.doors-opened .door-shade-overlay {
+  opacity: 1;
+}
+
+
+
+/* ==========================================================
+   SMOOTH ENTRANCE & SCROLL REVEAL ANIMATIONS (LUXURY SLOW & SERENE)
+   Dirancang tidak terburu-buru, melainkan meluncur naik & mekar 
+   dengan kurva deselerasi lembut (cubic-bezier) saat user 
+   benar-benar telah tiba di section tersebut.
+   ========================================================== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(42px);
+  transition: opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-fade {
+  opacity: 0;
+  transition: opacity 1.35s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity;
+}
+.reveal-fade.is-revealed {
+  opacity: 1;
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal-scale.is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal-left.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal-right.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ==========================================================
+   BOTANICAL POP SLOW REVEAL (EFEK POP MEKAR PERLAHAN)
+   Bukan sekadar fade in/out biasa, melainkan mekar 'Pop Slow'
+   dengan kurva overshoot organik lembut (scale 0 -> 1)
+   langsung dari titik poros/tembok asalnya secara perlahan & tenang.
+   ========================================================== */
+.reveal-botanical {
+  opacity: 0;
+  transform: scale(0.6);
+  scale: 0.6;
+  transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 1.45s cubic-bezier(0.25, 1.20, 0.45, 1),
+              scale 1.45s cubic-bezier(0.25, 1.20, 0.45, 1);
+  will-change: opacity, transform, scale;
+}
+.reveal-botanical.is-revealed {
+  opacity: 0.95;
+  transform: scale(1);
+  scale: 1;
+}
+
+/* Stagger Delay Classes (Natural Flowing Cascade) */
+.delay-75  { transition-delay: 0.12s; }
+.delay-100 { transition-delay: 0.20s; }
+.delay-150 { transition-delay: 0.32s; }
+.delay-200 { transition-delay: 0.45s; }
+.delay-250 { transition-delay: 0.58s; }
+.delay-300 { transition-delay: 0.70s; }
+
+/* ==============================================================
+   ROYAL GATE COVER: SLOW, SERENE & STATELY ENTRANCE SUITE
+   "buatkan slow supaya user itu bisa merasakan"
+   Duration: 2.0s - 2.6s with ultra-smooth cubic-bezier(0.16, 1, 0.3, 1)
+   ============================================================== */
+
+/* 1. Architectural Palace Vault Ribs Soft Fade-In */
+@keyframes gateVaultFadeSlow {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.45;
+  }
+}
+.gate-vault-entrance {
+  animation: gateVaultFadeSlow 2.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  will-change: opacity;
+}
+
+/* 2. Royal Chandelier Slow Stately Descent */
+@keyframes gateChandelierDropSlow {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -36px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+.gate-chandelier-entrance {
+  animation: gateChandelierDropSlow 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.20s both;
+  will-change: opacity, transform;
+}
+
+/* 3. Luxury Gold Outer Border Frame Gleam & Expansion */
+@keyframes gateFrameGleamSlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.965);
+    box-shadow: 0 0 0 rgba(226, 188, 114, 0);
+  }
+  60% {
+    opacity: 0.9;
+    box-shadow: 0 0 25px rgba(226, 188, 114, 0.55), inset 0 0 12px rgba(226, 188, 114, 0.35);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 16px rgba(226, 188, 114, 0.40), inset 0 0 8px rgba(226, 188, 114, 0.25);
+  }
+}
+.gate-frame-entrance {
+  animation: gateFrameGleamSlow 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.10s both;
+  will-change: opacity, transform, box-shadow;
+}
+
+/* 4. Baroque Golden Corner Carvings (Floating from outer corners) */
+@keyframes gateCornerFloatTL {
+  0% {
+    opacity: 0;
+    transform: translate(-26px, -26px) scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+.gate-corner-entrance-tl {
+  animation: gateCornerFloatTL 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.30s both;
+  will-change: opacity, transform;
+}
+
+@keyframes gateCornerFloatTR {
+  0% {
+    opacity: 0;
+    transform: translate(26px, -26px) scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+.gate-corner-entrance-tr {
+  animation: gateCornerFloatTR 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.40s both;
+  will-change: opacity, transform;
+}
+
+/* 5. Royal Oval Medallion Frame & Soft Photo Zoom */
+@keyframes gateMedallionSoftBloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.82) translateY(18px);
+    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  }
+  65% {
+    opacity: 0.95;
+    transform: scale(1.02) translateY(-2px);
+    filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.8));
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.7));
+  }
+}
+.gate-anim-medallion {
+  animation: gateMedallionSoftBloom 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+  will-change: opacity, transform, filter;
+}
+
+@keyframes gatePhotoSoft {
+  0% {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.gate-anim-photo-soft {
+  animation: gatePhotoSoft 2.6s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+  will-change: opacity, transform;
+}
+
+/* 6. Tagline: THE WEDDING OF (Slow letter-spacing expansion) */
+@keyframes gateTaglineSlow {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+    letter-spacing: 0.18em;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: 0.35em;
+  }
+}
+.gate-anim-tagline {
+  animation: gateTaglineSlow 2.0s cubic-bezier(0.16, 1, 0.3, 1) 0.80s both;
+  will-change: opacity, transform, letter-spacing;
+}
+
+/* 7. Couple Names: Raka & Sinta (Majestic Stately Elevation) */
+@keyframes gateNamesSlow {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.gate-anim-names {
+  animation: gateNamesSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.05s both;
+  will-change: opacity, transform;
+}
+
+/* 8. Golden Horizontal Divider Ornament (Unfolding expansion) */
+@keyframes gateDividerSlow {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.60) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1) translateY(0);
+  }
+}
+.gate-anim-divider {
+  animation: gateDividerSlow 2.0s cubic-bezier(0.16, 1, 0.3, 1) 1.30s both;
+  will-change: opacity, transform;
+}
+
+/* 9. Sacred Invitation Statement */
+@keyframes gateStatementSlow {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.gate-anim-statement {
+  animation: gateStatementSlow 2.0s cubic-bezier(0.16, 1, 0.3, 1) 1.55s both;
+  will-change: opacity, transform;
+}
+
+/* 10. Date & Time 3-Column Display */
+@keyframes gateDateTimeSlow {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.gate-anim-datetime {
+  animation: gateDateTimeSlow 2.1s cubic-bezier(0.16, 1, 0.3, 1) 1.80s both;
+  will-change: opacity, transform;
+}
+
+/* 11. Dynamic Guest Name Block */
+@keyframes gateGuestSlow {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.gate-anim-guest {
+  animation: gateGuestSlow 2.1s cubic-bezier(0.16, 1, 0.3, 1) 2.05s both;
+  will-change: opacity, transform;
+}
+
+/* 12. Action Button: Buka Undangan */
+@keyframes gateButtonFloatSlow {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.90);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.gate-anim-btn-wrap {
+  animation: gateButtonFloatSlow 2.3s cubic-bezier(0.16, 1, 0.3, 1) 2.30s both;
+  will-change: opacity, transform;
+}
+
+/* 13. Subtle Royal Golden Pulse after entrance complete */
+@keyframes gateBtnGoldenGlow {
+  0%, 100% {
+    box-shadow: 0 8px 25px rgba(232, 201, 149, 0.35);
+  }
+  50% {
+    box-shadow: 0 12px 35px rgba(232, 201, 149, 0.65), 0 0 20px rgba(243, 222, 184, 0.45);
+  }
+}
+.gate-btn-pulse {
+  animation: gateBtnGoldenGlow 3.6s ease-in-out 4.6s infinite;
+}
+
+/* ==========================================================
+   CORNER BOUQUETS ENTRANCE - MUNCUL DARI MASING-MASING SUDUT
+   - Kiri Atas (TL): meluncur masuk dari arah sudut kiri-atas (-X, -Y)
+   - Kanan Atas (TR): meluncur masuk dari arah sudut kanan-atas (+X, -Y)
+   - Kiri Bawah (BL): meluncur masuk dari arah sudut kiri-bawah (-X, +Y)
+   - Kanan Bawah (BR): meluncur masuk dari arah sudut kanan-bawah (+X, +Y)
+   ========================================================== */
+@keyframes bouquetFloatInTL {
+  0% {
+    opacity: 0;
+    transform: translate(-36px, -36px) scale(0.88);
+    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  }
+  60% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.10));
+  }
+}
+
+@keyframes bouquetFloatInTR {
+  0% {
+    opacity: 0;
+    transform: translate(36px, -36px) scale(0.88);
+    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  }
+  60% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.10));
+  }
+}
+
+@keyframes bouquetFloatInBL {
+  0% {
+    opacity: 0;
+    transform: translate(-36px, 36px) scale(0.88);
+    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  }
+  60% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.10));
+  }
+}
+
+@keyframes bouquetFloatInBR {
+  0% {
+    opacity: 0;
+    transform: translate(36px, 36px) scale(0.88);
+    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  }
+  60% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.10));
+  }
+}
+
+@keyframes cornerBouquetFloatIn {
+  0% {
+    opacity: 0;
+    transform: translate(-22px, -22px) scale(0.90);
+    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  }
+  60% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.10));
+  }
+}
+
+.gate-anim-photo {
+  animation: gatePhotoSoft 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.gate-anim-1 { animation: gateCardFade 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+.gate-anim-2 { animation: gateFadeUpSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both; }
+.gate-anim-3 { animation: gateFadeUpSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.70s both; }
+.gate-anim-4 { animation: gateFadeUpSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.95s both; }
+.gate-anim-5 { animation: gateFadeUpSlow 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.20s both; }
+
+/* Corner Bouquets Sequential Staggered Entrance (Masing-masing dari sudut asalnya) */
+.gate-anim-bouquet-tl {
+  animation: bouquetFloatInTL 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.20s both;
+}
+.gate-anim-bouquet-tr {
+  animation: bouquetFloatInTR 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.65s both;
+}
+.gate-anim-bouquet-bl {
+  animation: bouquetFloatInBL 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.10s both;
+}
+.gate-anim-bouquet-br {
+  animation: bouquetFloatInBR 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.55s both;
+}
+
+/* Gentle Natural Wind Sway Breeze (Goyang-goyang Kena Angin) */
+@keyframes naturalBreezeSway1 {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  30% {
+    transform: rotate(3deg) scale(1.02);
+  }
+  65% {
+    transform: rotate(-2.2deg) scale(0.99);
+  }
+  85% {
+    transform: rotate(1deg) scale(1.01);
+  }
+}
+
+@keyframes naturalBreezeSway2 {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  35% {
+    transform: rotate(-3.2deg) scale(1.025);
+  }
+  70% {
+    transform: rotate(2deg) scale(0.99);
+  }
+  90% {
+    transform: rotate(-1deg) scale(1.005);
+  }
+}
+
+.sway-breeze-1 {
+  animation: naturalBreezeSway1 5.4s ease-in-out infinite;
+  transform-origin: 15% 15%;
+  will-change: transform;
+}
+
+.sway-breeze-2 {
+  animation: naturalBreezeSway2 6.2s ease-in-out 0.8s infinite;
+  transform-origin: 15% 15%;
+  will-change: transform;
+}
+
+.sway-breeze-3 {
+  animation: naturalBreezeSway1 5.8s ease-in-out 1.6s infinite;
+  transform-origin: 15% 15%;
+  will-change: transform;
+}
+
+.sway-breeze-4 {
+  animation: naturalBreezeSway2 6.6s ease-in-out 2.4s infinite;
+  transform-origin: 15% 15%;
+  will-change: transform;
+}
+
+/* ==========================================================
+   LATERAL BOTANICAL WIND BREEZE (ZERO VERTICAL NAIK-TURUN)
+   Pure lateral horizontal wind sway using skewX and translateX.
+   Leaves sway naturally side-to-side without any vertical jumping/bouncing!
+   ========================================================== */
+@keyframes botanicalLateralSwayBL {
+  0%, 100% {
+    transform: skewX(0deg) translateX(0);
+  }
+  30% {
+    transform: skewX(2.8deg) translateX(2.5px);
+  }
+  65% {
+    transform: skewX(-2.2deg) translateX(-1.8px);
+  }
+  85% {
+    transform: skewX(1.4deg) translateX(1px);
+  }
+}
+
+@keyframes botanicalLateralSwayTR {
+  0%, 100% {
+    transform: skewX(0deg) translateX(0);
+  }
+  35% {
+    transform: skewX(-2.8deg) translateX(-2.5px);
+  }
+  70% {
+    transform: skewX(2.2deg) translateX(1.8px);
+  }
+  90% {
+    transform: skewX(-1.4deg) translateX(-1px);
+  }
+}
+
+.sway-lateral-bl {
+  animation: botanicalLateralSwayBL 6.2s ease-in-out infinite;
+  transform-origin: 5% 5%;
+  will-change: transform;
+}
+
+.sway-lateral-tr {
+  animation: botanicalLateralSwayTR 6.8s ease-in-out 0.8s infinite;
+  transform-origin: 5% 5%;
+  will-change: transform;
+}
+
+@keyframes gateFadeOnly {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.gate-anim-fade {
+  animation: gateFadeOnly 2.2s ease-out 0.2s both;
+}
+
+.music-disc-spin {
+  animation: musicDiscRotate 3.5s linear infinite;
+}
+
+@keyframes musicDiscRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================
+   HERO SECTION EXCLUSIVE ENTRANCE ANIMATIONS (AFTER GATE OPENS)
+   ========================================================== */
+
+/* 1. Base Hero Animated Element */
+#home .hero-anim {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+#home .hero-anim.is-revealed {
+  opacity: 1;
+}
+
+/* 1b. Hero Chandelier Outer Wrapper & Entrance */
+#home .hero-chandelier-wrap {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+#home .hero-anim-chandelier {
+  transform: translateY(-22px) scale(0.95);
+  transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-chandelier.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 1c. Hero Corner Baroque Ornaments */
+#home .hero-corner-ornament-tl {
+  transform: translate(-12px, -12px) scale(0.88);
+  transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-corner-ornament-tr {
+  transform: translate(12px, -12px) scale(0.88);
+  transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-corner-ornament-tl.is-revealed,
+#home .hero-corner-ornament-tr.is-revealed {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+/* 1d. Hero Flanking Candle Sconces */
+#home .hero-sconce-left {
+  transform: translateX(-18px) scale(0.9);
+  transition: opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-sconce-right {
+  transform: translateX(18px) scale(0.9);
+  transition: opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-sconce-left.is-revealed,
+#home .hero-sconce-right.is-revealed {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+/* 2. Masthead Badge & Subtitle - Smooth Fade Down */
+#home .hero-anim-down {
+  transform: translateY(-16px) scale(0.97);
+  transition: opacity 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-down.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 3. Couple Names (Raka & Sinta) - Gentle Fade Up with Scale */
+#home .hero-anim-title {
+  transform: translateY(24px) scale(0.93);
+  transition: opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-title.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 4. Main Arch Portrait Frame - Elegant Rise & Bloom */
+#home .hero-anim-main-photo {
+  transform: translateY(32px) scale(0.92);
+  transition: opacity 1.25s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-main-photo.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 5. Golden Divider Bar Expansion */
+#home .hero-anim-divider {
+  transform: scaleX(0.7) scaleY(0.9);
+  transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-divider.is-revealed {
+  opacity: 1;
+  transform: scaleX(1) scaleY(1);
+}
+
+/* 6. Bottom Corner Bouquets Entrance Bloom */
+#home .hero-corner-bloom-bl {
+  transform: translate(-14px, 14px) scale(0.85);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-corner-bloom-br {
+  transform: translate(14px, 14px) scale(0.85);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-corner-bloom-bl.is-revealed,
+#home .hero-corner-bloom-br.is-revealed {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+/* 7. Bottom Quote - Soft Rise */
+#home .hero-anim-quote {
+  transform: translateY(18px);
+  transition: opacity 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#home .hero-anim-quote.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 8. Mouse Scroll Indicator - Spring Pop Rise */
+#home .hero-anim-mouse {
+  transform: translateY(20px) scale(0.8);
+  transition: opacity 1.1s cubic-bezier(0.34, 1.35, 0.64, 1),
+              transform 1.1s cubic-bezier(0.34, 1.35, 0.64, 1);
+}
+#home .hero-anim-mouse.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 9. Hero Staggered Sequential Delays (Slow, Smooth, Flawless Cascade) */
+#home .hero-delay-1 { transition-delay: 150ms; }
+#home .hero-delay-2 { transition-delay: 300ms; }
+#home .hero-delay-3 { transition-delay: 480ms; }
+#home .hero-delay-4 { transition-delay: 640ms; }
+#home .hero-delay-5 { transition-delay: 780ms; }
+#home .hero-delay-6 { transition-delay: 920ms; }
+#home .hero-delay-7 { transition-delay: 1060ms; }
+#home .hero-delay-8 { transition-delay: 1200ms; }
+#home .hero-delay-9 { transition-delay: 1340ms; }
+#home .hero-delay-10 { transition-delay: 1480ms; }
+
+
+/* 10. Mouse Scroll Indicator Continuous Floating & Wheel Scroll */
+.mouse-scroll-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: mouseSoftBounce 2.5s ease-in-out infinite;
+}
+
+@keyframes mouseSoftBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+.mouse-scroll-wheel {
+  animation: mouseWheelMove 1.8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes mouseWheelMove {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 0.25;
+  }
+  80%, 100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Fallback if #home elements use standard .reveal */
+#home .reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+#home .reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================
+   11. ROYAL PALACE ARCHITECTURAL PILLARS (LEFT & RIGHT FLANKS)
+   ========================================================== */
+#home .hero-pillar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: auto;
+  z-index: 12;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  will-change: opacity, transform;
+  transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#home .hero-pillar-left {
+  left: -16px;
+  transform: translateX(-16px);
+}
+
+#home .hero-pillar-right {
+  right: -16px;
+  transform: translateX(16px);
+}
+
+#home .hero-pillar-left.is-revealed,
+#home .hero-pillar-right.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+#home .hero-pillar img {
+  width: auto;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.75));
+}
+
+#home .hero-pillar-right img {
+  transform: scaleX(-1);
+}
+
+/* ==========================================================
+   12. HERO FOUR-CORNER L-BOUQUETS (bucket_bunga_l.png)
+   ========================================================== */
+.hero-corner-bouquet {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 20;
+  width: 170px;
+}
+
+@media (min-width: 380px) {
+  .hero-corner-bouquet {
+    width: 190px;
+  }
+}
+
+@media (min-width: 420px) {
+  .hero-corner-bouquet {
+    width: 205px;
+  }
+}
+
+/* 1. Top-Left Corner: Natural L orientation */
+.hero-corner-tl {
+  top: -8px;
+  left: -8px;
+  transform-origin: top left;
+}
+.hero-corner-tl img {
+  transform: none;
+}
+
+/* 2. Top-Right Corner: Mirrored horizontally */
+.hero-corner-tr {
+  top: -8px;
+  right: -8px;
+  transform-origin: top right;
+}
+.hero-corner-tr img {
+  transform: scaleX(-1);
+}
+
+/* 3. Bottom-Left Corner: Mirrored vertically */
+.hero-corner-bl {
+  bottom: -8px;
+  left: -8px;
+  transform-origin: bottom left;
+}
+.hero-corner-bl img {
+  transform: scaleY(-1);
+}
+
+/* 4. Bottom-Right Corner: Mirrored horizontally and vertically */
+.hero-corner-br {
+  bottom: -8px;
+  right: -8px;
+  transform-origin: bottom right;
+}
+.hero-corner-br img {
+  transform: scale(-1, -1);
+}
+
+.hero-corner-bouquet img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.85));
+}
+
+
+/* ==========================================================
+   BOTANICAL STEM-ANCHORED WIND SWAY
+   Pangkal batang mepet di tepi/sudut (tembok).
+   Anchor point (transform-origin) tepat di pangkal batang,
+   sehingga batang tetap diam di tembok dan daun yang bergoyang ditiup angin.
+   ========================================================== */
+
+/* 1. Anchored at Top-Right Wall (Pangkal Batang di Pojok Kanan Atas) */
+@keyframes swayStemTR {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(3.4deg);
+  }
+  70% {
+    transform: rotate(-2.6deg);
+  }
+}
+
+.botanical-stem-tr {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  top: -2px;
+  right: -2px;
+  width: 42px;
+  max-width: 42px;
+  transform-origin: 95% 5%;
+  animation: swayStemTR 6.5s ease-in-out infinite;
+  will-change: transform;
+}
+.botanical-stem-tr img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 2. Anchored at Bottom-Left Wall (Pangkal Batang di Pojok Kiri Bawah) */
+@keyframes swayStemBL {
+  0%, 100% {
+    rotate: 0deg;
+  }
+  35% {
+    rotate: -3.4deg;
+  }
+  70% {
+    rotate: 2.6deg;
+  }
+}
+
+.botanical-stem-bl {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  bottom: -2px;
+  left: -2px;
+  width: 42px;
+  max-width: 42px;
+  transform-origin: 5% 95%;
+  animation: swayStemBL 6.8s ease-in-out infinite;
+  will-change: transform;
+}
+.botanical-stem-bl img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Anchored at Bottom-Right Wall (Pangkal Batang di Pojok Kanan Bawah) */
+@keyframes swayStemBR {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(3.4deg);
+  }
+  70% {
+    transform: rotate(-2.6deg);
+  }
+}
+
+.botanical-stem-br {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  bottom: -2px;
+  right: -2px;
+  width: 42px;
+  max-width: 42px;
+  transform-origin: 95% 95%;
+  animation: swayStemBR 6.8s ease-in-out infinite;
+  will-change: transform;
+}
+.botanical-stem-br img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+/* 3. Anchored at Top-Left Wall (Pangkal Batang di Pojok Kiri Atas) */
+@keyframes swayStemTL {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(-3.2deg);
+  }
+  70% {
+    transform: rotate(2.4deg);
+  }
+}
+
+.botanical-stem-tl {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  top: -2px;
+  left: -2px;
+  width: 42px;
+  max-width: 42px;
+  transform-origin: 5% 5%;
+  animation: swayStemTL 6.4s ease-in-out infinite;
+  will-change: transform;
+}
+.botanical-stem-tl img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 4. Anchored at Left Wall Edge (Pangkal Batang di Tepi Kiri) */
+@keyframes swayStemLeft {
+  0%, 100% {
+    rotate: 0deg;
+  }
+  35% {
+    rotate: 2.8deg;
+  }
+  70% {
+    rotate: -2.2deg;
+  }
+}
+
+.botanical-stem-left {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  left: -3px;
+  width: 40px;
+  max-width: 40px;
+  transform-origin: 5% 90%;
+  animation: swayStemLeft 6.2s ease-in-out infinite;
+  will-change: transform;
+}
+.botanical-stem-left img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 5. Anchored at Right Wall Edge (Pangkal Batang di Tepi Kanan) */
+@keyframes swayStemRight {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(-2.8deg);
+  }
+  70% {
+    transform: rotate(2.2deg);
+  }
+}
+
+.botanical-stem-right {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+  right: -3px;
+  width: 40px;
+  max-width: 40px;
+  transform-origin: 95% 90%;
+  animation: swayStemRight 6.4s ease-in-out infinite;
+  will-change: transform;
+}
+.botanical-stem-right img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Fallback utility for arbitrary flip classes */
+.scale-x-\[-1\] {
+  transform: scaleX(-1);
+}
+.scale-y-\[-1\] {
+  transform: scaleY(-1);
+}
+
+/* ==========================================================
+   TROPICAL CORNER STEM-ANCHORED PENDULUM SWAY ANIMATIONS
+   Titik anchor 100% diam dan terkunci di pojok layar sebagai penahan.
+   Hanya ujung dedaunan yang berayun alami tertiup angin pantai.
+   Tanpa efek scale/translate agar tidak mengambang!
+   ========================================================== */
+
+@keyframes swayAnchorTL {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(2.6deg);
+  }
+  70% {
+    transform: rotate(-1.8deg);
+  }
+}
+
+@keyframes swayAnchorTR {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(-2.6deg);
+  }
+  70% {
+    transform: rotate(1.8deg);
+  }
+}
+
+@keyframes swayAnchorBL {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(-2.4deg);
+  }
+  70% {
+    transform: rotate(1.6deg);
+  }
+}
+
+@keyframes swayAnchorBR {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(2.4deg);
+  }
+  70% {
+    transform: rotate(-1.6deg);
+  }
+}
+
+.sway-anchor-tl {
+  transform-origin: 12% 12%;
+  animation: swayAnchorTL 5.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+.sway-anchor-tr {
+  transform-origin: 88% 12%;
+  animation: swayAnchorTR 6.2s ease-in-out 0.6s infinite;
+  will-change: transform;
+}
+
+.sway-anchor-bl {
+  transform-origin: 12% 88%;
+  animation: swayAnchorBL 6.5s ease-in-out 1.2s infinite;
+  will-change: transform;
+}
+
+.sway-anchor-br {
+  transform-origin: 88% 88%;
+  animation: swayAnchorBR 6.0s ease-in-out 1.8s infinite;
+  will-change: transform;
+}
+
+
+/* ==========================================================
+   TROPICAL BEACH & COASTAL LUXURY DESIGN SYSTEM (UNDANGAN 3)
+   ========================================================== */
+
+/* 1. Coastal Frosted Glass & Pearl Cards */
+.coastal-card {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.97), rgba(235, 243, 245, 0.92));
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 16px 38px -8px rgba(40, 75, 86, 0.16), 0 2px 6px rgba(40, 75, 86, 0.05);
+}
+
+.coastal-card-shell {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(160deg, #FFFFFF, #FAF6EE);
+  border: 1px solid rgba(212, 163, 98, 0.30);
+  box-shadow: 0 14px 35px -8px rgba(40, 75, 86, 0.10);
+}
+
+.coastal-card-teal {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(145deg, #1B3B47, #284B56);
+  color: #FAF6EE;
+  border: 1px solid rgba(212, 163, 98, 0.40);
+  box-shadow: 0 18px 45px -10px rgba(20, 45, 55, 0.35);
+}
+
+.coastal-card-sand {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(145deg, #5A4532, #8E7250);
+  color: #FAF6EE;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 18px 45px -10px rgba(90, 70, 50, 0.30);
+}
+
+/* 2. Coastal Badges & Accents */
+.coastal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.875rem;
+  border-radius: 9999px;
+  background: rgba(40, 75, 86, 0.08);
+  border: 1px solid rgba(40, 75, 86, 0.20);
+  color: #1B3B47;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-weight: 600;
+}
+
+.coastal-badge-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.875rem;
+  border-radius: 9999px;
+  background: rgba(212, 163, 98, 0.15);
+  border: 1px solid rgba(212, 163, 98, 0.45);
+  color: #8E6830;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 700;
+}
+
+/* 3. Coastal Wave & Sail Frames */
+.coastal-wave-frame {
+  border-radius: 130px 130px 36px 36px;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 20px 50px -10px rgba(40, 75, 86, 0.22);
+}
+
+.coastal-sail-left {
+  border-radius: 70px 18px 70px 18px !important;
+  border: 2px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 16px 38px -8px rgba(40, 75, 86, 0.16) !important;
+}
+
+.coastal-sail-right {
+  border-radius: 18px 70px 18px 70px !important;
+  border: 2px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 16px 38px -8px rgba(40, 75, 86, 0.16) !important;
+}
+
+/* 4. Luxury Coastal Buttons */
+.coastal-btn-primary {
+  background: linear-gradient(135deg, #284B56, #1B3B47);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 20px rgba(40, 75, 86, 0.28);
+  transition: all 0.3s ease;
+}
+
+.coastal-btn-primary:hover {
+  background: linear-gradient(135deg, #1B3B47, #142830);
+  box-shadow: 0 8px 25px rgba(40, 75, 86, 0.38);
+  transform: translateY(-1px);
+}
+
+.coastal-btn-sand {
+  background: linear-gradient(135deg, #D4A362, #B88645);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.30);
+  box-shadow: 0 6px 20px rgba(184, 134, 69, 0.28);
+  transition: all 0.3s ease;
+}
+
+.coastal-btn-sand:hover {
+  background: linear-gradient(135deg, #B88645, #9A6F35);
+  box-shadow: 0 8px 25px rgba(184, 134, 69, 0.38);
+  transform: translateY(-1px);
+}
+
+/* 5. Coastal Pebble Countdown Timer */
+.coastal-pebble-box {
+  background: linear-gradient(150deg, #FFFFFF, #FAF6EE);
+  border: 1.5px solid rgba(212, 163, 98, 0.40);
+  box-shadow: 0 8px 24px -4px rgba(40, 75, 86, 0.10);
+  border-radius: 18px;
+}
+
+
+/* 6. Unified Floating Island Countdown Bar */
+.coastal-countdown-island {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.97), rgba(235, 243, 245, 0.92));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 26px;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 16px 38px -8px rgba(40, 75, 86, 0.16);
+}
+
+.coastal-ticket-notch-left,
+.coastal-ticket-notch-right {
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background-color: #C4DFE6;
+  transform: translateY(-50%);
+  z-index: 20;
+}
+.coastal-ticket-notch-left { left: -8px; }
+.coastal-ticket-notch-right { right: -8px; }
+
+/* Coastal Wax Seal - Physical Embossed Warm Sand Gold */
+.coastal-wax-seal {
+  background: radial-gradient(circle at 35% 35%, #F8E2B8 0%, #D4A362 50%, #9E7332 88%, #7A531E 100%);
+  box-shadow: 0 10px 24px -4px rgba(27, 59, 71, 0.42),
+              inset 0 2px 4px rgba(255, 255, 255, 0.65),
+              inset 0 -2px 4px rgba(60, 40, 15, 0.45);
+}
+
+
+
+/* ==============================================================
+   ROYAL CLASSIC MAROON & GOLD MAIN PAGE SUITE
+   Unifies the Main Page aesthetic with Gate Cover:
+   - Deep Royal Velvet Canvases (#180407, #24060B, #3B080D)
+   - Ornate Baroque Gold Accents (#C49A55, #E8C995, #F3DEB8)
+   - Royal Glassmorphism Cards with inner gold glow
+   - Smooth GPU-accelerated two-way scroll reveals
+   ============================================================== */
+
+/* Hero Canvas in Main Page (#home) */
+.royal-hero-canvas {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  position: relative;
+  overflow: visible;
+}
+
+/* Footer Canvas in Main Page (#terimakasih) */
+.royal-footer-canvas {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  position: relative;
+  overflow: visible;
+}
+
+/* Royal Velvet Glassmorphism Card */
+.royal-velvet-card {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(145deg, rgba(62, 12, 22, 0.92), rgba(38, 6, 13, 0.95));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(232, 201, 149, 0.38);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(243, 222, 184, 0.15);
+  border-radius: 28px;
+}
+
+/* High Contrast Accent Card (e.g. Resepsi, Milestone 2) */
+.royal-velvet-card-accent {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(145deg, rgba(74, 12, 22, 0.92), rgba(35, 6, 11, 0.96));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(232, 201, 149, 0.55);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(243, 222, 184, 0.25);
+  border-radius: 28px;
+}
+
+/* Unified Floating Island Countdown Dock */
+.royal-countdown-island {
+  position: relative;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ==============================================================
+   SMOOTH TWO-WAY SCROLL REVEAL ANIMATIONS (UP & DOWN)
+   Pure GPU Layer transforms with zero stutter
+   ============================================================== */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 36px, 0);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.reveal.is-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.reveal-fade {
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
+}
+
+.reveal-fade.is-revealed {
+  opacity: 1;
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.92) translate3d(0, 24px, 0);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-scale.is-revealed {
+  opacity: 1;
+  transform: scale(1) translate3d(0, 0, 0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translate3d(-36px, 0, 0);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-left.is-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translate3d(36px, 0, 0);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-right.is-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.reveal-botanical {
+  opacity: 0;
+  transform: scale(0.85);
+  transition: transform 0.95s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-botanical.is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Timing Stagger Delays */
+.delay-100 { transition-delay: 0.10s !important; }
+.delay-150 { transition-delay: 0.15s !important; }
+.delay-200 { transition-delay: 0.20s !important; }
+.delay-250 { transition-delay: 0.25s !important; }
+.delay-300 { transition-delay: 0.30s !important; }
+
+#gatePage.doors-opened .gate-door-leaf,
+#gatePage.doors-opened .gate-frame-entrance,
+#gatePage.doors-opened .gate-chandelier-entrance,
+#gatePage.doors-opened .gate-corner-entrance-tl,
+#gatePage.doors-opened .gate-corner-entrance-tr,
+#gatePage.doors-opened .gate-flower-entrance-left,
+#gatePage.doors-opened .gate-flower-entrance-right {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: opacity 0.2s ease-out;
+}
+
+/* ==========================================================
+   GATE COVER EXPLICIT Z-INDEX STACKING LAYERS
+   ========================================================== */
+.gate-chandelier-entrance {
+  z-index: 15 !important;
+}
+.gate-frame-entrance {
+  z-index: 20 !important;
+}
+.gate-corner-entrance-tl,
+.gate-corner-entrance-tr {
+  z-index: 25 !important;
+}
+.gate-flower-entrance-left,
+.gate-flower-entrance-right {
+  z-index: 25 !important;
+}
+
+/* ==========================================================
+   HERO & FOOTER BOUQUET BOTANICAL WIND SWAY ANIMATION
+   ========================================================== */
+.hero-flower-sway-left,
+.footer-flower-sway-left {
+  transform-origin: bottom left;
+  animation: heroFlowerWindSwayLeft 5.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes heroFlowerWindSwayLeft {
+  0%, 100% {
+    transform: rotate(0deg) translate(0, 0);
+  }
+  30% {
+    transform: rotate(2.2deg) translate(1.5px, -1px);
+  }
+  68% {
+    transform: rotate(-1.5deg) translate(-1px, 0.5px);
+  }
+}
+
+.hero-flower-sway-right,
+.footer-flower-sway-right {
+  transform-origin: bottom right;
+  animation: heroFlowerWindSwayRight 6.2s ease-in-out 0.8s infinite;
+  will-change: transform;
+}
+
+@keyframes heroFlowerWindSwayRight {
+  0%, 100% {
+    transform: rotate(0deg) translate(0, 0);
+  }
+  35% {
+    transform: rotate(-2.2deg) translate(-1.5px, -1px);
+  }
+  72% {
+    transform: rotate(1.5deg) translate(1px, 0.5px);
+  }
+}

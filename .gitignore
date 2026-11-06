@@ -47,3 +47,6 @@ next-env.d.ts
 .studio-*
 /.audit/
 /undangan_*/
+
+# Sub-repositories
+/infomase-backend/

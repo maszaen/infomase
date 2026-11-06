@@ -44,6 +44,14 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
   const inv = store.invitations.find((i) => i.id === invitationId) ?? store.data;
 
   /* ------------------------------------------------------------- uploads */
+  const readFileAsDataUrl = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
   const uploadPhoto = async (file: File, type: 'groom' | 'bride') => {
     setBusy(type);
     try {
@@ -53,9 +61,13 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
         toast('success', 'Foto tersimpan di server.');
       }
     } catch {
-      const localUrl = URL.createObjectURL(file);
-      type === 'groom' ? store.updateGroom({ photo: localUrl }) : store.updateBride({ photo: localUrl });
-      toast('info', 'Server belum tersedia — foto dipakai sebagai pratinjau lokal.');
+      try {
+        const localUrl = await readFileAsDataUrl(file);
+        type === 'groom' ? store.updateGroom({ photo: localUrl }) : store.updateBride({ photo: localUrl });
+        toast('info', 'Server belum tersedia — foto dipakai sebagai pratinjau lokal.');
+      } catch {
+        toast('error', 'Gagal memproses file foto.');
+      }
     } finally {
       setBusy(null);
     }
@@ -77,13 +89,19 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
         toast('success', `${res.length} foto ditambahkan.`);
       }
     } catch {
-      const local: GalleryPhoto[] = Array.from(files).map((file, index) => ({
-        id: `gal-local-${Date.now()}-${index}`,
-        url: URL.createObjectURL(file),
-        caption: file.name.replace(/\.[^/.]+$/, ''),
-      }));
-      store.updateGallery([...inv.gallery, ...local]);
-      toast('info', 'Server belum tersedia — foto ditambahkan sebagai pratinjau lokal.');
+      try {
+        const fileList = Array.from(files);
+        const dataUrls = await Promise.all(fileList.map((f) => readFileAsDataUrl(f)));
+        const local: GalleryPhoto[] = fileList.map((file, index) => ({
+          id: `gal-local-${Date.now()}-${index}`,
+          url: dataUrls[index],
+          caption: file.name.replace(/\.[^/.]+$/, ''),
+        }));
+        store.updateGallery([...inv.gallery, ...local]);
+        toast('info', 'Server belum tersedia — foto ditambahkan sebagai pratinjau lokal.');
+      } catch {
+        toast('error', 'Gagal memproses foto galeri.');
+      }
     } finally {
       setBusy(null);
     }
@@ -98,8 +116,13 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
         toast('success', 'Musik diperbarui.');
       }
     } catch {
-      store.updateMusic({ ...inv.music, url: URL.createObjectURL(file), title: file.name });
-      toast('info', 'Server belum tersedia — musik dipakai sebagai pratinjau lokal.');
+      try {
+        const localUrl = await readFileAsDataUrl(file);
+        store.updateMusic({ ...inv.music, url: localUrl, title: file.name });
+        toast('info', 'Server belum tersedia — musik dipakai sebagai pratinjau lokal.');
+      } catch {
+        toast('error', 'Gagal memproses file audio.');
+      }
     } finally {
       setBusy(null);
     }

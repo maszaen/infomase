@@ -1,0 +1,624 @@
+/* Prevent layout shifts between fixed overlays and scrollable body */
+html {
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
+/* ==========================================================
+   THE WEDDING OF RAKA & SINTA - LUXURY BOHO BOTANICAL STYLES
+   With Authentic Multi-Layer Botanical Wind Sway Animations
+   ========================================================== */
+
+/* Subtle Watercolor & Paper Texture Background */
+body {
+  background-color: #E6DDD1;
+  color: #382E25;
+  overflow-x: hidden;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Mobile App Canvas Container (Exact Mobile Phone Frame) */
+.mobile-app-container {
+  width: 100%;
+  max-width: 430px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 100vh;
+  background-color: #FAF7F2;
+  background-image:
+    linear-gradient(rgba(250, 247, 242, 0.45), rgba(250, 247, 242, 0.45)),
+    url('../asset/img/bg_watercolor.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: repeat-y;
+  box-shadow: 0 20px 60px -15px rgba(50, 40, 30, 0.25), 0 0 1px 1px rgba(210, 195, 175, 0.4);
+  position: relative;
+  overflow-x: hidden;
+  padding-bottom: 76px;
+  /* Space for sticky bottom bar */
+}
+
+/* Hero / Cover Section with Soft Pastel Watercolor Wash */
+#home {
+  background-image:
+    linear-gradient(rgba(255, 253, 250, 0.18), rgba(255, 253, 250, 0.18)),
+    url('../asset/img/bg_watercolor.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+}
+
+/* Typography Helpers */
+.font-script {
+  font-family: 'Alex Brush', 'Great Vibes', cursive;
+}
+
+.font-serif {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* Elegant Cards */
+.paper-card {
+  background: linear-gradient(145deg, rgba(255, 253, 250, 0.94), rgba(249, 244, 237, 0.90));
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(215, 201, 182, 0.55);
+  box-shadow: 0 8px 25px -8px rgba(70, 58, 48, 0.07);
+}
+
+.brown-card {
+  background: linear-gradient(145deg, #9C8169, #866E58);
+  color: #FAF5EE;
+}
+
+/* ==========================================================
+   BOHO BOTANICAL BOUQUETS (SINGLE ASSET IMPLEMENTATION)
+   Using asset/img/bucket_kiri.png
+   Hugging corners tightly, larger scale matching luxury mockup
+   ========================================================== */
+
+/* 1. TOP-LEFT BOUQUET CONTAINER */
+.bouquet-top-left {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  width: 215px;
+  max-width: 58vw;
+  pointer-events: none;
+  user-select: none;
+  z-index: 15;
+}
+
+/* 2. BOTTOM-RIGHT BOUQUET CONTAINER (SYMMETRICAL CORNER MIRROR) */
+.bouquet-bottom-right {
+  position: absolute;
+  bottom: -12px;
+  right: -12px;
+  width: 215px;
+  max-width: 58vw;
+  pointer-events: none;
+  user-select: none;
+  z-index: 15;
+  transform: rotate(180deg);
+  transform-origin: center center;
+}
+
+/* 3. GATE COVER DIAGONAL BOUQUETS (Top-Right & Bottom-Left) */
+.gate-bouquet-top-right {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 215px;
+  max-width: 58vw;
+  pointer-events: none;
+  user-select: none;
+  z-index: 20;
+}
+
+.gate-bouquet-bottom-left {
+  position: absolute;
+  bottom: -12px;
+  left: -12px;
+  width: 215px;
+  max-width: 58vw;
+  pointer-events: none;
+  user-select: none;
+  z-index: 20;
+  transform: rotate(180deg) !important;
+  transform-origin: center center;
+}
+
+.bouquet-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 14px rgba(45, 35, 25, 0.12));
+}
+
+/* Natural Gentle Wind Sway for Bouquet */
+@keyframes windBouquetTopLeft {
+  0%, 100% {
+    transform: rotate(-1deg) scale(1);
+  }
+  50% {
+    transform: rotate(3.5deg) scale(1.02);
+  }
+}
+
+@keyframes windBouquetBottomRight {
+  0%, 100% {
+    transform: rotate(1deg) scale(1);
+  }
+  50% {
+    transform: rotate(-3.5deg) scale(1.02);
+  }
+}
+
+.bouquet-top-left .wind-sway-corner,
+.gate-bouquet-top-right .wind-sway-corner {
+  animation: windBouquetTopLeft 4.6s ease-in-out infinite;
+  transform-origin: top left;
+}
+
+.bouquet-bottom-right .wind-sway-corner,
+.gate-bouquet-bottom-left .wind-sway-corner {
+  animation: windBouquetBottomRight 4.6s ease-in-out infinite 0.6s;
+  transform-origin: bottom right;
+}
+
+/* Responsive adjustment for extra compact phones */
+@media (max-width: 380px) {
+  .bouquet-top-left {
+    top: -8px;
+    left: -8px;
+    width: 185px;
+  }
+  .bouquet-bottom-right {
+    bottom: -8px;
+    right: -8px;
+    width: 185px;
+  }
+  .gate-bouquet-top-right {
+    top: -8px;
+    right: -8px;
+    width: 185px;
+  }
+  .gate-bouquet-bottom-left {
+    bottom: -8px;
+    left: -8px;
+    width: 185px;
+    transform: rotate(180deg) !important;
+  }
+}
+
+/* ==========================================================
+   CARD & SECTION WIND ANIMATIONS (ENHANCED AUTHENTIC SWAY)
+   ========================================================== */
+
+/* 1. Pampas Grass / Gandum: Flexible plume wave & subtle vertical lift */
+@keyframes breezePlume {
+  0%, 100% {
+    transform: rotate(-5deg) translateY(0px);
+  }
+  30% {
+    transform: rotate(2deg) translateY(-2px);
+  }
+  60% {
+    transform: rotate(6deg) translateY(-3px);
+  }
+  85% {
+    transform: rotate(-1.5deg) translateY(-1px);
+  }
+}
+
+@keyframes breezePlumeAlt {
+  0%, 100% {
+    transform: rotate(5deg) translateY(0px);
+  }
+  30% {
+    transform: rotate(-2deg) translateY(-2px);
+  }
+  60% {
+    transform: rotate(-6deg) translateY(-3px);
+  }
+  85% {
+    transform: rotate(1.5deg) translateY(-1px);
+  }
+}
+
+/* 2. Palm & Monstera Leaves: Broad tropical flutter with natural air resistance */
+@keyframes breezeLeaf {
+  0%, 100% {
+    transform: rotate(-4.5deg);
+  }
+  40% {
+    transform: rotate(4deg);
+  }
+  75% {
+    transform: rotate(-1.5deg);
+  }
+}
+
+@keyframes breezeLeafAlt {
+  0%, 100% {
+    transform: scaleX(-1) rotate(4.5deg);
+  }
+  40% {
+    transform: scaleX(-1) rotate(-4deg);
+  }
+  75% {
+    transform: scaleX(-1) rotate(1.5deg);
+  }
+}
+
+/* 3. Orchid & Anthurium: Delicate nodding on slender stems with subtle breathing scale */
+@keyframes breezeFlower {
+  0%, 100% {
+    transform: rotate(-3.5deg) scale(0.98);
+  }
+  50% {
+    transform: rotate(3.5deg) scale(1.02);
+  }
+}
+
+@keyframes breezeFlowerAlt {
+  0%, 100% {
+    transform: rotate(3.5deg) scale(0.98);
+  }
+  50% {
+    transform: rotate(-3.5deg) scale(1.02);
+  }
+}
+
+.wind-pampas-1 {
+  animation: breezePlume 3.6s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.wind-pampas-2 {
+  animation: breezePlumeAlt 4.0s ease-in-out infinite;
+  transform-origin: bottom left;
+}
+
+.wind-palm-1 {
+  animation: breezeLeaf 4.2s ease-in-out infinite;
+  transform-origin: bottom left;
+}
+
+.wind-palm-2 {
+  animation: breezeLeafAlt 4.5s ease-in-out infinite;
+  transform-origin: bottom right;
+}
+
+.wind-orchid-1, .wind-orchid-2 {
+  animation: breezeFlower 3.4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.wind-anthurium {
+  animation: breezeFlowerAlt 3.2s ease-in-out infinite 0.4s;
+  transform-origin: center;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C8B9A6;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9C8169;
+}
+
+/* ==========================================================
+   3D BOOK COVER FLIP OPEN ANIMATION ("BUKA BUKU")
+   ========================================================== */
+
+#gateCover {
+  perspective: 1600px;
+  -webkit-perspective: 1600px;
+}
+
+#gatePage {
+  transform-origin: left center;
+  -webkit-transform-origin: left center;
+  transition: transform 1.15s cubic-bezier(0.3, 0, 0.15, 1), opacity 0.85s ease, box-shadow 1.15s ease;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  box-shadow: 0 20px 60px -15px rgba(50, 40, 30, 0.25), 0 0 1px 1px rgba(210, 195, 175, 0.4);
+}
+
+#gatePage.book-opened {
+  transform: rotateY(-115deg) scale(0.96);
+  opacity: 0;
+  box-shadow: -40px 15px 60px rgba(35, 25, 15, 0.35);
+  pointer-events: none;
+}
+
+
+/* ==========================================================
+   SMOOTH ENTRANCE & SCROLL REVEAL ANIMATIONS (SUPER SLOW & TWO-WAY)
+   ========================================================== */
+
+/* Universal Scroll-Reveal Base (Ultra-Smooth Slow Luxury: 2.0s) */
+.reveal {
+  opacity: 0;
+  transform: translateY(45px);
+  transition: opacity 2.0s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 2.0s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Directional & Scale variations */
+.reveal-fade {
+  opacity: 0;
+  transition: opacity 2.2s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
+}
+.reveal-fade.is-revealed {
+  opacity: 1;
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 2.0s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 2.0s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-scale.is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-45px);
+  transition: opacity 2.0s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 2.0s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-left.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(45px);
+  transition: opacity 2.0s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 2.0s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-right.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Card Corner Botanical Bouquets Blooming Entrance (Slow, Regal, Romantic) */
+.reveal-corner-left {
+  opacity: 0;
+  transform: translate(-30px, 30px) scale(0.75);
+  transition: opacity 2.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 2.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-corner-left.is-revealed {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+.reveal-corner-right {
+  opacity: 0;
+  transform: translate(30px, 30px) scale(0.75);
+  transition: opacity 2.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 2.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-corner-right.is-revealed {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+/* Corner Flower Entrance Animations (Slow, Visible Blooming Slide: 2.4s) */
+.reveal-flower-tl {
+  opacity: 0;
+  transform: translate(-65px, -65px) scale(0.70);
+  transition: opacity 2.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 2.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-flower-tl.is-revealed {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+.reveal-flower-br {
+  opacity: 0;
+  transform: translate(-65px, -65px) scale(0.70);
+  transition: opacity 2.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 2.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-flower-br.is-revealed {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+/* Stagger Delay Classes (Slow, Regal, Romantic Cascading Pacing) */
+.delay-75  { transition-delay: 0.2s; }
+.delay-100 { transition-delay: 0.35s; }
+.delay-150 { transition-delay: 0.6s; }
+.delay-200 { transition-delay: 0.85s; }
+.delay-250 { transition-delay: 1.1s; }
+.delay-300 { transition-delay: 1.35s; }
+.delay-350 { transition-delay: 1.6s; }
+.delay-400 { transition-delay: 1.85s; }
+.delay-450 { transition-delay: 2.0s; }
+.delay-500 { transition-delay: 2.15s; }
+
+/* Gate Cover Initial Load Animations (Awal Muncul - Slow & Romantic) */
+@keyframes gateFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gatePhotoSoft {
+  0% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.gate-anim-photo {
+  animation: gatePhotoSoft 2.0s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.gate-anim-1 {
+  animation: gateFadeUp 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+.gate-anim-2 {
+  animation: gateFadeUp 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+.gate-anim-3 {
+  animation: gateFadeUp 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
+}
+.gate-anim-4 {
+  animation: gateFadeUp 1.6s cubic-bezier(0.16, 1, 0.3, 1) 1.1s both;
+}
+.gate-anim-5 {
+  animation: gateFadeUp 1.6s cubic-bezier(0.16, 1, 0.3, 1) 1.4s both;
+}
+
+/* Dedicated Fade-Only for Gate Bouquets (Preserves All Layout Transforms) */
+@keyframes gateFadeOnly {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.gate-anim-fade {
+  animation: gateFadeOnly 1.8s ease-out 0.2s both;
+}
+
+/* Floating Music Disc Rotation Animation */
+@keyframes musicDiscRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.music-disc-spin {
+  animation: musicDiscRotate 3.5s linear infinite;
+}
+
+/* Individual Botanical Layer Reveals (Slow Romantic 1-per-1 Blooming: 2.2s) */
+.reveal-pampas,
+.reveal-leaf,
+.reveal-flower {
+  opacity: 0;
+  transform: translateY(22px) scale(0.85);
+  transition: opacity 2.2s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 2.2s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* 1. Gandum / Pampas mekar pertama */
+.reveal-pampas {
+  transition-delay: 0.2s;
+}
+
+/* 2. Daun Monstera mekar kedua */
+.reveal-leaf {
+  transition-delay: 0.8s;
+}
+
+/* 3. Bunga Anggrek / Anthurium mekar ketiga */
+.reveal-flower {
+  transition-delay: 1.4s;
+}
+
+.reveal-pampas.is-revealed,
+.reveal-leaf.is-revealed,
+.reveal-flower.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+
+/* 2-Element Bouquets (Galeri & Penutup) 1-per-1 Blooming */
+.reveal-foliage,
+.reveal-flower-pair {
+  opacity: 0;
+  transform: translateY(22px) scale(0.85);
+  transition: opacity 2.2s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 2.2s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Daun Palm & Gandum mekar pertama */
+.reveal-foliage {
+  transition-delay: 0.2s;
+}
+
+/* Bunga Anggrek & Anthurium mekar kedua */
+.reveal-flower-pair {
+  transition-delay: 0.8s;
+}
+
+.reveal-foliage.is-revealed,
+.reveal-flower-pair.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Hero section smooth fade without vertical drop/snap */
+#home .reveal {
+  opacity: 0;
+  transform: translateY(0) !important;
+  transition: opacity 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
+}
+#home .reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0) !important;
+}

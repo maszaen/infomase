@@ -3,7 +3,7 @@ import { InvitationData, RSVPItem, GuestItem, TemplateId } from '@/types/invitat
 
 export const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ||
-  'https://elvin-affectional-edwardo.ngrok-free.dev/wedding_digital/api/v1';
+  (typeof window !== 'undefined' ? '/api/proxy' : 'http://localhost:8000/wedding_digital/api/v1');
 
 export const TOKEN_KEY = 'infomase_token';
 export const REFRESH_TOKEN_KEY = 'infomase_refresh_token';
@@ -87,7 +87,7 @@ export async function apiFetch<T = any>(
   } catch (err: any) {
     console.warn(`[apiFetch error] ${url}:`, err);
     throw new Error(
-      `Tidak dapat terhubung ke server backend di "${url}". Pastikan URL backend valid dan tunnel ngrok / web server sedang aktif.`
+      `Tidak dapat terhubung ke server backend di "${url}". Pastikan URL backend valid dan web server backend sedang aktif.`
     );
   }
 
@@ -519,7 +519,8 @@ export const rsvpsApi = {
 
   getExportUrl: (invitationId: string) => {
     const token = getToken();
-    return `${API_BASE}/invitations/${invitationId}/rsvps/export${
+    const base = typeof window !== 'undefined' ? '/api/proxy' : API_BASE;
+    return `${base}/invitations/${invitationId}/rsvps/export${
       token ? `?token=${encodeURIComponent(token)}` : ''
     }`;
   },

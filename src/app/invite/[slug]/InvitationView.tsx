@@ -124,11 +124,20 @@ function InvitationContent() {
   }
 
   return (
-    <div className="invite-stage">
-      <div className="invite-column">
-        <InvitationRenderer data={invitation} guestName={guestName} onAddRSVP={handleAddRSVP} />
-      </div>
-    </div>
+    <main
+      style={{
+        position: 'fixed',
+        inset: 0,
+        width: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        margin: 0,
+        padding: 0,
+        backgroundColor: '#14151a',
+      }}
+    >
+      <InvitationRenderer data={invitation} guestName={guestName} onAddRSVP={handleAddRSVP} />
+    </main>
   );
 }
 

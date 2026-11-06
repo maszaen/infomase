@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#004D40" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="#004D40" />
+  <meta name="msapplication-navbutton-color" content="#004D40" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  
+  <title>The Wedding of Habib &amp; Adiba</title>
+  <meta name="description" content="The Wedding of Habib &amp; Adiba - Senin, 28 Desember 2026." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="The Wedding of Habib &amp; Adiba" />
+  <meta property="og:description" content="Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i serta kerabat sekalian untuk menghadiri acara pernikahan kami." />
+  <meta property="og:image" content="asset/img/foto_mempelai_dummy.jpg" />
+  <meta property="og:type" content="article" />
+
+  <!-- Elegant Gold & Emerald Wedding Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23004D40' stroke='%23D4AF37' stroke-width='2'/%3E%3Cpath d='M16 22s-6-3.8-6-8a4 4 0 0 1 6-3.46A4 4 0 0 1 22 14c0 4.2-6 8-6 8z' fill='%23D4AF37'/%3E%3C/svg%3E" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Ambient Blurred Desktop Background -->
+  <div class="desktop-background" aria-hidden="true"></div>
+  <div class="desktop-background-overlay" aria-hidden="true"></div>
+
+  <!-- Audio Element -->
+  <audio id="wedding-audio" preload="metadata" loop playsinline>
+    <source src="asset/song.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- ========================================================================
+       SECTION 1: OPENING COVER OVERLAY (#sec, #kolom, #open)
+       ======================================================================== -->
+  <div id="sec">
+    <div id="kolom">
+      <div class="cover-subtitle">The Wedding of</div>
+      <h1 class="cover-title">Habib &amp; Adiba</h1>
+      <div class="cover-dear">Dear</div>
+      <div class="cover-guest-name">Nama Tamu</div>
+      <button type="button" id="open" class="btn-open">
+        <i class="far fa-envelope-open" aria-hidden="true"></i>
+        <span>Buka Undangan</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MAIN APP WRAPPER (CENTERED ON DESKTOP & MOBILE)
+       ======================================================================== -->
+  <div id="app-wrapper">
+
+    <!-- CENTERED INVITATION CONTENT FRAME (#isi) -->
+    <main id="isi">
+
+      <!-- ====================================================================
+           SECTION 2: HERO SECTION
+           ==================================================================== -->
+      <section class="hero-section" id="hero">
+        <div class="hero-slideshow">
+          <div class="hero-slide active" style="background-image: url('asset/img/foto_mempelai_dummy.jpg');"></div>
+          <div class="hero-slide" style="background-image: url('asset/img/couple_1.jpg');"></div>
+        </div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content reveal-item">
+          <div class="hero-subtitle">The Wedding of</div>
+          <h2 class="hero-title">Habib &amp; Adiba</h2>
+          <div class="hero-date">28. 12. 2026</div>
+          <div class="scroll-indicator" onclick="document.getElementById('intro').scrollIntoView({ behavior: 'smooth' })">
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SECTION 3: INTRO, COUNTDOWN & MEMPELAI
+           ==================================================================== -->
+      <section class="intro-section" id="intro">
+        <div class="bottom-sheet-handle"></div>
+
+        <div class="couple-photo-wrapper reveal-scale delay-100">
+          <img src="asset/img/foto_mempelai_dummy.jpg" alt="Habib &amp; Adiba" class="couple-photo" fetchpriority="high" />
+        </div>
+
+        <!-- Countdown Timer -->
+        <div class="countdown-box reveal delay-150">
+          <div class="countdown-item">
+            <div class="countdown-num" id="days">00</div>
+            <div class="countdown-label">Hari</div>
+          </div>
+          <div class="countdown-item">
+            <div class="countdown-num" id="hours">00</div>
+            <div class="countdown-label">Jam</div>
+          </div>
+          <div class="countdown-item">
+            <div class="countdown-num" id="minutes">00</div>
+            <div class="countdown-label">Menit</div>
+          </div>
+          <div class="countdown-item">
+            <div class="countdown-num" id="seconds">00</div>
+            <div class="countdown-label">Detik</div>
+          </div>
+        </div>
+
+        <blockquote class="intro-quote reveal delay-200">
+          &#8220;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.&#8221;<br /><br />
+          <strong>(Qs. Ar-Rum : 21)</strong>
+        </blockquote>
+      </section>
+
+      <!-- MEMPELAI (BRIDE & GROOM PROFILES) -->
+      <section class="mempelai-section" id="mempelai">
+        <h2 class="mempelai-header-title reveal-item">Bride &amp; Groom</h2>
+        <p class="mempelai-intro-text reveal-item">
+          Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i serta kerabat sekalian untuk menghadiri acara pernikahan kami.
+        </p>
+
+        <!-- Groom Profile -->
+        <div class="mempelai-card reveal-left delay-100">
+          <div class="polaroid-frame">
+            <img src="asset/img/groom.jpg" alt="Habib Yulianto" loading="lazy" />
+          </div>
+          <h3 class="profile-fullname">Habib Yulianto</h3>
+          <p class="profile-parents">
+            Putra Kedua dari Bapak M. Dawam<br />
+            &amp; (Almh) Ibu Dewi Sudarwati
+          </p>
+          <a href="https://www.instagram.com/habibyulianto" target="_blank" rel="noopener noreferrer" class="social-instagram-pill" aria-label="Instagram Habib Yulianto">
+            <i class="fab fa-instagram"></i>
+            <span>@habibyulianto</span>
+          </a>
+        </div>
+
+        <div class="mempelai-divider reveal-item">&amp;</div>
+
+        <!-- Bride Profile -->
+        <div class="mempelai-card reveal-right delay-200">
+          <div class="polaroid-frame">
+            <img src="asset/img/bride.jpg" alt="Adiba Putri Syakila" loading="lazy" />
+          </div>
+          <h3 class="profile-fullname">Adiba Putri Syakila</h3>
+          <p class="profile-parents">
+            Putri Pertama dari Bapak Anas Rifai<br />
+            &amp; Ibu Kholifah
+          </p>
+          <a href="https://www.instagram.com/adibasyakila" target="_blank" rel="noopener noreferrer" class="social-instagram-pill" aria-label="Instagram Adiba Putri Syakila">
+            <i class="fab fa-instagram"></i>
+            <span>@adibasyakila</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SECTION 4: SAVE THE DATE
+           ==================================================================== -->
+      <section class="save-the-date-section" id="save-the-date">
+        <div class="std-word-save reveal-scale delay-75">SAVE</div>
+        <div class="std-word-the reveal-fade delay-100">The</div>
+        <div class="std-word-date reveal-scale delay-150">DATE</div>
+        <div class="std-pill reveal delay-200">28. 12. 2026</div>
+      </section>
+
+      <!-- ====================================================================
+           SECTION 5: WEDDING EVENTS (AKAD & RESEPSI)
+           ==================================================================== -->
+      <section class="events-section" id="acara">
+        <div class="events-title-wedding reveal-item">Wedding</div>
+        <div class="events-title-event reveal-item">Event</div>
+
+        <!-- EVENT CARD 1: AKAD NIKAH -->
+        <div class="event-card reveal-item">
+          <div class="event-carousel event-carousel-1">
+            <div class="event-carousel-slide active" style="background-image: url('asset/img/couple_1.jpg');"></div>
+            <div class="event-carousel-slide" style="background-image: url('asset/img/couple_2.jpg');"></div>
+          </div>
+          <div class="event-card-body">
+            <div class="event-side-ribbon">
+              <span class="event-side-title">Akad Nikah</span>
+            </div>
+            <div class="event-details">
+              <div class="event-date-row">
+                <div class="event-day-number animate-num-28">28</div>
+                <div class="event-date-text">
+                  <b>Senin</b><br />
+                  Desember<br />
+                  2026
+                </div>
+              </div>
+              <div class="event-divider-line"></div>
+              <div class="event-time">Pukul : 08.00 WIB</div>
+              <div class="event-location-title">Lokasi Acara</div>
+              <div class="event-location-address">
+                Tempat : <strong>KEDIAMAN MEMPELAI WANITA</strong><br />
+                Ds Pagu, Wates, Kediri, Jawa Timur
+              </div>
+              <a href="https://maps.app.goo.gl/GgLwpE6Qq8GZYBJh9" target="_blank" rel="noopener noreferrer" class="btn-location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Lihat Lokasi</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- EVENT CARD 2: RESEPSI -->
+        <div class="event-card reveal-item">
+          <div class="event-carousel event-carousel-2">
+            <div class="event-carousel-slide active" style="background-image: url('asset/img/gallery_1.jpg');"></div>
+            <div class="event-carousel-slide" style="background-image: url('asset/img/foto_mempelai_dummy.jpg');"></div>
+          </div>
+          <div class="event-card-body">
+            <div class="event-side-ribbon">
+              <span class="event-side-title rotate-normal">Resepsi</span>
+            </div>
+            <div class="event-details">
+              <div class="event-date-row">
+                <div class="event-day-number animate-num-28">28</div>
+                <div class="event-date-text">
+                  <b>Senin</b><br />
+                  Desember<br />
+                  2026
+                </div>
+              </div>
+              <div class="event-divider-line"></div>
+              <div class="event-time">Pukul : 10.00 WIB &#8211; Selesai</div>
+              <div class="event-location-title">Lokasi Acara</div>
+              <div class="event-location-address">
+                Tempat : <strong>KEDIAMAN MEMPELAI WANITA</strong><br />
+                Ds Pagu, Wates, Kediri, Jawa Timur
+              </div>
+              <a href="https://maps.app.goo.gl/GgLwpE6Qq8GZYBJh9" target="_blank" rel="noopener noreferrer" class="btn-location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Lihat Lokasi</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SECTION 6: LOVE STORY (INTERACTIVE JOURNEY STORYBOARD)
+           ==================================================================== -->
+      <section class="love-story-section" id="story">
+        <div class="story-header reveal-item">
+          <span class="story-subtitle">OUR JOURNEY</span>
+          <h2 class="love-story-title">Love Story</h2>
+        </div>
+
+        <div class="story-photo-wrapper reveal-scale delay-100">
+          <img src="asset/img/couple_2.jpg" alt="Love Story Habib &amp; Adiba" class="story-center-photo" loading="lazy" />
+        </div>
+
+        <!-- Interactive Journey Stepper -->
+        <div class="story-stepper reveal-item delay-150">
+          <div class="story-step-line" aria-hidden="true">
+            <div class="story-step-progress" id="storyProgress"></div>
+          </div>
+          <button type="button" class="story-step-btn active" data-story-idx="0" aria-label="Awal Cerita">
+            <span class="step-num"><i class="fas fa-heart"></i></span>
+            <span class="step-text">Awal</span>
+          </button>
+          <button type="button" class="story-step-btn" data-story-idx="1" aria-label="Lamaran">
+            <span class="step-num"><i class="fas fa-gem"></i></span>
+            <span class="step-text">Lamaran</span>
+          </button>
+          <button type="button" class="story-step-btn" data-story-idx="2" aria-label="Pernikahan">
+            <span class="step-num"><i class="fas fa-infinity"></i></span>
+            <span class="step-text">Menikah</span>
+          </button>
+        </div>
+
+        <!-- Dynamic Single Story Panel -->
+        <div class="story-showcase reveal-scale delay-200">
+          <div class="story-card-inner">
+            <div class="story-quote-mark" aria-hidden="true">&ldquo;</div>
+
+            <!-- Chapters Container for Silk Smooth Horizontal Fade -->
+            <div class="story-chapters-container">
+              <!-- Chapter 1 -->
+              <div class="story-chapter active" data-chapter="0">
+                <h3 class="chapter-title">Awal Cerita</h3>
+                <p class="chapter-desc">
+                  Berawal dari pertemuan sederhana yang hangat, kami saling mengenal dan mulai berbagi banyak cerita. Tanpa disadari, kebersamaan itu tumbuh menjadi rasa nyaman yang semakin kuat dan tulus dari hari ke hari.
+                </p>
+              </div>
+
+              <!-- Chapter 2 -->
+              <div class="story-chapter" data-chapter="1">
+                <h3 class="chapter-title">Momen Lamaran</h3>
+                <p class="chapter-desc">
+                  Dengan niat yang tulus dan restu penuh keluarga, kami memutuskan untuk melangkah ke tahap yang lebih serius. Momen lamaran menjadi awal dari perjalanan baru yang dipenuhi doa baik dan harapan masa depan.
+                </p>
+              </div>
+
+              <!-- Chapter 3 -->
+              <div class="story-chapter" data-chapter="2">
+                <h3 class="chapter-title">Hari Bahagia</h3>
+                <p class="chapter-desc">
+                  Kini kami sampai pada hari yang dinantikan, hari di mana dua hati dipersatukan dalam ikatan suci pernikahan. Semoga langkah ini menjadi awal kehidupan baru yang senantiasa dilimpahi cinta dan keberkahan.
+                </p>
+              </div>
+            </div>
+
+            <!-- Navigation Controls & Dots -->
+            <div class="story-nav-row">
+              <button type="button" id="storyPrevBtn" class="story-nav-btn" aria-label="Cerita Sebelumnya">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <div class="story-dots">
+                <span class="story-dot active" data-story-idx="0"></span>
+                <span class="story-dot" data-story-idx="1"></span>
+                <span class="story-dot" data-story-idx="2"></span>
+              </div>
+              <button type="button" id="storyNextBtn" class="story-nav-btn" aria-label="Cerita Selanjutnya">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SECTION 7: GALERI FOTO & VIDEO
+           ==================================================================== -->
+      <section class="gallery-section" id="galeri">
+        <h2 class="gallery-title reveal-item">Galeri Foto</h2>
+
+        <!-- YouTube Video Wrapper (Direct In-Page Player) -->
+        <div class="video-wrapper reveal-item">
+          <div class="video-container" id="videoContainer">
+            <iframe
+              id="yt-video-frame"
+              src="https://www.youtube.com/embed/ZeFpigRaXbI?playsinline=1&rel=0&modestbranding=1&enablejsapi=1"
+              title="Video Undangan Pernikahan Habib &amp; Adiba"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+
+        <!-- 2-Column Masonry Photo Grid -->
+        <div class="gallery-grid reveal-item">
+          <div class="gallery-item">
+            <img src="asset/img/gallery_1.jpg" alt="Momen Indah 1" loading="lazy" />
+            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+          </div>
+          <div class="gallery-item">
+            <img src="asset/img/couple_1.jpg" alt="Momen Indah 2" loading="lazy" />
+            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+          </div>
+          <div class="gallery-item">
+            <img src="asset/img/couple_2.jpg" alt="Momen Indah 3" loading="lazy" />
+            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+          </div>
+          <div class="gallery-item">
+            <img src="asset/img/gallery_4.jpg" alt="Momen Indah 4" loading="lazy" />
+            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+          </div>
+          <div class="gallery-item">
+            <img src="asset/img/groom.jpg" alt="Momen Indah 5" loading="lazy" />
+            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+          </div>
+          <div class="gallery-item">
+            <img src="asset/img/bride.jpg" alt="Momen Indah 6" loading="lazy" />
+            <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SECTION 8: AMPLOP DIGITAL (#klik, #amplop)
+           ==================================================================== -->
+      <section class="amplop-section" id="amplop-digital">
+        <h2 class="amplop-title reveal-item">Amplop Digital</h2>
+        <p class="amplop-desc reveal-item">
+          Doa restu Anda merupakan karunia yang sangat berarti bagi kami, dan jika memberi adalah ungkapan tanda kasih, Anda dapat memberi kado secara cashless.
+        </p>
+
+        <button type="button" id="klik" class="btn-amplop-toggle reveal-item">
+          <i class="fas fa-gift"></i>
+          <span>Kirim Hadiah</span>
+          <i class="fas fa-chevron-down"></i>
+        </button>
+
+        <!-- Collapsible Drawer #amplop -->
+        <div id="amplop">
+          <div class="amplop-inner">
+            <!-- ATM Bank BCA Card -->
+            <div class="atm-card reveal-scale delay-100">
+              <div class="atm-chip-row">
+                <img src="asset/chip-atm-1-2-1-1-1-3-1-1.png" alt="Chip ATM" class="atm-chip" loading="lazy" />
+              </div>
+              <div class="atm-mid atm-aligned-row">
+                <img src="asset/BCA_5770.webp" alt="Bank BCA" class="atm-bank-logo" loading="lazy" />
+                <div class="atm-number">12345678</div>
+              </div>
+              <div class="atm-bottom">
+                <div class="atm-holder">Habib Yulianto</div>
+                <button type="button" class="btn-copy" data-copy-target="12345678">
+                  <i class="fas fa-copy"></i>
+                  <span>Copy</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Physical Gift Address Card -->
+            <div class="gift-address-card">
+              <div class="gift-card-header">
+                <i class="fas fa-box"></i>
+                <span>Kirim Hadiah Fisik</span>
+              </div>
+              <div class="gift-info-row">
+                <span class="gift-label">Penerima</span>
+                <span class="gift-val">: Habib Yulianto</span>
+              </div>
+              <div class="gift-info-row">
+                <span class="gift-label">No. HP</span>
+                <span class="gift-val">: 1234567890</span>
+              </div>
+              <div class="gift-info-row">
+                <span class="gift-label">Alamat</span>
+                <span class="gift-val">: Ds Pagu Kec.Wates Kab. Kediri</span>
+              </div>
+              <div style="text-align: right; margin-top: 10px;">
+                <button type="button" class="btn-copy" data-copy-target="Ds Pagu Kec.Wates Kab. Kediri (Penerima: Habib Yulianto - 1234567890)">
+                  <i class="fas fa-copy"></i>
+                  <span>Salin Alamat</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SECTION 9: RSVP & WISHES
+           ==================================================================== -->
+      <section class="rsvp-section" id="rsvp">
+        <!-- RSVP Header -->
+        <div class="rsvp-header reveal-item">
+          <span class="rsvp-subtitle">RSVP &amp; UCAPAN</span>
+          <h2 class="rsvp-title">Konfirmasi &amp; Doa Restu</h2>
+          <p class="rsvp-desc">
+            Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.
+          </p>
+        </div>
+
+        <div class="rsvp-card reveal-scale delay-100">
+          <div class="rsvp-field">
+            <input type="text" id="rsvp-name" class="rsvp-input" placeholder="Nama Kamu" autocomplete="name" />
+          </div>
+
+          <div class="rsvp-field">
+            <textarea id="rsvp-message" class="rsvp-textarea" rows="4" maxlength="1000" placeholder="Berikan Ucapan &amp; Do'a"></textarea>
+          </div>
+
+          <div class="rsvp-presence-label">Konfirmasi Kehadiran ?</div>
+          <div class="rsvp-pills">
+            <button type="button" id="pill-hadir" class="rsvp-pill rsvp-pill--hadir active">
+              <i class="fas fa-check-circle"></i>
+              <span>Hadir</span>
+            </button>
+            <button type="button" id="pill-tidak" class="rsvp-pill rsvp-pill--tidak">
+              <i class="fas fa-times-circle"></i>
+              <span>Tidak Hadir</span>
+            </button>
+          </div>
+
+          <button type="button" id="btn-send-rsvp" class="btn-rsvp-send">
+            Kirim Ucapan
+          </button>
+
+          <!-- Wishes Stream -->
+          <div class="wishes-container" id="wishes-list">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           SECTION 10: TERIMAKASIH (CLOSING QUOTE & WATERMARK)
+           ==================================================================== -->
+      <section class="closing-section" id="terimakasih">
+        <div class="closing-slideshow">
+          <div class="closing-slide active" style="background-image: url('asset/img/couple_1.jpg');"></div>
+          <div class="closing-slide" style="background-image: url('asset/img/foto_mempelai_dummy.jpg');"></div>
+        </div>
+        <div class="closing-overlay"></div>
+
+        <div class="closing-content reveal-item">
+          <div class="closing-word">Terimakasih</div>
+          <p class="closing-text">
+            Merupakan suatu kehormatan dan kebahagiaan bagi kami, apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu. Atas kehadiran dan doa restunya, kami mengucapkan terima kasih.
+          </p>
+          <div class="closing-regards">Kami yang berbahagia,</div>
+          <div class="closing-couple">Habib &amp; Adiba</div>
+        </div>
+
+        <!-- Watermark by idmetafora (Merged inside Terimakasih Section) -->
+        <div class="closing-watermark reveal-item">
+          <div class="footer-credit">by idmetafora</div>
+          <div class="footer-social-links">
+            <a href="https://www.instagram.com/idmetafora/" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="Instagram idmetafora">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://idmetafora.com/" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="Website idmetafora">
+              <i class="fas fa-globe"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           FLOATING AUDIO TOGGLE BUTTON (TEMPLATE 1 STYLE - DEEP EMERALD & MATTE GOLD)
+           ==================================================================== -->
+      <button type="button" id="music-toggle" class="floating-music-btn" title="Matikan Musik" aria-label="Toggle Musik">
+        <!-- Icon Vinyl Piringan Hitam Berputar saat Musik Aktif -->
+        <svg id="audioIconPlaying" class="music-disc-svg music-disc-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 2a10 10 0 0 1 10 10"/>
+        </svg>
+        <!-- Icon Speaker Mute saat Musik Dimatikan -->
+        <svg id="audioIconMuted" class="music-disc-svg hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+          <line x1="17" y1="9" x2="23" y2="15" stroke-linecap="round"/>
+          <line x1="23" y1="9" x2="17" y2="15" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <!-- ====================================================================
+           FIXED BOTTOM NAVIGATION BAR (TEMPLATE 1 STYLE - DEEP EMERALD & MATTE GOLD)
+           ==================================================================== -->
+      <nav id="bottom-nav" class="bottom-nav-bar" aria-label="Navigasi Menu">
+        <div class="bottom-nav-wrap">
+          <!-- 1. Home / Cover -->
+          <a href="#hero" title="Cover" class="bottom-nav-btn active" aria-label="Cover">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </a>
+          <!-- 2. Mempelai (Heart) -->
+          <a href="#mempelai" title="Mempelai" class="bottom-nav-btn" aria-label="Mempelai">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+          </a>
+          <!-- 3. Acara (Calendar) -->
+          <a href="#acara" title="Acara" class="bottom-nav-btn" aria-label="Acara">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </a>
+          <!-- 4. Galeri (Image) -->
+          <a href="#galeri" title="Galeri" class="bottom-nav-btn" aria-label="Galeri">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </a>
+          <!-- 5. Ucapan (Chat Bubble) -->
+          <a href="#rsvp" title="Ucapan" class="bottom-nav-btn" aria-label="Ucapan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+          </a>
+        </div>
+      </nav>
+
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       LIGHTBOX MODAL FOR GALLERY
+       ======================================================================== -->
+  <div id="gallery-lightbox" role="dialog" aria-modal="true" aria-label="Lightbox Galeri">
+    <span class="lightbox-close" aria-label="Tutup Lightbox">&times;</span>
+    <span class="lightbox-prev" aria-label="Foto Sebelumnya">&#10094;</span>
+    <span class="lightbox-next" aria-label="Foto Selanjutnya">&#10095;</span>
+    <img id="lightbox-image" src="" alt="Pratinjau Foto" />
+  </div>
+
+  <!-- ========================================================================
+       TOAST NOTIFICATION
+       ======================================================================== -->
+  <div id="toast-msg">Tersalin ke clipboard!</div>
+
+  <!-- JavaScript File -->
+  <script src="js/script.js"></script>
+  <!-- Universal InfoMase Template Bridge -->
+  <script src="../template-bridge.js"></script>
+</body>
+</html>

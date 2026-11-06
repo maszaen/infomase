@@ -12,7 +12,7 @@ import {
   BankAccount,
   WhatsAppMessageTemplate,
 } from '@/types/invitation';
-import { DEMO_INVITATION, DEMO_SLUG } from './defaultData';
+import { DEMO_INVITATION, DEMO_SLUG, getDemoInvitation } from './defaultData';
 import {
   CheckoutResult,
   Order,
@@ -73,7 +73,7 @@ interface InvitationStoreValue {
 
   getInvitationBySlug(slug: string): InvitationData | undefined;
 
-  setTemplateId(templateId: TemplateId): void;
+  setTemplateId(templateId: TemplateId, targetId?: string): void;
   updateGroom(updates: Partial<InvitationData['groom']>): void;
   updateBride(updates: Partial<InvitationData['bride']>): void;
   updateGeneral(title: string, slug: string): void;
@@ -367,14 +367,7 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
 
       const tpl = TEMPLATES.find((t) => t.demoSlug === slug);
       if (tpl) {
-        return {
-          ...DEMO_INVITATION,
-          id: `demo-${tpl.id}`,
-          slug: tpl.demoSlug || slug,
-          title: `Demo — ${tpl.name}`,
-          templateId: tpl.id,
-          isPublished: true,
-        };
+        return getDemoInvitation(tpl.id, tpl.demoSlug || slug);
       }
       return undefined;
     },
@@ -383,8 +376,17 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
 
   /* ---------------------------------------------------------- editor actions */
 
-  const setTemplateId = (templateId: TemplateId) =>
-    updateActive((prev) => ({ ...prev, templateId }));
+  const updateInvitation = useCallback(
+    (id: string, updater: (prev: InvitationData) => InvitationData) => {
+      setInvitations((prev) => replaceInvitation(prev, id, updater));
+    },
+    []
+  );
+
+  const setTemplateId = (templateId: TemplateId, targetId?: string) =>
+    targetId
+      ? updateInvitation(targetId, (prev) => ({ ...prev, templateId }))
+      : updateActive((prev) => ({ ...prev, templateId }));
 
   const updateGroom = (updates: Partial<InvitationData['groom']>) =>
     updateActive((prev) => ({ ...prev, groom: { ...prev.groom, ...updates } }));

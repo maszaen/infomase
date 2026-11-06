@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Misty Mountain & Alpine Wedding — Arga &amp; Maya</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Cormorant Garamond, Plus Jakarta Sans, Alex Brush & Great Vibes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind Custom Configuration -->
+  <script src="js/tailwind.config.js"></script>
+
+  <!-- Custom Stylesheet with Alpine Mountain Styling -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="selection:bg-[#1E352B] selection:text-[#FAF9F5]">
+
+  <!-- ==============================================================
+       GATE COVER / PINTU MASUK (ALPINE MOUNTAIN & PINE FOREST STYLE)
+       ============================================================== -->
+  <div id="gateCover" class="fixed inset-0 z-50 flex items-center justify-center pointer-events-auto">
+    <!-- 3D Double Door Gate Cover Stage (Pintu 2 Daun) -->
+    <div id="gatePage" class="relative w-full max-w-[430px] h-full flex flex-col items-center justify-between overflow-hidden p-0 bg-[#FAF9F5]">
+
+      <!-- ==========================================
+           BACKGROUND DOOR LEAVES (Active during Open Animation)
+           Pintu 2 Daun di background yang berputar buka ke samping
+           ========================================== -->
+      <div id="gateDoorLeft" class="gate-door-leaf gate-door-left">
+        <div class="gate-door-bg gate-door-bg-left"></div>
+      </div>
+
+      <div id="gateDoorRight" class="gate-door-leaf gate-door-right">
+        <div class="gate-door-bg gate-door-bg-right"></div>
+      </div>
+
+      <!-- ==========================================
+           LAYER Z-30: CENTER CONTAINER (RICH FROSTED GLASS BLUR CARD)
+           Kartu kaca buram utuh sempurna ("tetep nyambung", tanpa garis potong)
+           ========================================== -->
+      <div id="gateCenterCard" class="relative z-30 w-full h-full flex flex-col justify-between items-center text-center pointer-events-auto gate-anim-1 bg-[#FAF9F5] overflow-hidden">
+
+        <!-- Top Section: Couple Image with bottom gradient div -->
+        <div class="relative w-full h-[50%] min-h-[290px] max-h-[53vh] overflow-hidden flex-shrink-0">
+          <img src="asset/img/mempelai/couple_beach_full.jpg" 
+               alt="Arga &amp; Maya" 
+               class="w-full h-full object-cover object-[center_20%]" 
+               decoding="async">
+          <!-- Bottom Gradient Div to softly fade image into background -->
+          <div class="absolute inset-x-0 bottom-0 h-32 sm:h-40 bg-gradient-to-t from-[#FAF9F5] via-[#FAF9F5]/75 to-transparent pointer-events-none"></div>
+        </div>
+
+        <!-- Bottom Section: Text Content & Action Button -->
+        <div class="relative w-full flex-1 flex flex-col justify-center items-center text-center px-6 py-4 sm:py-6 z-10 bg-[#FAF9F5]">
+
+          <div class="w-full flex flex-col items-center">
+            <!-- Label -->
+            <p class="text-xs sm:text-sm font-sans uppercase tracking-[0.3em] text-[#1E352B]/70 font-semibold mb-1 gate-anim-2">
+              The Wedding of
+            </p>
+
+            <!-- Couple Names in Elegant Script (Alex Brush / Great Vibes) -->
+            <h1 class="font-script text-4xl sm:text-5xl text-[#152A22] leading-tight my-1 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)] gate-anim-2">
+              Arga <span class="text-[#C59A45]">&amp;</span> Maya
+            </h1>
+
+            <!-- Subtle Flourish / Divider -->
+            <div class="flex items-center justify-center gap-2 my-1 gate-anim-2">
+              <div class="w-7 h-px bg-gradient-to-r from-transparent to-[#C59A45]"></div>
+              <svg class="w-2.5 h-2.5 text-[#C59A45] fill-current" viewBox="0 0 24 24">
+                <path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/>
+              </svg>
+              <div class="w-7 h-px bg-gradient-to-l from-transparent to-[#C59A45]"></div>
+            </div>
+
+            <!-- Dynamic Guest Name -->
+            <div class="mt-2 mb-0.5 gate-anim-4">
+              <span class="text-xs sm:text-sm text-[#1E352B]/75 font-normal block">Kepada Bapak/Ibu/Saudara/i:</span>
+              <div id="coverGuestName" class="font-serif text-xl sm:text-2xl font-semibold text-[#152A22] tracking-wide mt-1">
+                Nama Tamu
+              </div>
+            </div>
+
+            <!-- Action Button: positioned close below Nama Tamu -->
+            <div class="mt-4 sm:mt-5 gate-anim-5">
+              <button onclick="openGate()" 
+                      class="group inline-flex items-center gap-2.5 px-8 py-2.5 sm:py-3 rounded-full bg-[#244135] hover:bg-[#152A22] active:scale-95 text-white text-sm font-medium tracking-wide shadow-[0_6px_20px_rgba(36,65,53,0.30)] hover:shadow-[0_10px_25px_rgba(36,65,53,0.40)] transition-all duration-300 cursor-pointer pointer-events-auto">
+                <span>Buka Undangan</span>
+                <svg class="w-4 h-4 stroke-current stroke-2 fill-none transform transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ==========================================
+           LAYER Z-40: ALL 4 BOUQUETS ON TOPMOST LAYER
+           (Seluruh 4 sudut bucket bunga berada di layer paling atas, terpasang rapi di ujung sudut sisi layar)
+           ========================================== -->
+      <!-- 1. Sudut Kiri Atas: bucket_bunga_1.svg (Dedicated Top-Left) -->
+      <div class="gate-swing-tl absolute -top-8 -left-8 sm:-top-10 sm:-left-10 w-36 sm:w-44 pointer-events-none select-none z-40 botanical-top-layer">
+        <div class="gate-anim-bouquet-tl">
+          <div class="sway-anchor-tl w-full h-full">
+            <img src="asset/img/ornamen/bucket_bunga_1.svg" alt="Alpine Botanical Kiri Atas" class="w-full h-auto drop-shadow-md" decoding="async">
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Sudut Kanan Atas: bucket_bunga.svg (Dedicated Top-Right) -->
+      <div class="gate-swing-tr absolute -top-8 -right-8 sm:-top-10 sm:-right-10 w-36 sm:w-44 pointer-events-none select-none z-40 botanical-top-layer">
+        <div class="gate-anim-bouquet-tr">
+          <div class="sway-anchor-tr w-full h-full">
+            <img src="asset/img/ornamen/bucket_bunga.svg" alt="Alpine Botanical Kanan Atas" class="w-full h-auto drop-shadow-md" decoding="async">
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Sudut Kiri Bawah: bucket_bunga_2.svg (Dedicated Bottom-Left) -->
+      <div class="gate-swing-bl absolute -bottom-8 -left-8 sm:-bottom-10 sm:-left-10 w-36 sm:w-44 pointer-events-none select-none z-40 botanical-top-layer">
+        <div class="gate-anim-bouquet-bl">
+          <div class="sway-anchor-bl w-full h-full">
+            <img src="asset/img/ornamen/bucket_bunga_2.svg" alt="Alpine Botanical Kiri Bawah" class="w-full h-auto drop-shadow-md" decoding="async">
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Sudut Kanan Bawah: bucket_bunga_5.svg (Dedicated Bottom-Right) -->
+      <div class="gate-swing-br absolute -bottom-8 -right-8 sm:-bottom-10 sm:-right-10 w-36 sm:w-44 pointer-events-none select-none z-40 botanical-top-layer">
+        <div class="gate-anim-bouquet-br">
+          <div class="sway-anchor-br w-full h-full">
+            <img src="asset/img/ornamen/bucket_bunga_5.svg" alt="Alpine Botanical Kanan Bawah" class="w-full h-auto drop-shadow-md" decoding="async">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==============================================================
+       MAIN EDITORIAL CANVAS
+       ============================================================== -->
+  <div class="mobile-app-container">
+
+    <!-- Background Music Audio Player -->
+    <audio id="weddingMusic" loop preload="auto">
+      <source src="asset/music/Alpine%20Serenade.mp3" type="audio/mpeg">
+      <source src="asset/music/Alpine Serenade.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Floating Soundwave / Music Controller -->
+    <div id="musicControlWrap" class="fixed top-4 left-0 right-0 max-w-[430px] mx-auto z-40 pointer-events-none px-4 flex justify-end">
+      <button id="musicToggleBtn" onclick="toggleMusic()" 
+              title="Matikan Musik"
+              class="pointer-events-auto w-10 h-10 rounded-full bg-white/95 backdrop-blur-md shadow-[0_4px_16px_rgba(20,42,32,0.18)] border border-[#2E4F42]/30 text-[#1E352B] flex items-center justify-center hover:scale-110 active:scale-95 transition-all cursor-pointer">
+        <svg id="audioIconPlaying" class="w-5 h-5 music-disc-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 2a10 10 0 0 1 10 10"/>
+        </svg>
+        <svg id="audioIconMuted" class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+          <line x1="17" y1="9" x2="23" y2="15" stroke-linecap="round"/>
+          <line x1="23" y1="9" x2="17" y2="15" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- ==============================================================
+         HERO SECTION: THE ALPINE HORIZON (HIGHLAND PINE FOREST COVER)
+         ============================================================== -->
+    <section id="home" class="hero-beach-bg relative z-30 min-h-screen flex flex-col justify-center items-center px-5 pt-8 pb-12 text-center overflow-visible">
+
+      <!-- Corner Botanical Accents (Hero Framing) -->
+      <!-- Sudut Kanan Atas: Alpine Botanical -->
+      <div class="absolute -top-7 -right-7 sm:-top-9 sm:-right-9 w-32 sm:w-36 pointer-events-none select-none z-40 botanical-top-layer reveal-botanical delay-100 origin-top-right">
+        <img src="asset/img/ornamen/bucket_bunga.svg" alt="Bouquet Kanan Atas" class="w-full h-auto drop-shadow-xs sway-lateral-tr" decoding="async">
+      </div>
+
+      <!-- Sudut Kiri Bawah: Alpine Botanical (Framing Sudut Bawah Hero) -->
+      <div class="absolute -bottom-10 -left-7 sm:-bottom-12 sm:-left-9 w-32 sm:w-36 pointer-events-none select-none z-40 botanical-top-layer reveal-botanical delay-150 origin-bottom-left">
+        <img src="asset/img/ornamen/bucket_bunga_2.svg" alt="Bouquet Kiri Bawah" class="w-full h-auto drop-shadow-xs sway-lateral-bl" decoding="async">
+      </div>
+
+      <!-- Top Masthead: The Wedding Celebration of Arga & Maya -->
+      <div class="relative z-20 flex flex-col items-center max-w-[360px] mx-auto w-full mb-6 sm:mb-7">
+        
+        <!-- The Wedding Celebration Of Subtitle -->
+        <span class="hero-anim hero-anim-down hero-delay-1 text-[8.5px] uppercase tracking-[0.35em] text-[#3E6655] font-bold block mb-1">
+          THE WEDDING CELEBRATION OF
+        </span>
+
+        <!-- Grand Couple Names: Arga & Maya -->
+        <h1 class="hero-anim hero-anim-title hero-delay-2 font-serif text-4xl sm:text-5xl text-[#152A22] font-normal tracking-wide leading-none">
+          Arga <span class="font-light italic text-[#C59A45]">&amp;</span> Maya
+        </h1>
+
+      </div>
+
+      <!-- Central Showcase: Circular Portal Frame with Mountain Alpine Botanical Accent -->
+      <div class="relative z-20 w-full max-w-[325px] mx-auto flex justify-center items-center my-0 py-0">
+        <div class="relative w-[242px] h-[242px] sm:w-[270px] sm:h-[270px] mx-auto hero-anim hero-anim-main-photo hero-delay-3">
+          <!-- Circular Photo Frame (Border saat ini: border-2 border-white/95 & shadow khas tema gunung) -->
+          <div class="w-full h-full rounded-full overflow-hidden border-2 border-white/95 shadow-[0_22px_60px_-12px_rgba(20,42,32,0.30)] bg-[#E8EDE7]">
+            <img src="asset/img/mempelai/couple_beach_full.jpg" alt="Arga &amp; Maya" class="w-full h-full object-cover object-[center_22%]" decoding="async">
+          </div>
+
+          <!-- Mountain Alpine Botanical Accent (Ornamen Awal Megah, Ukuran Dikecilkan & Pas Menempel Rapi) -->
+          <div class="absolute -left-[26%] top-[2%] w-[95%] h-[99%] pointer-events-none select-none z-30 origin-bottom-left">
+            <img src="asset/img/ornamen/alpine_circle_bouquet.svg" alt="Ornamen Bunga Alpine Kiri Bawah" class="w-full h-full object-contain filter drop-shadow-md sway-lateral-bl" decoding="async">
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Feature: Refined Quote & Mouse Scroll Down Indicator (Posisi Dinaikkan Mendekati Gambar) -->
+      <div class="relative z-20 flex flex-col items-center mt-6 sm:mt-7">
+
+        <p class="hero-anim hero-anim-quote hero-delay-7 font-serif italic font-medium text-sm sm:text-base text-[#152A22] leading-relaxed max-w-[320px] mb-3 drop-shadow-[0_1px_2px_rgba(255,255,255,0.95)]">
+          <span class="text-[#C59A45] font-normal mr-0.5 select-none">“</span>Dua jiwa berpadu di keheningan puncak pegunungan, melangkah bersama mengukir takdir abadi.<span class="text-[#C59A45] font-normal ml-0.5 select-none">”</span>
+        </p>
+
+        <!-- Mouse Scroll Down Indicator -->
+        <a href="#prologue" onclick="openInvitation(event)" aria-label="Scroll untuk membaca"
+           class="hero-anim hero-anim-mouse hero-delay-8 inline-flex flex-col items-center justify-center p-1.5 rounded-full text-[#152A22] hover:opacity-80 active:scale-90 transition-all duration-300 group cursor-pointer">
+          <div class="mouse-scroll-container">
+            <svg class="w-5 h-8 drop-shadow-xs" viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="20" height="32" rx="10" stroke="#152A22" stroke-width="2" fill="rgba(255,255,255,0.7)" />
+              <rect class="mouse-scroll-wheel" x="10.5" y="7" width="3" height="7" rx="1.5" fill="#244135" />
+            </svg>
+          </div>
+        </a>
+      </div>
+
+    </section>
+    <!-- Mountain Ridge Transition: Edelweiss Cream to Highland Fog (#FAF9F5 -> #E8EDE7) -->
+    <div class="w-full overflow-hidden leading-none bg-[#FAF9F5] -my-px pointer-events-none select-none z-0 relative">
+      <svg class="block w-full h-7 sm:h-10 text-[#E8EDE7]" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M0,45 C180,10 320,65 520,25 C720,70 880,15 1040,55 C1120,35 1160,45 1200,30 L1200,120 L0,120 Z" fill="currentColor" opacity="0.45"></path>
+        <path d="M0,65 C140,40 280,85 460,45 C640,90 820,35 980,75 C1080,50 1140,65 1200,50 L1200,120 L0,120 Z" fill="currentColor"></path>
+      </svg>
+    </div>
+
+    <!-- ==============================================================
+         PROLOGUE: THE SACRED HIGHLAND SCROLL (PESAN DARI LERENG GUNUNG)
+         ============================================================== -->
+    <section id="prologue" class="bg-section-sage py-12 px-5 relative z-10 overflow-visible">
+
+      <!-- Corner Botanical Stems (Cascading Alpine Pine) -->
+      <div class="absolute pointer-events-none select-none z-40 botanical-top-layer origin-top-right" style="width: 80px; max-width: 80px; top: 0; right: 0; transform: scaleX(-1); transform-origin: top right;">
+        <img src="asset/img/ornamen/daun_panjang_4.svg" alt="Leaf Top Right" class="w-full h-auto drop-shadow-xs opacity-95 sway-lateral-tr" decoding="async" loading="lazy">
+      </div>
+
+      <!-- Asymmetric Alpine Parchment Card -->
+      <div class="coastal-card coastal-sail-left p-6 sm:p-7 text-center relative overflow-hidden reveal">
+        
+        <span class="text-[9px] uppercase tracking-[0.3em] text-[#3E6655] font-bold block mb-1">
+          UNTAIAN DOA &amp; RIDHO ILAHI
+        </span>
+
+        <!-- Large Artistic Quote Mark in Alpine Pine -->
+        <span class="font-serif text-5xl text-[#244135]/25 leading-none select-none block mb-1">“</span>
+
+        <p class="font-serif text-sm sm:text-base leading-relaxed text-[#152A22] italic mb-4 max-w-sm mx-auto text-justify sm:text-center">
+          "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
+        </p>
+
+        <div class="flex items-center justify-center gap-2 my-3">
+          <div class="w-8 h-px bg-[#C59A45]/40"></div>
+          <div class="w-1.5 h-1.5 rounded-full bg-[#C59A45]"></div>
+          <div class="w-8 h-px bg-[#C59A45]/40"></div>
+        </div>
+
+        <span class="text-[10px] tracking-[0.2em] text-[#244135] font-semibold block uppercase">
+          QS. Ar-Rum Ayat 21
+        </span>
+
+      </div>
+    </section>
+    <!-- Mountain Ridge Transition: Highland Fog to Edelweiss Cream (#E8EDE7 -> #FAF9F5) -->
+    <div class="w-full overflow-hidden leading-none bg-[#E8EDE7] -my-px pointer-events-none select-none z-0 relative">
+      <svg class="block w-full h-7 sm:h-10 text-[#FAF9F5] scale-x-[-1]" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M0,45 C180,10 320,65 520,25 C720,70 880,15 1040,55 C1120,35 1160,45 1200,30 L1200,120 L0,120 Z" fill="currentColor" opacity="0.45"></path>
+        <path d="M0,65 C140,40 280,85 460,45 C640,90 820,35 980,75 C1080,50 1140,65 1200,50 L1200,120 L0,120 Z" fill="currentColor"></path>
+      </svg>
+    </div>
+
+    <!-- ==============================================================
+         CHAPTER I: THE CELEBRANTS (MEMPELAI PRIA & WANITA)
+         ============================================================== -->
+    <section id="mempelai" class="bg-section-cream py-10 px-5 text-center relative z-20 overflow-visible">
+
+      <!-- Corner Botanical Accents -->
+      <div class="absolute -top-7 -left-7 sm:-top-9 sm:-left-9 w-28 sm:w-32 pointer-events-none select-none z-40 botanical-top-layer reveal-botanical delay-100 origin-top-left">
+        <img src="asset/img/ornamen/bucket_bunga_1.svg" alt="Bouquet" class="w-full h-auto drop-shadow-xs sway-lateral-bl" decoding="async" loading="lazy">
+      </div>
+      <div class="absolute -top-7 -right-7 sm:-top-9 sm:-right-9 w-28 sm:w-32 pointer-events-none select-none z-40 botanical-top-layer reveal-botanical delay-100 origin-top-right">
+        <img src="asset/img/ornamen/bucket_bunga.svg" alt="Bouquet" class="w-full h-auto drop-shadow-xs sway-lateral-tr" decoding="async" loading="lazy">
+      </div>
+
+      <!-- Section Masthead -->
+      <div class="mb-8 reveal">
+        <h2 class="font-serif text-3xl sm:text-4xl text-[#152A22] font-normal tracking-wide">Mempelai Bahagia</h2>
+        <p class="text-sm text-[#152A22]/75 mt-1.5 max-w-xs mx-auto leading-relaxed">
+          Dengan memohon rahmat Allah SWT, kami mengundang Anda untuk merayakan cinta kami:
+        </p>
+      </div>
+
+      <!-- Feature 1: The Groom (Asymmetric Left Sail Frame) -->
+      <div class="text-center mb-8 reveal-scale delay-100">
+        
+        <!-- Sail Frame Photo -->
+        <div class="relative w-full aspect-[4/5] max-w-[270px] mx-auto coastal-sail-left overflow-hidden bg-[#E8EDE7] mb-4">
+          <img src="asset/img/mempelai/foto_editorial_groom.jpg" alt="Arga Dirgantara" class="w-full h-full object-cover object-top" decoding="async" loading="lazy">
+          <div class="absolute bottom-2.5 left-3 px-3 py-1 rounded-full bg-white/90 backdrop-blur-xs text-[9px] uppercase tracking-widest font-bold text-[#152A22] shadow-xs">
+            THE GROOM
+          </div>
+        </div>
+
+        <h3 class="font-serif text-2xl font-bold text-[#152A22]">Arga Dirgantara, S.T.</h3>
+        <p class="text-sm text-[#152A22]/70 mt-1">Putra pertama dari Bapak Hendra Dirgantara &amp; Ibu Retno Wulandari</p>
+        
+        <div class="mt-3">
+          <a href="https://instagram.com" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#244135]/10 hover:bg-[#244135] hover:text-white text-sm text-[#244135] font-medium transition-all shadow-2xs">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span>@arga.dirgantara</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Interlocking Alpine Compass & Golden Ampersand Divider -->
+      <div class="my-6 px-4 flex items-center justify-center gap-3 reveal delay-150">
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent to-[#C59A45]/60"></div>
+        <div class="w-9 h-9 rounded-full bg-[#FAF9F5] border border-[#C59A45] shadow-xs flex items-center justify-center">
+          <span class="font-script text-2xl text-[#C59A45] leading-none">&amp;</span>
+        </div>
+        <div class="flex-1 h-px bg-gradient-to-l from-transparent to-[#C59A45]/60"></div>
+      </div>
+
+      <!-- Feature 2: The Bride (Asymmetric Right Sail Frame) -->
+      <div class="text-center mb-6 reveal-scale delay-200">
+        
+        <!-- Sail Frame Photo -->
+        <div class="relative w-full aspect-[4/5] max-w-[270px] mx-auto coastal-sail-right overflow-hidden bg-[#E8EDE7] mb-4">
+          <img src="asset/img/mempelai/foto_editorial_bride.jpg" alt="Maya Kusumaningrum" class="w-full h-full object-cover object-top" decoding="async" loading="lazy">
+          <div class="absolute bottom-2.5 right-3 px-3 py-1 rounded-full bg-white/90 backdrop-blur-xs text-[9px] uppercase tracking-widest font-bold text-[#A67C2C] shadow-xs">
+            THE BRIDE
+          </div>
+        </div>
+
+        <h3 class="font-serif text-2xl font-bold text-[#152A22]">Maya Kusumaningrum, S.Ds.</h3>
+        <p class="text-sm text-[#152A22]/70 mt-1">Putri kedua dari Bapak Danu Kusuma &amp; Ibu Ratih Anggraini</p>
+        
+        <div class="mt-3">
+          <a href="https://instagram.com" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#C59A45]/15 hover:bg-[#C59A45] hover:text-white text-sm text-[#A67C2C] font-medium transition-all shadow-2xs">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span>@maya.kusuma</span>
+          </a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==============================================================
+         CHAPTER II: OUR HIGHLAND JOURNEY (STAGGERED MOUNTAIN MILESTONES)
+         ============================================================== -->
+    <section class="bg-section-sage pt-14 pb-12 px-5 relative z-20 overflow-visible">
+
+      <!-- Sudut Kiri Atas: Puncak Kisah Alpine Botanical -->
+      <div class="absolute -top-6 -left-8 sm:-top-7 sm:-left-9 w-32 sm:w-36 pointer-events-none select-none z-40 botanical-top-layer reveal-botanical delay-100 origin-top-left">
+        <img src="asset/img/ornamen/bucket_bunga_1.svg" alt="Alpine Botanical Kiri Atas" class="w-full h-auto drop-shadow-xs sway-lateral-bl" decoding="async">
+      </div>
+
+      <!-- Sudut Kanan Atas: Puncak Kisah Alpine Botanical -->
+      <div class="absolute -top-6 -right-8 sm:-top-7 sm:-right-9 w-32 sm:w-36 pointer-events-none select-none z-40 botanical-top-layer reveal-botanical delay-150 origin-top-right">
+        <div style="transform: scaleX(-1); transform-origin: center;">
+          <img src="asset/img/ornamen/bucket_bunga_1.svg" alt="Alpine Botanical Kanan Atas" class="w-full h-auto drop-shadow-xs sway-lateral-tr" decoding="async">
+        </div>
+      </div>
+
+      <div class="text-center mb-6 pt-4 sm:pt-5 relative z-10 reveal">
+        <h3 class="font-serif text-3xl text-[#152A22] font-semibold">Puncak Kisah Kami</h3>
+        <p class="text-sm text-[#152A22]/75 mt-1 max-w-xs mx-auto">Tiga fase indah perjalanan cinta kami di bawah naungan lereng pegunungan</p>
+      </div>
+
+      <!-- 3 Staggered Milestone Cards -->
+      <div class="space-y-4 max-w-[360px] mx-auto">
+        
+        <!-- Milestone 1: 2021 (Edelweiss Cream Card) -->
+        <div class="coastal-card coastal-sail-left !rounded-[36px_14px_36px_14px] p-4 text-left relative overflow-hidden reveal delay-100 shadow-xs">
+          <div class="flex items-center justify-between mb-2">
+            <span class="coastal-badge-gold">TAHUN 2021</span>
+            <span class="text-sm">🌲</span>
+          </div>
+          <h4 class="font-serif text-lg font-bold text-[#152A22]">Perjumpaan di Lembah Kabut</h4>
+          <p class="text-sm text-[#152A22]/80 leading-relaxed mt-1">
+            Sebuah perjumpaan tak terduga di tengah sejuknya lereng pegunungan Parahyangan yang mengawali getaran rasa dan membuka lembaran takdir hidup kami.
+          </p>
+        </div>
+
+        <!-- Milestone 2: 2023 (Deep Forest Pine Metallic Card - Contrast Feature) -->
+        <div class="coastal-card-teal coastal-sail-right !rounded-[14px_36px_14px_36px] border-2 border-white/20 p-4 text-left relative overflow-hidden reveal delay-150 shadow-md">
+          <div class="flex items-center justify-between mb-2">
+            <span class="px-2.5 py-0.5 rounded-full bg-[#C59A45]/20 border border-[#C59A45]/50 text-[#C59A45] text-[9px] font-bold uppercase tracking-wider">
+              TAHUN 2023
+            </span>
+            <span class="text-sm">⛰️</span>
+          </div>
+          <h4 class="font-serif text-lg font-bold text-white">Janji di Puncak Pinus</h4>
+          <p class="text-sm text-white/85 leading-relaxed mt-1">
+            Diiringi hembusan angin sejuk hutan cemara dan hangatnya cahaya senja, dua impian menyatu dalam satu ikrar tulus untuk saling melengkapi dan melangkah bersama.
+          </p>
+        </div>
+
+        <!-- Milestone 3: 2025 (Edelweiss Cream Card with Gold Accent) -->
+        <div class="coastal-card coastal-sail-left !rounded-[36px_14px_36px_14px] p-4 text-left relative overflow-hidden reveal delay-200 shadow-xs">
+          <div class="flex items-center justify-between mb-2">
+            <span class="coastal-badge-gold">TAHUN 2025</span>
+            <span class="text-sm">💍</span>
+          </div>
+          <h4 class="font-serif text-lg font-bold text-[#152A22]">Menuju Puncak Janji Suci</h4>
+          <p class="text-sm text-[#152A22]/80 leading-relaxed mt-1">
+            Dengan restu kedua orang tua dan sanak keluarga, kami mengikrarkan janji suci pernikahan untuk mengarungi bahtera rumah tangga yang sakinah, mawaddah, dan warahmah.
+          </p>
+        </div>
+
+        <!-- Mini Mountain Polaroid Memory Snapshot -->
+        <div class="pt-2 text-center reveal delay-250">
+          <div class="p-2 bg-white rounded-2xl shadow-xs border border-[#C59A45]/30 max-w-[290px] mx-auto rotate-1 hover:rotate-0 transition duration-300">
+            <div class="aspect-[16/10] rounded-xl overflow-hidden bg-[#E8EDE7]">
+              <img src="asset/img/mempelai/foto_editorial_story.jpg" alt="Our Story" class="w-full h-full object-cover" decoding="async" loading="lazy">
+            </div>
+            <p class="font-serif text-sm italic text-[#152A22] mt-1.5 font-semibold">"Captured Moments on the Highland Trail"</p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ==============================================================
+         CHAPTER III: THE CELEBRATION (DUAL RESORT CARDS & UNIFIED COUNTDOWN)
+         ============================================================== -->
+    <section id="acara" class="bg-section-cream py-10 px-5 relative z-20 overflow-visible">
+
+      <!-- Corner Botanical Bouquets (Top-Left Only; Bagian Bawah Menggunakan 1 Shared Seam Bucket di #galeri) -->
+      <div class="absolute -top-7 -left-7 sm:-top-9 sm:-left-9 w-28 sm:w-32 pointer-events-none select-none z-40 botanical-top-layer reveal-botanical delay-100 origin-top-left">
+        <img src="asset/img/ornamen/bucket_bunga_1.svg" alt="Bouquet" class="w-full h-auto drop-shadow-xs sway-lateral-bl" decoding="async" loading="lazy">
+      </div>
+      
+      <!-- Section Header -->
+      <div class="text-center mb-6 reveal">
+        <h3 class="font-serif text-3xl sm:text-4xl text-[#152A22] font-normal tracking-wide">Rangkaian Acara</h3>
+        <p class="text-sm text-[#152A22]/75 mt-1.5">Jadwal prosesi pernikahan di dataran tinggi pegunungan kami</p>
+      </div>
+
+      <!-- 1. UNIFIED FLOATING ISLAND COUNTDOWN DOCK -->
+      <div class="coastal-countdown-island p-3.5 mb-6 reveal delay-100 max-w-[360px] mx-auto">
+        <span class="text-[8px] uppercase tracking-[0.25em] text-[#A67C2C] font-bold block text-center mb-2">
+          HITUNG MUNDUR MENUJU HARI BAHAGIA
+        </span>
+        <div class="grid grid-cols-4 divide-x divide-[#C59A45]/35 text-center">
+          <div class="px-1">
+            <span id="cd-days" class="font-serif text-2xl sm:text-3xl font-bold text-[#152A22] block leading-none">25</span>
+            <span class="text-[8px] uppercase tracking-wider text-[#244135] font-bold mt-1 block">HARI</span>
+          </div>
+          <div class="px-1">
+            <span id="cd-hours" class="font-serif text-2xl sm:text-3xl font-bold text-[#152A22] block leading-none">08</span>
+            <span class="text-[8px] uppercase tracking-wider text-[#244135] font-bold mt-1 block">JAM</span>
+          </div>
+          <div class="px-1">
+            <span id="cd-minutes" class="font-serif text-2xl sm:text-3xl font-bold text-[#152A22] block leading-none">45</span>
+            <span class="text-[8px] uppercase tracking-wider text-[#244135] font-bold mt-1 block">MENIT</span>
+          </div>
+          <div class="px-1">
+            <span id="cd-seconds" class="font-serif text-2xl sm:text-3xl font-bold text-[#152A22] block leading-none">12</span>
+            <span class="text-[8px] uppercase tracking-wider text-[#244135] font-bold mt-1 block">DETIK</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. TWO SEPARATE STANDALONE HIGHLAND RESORT CARDS -->
+      <div class="space-y-5 max-w-[360px] mx-auto">
+        
+        <!-- CARD 1: AKAD NIKAH (Morning Pine Vows - Edelweiss Cream Card) -->
+        <div class="coastal-card coastal-sail-left p-6 text-center relative overflow-hidden reveal delay-150 shadow-xs">
+          
+          <h4 class="font-serif text-2xl font-bold text-[#152A22]">Akad Nikah</h4>
+          <p class="text-sm font-semibold text-[#152A22]/85 mt-1">Sabtu, 25 Oktober 2025</p>
+          <p class="text-sm font-bold text-[#3E6655] mt-0.5">Pukul 08.00 - 10.00 WIB</p>
+          <p class="text-sm text-[#152A22]/75 mt-1.5 max-w-xs mx-auto">Pine Valley Glass Chapel, The Highland Sanctuary, Lembang, Bandung Barat</p>
+          
+          <div class="mt-2.5 inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white border border-[#C59A45]/40 text-[9px] text-[#A67C2C] font-medium">
+            <span>Dresscode: Alpine Ivory &amp; Soft Sage</span>
+          </div>
+
+          <div class="mt-4 flex flex-wrap items-center justify-center gap-2">
+            <a href="https://maps.google.com/?q=The+Highland+Sanctuary+Lembang+Bandung" target="_blank" rel="noopener"
+               class="coastal-btn-primary inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold cursor-pointer shadow-xs active:scale-95">
+              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+              <span>Buka Google Maps</span> &#x2197;
+            </a>
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Akad+Nikah+Arga+%26+Maya&dates=20251025T010000Z/20251025T030000Z&details=Akad+Nikah+Arga+dan+Maya+di+Pine+Valley+Chapel+Lembang&location=The+Highland+Sanctuary+Lembang" target="_blank" rel="noopener"
+               class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-[#C59A45]/50 text-[#152A22] hover:bg-[#FAF9F5] text-sm font-medium cursor-pointer shadow-2xs active:scale-95 transition-all">
+              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+              <span>Kalender</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD 2: RESEPSI PERNIKAHAN (Highland Sunset Gala - Deep Forest Pine Metallic Card) -->
+        <div class="coastal-card-teal coastal-sail-right border-2 border-white/30 p-6 text-center relative overflow-hidden reveal delay-200 shadow-md">
+          
+          <h4 class="font-serif text-2xl font-bold text-white">Resepsi Pernikahan</h4>
+          <p class="text-sm font-semibold text-white/90 mt-1">Sabtu, 25 Oktober 2025</p>
+          <p class="text-sm font-bold text-[#C59A45] mt-0.5">Pukul 16.00 – 20.00 WIB (Highland Sunset Hour)</p>
+          <p class="text-sm text-white/80 mt-1.5 max-w-xs mx-auto">Highland Grand Lawn &amp; Glass Ballroom, The Highland Sanctuary, Lembang</p>
+          
+          <div class="mt-2.5 inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/15 border border-white/25 text-[9px] text-[#FAF9F5] font-medium">
+            <span>Dresscode: Mountain Earth Tone &amp; Forest Green</span>
+          </div>
+
+          <div class="mt-4 flex flex-wrap items-center justify-center gap-2">
+            <a href="https://maps.google.com/?q=The+Highland+Sanctuary+Lembang+Bandung" target="_blank" rel="noopener"
+               class="coastal-btn-sand inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold cursor-pointer shadow-xs active:scale-95">
+              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+              <span>Buka Google Maps</span> &#x2197;
+            </a>
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Resepsi+Pernikahan+Arga+%26+Maya&dates=20251025T090000Z/20251025T130000Z&details=Resepsi+Pernikahan+Arga+dan+Maya+di+Highland+Sanctuary+Lembang&location=The+Highland+Sanctuary+Lembang" target="_blank" rel="noopener"
+               class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/15 border border-white/25 text-[#FAF9F5] hover:bg-white/25 text-sm font-medium cursor-pointer shadow-2xs active:scale-95 transition-all">
+              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+              <span>Kalender</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ==============================================================
+         CHAPTER V: THE HIGHLAND MEMORIES (ASYMMETRICAL LOOKBOOK)
+         ============================================================== -->
+    <section id="galeri" class="bg-section-sage py-10 px-5 relative z-20 overflow-visible">
+
+      <!-- Shared Seam Botanical Accent (Berada Tepat di Tengah Antar Section #acara & #galeri, Utuh Tanpa Terpotong) -->
+      <div class="absolute -top-14 sm:-top-16 -right-6 sm:-right-8 w-32 sm:w-36 pointer-events-none select-none z-40 botanical-top-layer reveal-botanical delay-100 origin-center">
+        <img src="asset/img/ornamen/bucket_bunga_seam_right.svg" alt="Alpine Botanical Seam" class="w-full h-auto drop-shadow-xs sway-lateral-seam-tr" decoding="async" loading="lazy">
+      </div>
+      
+      <!-- Section Header -->
+      <div class="text-center mb-6 reveal">
+        <h3 class="font-serif text-3xl sm:text-4xl text-[#152A22] font-normal tracking-wide">Galeri Bahagia</h3>
+        <p class="text-sm text-[#152A22]/75 mt-1.5">Koleksi potret cinta kami di tengah keteduhan alam pegunungan</p>
+      </div>
+
+      <!-- Asymmetrical Editorial Masonry Grid -->
+      <div class="space-y-3.5 max-w-[360px] mx-auto">
+        
+        <!-- Row 1: Staggered Split (Tall 60% + Stacked 40%) -->
+        <div class="grid grid-cols-5 gap-3">
+          
+          <!-- Tall Left Photo (3 cols) -->
+          <div onclick="openLightbox('asset/img/mempelai/foto_editorial_hero.jpg', 'Arga & Maya — The Alpine Portrait')"
+               class="col-span-3 aspect-[3/4] rounded-2xl overflow-hidden shadow-xs border border-[#C59A45]/35 cursor-pointer group reveal-scale delay-100 relative">
+            <img src="asset/img/mempelai/foto_editorial_hero.jpg" alt="Editorial Hero" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-75"></div>
+            <div class="absolute bottom-2 left-2 text-left">
+              <span class="text-[8px] uppercase tracking-widest text-[#C59A45] font-semibold">PORTRAIT</span>
+              <p class="font-serif text-sm text-white font-medium">Alpine Whispers</p>
+            </div>
+          </div>
+
+          <!-- Stacked Right Photos (2 cols) -->
+          <div class="col-span-2 flex flex-col gap-3">
+            <div onclick="openLightbox('asset/img/mempelai/foto_editorial_bride.jpg', 'Maya Kusumaningrum — The Bride')"
+                 class="flex-1 aspect-[1/1] rounded-2xl overflow-hidden shadow-xs border border-[#C59A45]/35 cursor-pointer group reveal-scale delay-150 relative">
+              <img src="asset/img/mempelai/foto_editorial_bride.jpg" alt="Bride Portrait" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
+              <div class="absolute bottom-1.5 left-2 text-left">
+                <p class="font-serif text-[10px] text-white">The Bride</p>
+              </div>
+            </div>
+
+            <div onclick="openLightbox('asset/img/mempelai/foto_editorial_groom.jpg', 'Arga Dirgantara — The Groom')"
+                 class="flex-1 aspect-[1/1] rounded-2xl overflow-hidden shadow-xs border border-[#C59A45]/35 cursor-pointer group reveal-scale delay-200 relative">
+              <img src="asset/img/mempelai/foto_editorial_groom.jpg" alt="Groom Portrait" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
+              <div class="absolute bottom-1.5 left-2 text-left">
+                <p class="font-serif text-[10px] text-white">The Groom</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Row 2: Wide Panoramic Cinema Mountain View -->
+        <div onclick="openLightbox('asset/img/mempelai/foto_editorial_story.jpg', 'Highland Sunset Moments — Mountain Summit')"
+             class="relative w-full aspect-[16/10] rounded-[24px] overflow-hidden shadow-xs border border-[#C59A45]/35 cursor-pointer group reveal-scale delay-250">
+          <img src="asset/img/mempelai/foto_editorial_story.jpg" alt="Candid Moments" class="w-full h-full object-cover" decoding="async" loading="lazy">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-75"></div>
+          <div class="absolute bottom-3 left-3 text-left">
+            <span class="text-[8px] uppercase tracking-widest text-[#C59A45] font-semibold">CINEMATIC</span>
+            <p class="font-serif text-sm text-white font-medium">Under the Mountain Twilight</p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ==============================================================
+         CHAPTER VI: WEDDING GIFT (TANDA KASIH & ANGPAO)
+         ============================================================== -->
+    <section id="tanda-kasih" class="bg-section-cream py-10 px-5 relative z-20 overflow-visible">
+
+      <!-- Corner Botanical Accent (Top-Left, Mirrored) -->
+      <div class="absolute -top-7 -left-7 sm:-top-9 sm:-left-9 w-28 sm:w-32 pointer-events-none select-none z-40 botanical-top-layer reveal-botanical delay-100 origin-top-left">
+        <div style="transform: scaleX(-1); transform-origin: center;">
+          <img src="asset/img/ornamen/bucket_bunga.svg" alt="Bouquet Kiri Atas" class="w-full h-auto drop-shadow-xs sway-lateral-bl" decoding="async" loading="lazy">
+        </div>
+      </div>
+
+      <div class="coastal-card coastal-sail-left p-6 text-center relative overflow-hidden reveal max-w-[360px] mx-auto">
+        
+        <h3 class="font-serif text-3xl text-[#152A22] font-semibold mb-2">Tanda Kasih</h3>
+        <p class="text-sm text-[#152A22]/75 max-w-xs mx-auto mb-6 leading-relaxed">
+          Doa restu Anda merupakan karunia terindah bagi kami. Namun apabila hendak memberikan tanda kasih, Anda dapat menyalurkannya melalui:
+        </p>
+
+        <!-- Tab Controls (Transfer Bank vs Kado Fisik) -->
+        <div class="inline-flex p-1 rounded-full bg-[#E8EDE7] border border-[#C59A45]/30 mb-6 shadow-2xs">
+          <button id="giftTabBank" onclick="switchGiftTab('bank')"
+                  class="px-4 py-1.5 rounded-full text-sm font-semibold bg-[#1E352B] text-white shadow-xs transition-all cursor-pointer">
+            Transfer Bank
+          </button>
+          <button id="giftTabPhysical" onclick="switchGiftTab('physical')"
+                  class="px-4 py-1.5 rounded-full text-sm font-semibold bg-transparent text-[#152A22] hover:text-[#244135] transition-all cursor-pointer">
+            Kirim Kado Fisik
+          </button>
+        </div>
+
+        <!-- 1. Transfer Bank Content -->
+        <div id="giftContentBank" class="space-y-4">
+          
+          <!-- Rekening 1: BCA Deep Forest Pine Metallic Card -->
+          <div class="coastal-card-teal p-5 rounded-2xl text-left relative overflow-hidden group">
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-serif font-bold text-base tracking-wider text-white">BCA</span>
+              <span class="text-[9px] font-mono tracking-widest text-[#C59A45] uppercase font-semibold">DIGITAL ACCESS</span>
+            </div>
+            
+            <div class="my-3">
+              <span class="text-[10px] text-white/70 block uppercase tracking-wider">Nomor Rekening:</span>
+              <span class="font-mono text-xl sm:text-2xl font-bold tracking-widest text-white drop-shadow-xs">
+                7720 4819 32
+              </span>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-white/20">
+              <span class="text-sm text-white/90 font-medium">a.n. Arga Dirgantara</span>
+              <button onclick="copyToClipboard('7720481932', this)"
+                      class="px-3.5 py-1.5 rounded-full bg-white/20 hover:bg-white text-white hover:text-[#152A22] text-sm font-medium transition-all shadow-xs cursor-pointer active:scale-95">
+                Salin No. Rekening
+              </button>
+            </div>
+          </div>
+
+          <!-- Rekening 2: Mandiri Alpine Cedar Gold Card -->
+          <div class="coastal-card-sand p-5 rounded-2xl text-left relative overflow-hidden group">
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-serif font-bold text-base tracking-wider text-white">MANDIRI</span>
+              <span class="text-[9px] font-mono tracking-widest text-[#FAF9F5]/80 uppercase font-semibold">DIGITAL ACCESS</span>
+            </div>
+            
+            <div class="my-3">
+              <span class="text-[10px] text-white/70 block uppercase tracking-wider">Nomor Rekening:</span>
+              <span class="font-mono text-xl sm:text-2xl font-bold tracking-widest text-white drop-shadow-xs">
+                1320 0948 1120
+              </span>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-white/20">
+              <span class="text-sm text-white/90 font-medium">a.n. Maya Kusumaningrum</span>
+              <button onclick="copyToClipboard('132009481120', this)"
+                      class="px-3.5 py-1.5 rounded-full bg-white/20 hover:bg-white text-white hover:text-[#4A3A2A] text-sm font-medium transition-all shadow-xs cursor-pointer active:scale-95">
+                Salin No. Rekening
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 2. Kirim Kado Fisik Content (Initially Hidden) -->
+        <div id="giftContentPhysical" class="hidden">
+          <div class="p-5 rounded-2xl bg-white/90 border border-[#C59A45]/35 text-left shadow-2xs">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-lg">🎁</span>
+              <h4 class="font-serif font-bold text-sm text-[#152A22]">Alamat Kirim Kado Fisik</h4>
+            </div>
+
+            <div class="space-y-1.5 mb-4 text-sm text-[#152A22]/80">
+              <div class="flex justify-between items-center text-[11px]">
+                <span class="text-[#244135]">Penerima:</span>
+                <span class="font-semibold text-[#152A22]">Arga Dirgantara / Maya Kusuma</span>
+              </div>
+              <div class="flex justify-between items-center text-[11px]">
+                <span class="text-[#244135]">Telepon:</span>
+                <span class="font-mono font-medium text-[#152A22]">0813-8901-2345</span>
+              </div>
+              <div class="pt-2 border-t border-[#C59A45]/20 text-[11px] text-[#152A22]/85 leading-relaxed">
+                Villa Pinus No. 12, Kompleks The Highland Sanctuary, Jl. Tangkuban Perahu Km 8, Lembang, Bandung Barat 40391
+              </div>
+            </div>
+
+            <button onclick="copyToClipboard('Villa Pinus No. 12, Kompleks The Highland Sanctuary, Jl. Tangkuban Perahu Km 8, Lembang, Bandung Barat 40391 (Penerima: Arga Dirgantara / 0813-8901-2345)', this)"
+                    class="coastal-btn-primary w-full py-2.5 px-4 rounded-xl text-sm font-medium flex items-center justify-center gap-2 cursor-pointer shadow-xs active:scale-95">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+              <span>Salin Alamat Lengkap</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==============================================================
+         CHAPTER VII: BLESSINGS & RSVP (BUKU TAMU & UCAPAN DOA)
+         ============================================================== -->
+    <section id="ucapan" class="bg-section-sage py-10 px-5 relative z-20 overflow-visible">
+
+      <!-- Shared Seam Botanical Accent (Pindah ke Kanan dan di-Mirror agar tidak menutupi Buku Tamu Pegunungan) -->
+      <div class="absolute -top-16 sm:-top-18 -right-7 sm:-right-9 w-28 sm:w-32 pointer-events-none select-none z-40 botanical-top-layer reveal-botanical delay-100 origin-top-right">
+        <div style="transform: scaleX(-1); transform-origin: center;">
+          <img src="asset/img/ornamen/bucket_bunga_2.svg" alt="Alpine Botanical Seam Kanan" class="w-full h-auto drop-shadow-xs sway-lateral-tr" decoding="async" loading="lazy">
+        </div>
+      </div>
+
+      <div class="coastal-card coastal-sail-right p-6 relative overflow-hidden reveal max-w-[360px] mx-auto">
+        
+        <div class="text-center mb-6">
+          <h3 class="font-serif text-3xl text-[#152A22] font-semibold">Buku Tamu Pegunungan</h3>
+          <p class="text-sm text-[#152A22]/75 mt-1.5">Sampaikan kehadiran serta doa restu bagi kami</p>
+        </div>
+
+        <!-- RSVP Form -->
+        <form id="rsvpForm" onsubmit="submitWish(event)" class="space-y-3.5 mb-8 text-left">
+          <div>
+            <label class="block text-[11px] font-bold text-[#152A22] mb-1">Nama Lengkap</label>
+            <input type="text" id="wishName" name="guestName" required placeholder="Contoh: Budi Santoso"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#C59A45]/40 text-sm text-[#152A22] focus:outline-none focus:ring-2 focus:ring-[#1E352B]"/>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-[#152A22] mb-1">Konfirmasi Kehadiran</label>
+            <select id="attendanceSelect" required
+              class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#C59A45]/40 text-sm text-[#152A22] focus:outline-none focus:ring-2 focus:ring-[#1E352B]">
+              <option value="hadir">🌲 Ya, Saya Akan Hadir</option>
+              <option value="ragu">🤔 Masih Ragu</option>
+              <option value="tidak">⛰️ Maaf, Belum Bisa Hadir</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-[#152A22] mb-1">Untaian Doa &amp; Pesan Hangat</label>
+            <textarea id="wishMessage" rows="3" maxlength="200" required oninput="updateCharCount()"
+              placeholder="Tuliskan ucapan dan doa restu untuk Arga &amp; Maya..."
+              class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#C59A45]/40 text-sm text-[#152A22] focus:outline-none focus:ring-2 focus:ring-[#1E352B] resize-none"></textarea>
+            <span id="charCounter" class="block text-right text-[10px] text-[#152A22]/60 mt-0.5">0/200</span>
+          </div>
+
+          <button type="submit"
+            class="coastal-btn-primary w-full py-3 rounded-xl text-sm font-bold tracking-wider uppercase cursor-pointer">
+            Kirim Konfirmasi &amp; Doa Restu
+          </button>
+        </form>
+
+        <!-- Live Telegrams Stream -->
+        <div id="wishesContainer" class="space-y-3 max-h-64 overflow-y-auto pr-1 reveal delay-150">
+          
+          <div class="p-3.5 rounded-2xl bg-white/95 border border-[#C59A45]/30 shadow-2xs">
+            <div class="flex items-center justify-between gap-2 mb-1.5">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-full bg-[#1E352B] text-white flex items-center justify-center text-sm font-serif font-bold">D</div>
+                <div>
+                  <h4 class="text-sm font-bold text-[#152A22]">Dimas Wicaksono</h4>
+                  <span class="text-[10px] text-[#152A22]/60">25 Oktober 2025</span>
+                </div>
+              </div>
+              <span class="text-[9px] px-2.5 py-0.5 rounded-full bg-[#3E6655]/15 text-[#3E6655] font-bold">Hadir</span>
+            </div>
+            <p class="text-sm text-[#152A22]/80 leading-relaxed mb-2">Selamat berbahagia Arga &amp; Maya! Semoga ikatan pernikahan ini senantiasa kokoh bagaikan gunung dan dipenuhi keberkahan hingga surga-Nya.</p>
+            <div class="flex items-center justify-end">
+              <button onclick="toggleLike(this)" class="inline-flex items-center gap-1 text-sm text-[#3E6655] cursor-pointer">
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"/></svg>
+                <span class="text-[10px] font-bold">14</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-white/95 border border-[#C59A45]/30 shadow-2xs">
+            <div class="flex items-center justify-between gap-2 mb-1.5">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-full bg-[#3E6655] text-white flex items-center justify-center text-sm font-serif font-bold">R</div>
+                <div>
+                  <h4 class="text-sm font-bold text-[#152A22]">Rina &amp; Bayu</h4>
+                  <span class="text-[10px] text-[#152A22]/60">25 Oktober 2025</span>
+                </div>
+              </div>
+              <span class="text-[9px] px-2.5 py-0.5 rounded-full bg-[#3E6655]/15 text-[#3E6655] font-bold">Hadir</span>
+            </div>
+            <p class="text-sm text-[#152A22]/80 leading-relaxed mb-2">Barakallahu lakuma wa baraka 'alaikuma wa jama'a bainakuma fii khoir. Selamat menempuh hidup baru sahabat terbaikku!</p>
+            <div class="flex items-center justify-end">
+              <button onclick="toggleLike(this)" class="inline-flex items-center gap-1 text-sm text-[#3E6655] cursor-pointer">
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"/></svg>
+                <span class="text-[10px] font-bold">9</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==============================================================
+         EPILOGUE: HIGHLAND FAREWELL (TERIMA KASIH & PENUTUP)
+         ============================================================== -->
+    <section id="terimakasih" class="footer-beach-bg pt-12 pb-36 px-6 text-center relative z-20 overflow-visible">
+
+      <!-- Corner Botanical Bouquets (Sudut Kiri Bawah & Kanan Bawah) -->
+      <!-- 1. Bottom-Left: bucket_bunga_2.svg -->
+      <div class="absolute -bottom-8 -left-8 sm:-bottom-10 sm:-left-10 w-32 sm:w-36 pointer-events-none select-none z-40 botanical-top-layer origin-bottom-left">
+        <img src="asset/img/ornamen/bucket_bunga_2.svg" alt="Alpine Botanical Bottom Left" class="w-full h-auto drop-shadow-sm sway-lateral-bl" decoding="async" loading="lazy">
+      </div>
+
+      <!-- 3. Bottom-Right: bucket_bunga_5.svg -->
+      <div class="absolute -bottom-7 -right-7 sm:-bottom-9 sm:-right-9 w-32 sm:w-36 pointer-events-none select-none z-40 botanical-top-layer origin-bottom-right">
+        <img src="asset/img/ornamen/bucket_bunga_5.svg" alt="Alpine Botanical Bottom Right" class="w-full h-auto drop-shadow-sm sway-lateral-tr" decoding="async" loading="lazy">
+      </div>
+
+      <!-- Golden Ring Mountain Sunset Frame Editorial Portrait -->
+      <div class="relative w-36 h-36 mx-auto rounded-full p-1 bg-gradient-to-br from-[#C59A45] to-[#1E352B] shadow-md mb-4 reveal-scale">
+        <div class="w-full h-full rounded-full overflow-hidden bg-white">
+          <img src="asset/img/mempelai/foto_editorial_hero.jpg" 
+            alt="Thank you"
+            class="w-full h-full object-cover object-[center_15%]" decoding="async" loading="lazy">
+        </div>
+      </div>
+
+      <p class="text-sm text-[#152A22]/80 leading-relaxed max-w-xs mx-auto mb-4 reveal delay-100">
+        Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir serta memberikan doa restu bagi lembaran baru hidup kami.
+      </p>
+
+      <p class="text-sm font-semibold text-[#152A22] mb-1 reveal delay-150">Wassalamu'alaikum Warahmatullahi Wabarakatuh</p>
+      <p class="text-[11px] text-[#152A22]/70 mb-2">Kami yang berbahagia,</p>
+
+      <!-- Signature Names -->
+      <h3 class="font-serif text-3xl sm:text-4xl text-[#152A22] font-semibold mb-8 reveal delay-200">
+        Arga <span class="font-light italic text-[#C59A45]">&amp;</span> Maya
+      </h3>
+
+      <!-- Copyright Line -->
+      <div class="pt-6 border-t border-[#C59A45]/30 text-center reveal-fade delay-250">
+        <p class="text-[9px] text-[#152A22]/60 tracking-wider">
+          © 2025 THE WEDDING OF ARGA &amp; MAYA · ALL RIGHTS RESERVED
+        </p>
+      </div>
+
+    </section>
+
+    <!-- ==============================================================
+         FIXED BOTTOM DOCK NAVIGATION (ALPINE RESORT LUXURY BAR)
+         ============================================================== -->
+    <nav class="fixed bottom-4 left-0 right-0 max-w-[430px] mx-auto z-40 pointer-events-none px-4 flex items-center justify-center">
+      <div class="pointer-events-auto bg-white/95 backdrop-blur-md rounded-3xl py-2 px-3.5 shadow-[0_12px_35px_rgba(20,42,32,0.22)] border border-[#C59A45]/35 flex items-center justify-center gap-3">
+        <a href="#home" title="Cover" class="w-11 h-11 rounded-2xl bg-[#1E352B] hover:bg-[#152A22] active:scale-95 text-white flex items-center justify-center transition-all shadow-xs">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+        </a>
+        <a href="#mempelai" title="Mempelai" class="w-11 h-11 rounded-2xl bg-[#1E352B] hover:bg-[#152A22] active:scale-95 text-white flex items-center justify-center transition-all shadow-xs">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+          </svg>
+        </a>
+        <a href="#acara" title="Acara" class="w-11 h-11 rounded-2xl bg-[#1E352B] hover:bg-[#152A22] active:scale-95 text-white flex items-center justify-center transition-all shadow-xs">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </a>
+        <a href="#galeri" title="Galeri" class="w-11 h-11 rounded-2xl bg-[#1E352B] hover:bg-[#152A22] active:scale-95 text-white flex items-center justify-center transition-all shadow-xs">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </a>
+        <a href="#ucapan" title="Ucapan" class="w-11 h-11 rounded-2xl bg-[#1E352B] hover:bg-[#152A22] active:scale-95 text-white flex items-center justify-center transition-all shadow-xs">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+          </svg>
+        </a>
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- ==============================================================
+       LIGHTBOX MODAL FOR GALLERY PHOTOS
+       ============================================================== -->
+  <div id="lightboxModal" onclick="closeLightbox()" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-[#FAF9F5] rounded-3xl overflow-hidden shadow-2xl border border-[#5A7266]/40" onclick="event.stopPropagation()">
+      <div class="relative">
+        <img id="lightboxImg" src="" alt="Preview" class="w-full max-h-[70vh] object-cover" decoding="async" loading="lazy">
+        <button onclick="closeLightbox()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center hover:bg-black cursor-pointer">
+          ✕
+        </button>
+      </div>
+      <div class="p-3 text-center">
+        <p id="lightboxCaption" class="font-serif text-sm text-[#0F1714] font-semibold"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Application Logic -->
+  <script src="js/script.js"></script>
+  <!-- Universal InfoMase Template Bridge -->
+  <script src="../template-bridge.js"></script>
+</body>
+</html>

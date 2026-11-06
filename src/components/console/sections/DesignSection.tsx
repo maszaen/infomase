@@ -143,7 +143,7 @@ export function DesignSection({ invitationId }: { invitationId: string }) {
                       className={`btn btn-sm ${selected ? 'btn-secondary' : 'btn-primary'}`}
                       disabled={selected}
                       onClick={() => {
-                        setTemplateId(tpl.id);
+                        setTemplateId(tpl.id, invitationId);
                         toast('success', `Desain diganti ke ${tpl.name}.`);
                       }}
                     >

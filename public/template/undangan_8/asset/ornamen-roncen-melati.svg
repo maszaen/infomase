@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 320" fill="none">
+  <defs>
+    <radialGradient id="melatiBead" cx="38%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="68%" stop-color="#F6F1E6"/>
+      <stop offset="100%" stop-color="#E2D6C1"/>
+    </radialGradient>
+    <linearGradient id="goldCap" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#EDD5A1"/>
+      <stop offset="55%" stop-color="#C59A4D"/>
+      <stop offset="100%" stop-color="#966E2A"/>
+    </linearGradient>
+    <filter id="melatiShadow" x="-20%" y="-6%" width="140%" height="116%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#4A3B28" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#melatiShadow)">
+    <!-- Top Carved Kraton Rosette Mount -->
+    <path d="M12 0 H138 C132 18 112 28 75 28 C38 28 18 18 12 0 Z" fill="#FFFFFF" stroke="url(#goldCap)" stroke-width="2"/>
+    <circle cx="75" cy="12" r="6" fill="url(#goldCap)"/>
+
+    <!-- Draped Swag Loops Connecting Strands -->
+    <path d="M32 18 Q53 52 75 24 Q97 52 118 18" stroke="url(#goldCap)" stroke-width="1.6" stroke-dasharray="3 3"/>
+
+    <!-- LEFT STRAND (Medium Length) -->
+    <line x1="32" y1="18" x2="32" y2="196" stroke="#D3B173" stroke-width="1.3"/>
+    <g fill="url(#melatiBead)" stroke="#DEC89E" stroke-width="0.9">
+      <ellipse cx="32" cy="36" rx="5.5" ry="7.5"/>
+      <ellipse cx="32" cy="54" rx="5.5" ry="7.5"/>
+      <ellipse cx="32" cy="72" rx="5.5" ry="7.5"/>
+      <ellipse cx="32" cy="90" rx="5.5" ry="7.5"/>
+      <ellipse cx="32" cy="108" rx="5.5" ry="7.5"/>
+      <ellipse cx="32" cy="126" rx="5.5" ry="7.5"/>
+      <ellipse cx="32" cy="144" rx="5.5" ry="7.5"/>
+      <ellipse cx="32" cy="162" rx="5.5" ry="7.5"/>
+    </g>
+    <circle cx="32" cy="182" r="7" fill="url(#goldCap)"/>
+    <!-- Ceplok Melati Blossom Tip -->
+    <g transform="translate(32 202)">
+      <circle cx="0" cy="-8" r="6" fill="url(#melatiBead)" stroke="#D9BE8A"/>
+      <circle cx="8" cy="0" r="6" fill="url(#melatiBead)" stroke="#D9BE8A"/>
+      <circle cx="0" cy="8" r="6" fill="url(#melatiBead)" stroke="#D9BE8A"/>
+      <circle cx="-8" cy="0" r="6" fill="url(#melatiBead)" stroke="#D9BE8A"/>
+      <circle cx="0" cy="0" r="4" fill="url(#goldCap)"/>
+      <path d="M0 14 L-4 28 L0 25 L4 28 Z" fill="url(#goldCap)"/>
+    </g>
+
+    <!-- CENTER ROYAL STRAND (Longest) -->
+    <line x1="75" y1="24" x2="75" y2="262" stroke="#D3B173" stroke-width="1.5"/>
+    <g fill="url(#melatiBead)" stroke="#DEC89E" stroke-width="0.95">
+      <ellipse cx="75" cy="44" rx="6.2" ry="8.5"/>
+      <ellipse cx="75" cy="65" rx="6.2" ry="8.5"/>
+      <ellipse cx="75" cy="86" rx="6.2" ry="8.5"/>
+      <ellipse cx="75" cy="107" rx="6.2" ry="8.5"/>
+      <ellipse cx="75" cy="128" rx="6.2" ry="8.5"/>
+      <ellipse cx="75" cy="149" rx="6.2" ry="8.5"/>
+      <ellipse cx="75" cy="170" rx="6.2" ry="8.5"/>
+      <ellipse cx="75" cy="191" rx="6.2" ry="8.5"/>
+      <ellipse cx="75" cy="212" rx="6.2" ry="8.5"/>
+      <ellipse cx="75" cy="233" rx="6.2" ry="8.5"/>
+    </g>
+    <circle cx="75" cy="117" r="5" fill="url(#goldCap)"/>
+    <circle cx="75" cy="252" r="8" fill="url(#goldCap)"/>
+    <!-- Large Ceplok Melati Blossom Tip -->
+    <g transform="translate(75 275)">
+      <circle cx="0" cy="-10" r="7.5" fill="url(#melatiBead)" stroke="#D9BE8A"/>
+      <circle cx="9.5" cy="-3" r="7.5" fill="url(#melatiBead)" stroke="#D9BE8A"/>
+      <circle cx="6" cy="8.5" r="7.5" fill="url(#melatiBead)" stroke="#D9BE8A"/>
+      <circle cx="-6" cy="8.5" r="7.5" fill="url(#melatiBead)" stroke="#D9BE8A"/>
+      <circle cx="-9.5" cy="-3" r="7.5" fill="url(#melatiBead)" stroke="#D9BE8A"/>
+      <circle cx="0" cy="0" r="5" fill="url(#goldCap)"/>
+      <path d="M0 17 L-5 36 L0 32 L5 36 Z" fill="url(#goldCap)"/>
+    </g>
+
+    <!-- RIGHT STRAND (Shorter Delicate Drop) -->
+    <line x1="118" y1="18" x2="118" y2="152" stroke="#D3B173" stroke-width="1.3"/>
+    <g fill="url(#melatiBead)" stroke="#DEC89E" stroke-width="0.9">
+      <ellipse cx="118" cy="36" rx="5" ry="7"/>
+      <ellipse cx="118" cy="53" rx="5" ry="7"/>
+      <ellipse cx="118" cy="70" rx="5" ry="7"/>
+      <ellipse cx="118" cy="87" rx="5" ry="7"/>
+      <ellipse cx="118" cy="104" rx="5" ry="7"/>
+      <ellipse cx="118" cy="121" rx="5" ry="7"/>
+    </g>
+    <circle cx="118" cy="138" r="6.5" fill="url(#goldCap)"/>
+    <g transform="translate(118 156)">
+      <circle cx="0" cy="-7" r="5.5" fill="url(#melatiBead)" stroke="#D9BE8A"/>
+      <circle cx="7" cy="0" r="5.5" fill="url(#melatiBead)" stroke="#D9BE8A"/>
+      <circle cx="0" cy="7" r="5.5" fill="url(#melatiBead)" stroke="#D9BE8A"/>
+      <circle cx="-7" cy="0" r="5.5" fill="url(#melatiBead)" stroke="#D9BE8A"/>
+      <circle cx="0" cy="0" r="3.5" fill="url(#goldCap)"/>
+      <path d="M0 12 L-3.5 24 L0 21 L3.5 24 Z" fill="url(#goldCap)"/>
+    </g>
+  </g>
+</svg>

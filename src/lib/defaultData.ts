@@ -247,6 +247,158 @@ export const PRESET_PHOTOS = {
   ],
 };
 
+export function getDemoInvitation(templateId: string, slug?: string): InvitationData {
+  const base = { ...DEMO_INVITATION };
+  const targetSlug = slug || 'demo-' + templateId;
+
+  if (templateId === 'luxury-islamic' || templateId === 'undangan_4') {
+    return {
+      ...base,
+      id: 'demo-luxury-islamic',
+      slug: targetSlug,
+      title: 'Demo — Luxury Islamic',
+      templateId: 'luxury-islamic',
+      groom: {
+        name: 'Habib',
+        fullName: 'Habib Yulianto, S.Kom.',
+        fatherName: 'Bpk. H. Hendra Wijaya',
+        motherName: 'Ibu Hj. Siti Aminah',
+        photo: '/template/undangan_4/asset/LUXURY-09-FOTO.jpg',
+        instagram: '@habibyulianto',
+        bio: 'Putra pertama dari Bpk. H. Hendra Wijaya & Ibu Hj. Siti Aminah',
+      },
+      bride: {
+        name: 'Adiba',
+        fullName: 'Adiba Putri Syakila, S.Farm.',
+        fatherName: 'Bpk. H. Ahmad Fauzi',
+        motherName: 'Ibu Hj. Nurul Hidayah',
+        photo: '/template/undangan_4/asset/LUXURY-09-FOTO.jpg',
+        instagram: '@adibasyakila',
+        bio: 'Putri kedua dari Bpk. H. Ahmad Fauzi & Ibu Hj. Nurul Hidayah',
+      },
+      countdownDate: '2026-12-28T08:00:00',
+      music: {
+        title: 'Wedding Song',
+        artist: 'Punakawan Digital',
+        url: '/template/undangan_4/asset/song.mp3',
+        autoplay: true,
+      },
+      isPublished: true,
+    };
+  }
+
+  if (templateId === 'pawiwahan-agung' || templateId === 'undangan_7') {
+    return {
+      ...base,
+      id: 'demo-pawiwahan-agung',
+      slug: targetSlug,
+      title: 'Demo — Pawiwahan Agung',
+      templateId: 'pawiwahan-agung',
+      groom: {
+        name: 'Habib',
+        fullName: 'Habib Yulianto, S.Kom.',
+        fatherName: 'Raden Mas Suryo',
+        motherName: 'Raden Ayu Ratna',
+        photo: '/template/undangan_7/asset/mempelai-pria-jawa.jpg',
+        instagram: '@habibyulianto',
+        bio: 'Putra kakung pambayun Bpk. Raden Mas Suryo & Ibu Raden Ayu Ratna',
+      },
+      bride: {
+        name: 'Adiba',
+        fullName: 'Adiba Putri Syakila, S.Farm.',
+        fatherName: 'Kanjeng Pangeran Haryo Wibowo',
+        motherName: 'Dra. Siti Aminah',
+        photo: '/template/undangan_7/asset/mempelai-wanita-jawa.jpg',
+        instagram: '@adibasyakila',
+        bio: 'Putri panggulon Bpk. K.P.H. Wibowo & Ibu Dra. Siti Aminah',
+      },
+      countdownDate: '2026-12-28T08:00:00',
+      music: {
+        title: 'Gamelan Kraton',
+        artist: 'Karawitan Tradisional',
+        url: '/template/undangan_7/asset/gamelan.mp3',
+        autoplay: true,
+      },
+      isPublished: true,
+    };
+  }
+
+  if (templateId === 'pawiwahan-pethak' || templateId === 'undangan_8') {
+    return {
+      ...base,
+      id: 'demo-pawiwahan-pethak',
+      slug: targetSlug,
+      title: 'Demo — Pawiwahan Pethak',
+      templateId: 'pawiwahan-pethak',
+      groom: {
+        name: 'Habib',
+        fullName: 'Habib Yulianto, S.Kom.',
+        fatherName: 'Raden Mas Suryo',
+        motherName: 'Raden Ayu Ratna',
+        photo: '/template/undangan_8/asset/mempelai-pria-putih.jpg',
+        instagram: '@habibyulianto',
+        bio: 'Putra kakung pambayun Bpk. Raden Mas Suryo & Ibu Raden Ayu Ratna',
+      },
+      bride: {
+        name: 'Adiba',
+        fullName: 'Adiba Putri Syakila, S.Farm.',
+        fatherName: 'Kanjeng Pangeran Haryo Wibowo',
+        motherName: 'Dra. Siti Aminah',
+        photo: '/template/undangan_8/asset/mempelai-wanita-putih.jpg',
+        instagram: '@adibasyakila',
+        bio: 'Putri panggulon Bpk. K.P.H. Wibowo & Ibu Dra. Siti Aminah',
+      },
+      countdownDate: '2026-12-28T08:00:00',
+      music: {
+        title: 'Gamelan Sekar Melati',
+        artist: 'Karawitan Tradisional',
+        url: '/template/undangan_8/asset/gamelan.mp3',
+        autoplay: true,
+      },
+      isPublished: true,
+    };
+  }
+
+  if (templateId === 'misty-mountain' || templateId === 'undangan_5') {
+    return {
+      ...base,
+      id: 'demo-misty-mountain',
+      slug: targetSlug,
+      title: 'Demo — Misty Mountain',
+      templateId: 'misty-mountain',
+      groom: {
+        name: 'Arga',
+        fullName: 'Arga Pratama, S.T.',
+        fatherName: 'Bpk. Surya Wijaya',
+        motherName: 'Ibu Dewi Lestari',
+        photo: '/template/undangan_5/asset/img/mempelai/couple_beach_full.jpg',
+        instagram: '@arga.pratama',
+        bio: 'Putra pertama dari Bapak Surya & Ibu Dewi',
+      },
+      bride: {
+        name: 'Maya',
+        fullName: 'Maya Anggraini, S.Ds.',
+        fatherName: 'Bpk. Budi Santoso',
+        motherName: 'Ibu Rina Wulandari',
+        photo: '/template/undangan_5/asset/img/mempelai/couple_beach_full.jpg',
+        instagram: '@maya.anggraini',
+        bio: 'Putri kedua dari Bapak Budi & Ibu Rina',
+      },
+      countdownDate: '2026-12-12T08:00:00',
+      isPublished: true,
+    };
+  }
+
+  return {
+    ...base,
+    id: `demo-${templateId}`,
+    slug: targetSlug,
+    title: `Demo — ${templateId}`,
+    templateId,
+    isPublished: true,
+  };
+}
+
 /** @deprecated kept for imports that still reference the old name */
 export const INITIAL_INVITATION_DATA = DEMO_INVITATION;
 export const INITIAL_INVITATIONS_COLLECTION = [DEMO_INVITATION];
