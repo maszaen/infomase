@@ -260,11 +260,11 @@ Dokumen ini memuat inventaris lengkap seluruh fitur yang ditemukan pada codebase
 
 ---
 
-## 7. Event Management
+## 7. Event & Day-of Schedule Management
 
 ### 7.1 Manajemen Multi-Acara (Akad, Resepsi, Pemberkatan, dll)
 - **Tujuan & Fungsi**: Menampung informasi lebih dari satu rangkaian acara pernikahan dengan waktu dan lokasi yang berbeda.
-- **User Interaction**: Tab "Acara" di Studio Content: menambah acara baru, mengedit jadwal & lokasi, menghapus acara.
+- **User Interaction**: Tab "Acara" di Studio Konten (`/dashboard/undangan/[id]/content`, tab `events`): menambah acara baru, mengedit jadwal & lokasi, menghapus acara. *(Catatan: Route `/dashboard/undangan/[id]/day` didedikasikan untuk kalkulator katering dan check-in operasional, bukan konfigurasi jadwal).*
 - **Input Data**:
   - `title` (misal: "Akad Nikah", "Resepsi Pernikahan", "Unduh Mantu").
   - `date` (`YYYY-MM-DD`).
@@ -280,6 +280,12 @@ Dokumen ini memuat inventaris lengkap seluruh fitur yang ditemukan pada codebase
 - **Kebutuhan API**: `GET /api/v1/invitations/:id/events`, `POST /api/v1/invitations/:id/events`, `PUT /api/v1/invitations/:id/events/:eventId`, `DELETE /api/v1/invitations/:id/events/:eventId`.
 - **Ownership & Permission**: Pemilik undangan.
 
+### 7.2 Siaran Langsung & Pernikahan Virtual (Live Streaming) — [PROPOSED / UNSUPPORTED DI FRONTEND]
+- **Status Verifikasi Codebase**: **UNSUPPORTED**. Fitur ini tidak ditemukan implementasinya pada frontend aktual (tidak ada UI, tidak ada field pada `InvitationData`, dan tidak ada handler pada `template-bridge.js`). Bagian ini dicatat sebagai usulan ekstensi fitur masa depan.
+- **Tujuan & Fungsi**: Memungkinkan tamu jarak jauh menyaksikan momen sakral pernikahan secara daring melalui platform streaming video.
+- **Rancangan Entitas**: Tabel `invitation_streamings` (1:1 dengan `invitations`).
+- **Kebutuhan API (Masa Depan)**: `PUT /api/v1/invitations/:id/streaming`.
+
 ---
 
 ## 8. Guest Management & WhatsApp Automation
@@ -287,14 +293,13 @@ Dokumen ini memuat inventaris lengkap seluruh fitur yang ditemukan pada codebase
 ### 8.1 Manajemen Daftar Tamu (Guest Manager)
 - **Tujuan & Fungsi**: Mendata daftar orang yang diundang beserta kategori pergaulan dan nomor telepon untuk personalisasi tautan undangan.
 - **User Interaction**: Tab `/dashboard/undangan/[id]/guests`:
-  - Input single tamu: form nama, kategori (`Keluarga`, `Sahabat`, `Teman Kantor`, `VIP`, `Umum`), nomor telepon, kuota max pax, catatan khusus.
-  - Input bulk / banyak tamu: menempelkan daftar teks baris baru (format: `Nama` atau `Nama, 08123456789`).
-  - Import berkas CSV / Excel daftar tamu.
-  - Filter tamu berdasarkan kategori atau status konfirmasi.
-  - Pencarian tamu berdasarkan nama atau nomor HP.
-  - Hapus tamu individual dengan konfirmasi dialog.
-- **Input Data**: `name` (string), `category` (enum), `phoneNumber` (string), `maxPax` (int), `notes` (string).
-- **Output Data**: Daftar tamu dengan kode unik tamu (`guestCode`) dan tautan kustom personal: `/invite/[slug]?to=Nama+Tamu`.
+  - Input single tamu: form nama, kategori (`Keluarga`, `Sahabat`, `Teman Kantor`, `VIP`, `Umum`), nomor telepon (WhatsApp). *(Catatan: field kuota `maxPax` dan `catatan` hanya didukung pada level adapter `api.ts`, belum diekspos di formulir UI).*
+  - Input bulk / banyak tamu: menempelkan daftar teks multi-baris (format: `Nama; NoWA` atau `Nama, NoWA`).
+  - Filter tamu berdasarkan kategori (`Semua`, `Keluarga`, `Sahabat`, `Teman Kantor`, `VIP`, `Umum`).
+  - Pencarian instan tamu berdasarkan nama.
+  - Hapus tamu individual dengan konfirmasi dialog modal.
+- **Input Data**: `name` (string), `category` (enum), `phoneNumber` (string opsional).
+- **Output Data**: Daftar tamu dengan tautan personal instan: `/invite/[slug]?to=Nama+Tamu`.
 - **Data yang Disimpan**: Tabel `invitation_guests`.
 - **Business Rules**: Nomor telepon dinormalisasi menjadi format standar panggilan internasional (`628...`).
 - **Kebutuhan API**:
@@ -406,9 +411,9 @@ Dokumen ini memuat inventaris lengkap seluruh fitur yang ditemukan pada codebase
 
 ### 13.1 Meja Resepsionis / Check-in Tamu
 - **Tujuan & Fungsi**: Alat operasional panitia pada hari-H untuk mencatat tamu yang telah tiba di lokasi secara cepat.
-- **User Interaction**: Petugas resepsionis membuka `/dashboard/undangan/[id]/day`, mencari nama tamu di kolom pencarian, lalu menekan tombol centang "Check-In".
-- **Data yang Disimpan**: Status kehadiran fisik di lokasi pada tabel `invitation_guests` (`is_checked_in = 1`, `checked_in_at = NOW()`).
-- **Kebutuhan API**: `PATCH /api/v1/invitations/:id/guests/:guestId/check-in`.
+- **User Interaction**: Petugas resepsionis membuka `/dashboard/undangan/[id]/day`, mencari nama tamu di kolom pencarian, lalu menekan tombol toggle "Tandai hadir" / "Batalkan".
+- **Data yang Disimpan**: Pada frontend saat ini, status check-in dikelola secara lokal pada state komponen React (`const [checkedIn, setCheckedIn] = useState<Record<string, boolean>>({})`) tanpa persistensi permanen. Untuk backend CI4, direkomendasikan dipersistensikan pada kolom `is_checked_in = 1, checked_in_at = NOW()` di tabel `invitation_guests`.
+- **Kebutuhan API (Backend Baru)**: `PATCH /api/v1/invitations/:id/guests/:guestId/check-in`.
 - **Ownership & Permission**: Pemilik undangan atau staf resepsi terotorisasi.
 
 ### 13.2 Kalkulator Estimasi Katering
@@ -439,18 +444,28 @@ Dokumen ini memuat inventaris lengkap seluruh fitur yang ditemukan pada codebase
   - `pawiwahan-agung` : Rp 89.000
   - `pawiwahan-pethak` : Rp 89.000
 
-### 14.2 Alur Checkout & Pembayaran
-- **User Interaction**: Dari Studio Desain atau Katalog, pengguna memilih template berbayar, diarahkan ke `/checkout?template=[id]&undangan=[invId]`, memilih metode pembayaran (`qris`, `bank-transfer`, `ewallet`), dan menyelesaikan transaksi.
+### 14.2 Alur Checkout & Aktivasi Lisensi
+- **User Interaction**: Dari Studio Desain atau Katalog, pengguna memilih template berbayar, diarahkan ke `/checkout?template=[id]&undangan=[invId]`, memilih metode pembayaran (`qris`, `bank-transfer`, `ewallet`), dan menekan tombol Bayar. Frontend mensimulasikan penyelesaian gateway instan (delay 900ms) dan menerbitkan lisensi permanen secara langsung. *(Catatan: Pada frontend saat ini tidak ada formulir unggah bukti transfer `proofFile`; transaksi langsung berstatus `paid`).*
 - **Input Data**: `templateId`, `invitationId`, `method`, `amount`.
-- **Output Data**: Objek pesanan (`Order`) dengan status `paid` dan kode referensi unik `IM-XXXX-XXXX`, serta penerbitan `TemplateLicence`.
+- **Output Data**: Objek pesanan (`Order`) dengan status `paid`, kode referensi nota unik `IM-XXXX-XXXX`, dan penerbitan `TemplateLicence` berstatus `perpetual`.
+- **Skenario Penggantian Template (Template Switching Matrix)**:
+  1. *Free -> Free*: Pengguna bebas berganti antar-template gratis tanpa biaya dan langsung siap tayang.
+  2. *Free -> Paid*: Status undangan menjadi "Belum Dibeli", publikasi diblokir sampai lisensi template berbayar dibeli.
+  3. *Paid -> Free*: Pengguna bebas beralih ke template gratis; catatan lisensi berbayar sebelumnya tetap aman tersimpan di database.
+  4. *Paid -> different Paid*: Berganti ke template berbayar lain yang belum pernah dibeli mewajibkan pembelian lisensi baru untuk template tersebut.
+  5. *Kembali ke Paid yang Sudah Pernah Dibeli*: Sistem mendeteksi `template_licences` yang sudah ada untuk kombinasi `(invitation_id, template_id)`, dan undangan langsung aktif/siap tayang tanpa perlu membayar ulang!
 - **Data yang Disimpan**:
   - Row baru pada tabel `orders` (`id`, `user_id`, `invitation_id`, `template_id`, `amount`, `status`, `reference`, `method`, `paid_at`).
   - Row baru pada tabel `template_licences` (`id`, `invitation_id`, `template_id`, `order_id`, `kind: perpetual`, `issued_at`).
-- **Kebutuhan API**: `POST /api/v1/orders/checkout`, `GET /api/v1/orders`, `GET /api/v1/orders/:id`, `GET /api/v1/licences`.
+- **Kebutuhan API**:
+  - `POST /api/v1/orders/checkout` (membuat pesanan dan memproses lisensi)
+  - `GET /api/v1/orders` (riwayat pesanan pengguna)
+  - `GET /api/v1/orders/:id` (detail pesanan)
+  - `GET /api/v1/licences` (daftar lisensi aktif)
 - **Ownership & Permission**: Pemilik akun.
 
 ### 14.3 Halaman Pesanan & Lisensi (`/dashboard/orders`)
-- **Tujuan & Fungsi**: Menampilkan riwayat transaksi lengkap, status pembayaran, nomor referensi bukti transaksi, dan kartu rekap total pengeluaran belanja akun.
+- **Tujuan & Fungsi**: Menampilkan riwayat transaksi lengkap, status pembayaran (`Menunggu Pembayaran`, `Menunggu Verifikasi`, `Lunas`), nomor referensi bukti transaksi, dan kartu rekap total pengeluaran belanja akun.
 - **User Interaction**: Halaman `/dashboard/orders`.
 - **Kebutuhan API**: `GET /api/v1/orders`.
 - **Ownership & Permission**: Pemilik akun.
@@ -478,11 +493,14 @@ Dokumen ini memuat inventaris lengkap seluruh fitur yang ditemukan pada codebase
 | Buat Undangan | Undangan | User-owned | `POST /invitations` | Bearer Token |
 | Toggle Publish | Undangan | User-owned | `PATCH /invitations/:id/publish` | Bearer Token + Licence Guard |
 | Edit Konten (7 Tab) | Konten Undangan | Invitation-owned | `PUT /invitations/:id/[section]` | Bearer Token + Owner Guard |
+| Jadwal Acara (Tab Acara) | Rangkaian Acara | Invitation-owned | `POST/PUT/DELETE /invitations/:id/events` | Bearer Token + Owner Guard |
+| Live Streaming [Proposed] | Siaran Langsung | Invitation-owned | `PUT /invitations/:id/streaming` (Opsional/Masa Depan) | Bearer Token + Owner Guard |
 | Upload Media | Aset File | Invitation-owned | `POST /invitations/:id/upload/[type]`| Bearer Token + Owner Guard |
 | Daftar Tamu & WA | Tamu | Invitation-owned | `GET/POST /invitations/:id/guests` | Bearer Token + Owner Guard |
-| Rekap RSVP & Ekspor | Kehadiran | Invitation-owned | `GET /invitations/:id/rsvps` | Bearer Token + Owner Guard |
+| Rekap RSVP & Ekspor | Kehadiran | Invitation-owned | `GET /invitations/:id/rsvps`, `GET /export` | Bearer Token + Owner Guard |
 | Checkout & Lisensi | Transaksi | User & Invitation | `POST /orders/checkout` | Bearer Token |
 | Buka Undangan Tamu | Tampilan Publik | Public / Read-Only | `GET /public/invitations/:slug` | Publik (Rate Limited) |
+| Baca Doa/Ucapan Tamu | Tampilan Publik | Public / Read-Only | `GET /public/invitations/:slug/wishes` | Publik (Rate Limited) |
 | Kirim RSVP Publik | Kehadiran | Public submission | `POST /public/invitations/:slug/rsvp`| Publik (Rate Limited) |
-| Check-in Hari-H | Operasional | Invitation-owned | `PATCH /invitations/:id/guests/:id/check-in` | Bearer Token + Owner Guard |
+| Check-in Hari-H | Operasional | Invitation-owned | `PATCH /invitations/:id/guests/:id/check-in` (Local state di FE) | Bearer Token + Owner Guard |
 

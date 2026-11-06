@@ -33,10 +33,35 @@ Dokumen ini memuat spesifikasi perancangan database relasional lengkap untuk bac
 
 | Klasifikasi | Daftar Tabel | Penjelasan Kepemilikan |
 |---|---|---|
-| **System-Owned / Master** | `templates`, `template_categories`, `system_settings` | Dikelola oleh pengembang / administrator sistem; bersifat global dan dibaca secara *read-only* oleh pengguna umum. |
-| **User-Owned** | `users`, `user_tokens`, `orders` | Melekat langsung pada entitas pengguna (*user account level*). Satu user dapat memiliki banyak order dan banyak undangan. |
-| **Invitation-Owned** | `invitations`, `invitation_couples`, `invitation_quotes`, `invitation_events`, `invitation_stories`, `invitation_galleries`, `invitation_musics`, `invitation_bank_accounts`, `invitation_gifts`, `invitation_guests`, `invitation_rsvps`, `invitation_wa_templates`, `template_licences` | Melekat langsung pada entitas undangan tertentu. Data antar-undangan terisolasi secara mutlak bahkan di dalam satu akun yang sama. |
-| **Reference / Audit Logs** | `invitation_visitor_logs`, `rsvp_wish_likes` | Data log operasional dan interaksi publik untuk audit analitik dan metrik. |
+| **System-Owned / Master** | `templates`, `template_categories` | Dikelola oleh pengembang / administrator sistem; bersifat global dan dibaca secara *read-only* oleh pengguna umum. |
+| **User-Owned** | `users`, `user_tokens`, `orders`, `payments` | Melekat langsung pada entitas pengguna (*user account level*). Satu user dapat memiliki banyak order dan banyak undangan. |
+| **Invitation-Owned** | `invitations`, `invitation_couples`, `invitation_quotes`, `invitation_events`, `invitation_stories`, `invitation_galleries`, `invitation_musics`, `invitation_bank_accounts`, `invitation_gifts`, `invitation_streamings`, `invitation_guests`, `invitation_rsvps`, `invitation_wa_templates`, `template_licences` | Melekat langsung pada entitas undangan tertentu. Data antar-undangan terisolasi secara mutlak bahkan di dalam satu akun yang sama. |
+| **Reference / Audit Logs** | `invitation_visitor_logs` | Data log operasional dan interaksi publik untuk audit analitik dan metrik. |
+
+### 2.3 Matriks Pemetaan Istilah Domain ke Tabel Fisik (Entity Mapping)
+
+Untuk menghindari kebingungan antara terminologi domain/UI dengan skema fisik database, berikut tabel pemetaannya beserta justifikasi arsitekturnya:
+
+| Istilah Domain / UI | Nama Tabel Fisik | Status Desain & Justifikasi Arsitektur |
+|---|---|---|
+| `users` | `users` | Entitas pengguna / penyewa (*tenant root*). |
+| `invitations` | `invitations` | Entitas induk undangan digital. Memuat status tayang, slug URL, timer countdown, dan tema visual. |
+| `couple_profiles` | `invitation_couples` | Relasi 1:1 dengan `invitations`. Menggabungkan profil pria dan wanita dalam 1 baris untuk efisiensi fetch (menghindari pivot query). |
+| `events` | `invitation_events` | Dinamai `invitation_events` karena kata `EVENTS` adalah *reserved keyword* di MySQL 8.0 (`CREATE EVENT`). Memuat jadwal acara dan link live streaming per acara. |
+| `love_stories` | `invitation_stories` | Linimasa perjalanan cinta berurutan (`sort_order`). |
+| `galleries` | `invitation_galleries` | Foto album prewedding berurutan (`sort_order`) dan metadata file. |
+| `gift_accounts` | `invitation_bank_accounts` | Rekening bank dan e-wallet untuk amplop digital. Dipisah dari alamat kado fisik. |
+| `gift_address` | `invitation_gifts` | Alamat fisik pengiriman kado pengantin (relasi 1:1 opsional). |
+| `streaming_info` | `invitation_streamings` | Siaran langsung virtual wedding tingkat undangan (relasi 1:1 opsional). Granular session link juga didukung di `invitation_events`. |
+| `music_tracks` | `invitation_musics` | Pengaturan lagu latar belakang (relasi 1:1, judul, artis, URL audio, autoplay). |
+| `guests` | `invitation_guests` | Buku tamu undangan dengan kode tautan personal berlingkup lokal `(invitation_id, guest_code)`. |
+| `guest_groups` | Terintegrasi via `category` | Kolom `category VARCHAR(50)` pada `invitation_guests` dan filter mapping pada `invitation_wa_templates`. Menghindari over-normalisasi tabel grup terpisah di fase awal. |
+| `rsvps` / `wishes` | `invitation_rsvps` | Menggabungkan konfirmasi kehadiran dan doa restu (buku tamu publik) sesuai model data frontend `RSVPItem`. |
+| `templates` | `templates` | Katalog tema desain master. |
+| `orders` | `orders` | Transaksi pemesanan lisensi template oleh pengguna. Memiliki referensi/kode nota unik (`order_number`). |
+| `payments` | `payments` | Entitas transaksi pembayaran terpisah dari `orders` untuk memisahkan siklus hidup pesanan (*order intent*) dari eksekusi gerbang pembayaran (*payment gateway attempts*). |
+| `payment_methods` | ENUM / Gateway Channel | Disediakan sebagai kolom terstandar di `payments.payment_method` (`qris`, `bank-transfer`, `ewallet`) dan detail channel gateway. |
+| `invitation_licenses` | `template_licences` | Hak kepemilikan lisensi permanen (*perpetual licence*) per kombinasi `(invitation_id, template_id)` dengan status siklus hidup (`active`, `revoked`, `expired`). |
 
 ---
 
@@ -142,16 +167,20 @@ CREATE TABLE `invitations` (
   `slug` VARCHAR(80) NOT NULL UNIQUE COMMENT 'URL unik: contoh raka-sinta',
   `title` VARCHAR(150) NOT NULL COMMENT 'Label judul: Raka & Sinta',
   `template_id` INT UNSIGNED NOT NULL COMMENT 'Template desain aktif',
-  `is_published` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0: Draf, 1: Tayang Publik',
+  `status` ENUM('draft', 'published', 'archived', 'suspended') NOT NULL DEFAULT 'draft' COMMENT 'Siklus hidup status undangan',
+  `is_published` TINYINT(1) GENERATED ALWAYS AS (IF(`status` = 'published', 1, 0)) VIRTUAL COMMENT 'Flag virtual terkomputasi untuk kompatibilitas filter boolean',
   `published_at` DATETIME NULL,
   `countdown_date` DATETIME NOT NULL COMMENT 'Acuan hitung mundur hari-H',
+  `cover_image_url` VARCHAR(255) NULL COMMENT 'Gambar cover hero undangan',
+  `og_image_url` VARCHAR(255) NULL COMMENT 'Banner OpenGraph untuk WhatsApp/Social share link preview',
+  `theme_config` JSON NULL COMMENT 'Visual customization overrides: warna primer, aksen, font overrides',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` DATETIME NULL,
   CONSTRAINT `fk_invitations_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_invitations_template` FOREIGN KEY (`template_id`) REFERENCES `templates` (`id`) ON DELETE RESTRICT,
-  INDEX `idx_invitations_user_published` (`user_id`, `is_published`),
-  INDEX `idx_invitations_slug` (`slug`)
+  INDEX `idx_invitations_user_status` (`user_id`, `status`),
+  INDEX `idx_invitations_slug_status` (`slug`, `status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
@@ -199,7 +228,7 @@ CREATE TABLE `invitation_quotes` (
 ```
 
 #### Tabel: `invitation_events`
-Rangkaian acara pernikahan (Akad, Resepsi, Pemberkatan, dll).
+Rangkaian acara pernikahan (Akad, Resepsi, Pemberkatan, dll) beserta tautan siaran langsung (*live streaming*).
 ```sql
 CREATE TABLE `invitation_events` (
   `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -213,6 +242,8 @@ CREATE TABLE `invitation_events` (
   `location_name` VARCHAR(150) NOT NULL,
   `address` TEXT NOT NULL,
   `maps_url` VARCHAR(500) NOT NULL DEFAULT '',
+  `streaming_url` VARCHAR(500) NULL COMMENT 'Tautan siaran langsung: YouTube Live, Zoom, TikTok Live, IG Live',
+  `streaming_platform` VARCHAR(50) NULL COMMENT 'Platform: youtube, zoom, instagram, tiktok',
   `sort_order` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -310,6 +341,22 @@ CREATE TABLE `invitation_gifts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
+#### Tabel: `invitation_streamings`
+Konfigurasi siaran langsung / virtual wedding streaming.
+```sql
+CREATE TABLE `invitation_streamings` (
+  `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `invitation_id` BIGINT UNSIGNED NOT NULL UNIQUE,
+  `is_enabled` TINYINT(1) NOT NULL DEFAULT 0,
+  `platform` VARCHAR(50) NOT NULL DEFAULT 'youtube' COMMENT 'youtube, instagram, zoom, dll',
+  `stream_url` VARCHAR(500) NOT NULL DEFAULT '',
+  `start_time` DATETIME NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_streamings_invitation` FOREIGN KEY (`invitation_id`) REFERENCES `invitations` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
 ---
 
 ### 3.4 Guests & RSVP Tables
@@ -321,9 +368,9 @@ CREATE TABLE `invitation_guests` (
   `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `public_id` VARCHAR(36) NOT NULL UNIQUE,
   `invitation_id` BIGINT UNSIGNED NOT NULL,
-  `guest_code` VARCHAR(20) NOT NULL UNIQUE COMMENT 'Kode alfanumerik pendek untuk link personal',
+  `guest_code` VARCHAR(30) NOT NULL COMMENT 'Kode alfanumerik unik per undangan untuk tautan personal (misal: budi-santoso, gst-8a9b)',
   `name` VARCHAR(150) NOT NULL,
-  `category` ENUM('Keluarga', 'Sahabat', 'Teman Kantor', 'VIP', 'Umum') NOT NULL DEFAULT 'Umum',
+  `category` VARCHAR(50) NOT NULL DEFAULT 'Umum' COMMENT 'Keluarga, Sahabat, Teman Kantor, VIP, Umum, atau grup kustom',
   `phone_number` VARCHAR(30) NULL,
   `max_pax` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
   `notes` VARCHAR(255) NULL,
@@ -332,6 +379,7 @@ CREATE TABLE `invitation_guests` (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT `fk_guests_invitation` FOREIGN KEY (`invitation_id`) REFERENCES `invitations` (`id`) ON DELETE CASCADE,
+  UNIQUE KEY `uk_guest_invitation_code` (`invitation_id`, `guest_code`),
   INDEX `idx_guests_invitation_category` (`invitation_id`, `category`),
   INDEX `idx_guests_invitation_name` (`invitation_id`, `name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -355,7 +403,7 @@ CREATE TABLE `invitation_rsvps` (
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT `fk_rsvps_invitation` FOREIGN KEY (`invitation_id`) REFERENCES `invitations` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_rsvps_guest` FOREIGN KEY (`guest_id`) REFERENCES `invitation_guests` (`id`) ON DELETE SET NULL,
-  INDEX `idx_rsvps_invitation_attendance` (`invitation_id`, `attendance`),
+  INDEX `idx_rsvps_invitation_attendance_pax` (`invitation_id`, `attendance`, `pax`),
   INDEX `idx_rsvps_invitation_created` (`invitation_id`, `created_at` DESC)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
@@ -380,21 +428,21 @@ CREATE TABLE `invitation_wa_templates` (
 
 ---
 
-### 3.5 Monetization, Orders & Perpetual Licences
+### 3.5 Monetization, Orders, Payments & Perpetual Licences
 
 #### Tabel: `orders`
-Transaksi checkout pembelian lisensi template.
+Transaksi checkout pemesanan lisensi template.
 ```sql
 CREATE TABLE `orders` (
   `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `public_id` VARCHAR(36) NOT NULL UNIQUE,
-  `reference` VARCHAR(30) NOT NULL UNIQUE COMMENT 'Format IM-XXXX-XXXX untuk referensi nota',
+  `order_number` VARCHAR(50) NOT NULL UNIQUE COMMENT 'Format referensi nota: IM-XXXX-XXXX atau ORD-YYYYMM-XXXX',
   `user_id` BIGINT UNSIGNED NOT NULL,
   `invitation_id` BIGINT UNSIGNED NOT NULL,
   `template_id` INT UNSIGNED NOT NULL,
   `amount` DECIMAL(12,2) NOT NULL,
   `currency` VARCHAR(3) NOT NULL DEFAULT 'IDR',
-  `status` ENUM('pending', 'paid', 'failed', 'refunded') NOT NULL DEFAULT 'pending',
+  `status` ENUM('pending', 'confirmed', 'failed', 'cancelled', 'refunded') NOT NULL DEFAULT 'pending' COMMENT 'Status lifecycle pesanan',
   `payment_method` ENUM('qris', 'bank-transfer', 'ewallet') NOT NULL,
   `paid_at` DATETIME NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -403,7 +451,33 @@ CREATE TABLE `orders` (
   CONSTRAINT `fk_orders_invitation` FOREIGN KEY (`invitation_id`) REFERENCES `invitations` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `fk_orders_template` FOREIGN KEY (`template_id`) REFERENCES `templates` (`id`) ON DELETE RESTRICT,
   INDEX `idx_orders_user_status` (`user_id`, `status`),
-  INDEX `idx_orders_reference` (`reference`)
+  INDEX `idx_orders_user_created` (`user_id`, `created_at` DESC),
+  INDEX `idx_orders_number` (`order_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+#### Tabel: `payments`
+Pencatatan transaksi eksekusi pembayaran / verifikasi gerbang pembayaran (Midtrans, Xendit, Tripay, atau transfer manual).
+```sql
+CREATE TABLE `payments` (
+  `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `public_id` VARCHAR(36) NOT NULL UNIQUE,
+  `order_id` BIGINT UNSIGNED NOT NULL,
+  `payment_number` VARCHAR(50) NOT NULL UNIQUE COMMENT 'Kode pembayaran unik, misal: PAY-202611-0001',
+  `payment_method` ENUM('qris', 'bank-transfer', 'ewallet') NOT NULL,
+  `amount` DECIMAL(12,2) NOT NULL,
+  `currency` VARCHAR(3) NOT NULL DEFAULT 'IDR',
+  `gateway_name` VARCHAR(50) NOT NULL DEFAULT 'manual' COMMENT 'manual, midtrans, xendit, tripay',
+  `gateway_transaction_id` VARCHAR(100) NULL COMMENT 'ID referensi dari penyedia payment gateway',
+  `gateway_payload_json` JSON NULL COMMENT 'Payload callback / webhook lengkap untuk jejak audit',
+  `proof_of_transfer_url` VARCHAR(255) NULL COMMENT 'Foto/tangkapan layar struk jika verifikasi transfer manual',
+  `status` ENUM('pending', 'verified', 'rejected', 'expired') NOT NULL DEFAULT 'pending' COMMENT 'Status eksekusi bayar',
+  `verified_at` DATETIME NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_payments_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  INDEX `idx_payments_order_status` (`order_id`, `status`),
+  INDEX `idx_payments_gateway_trx` (`gateway_transaction_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
@@ -417,6 +491,7 @@ CREATE TABLE `template_licences` (
   `template_id` INT UNSIGNED NOT NULL,
   `order_id` BIGINT UNSIGNED NOT NULL UNIQUE,
   `kind` ENUM('perpetual') NOT NULL DEFAULT 'perpetual',
+  `status` ENUM('active', 'revoked', 'expired') NOT NULL DEFAULT 'active' COMMENT 'active: sah & berlaku, revoked: dicabut karena refund, expired: kedaluwarsa',
   `issued_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT `fk_licences_invitation` FOREIGN KEY (`invitation_id`) REFERENCES `invitations` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_licences_template` FOREIGN KEY (`template_id`) REFERENCES `templates` (`id`) ON DELETE RESTRICT,
@@ -441,6 +516,7 @@ CREATE TABLE `invitation_visitor_logs` (
   `device_type` ENUM('mobile', 'desktop', 'tablet') NOT NULL DEFAULT 'mobile',
   `visited_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT `fk_logs_invitation` FOREIGN KEY (`invitation_id`) REFERENCES `invitations` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_logs_guest` FOREIGN KEY (`guest_id`) REFERENCES `invitation_guests` (`id`) ON DELETE SET NULL,
   INDEX `idx_logs_invitation_date` (`invitation_id`, `visited_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
@@ -449,17 +525,21 @@ CREATE TABLE `invitation_visitor_logs` (
 
 ## 4. Constraint & Indexing Strategy Summary
 
-### 4.1 Unique Constraints
+### 4.1 Unique Constraints & Data Integrity
 - `users(email)`: Menjamin tidak ada registrasi ganda dengan email yang sama.
-- `invitations(slug)`: Menjamin tidak ada konflik URL antar-undangan di seluruh sistem.
-- `invitation_guests(guest_code)`: Menjamin kode tautan personal bersifat unik.
-- `orders(reference)`: Menjamin nomor referensi nota pembayaran tidak tertukar.
-- `template_licences(invitation_id, template_id)`: Menjamin 1 undangan hanya perlu membeli 1 lisensi permanen untuk desain template yang sama (mencegah double charge).
+- `invitations(slug)`: Menjamin URL slug unik secara global. Saat soft delete dilakukan, slug diberi sufiks timestamp (`raka-sinta-del-1730900000`) agar slug asli dapat digunakan kembali (*slug recycling*).
+- `invitation_guests(invitation_id, guest_code)`: Menjamin kode tautan personal bersifat unik dalam lingkup undangan bersangkutan, sehingga dua pengantin berbeda tetap dapat menggunakan kode yang mudah dibaca (misal: `budi-santoso`).
+- `orders(order_number)`: Menjamin nomor nota/referensi pesanan unik dan tidak ambigu dalam pembukuan finansial.
+- `payments(payment_number)`: Menjamin ID transaksi pembayaran unik di seluruh gerbang pembayaran.
+- `template_licences(invitation_id, template_id)`: Menjamin 1 undangan hanya dapat memiliki 1 lisensi permanen aktif untuk template yang sama (mencegah penagihan ganda).
 
-### 4.2 Composite Indexes untuk Performa Maksimal
-- `invitations(user_id, is_published)`: Mempercepat filter daftar draf vs tayang pada konsol user.
+### 4.2 Composite & Covering Indexes untuk Performa Maksimal
+- `invitations(user_id, status)`: Mempercepat filter daftar undangan aktif, draf, dan arsip pada konsol user.
+- `invitations(slug, status)`: Mempercepat lookup akses publik pada slug undangan berstatus published.
 - `invitation_events(invitation_id, event_date)`: Mempercepat pengurutan jadwal acara dari yang paling awal.
-- `invitation_guests(invitation_id, category)`: Mempercepat tab filter tamu berdasarkan kategori di studio.
-- `invitation_rsvps(invitation_id, attendance)`: Mempercepat kalkulasi agregat pax hadir, ragu, dan tidak hadir untuk kalkulator katering.
-- `invitation_rsvps(invitation_id, created_at DESC)`: Mempercepat pemuatan linimasa ucapan tamu publik (*pagination*).
+- `invitation_guests(invitation_id, category)`: Mempercepat filter tab tamu berdasarkan kategori di studio editor.
+- `invitation_rsvps(invitation_id, attendance, pax)`: **Covering Index (Index-Only Scan)** untuk kalkulator katering (`COUNT(*)` kehadiran dan `SUM(pax)` langsung dibaca dari B-Tree tanpa menyentuh data disk).
+- `invitation_rsvps(invitation_id, created_at DESC)`: Mempercepat pemuatan linimasa ucapan tamu publik (*pagination* tanpa filesort).
+- `orders(user_id, created_at DESC)`: Menghilangkan filesort saat menampilkan riwayat pesanan pengguna.
+- `payments(order_id, status)`: Mempercepat lookup riwayat status transaksi pembayaran untuk pesanan tertentu.
 

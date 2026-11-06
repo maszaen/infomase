@@ -2,7 +2,7 @@
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { User } from '@/types/auth';
-import { authApi, getToken, getStoredUser, clearAuthStorage, setStoredUser } from './api';
+import { authApi, getToken, setToken as saveTokenToStorage, getStoredUser, clearAuthStorage, setStoredUser } from './api';
 
 /**
  * Auth only. Nothing about billing lives here anymore: the old
@@ -38,7 +38,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     let cancelled = false;
 
     const init = async () => {
-      const storedToken = getToken();
+      let storedToken = getToken();
+
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlAuthToken = urlParams.get('auth_token');
+        if (urlAuthToken) {
+          saveTokenToStorage(urlAuthToken);
+          storedToken = urlAuthToken;
+          sessionStorage.setItem('is_impersonating', 'true');
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      }
+
       const storedUser = getStoredUser();
 
       if (storedToken) {

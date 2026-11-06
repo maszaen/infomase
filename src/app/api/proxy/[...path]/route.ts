@@ -3,8 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const BACKEND_BASE =
   process.env.BACKEND_API_URL ||
   process.env.NEXT_PUBLIC_API_URL ||
-  'http://localhost:8000/wedding_digital/api/v1';
-
+  'http://localhost:8080/api/v1';
 
 async function getPath(context: any): Promise<string[]> {
   try {
@@ -32,6 +31,11 @@ export async function PUT(req: NextRequest, context: any) {
   return handleProxy(req, path);
 }
 
+export async function PATCH(req: NextRequest, context: any) {
+  const path = await getPath(context);
+  return handleProxy(req, path);
+}
+
 export async function DELETE(req: NextRequest, context: any) {
   const path = await getPath(context);
   return handleProxy(req, path);
@@ -51,15 +55,16 @@ async function handleProxy(req: NextRequest, pathSegments: string[]) {
   if (authHeader) headers['Authorization'] = authHeader;
 
   const contentType = req.headers.get('content-type');
-  if (contentType && !contentType.includes('multipart/form-data')) {
-    headers['Content-Type'] = contentType;
-  }
-
   let body: any = undefined;
+
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     if (contentType?.includes('multipart/form-data')) {
       body = await req.formData();
+      // Do NOT set Content-Type header manually for FormData, fetch generates boundary
     } else {
+      if (contentType) {
+        headers['Content-Type'] = contentType;
+      }
       body = await req.text();
     }
   }
@@ -70,7 +75,7 @@ async function handleProxy(req: NextRequest, pathSegments: string[]) {
       headers,
       body,
       cache: 'no-store',
-      signal: AbortSignal.timeout(12000),
+      signal: AbortSignal.timeout(15000),
     });
 
     const data = await res.text();

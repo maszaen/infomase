@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { CheckCircle2, HelpCircle, MessageSquareHeart, Trash2, XCircle } from 'lucide-react';
+import { CheckCircle2, Download, HelpCircle, MessageSquareHeart, Trash2, XCircle } from 'lucide-react';
 import { useInvitationStore } from '@/lib/invitationStore';
 import { useToast } from '@/components/ui/Toast';
 import { rsvpsApi } from '@/lib/api';
@@ -63,6 +63,36 @@ export function RsvpSection({ invitationId }: { invitationId: string }) {
     toast('info', 'Ucapan dihapus.');
   };
 
+  const exportCsv = () => {
+    const sanitizeCell = (raw: string | number) => {
+      let str = String(raw ?? '')
+        .replace(/[\r\n;]+/g, ' ')
+        .replace(/"/g, '""');
+      if (/^[=+\-@\t\r]/.test(str)) {
+        str = `'${str}`;
+      }
+      return `"${str}"`;
+    };
+
+    const header = ['Nama Tamu', 'Status Kehadiran', 'Pax', 'Pesan / Ucapan', 'Tanggal'];
+    const dataRows = inv.rsvpList.map((r) => [
+      r.guestName,
+      r.attendance === 'hadir' ? 'Hadir' : r.attendance === 'ragu' ? 'Ragu' : 'Tidak Hadir',
+      String(r.pax || 1),
+      r.message,
+      r.createdAt || '',
+    ]);
+    const csv = [header, ...dataRows].map((row) => row.map(sanitizeCell).join(';')).join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `rekap-rsvp-${inv.slug || 'undangan'}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+    toast('success', 'Rekap RSVP berhasil diekspor.');
+  };
+
   return (
     <div className="studio-section">
       <div className="stats-grid">
@@ -98,18 +128,29 @@ export function RsvpSection({ invitationId }: { invitationId: string }) {
             <h2>Ucapan &amp; konfirmasi</h2>
             <p>Terbaru lebih dulu. Hapus ucapan yang tidak pantas tampil di undangan.</p>
           </div>
-          <div className="filter-scroll" role="group" aria-label="Filter konfirmasi">
-            {FILTERS.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                className={`chip ${filter === item.id ? 'is-active' : ''}`}
-                aria-pressed={filter === item.id}
-                onClick={() => setFilter(item.id)}
-              >
-                {item.label} ({counts[item.id]})
-              </button>
-            ))}
+          <div style={{ display: 'flex', gap: 'var(--space-3)', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div className="filter-scroll" role="group" aria-label="Filter konfirmasi">
+              {FILTERS.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`chip ${filter === item.id ? 'is-active' : ''}`}
+                  aria-pressed={filter === item.id}
+                  onClick={() => setFilter(item.id)}
+                >
+                  {item.label} ({counts[item.id]})
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              onClick={exportCsv}
+              disabled={inv.rsvpList.length === 0}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--space-1)' }}
+            >
+              <Download size={14} /> Ekspor CSV
+            </button>
           </div>
         </div>
 

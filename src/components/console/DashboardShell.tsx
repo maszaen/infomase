@@ -12,12 +12,61 @@ import { ConsoleChromeProvider, useConsoleChrome } from '@/components/console/Co
 
 function Shell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const { invitations, activeId } = useInvitationStore();
   const { railOpen, closeRail, openCreate, createOpen, closeCreate } = useConsoleChrome();
+  const [isImpersonating, setIsImpersonating] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsImpersonating(sessionStorage.getItem('is_impersonating') === 'true');
+    }
+  }, []);
 
   return (
     <div className="shell">
+      {isImpersonating && (
+        <aside
+          role="status"
+          aria-label="Mode impersonasi admin aktif"
+          className="impersonate-banner"
+          style={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 9999,
+            width: '100%',
+            background: 'var(--brand-warn, #b45309)',
+            color: '#ffffff',
+            padding: '7px 16px',
+            fontSize: '12.5px',
+            fontWeight: 500,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+          }}
+        >
+          <span>
+            🛡️ <strong>Mode Bantuan Admin:</strong> Anda sedang mengelola workspace klien <strong>{user?.name || 'Klien'}</strong> ({user?.email})
+          </span>
+          <a
+            href="http://localhost:8080/admin/users"
+            onClick={() => sessionStorage.removeItem('is_impersonating')}
+            style={{
+              background: '#ffffff',
+              color: '#b45309',
+              padding: '3px 10px',
+              borderRadius: '6px',
+              fontWeight: 600,
+              fontSize: '11.5px',
+              textDecoration: 'none',
+              marginLeft: '12px',
+            }}
+          >
+            Kembali ke Admin Console &rarr;
+          </a>
+        </aside>
+      )}
       <ConsoleRail
         open={railOpen}
         onClose={closeRail}

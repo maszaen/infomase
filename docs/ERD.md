@@ -30,6 +30,7 @@ erDiagram
     INVITATIONS ||--|| INVITATION_QUOTES : "has_quote"
     INVITATIONS ||--|| INVITATION_MUSICS : "has_music"
     INVITATIONS ||--o| INVITATION_GIFTS : "has_gift_address"
+    INVITATIONS ||--o| INVITATION_STREAMINGS : "broadcasts"
 
     %% ==========================================
     %% INVITATION CHILD ENTITIES (1:N Relationships)
@@ -46,7 +47,8 @@ erDiagram
     %% ==========================================
     %% MONETIZATION & ENTITLEMENTS
     %% ==========================================
-    ORDERS ||--|| TEMPLATE_LICENCES : "unlocks"
+    ORDERS ||--o| TEMPLATE_LICENCES : "unlocks"
+    ORDERS ||--o{ PAYMENTS : "settled_via"
     INVITATIONS ||--o{ TEMPLATE_LICENCES : "entitled_to"
     INVITATIONS ||--o{ ORDERS : "associated_with"
 
@@ -54,6 +56,7 @@ erDiagram
     %% GUEST & RSVP RELATIONSHIP
     %% ==========================================
     INVITATION_GUESTS ||--o| INVITATION_RSVPS : "submits"
+    INVITATION_GUESTS ||--o{ INVITATION_VISITOR_LOGS : "tracked_in"
 
     %% ==========================================
     %% ENTITY DEFINITIONS & ATTRIBUTES
@@ -125,9 +128,13 @@ erDiagram
         varchar_80 slug UK
         varchar_150 title
         int_unsigned template_id FK
+        enum status "draft, published, archived, suspended"
         tinyint_1 is_published
         datetime published_at
         datetime countdown_date
+        varchar_255 cover_image_url
+        varchar_255 og_image_url
+        json theme_config
         datetime created_at
         datetime updated_at
         datetime deleted_at
@@ -176,6 +183,8 @@ erDiagram
         varchar_150 location_name
         text address
         varchar_500 maps_url
+        varchar_500 streaming_url
+        varchar_50 streaming_platform
         smallint_unsigned sort_order
         datetime created_at
         datetime updated_at
@@ -242,13 +251,24 @@ erDiagram
         datetime updated_at
     }
 
+    INVITATION_STREAMINGS {
+        bigint_unsigned id PK
+        bigint_unsigned invitation_id FK,UK
+        tinyint_1 is_enabled
+        varchar_50 platform
+        varchar_500 stream_url
+        datetime start_time
+        datetime created_at
+        datetime updated_at
+    }
+
     INVITATION_GUESTS {
         bigint_unsigned id PK
         varchar_36 public_id UK
         bigint_unsigned invitation_id FK
-        varchar_20 guest_code UK
+        varchar_30 guest_code
         varchar_150 name
-        enum category "Keluarga, Sahabat, Teman Kantor, VIP, Umum"
+        varchar_50 category
         varchar_30 phone_number
         smallint_unsigned max_pax
         varchar_255 notes
@@ -288,15 +308,33 @@ erDiagram
     ORDERS {
         bigint_unsigned id PK
         varchar_36 public_id UK
-        varchar_30 reference UK
+        varchar_50 order_number UK
         bigint_unsigned user_id FK
         bigint_unsigned invitation_id FK
         int_unsigned template_id FK
         decimal amount
         varchar_3 currency
-        enum status "pending, paid, failed, refunded"
+        enum status "pending, confirmed, failed, cancelled, refunded"
         enum payment_method "qris, bank-transfer, ewallet"
         datetime paid_at
+        datetime created_at
+        datetime updated_at
+    }
+
+    PAYMENTS {
+        bigint_unsigned id PK
+        varchar_36 public_id UK
+        bigint_unsigned order_id FK
+        varchar_50 payment_number UK
+        enum payment_method "qris, bank-transfer, ewallet"
+        decimal amount
+        varchar_3 currency
+        varchar_50 gateway_name
+        varchar_100 gateway_transaction_id
+        json gateway_payload_json
+        varchar_255 proof_of_transfer_url
+        enum status "pending, verified, rejected, expired"
+        datetime verified_at
         datetime created_at
         datetime updated_at
     }
@@ -308,6 +346,7 @@ erDiagram
         int_unsigned template_id FK
         bigint_unsigned order_id FK,UK
         enum kind "perpetual"
+        enum status "active, revoked, expired"
         datetime issued_at
     }
 
@@ -335,6 +374,7 @@ erDiagram
 | `invitations` &rarr; `invitation_quotes` | 1 : 1 (One-to-One) | `ON DELETE CASCADE` | Setiap undangan memiliki tepat 1 blok kutipan ayat suci/kata mutiara. |
 | `invitations` &rarr; `invitation_musics` | 1 : 1 (One-to-One) | `ON DELETE CASCADE` | Setiap undangan memiliki tepat 1 pengaturan lagu latar. |
 | `invitations` &rarr; `invitation_gifts` | 1 : 1 (One-to-One, Opsional) | `ON DELETE CASCADE` | Setiap undangan memiliki maksimal 1 alamat pengiriman kado fisik. |
+| `invitations` &rarr; `invitation_streamings` | 1 : 1 (One-to-One, Opsional) | `ON DELETE CASCADE` | Setiap undangan memiliki maksimal 1 konfigurasi siaran langsung pernikahan virtual (YouTube/IG/Zoom). |
 | `invitations` &rarr; `invitation_events` | 1 : N (One-to-Many) | `ON DELETE CASCADE` | Setiap undangan dapat memiliki banyak rangkaian acara (Akad, Resepsi, dll). |
 | `invitations` &rarr; `invitation_stories` | 1 : N (One-to-Many) | `ON DELETE CASCADE` | Setiap undangan dapat memiliki banyak linimasa cerita perjalanan cinta. |
 | `invitations` &rarr; `invitation_galleries` | 1 : N (One-to-Many) | `ON DELETE CASCADE` | Setiap undangan dapat memiliki banyak foto galeri prewedding. |
@@ -343,9 +383,11 @@ erDiagram
 | `invitations` &rarr; `invitation_rsvps` | 1 : N (One-to-Many) | `ON DELETE CASCADE` | Setiap undangan menampung ucapan dan konfirmasi kehadiran dari para tamunya. |
 | `invitations` &rarr; `invitation_wa_templates` | 1 : N (One-to-Many) | `ON DELETE CASCADE` | Setiap undangan memiliki template kalimat WhatsApp yang dapat dikustomisasi per kategori. |
 | `templates` &rarr; `invitations` | 1 : N (One-to-Many) | `ON DELETE RESTRICT` | Satu desain template dipakai oleh banyak undangan. Template dilarang dihapus jika masih digunakan oleh undangan aktif. |
-| `orders` &rarr; `template_licences` | 1 : 1 (One-to-One) | `ON DELETE RESTRICT` | Satu transaksi pesanan template yang berstatus lunas menerbitkan tepat satu lisensi permanen. |
+| `orders` &rarr; `template_licences` | 1 : 1 (One-to-One) | `ON DELETE RESTRICT` | Satu transaksi pesanan template yang berstatus terkonfirmasi menerbitkan tepat satu lisensi permanen. |
+| `orders` &rarr; `payments` | 1 : N (One-to-Many) | `ON DELETE CASCADE` | Satu pesanan dapat memiliki beberapa percobaan pembayaran (misal ganti dari transfer ke QRIS). |
 | `invitations` &rarr; `template_licences` | 1 : N (One-to-Many) | `ON DELETE CASCADE` | Satu undangan dapat memiliki beberapa lisensi jika pengguna membeli lebih dari satu varian desain untuk acara tersebut. |
 | `invitation_guests` &rarr; `invitation_rsvps` | 1 : 1 (One-to-One, Opsional) | `ON DELETE SET NULL` | Tamu yang membuka link personal terhubung ke RSVP miliknya. Jika record tamu dihapus, pesan ucapan tetap tersimpan dengan `guest_id = NULL`. |
+| `invitation_guests` &rarr; `invitation_visitor_logs` | 1 : N (One-to-Many, Opsional) | `ON DELETE SET NULL` | Tamu yang mengunjungi undangan tercatat pada visitor log. Jika data tamu dihapus, log analitik tetap utuh. |
 
 ---
 

@@ -79,11 +79,11 @@ Aplikasi memiliki 3 hierarki navigasi utama:
    - `/dashboard/orders` : Riwayat pesanan lisensi template, kode referensi unik (`IM-XXXX-XXXX`), metode pembayaran, status lunas, dan rekap nilai belanja (*lifetime value*).
    - `/checkout?template=[id]&undangan=[invitationId]` : Halaman pembayaran lisensi template dengan pilihan metode (QRIS, Transfer Bank, E-Wallet) dan penerbitan bukti lisensi instan.
 3. **Zona Studio Editor Undangan (`/dashboard/undangan/[id]/[section]`)**:
-   - `.../design` : Manajemen desain tema aktif, status lisensi undangan, tombol ganti template, dan CTA beli lisensi jika template berbayar belum dibeli.
-   - `.../content` : Editor konten lengkap dengan 7 tab (Mempelai, Acara, Kutipan, Kisah Cinta, Galeri Foto, Amplop Digital/Rekening, Musik Latar). Dilengkapi live preview frame ponsel.
-   - `.../guests` : Manajemen daftar tamu (tambah manual, bulk input baris baru, import CSV), filter kategori tamu (Keluarga, Sahabat, Teman Kantor, VIP, Umum), editor template pesan WhatsApp berkategori, dan tautan personal instan.
-   - `.../rsvp` : Manajemen buku tamu dan RSVP masuk (filter status Hadir/Ragu/Tidak Hadir, rekap estimasi pax, daftar pesan/ucapan selamat, hapus ucapan spam, dan ekspor CSV).
-   - `.../day` : Alat hari-H pernikahan (Meja Resepsionis / Check-in kehadiran tamu interaktif dan Kalkulator Katering otomatis berbasis total pax hadir ditambah persentase *safety buffer* 0%, 10%, 15%, 25%).
+   - `.../design` : Manajemen template desain aktif (8 pilihan tema), status lisensi permanen undangan, tombol ganti template visual, dan CTA beli lisensi jika template berbayar belum dimiliki.
+   - `.../content` : Editor konten lengkap dengan **7 tab** (`couple`: Mempelai Pria & Wanita, `events`: Acara [Akad, Resepsi, Maps], `quote`: Kutipan, `story`: Kisah Cinta, `gallery`: Galeri Foto, `gift`: Rekening Bank & Alamat Kado, `music`: Musik Latar & Autoplay). Dilengkapi live preview frame ponsel interaktif.
+   - `.../day` : Alat operasional hari-H pernikahan: Kalkulator Katering otomatis berbasis total pax konfirmasi hadir RSVP dengan buffer (0%, 10%, 15%, 25%) split 60% prasmanan & 40% gubukan, Meja Resepsionis / Check-in kehadiran tamu interaktif (berbasis local state komponen), serta tombol Ekspor Rekap RSVP CSV. *(Catatan teknis: Rangkaian jadwal acara dikelola di route `.../content` tab Acara, bukan di `.../day`. Fitur live streaming dan calendar reminder tidak diimplementasikan di frontend saat ini).*
+   - `.../guests` : Manajemen daftar tamu (tambah manual single, bulk import baris baru format `Nama; NoWA`), filter kategori tamu (Keluarga, Sahabat, Teman Kantor, VIP, Umum), editor master-detail template pesan WhatsApp berkategori dengan variabel dinamis (`{guestName}`, `{eventDate}`, dll.), dan tombol kirim personal WA via deep-link `https://wa.me/...`.
+   - `.../rsvp` : Manajemen buku tamu dan konfirmasi kehadiran masuk (filter status Semua/Hadir/Ragu/Tidak Hadir, rekap estimasi total pax hadir, daftar pesan doa restu, hapus ucapan tidak pantas, dan ekspor berkas spreadsheet CSV).
 
 ---
 
@@ -97,7 +97,7 @@ Aplikasi memiliki 3 hierarki navigasi utama:
 | `ConsoleRail` | `src/components/console/ConsoleRail.tsx` | Navigasi samping 2 level konteks: level akun (Ringkasan, Pesanan, Katalog) vs level undangan aktif (Desain, Konten, Tamu, RSVP, Hari-H). |
 | `ConsolePageHeader` | `src/components/console/ConsolePageHeader.tsx` | Header konsisten dengan slot breadcrumb/title tunggal, deskripsi, dan tombol aksi (Actions slot). |
 | `CreateInvitationModal` | `src/components/console/CreateInvitationModal.tsx` | Form modal pembuatan undangan baru dengan live slug preview, pemilihan tema awal, dan auto-redirect ke studio. |
-| `AuthenticatedGate` | `src/components/console/AuthenticatedGate.tsx` | Pelindung route dashboard di sisi klien (redirect ke `/login` bila token tidak ditemukan). |
+| `AuthenticatedGate` | `src/components/console/AuthenticatedGate.tsx` | Presenter state otentikasi (`AuthLoading`, `AuthNotice`). Konsol dashboard mendukung mode baca / eksplorasi demo (*read-only exploration*) tanpa redirect paksa ke `/login` bila token belum ada. |
 | `InvitationRenderer` | `src/components/invitation/InvitationRenderer.tsx` | Komponen perender undangan digital dinamis yang memetakan `templateId` ke komponen tema React yang tepat. |
 | `EnvelopeCover` | `src/components/invitation/EnvelopeCover.tsx` | Sampul amplop digital / gate pembuka dengan efek buku lipat 3D, animasi ornamen, dan sapaan personal tamu. |
 | `FloatingMusicPlayer` | `src/components/invitation/FloatingMusicPlayer.tsx` | Pemutar audio latar terapung dengan auto-play saat buka cover, tombol toggle play/pause, dan animasi piringan hitam/vinyl. |
@@ -163,19 +163,21 @@ Aplikasi memiliki 3 hierarki navigasi utama:
 | Edit Profil Mempelai | Nama panggilan, nama lengkap, nama ayah/ibu, foto, instagram, bio | String required untuk nama panggilan & foto | Sanitasi string, validasi format username Instagram, validasi URL/path foto |
 | Edit Acara | Judul, tanggal, jam mulai, jam selesai, zona waktu, nama tempat, alamat, URL maps | Tanggal `YYYY-MM-DD`, Jam `HH:mm`, URL Maps valid | `required`, `valid_date[Y-m-d]`, format waktu `H:i`, `valid_url`, timezone whitelist (`WIB`,`WITA`,`WIT`) |
 | Edit Rekening / Hadiah | Nama bank, nomor rekening, atas nama, URL QRIS, alamat fisik pengiriman | Nomor rekening numeric | `required`, `numeric`, sanitasi string, `max_length` |
-| Tambah Tamu (Single) | Nama, kategori, nomor HP, max pax, catatan | Nama required, format nomor HP diawali 08/62 | `required`, sanitasi nama, normalisasi format MSISDN `628...` |
-| Tambah Tamu (Bulk) | Textarea multi-baris (`Nama` atau `Nama, NoHP`) | Parser memecah per baris `\n` dan pemisah koma `,` | Validasi batch payload array, limit maksimal 500 tamu per request |
-| Form Kirim RSVP (Publik) | Nama tamu, kehadiran (Hadir/Tidak/Ragu), jumlah pax, ucapan | Nama required, pesan required | `required`, sanitasi XSS pada ucapan pesan, `in_list[HADIR,TIDAK_HADIR,RAGU]`, `integer`, `greater_than_equal_to[1]`, rate limiting IP publik |
+| Tambah Tamu (Single) | Nama, kategori, nomor HP (di UI); max pax & catatan (di API adapter) | Nama required, format nomor HP diawali 08/62 | `required`, sanitasi nama, normalisasi format MSISDN `628...` |
+| Tambah Tamu (Bulk) | Textarea multi-baris (`Nama` atau `Nama, NoHP`) | Parser memecah per baris `\n` dan pemisah `;`, `,`, `\|` | Validasi batch payload array, limit maksimal 500 tamu per request |
+| Form Kirim RSVP (Publik) | Nama tamu, kehadiran (Hadir/Tidak), ucapan | Nama required, pesan required | `required`, sanitasi XSS pada ucapan pesan, `in_list[HADIR,TIDAK_HADIR,RAGU]`, `integer`, `greater_than_equal_to[1]`, rate limiting IP publik |
+| Checkout Lisensi Template | Template ID, Undangan ID, metode bayar (QRIS/Bank Transfer/E-Wallet) | Pilihan metode valid | `required`, validasi eksistensi order, penerbitan perpetual licence (simulasi checkout instan di frontend) |
 
 ---
 
 ## 8. Modal, Drawer, & Interaction Patterns
 
 1. **Gate / Cover 3D**: Tamu harus menekan tombol "Buka Undangan" untuk membuka sampul gerbang 3D dan mengaktifkan audio background autoplay (kebijakan browser autoplay audio policy).
-2. **Tab Switcher Konten**: 7 tab horizontal di editor studio tanpa reload halaman, menyimpan draft ke state lokal secara instan.
-3. **Kalkulator Katering Interaktif**: Dropdown buffer (+0%, +10%, +15%, +25%) menghitung ulang kebutuhan porsi prasmanan dan gubukan secara real-time dari data kehadiran RSVP.
-4. **Resepsionis Check-In Toggle**: Tombol centang kehadiran di meja resepsionis menandai tamu yang sudah hadir secara fisik di lokasi.
-5. **Copy-to-Clipboard**: Salin tautan undangan, salin teks pesan WhatsApp, dan salin nomor rekening dilengkapi timeout 2 detik untuk visual feedback.
+2. **Tab Switcher Konten**: 7 tab horizontal di editor studio content (`/dashboard/undangan/[id]/content`) tanpa reload halaman: Mempelai, Acara, Kutipan, Kisah, Galeri, Amplop, Musik.
+3. **Kalkulator Katering Interaktif**: Dropdown buffer (+0%, +10%, +15%, +25%) menghitung ulang kebutuhan porsi prasmanan (60%) dan gubukan (40%) secara real-time dari data kehadiran RSVP.
+4. **Resepsionis Check-In Toggle**: Tombol centang kehadiran di meja resepsionis menandai tamu yang sudah hadir secara fisik di lokasi (menggunakan local state komponen).
+5. **Ekspor Rekap CSV**: Tombol "Ekspor CSV" di halaman RSVP dan "Unduh RSVP" di halaman Hari-H untuk mengunduh rekap spreadsheet kehadiran tamu (`rekap-rsvp-[slug].csv`) ber-encoding UTF-8 dengan BOM.
+6. **Copy-to-Clipboard**: Salin tautan undangan, salin teks pesan WhatsApp, dan salin nomor rekening dilengkapi timeout 2 detik untuk visual feedback.
 
 ---
 

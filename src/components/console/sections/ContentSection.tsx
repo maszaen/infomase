@@ -1,11 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  AlertCircle,
   Calendar,
+  CheckCircle2,
   Gift,
   Heart,
   Image as ImageIcon,
+  Loader2,
   Music4,
   Plus,
   Sparkles,
@@ -16,7 +19,7 @@ import {
 import { useInvitationStore } from '@/lib/invitationStore';
 import { useToast } from '@/components/ui/Toast';
 import { InvitationRenderer } from '@/components/invitation/InvitationRenderer';
-import { uploadApi } from '@/lib/api';
+import { invitationsApi, uploadApi } from '@/lib/api';
 import { PRESET_PHOTOS } from '@/lib/defaultData';
 import type { EventDetail, GalleryPhoto } from '@/types/invitation';
 
@@ -42,6 +45,65 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
   const [newCaption, setNewCaption] = useState('');
 
   const inv = store.invitations.find((i) => i.id === invitationId) ?? store.data;
+
+  // Slug collision handling & live validation
+  const [slugInput, setSlugInput] = useState(inv.slug);
+  const [slugStatus, setSlugStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
+  const [conflictReason, setConflictReason] = useState('');
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  useEffect(() => {
+    setSlugInput(inv.slug);
+  }, [inv.slug]);
+
+  useEffect(() => {
+    const cleaned = slugInput.trim().toLowerCase().replace(/[^a-z0-9\-]/g, '');
+    if (!cleaned) {
+      setSlugStatus('idle');
+      return;
+    }
+    if (cleaned === inv.slug) {
+      setSlugStatus('available');
+      setSuggestions([]);
+      setConflictReason('');
+      return;
+    }
+
+    setSlugStatus('checking');
+    const timer = setTimeout(() => {
+      invitationsApi
+        .checkSlug(cleaned, inv.id)
+        .then((res) => {
+          if (res) {
+            if (res.available) {
+              setSlugStatus('available');
+              setSuggestions([]);
+              setConflictReason('');
+              store.updateGeneral(inv.title, cleaned);
+            } else {
+              setSlugStatus('taken');
+              setConflictReason(res.reason || 'Slug sudah digunakan oleh undangan lain.');
+              setSuggestions(res.suggestions || []);
+            }
+          }
+        })
+        .catch(() => {
+          setSlugStatus('available');
+          store.updateGeneral(inv.title, cleaned);
+        });
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [slugInput, inv.id, inv.slug, inv.title, store]);
+
+  const applySlugSuggestion = (sug: string) => {
+    setSlugInput(sug);
+    setSlugStatus('available');
+    setSuggestions([]);
+    setConflictReason('');
+    store.updateGeneral(inv.title, sug);
+    toast('success', `Slug diubah menjadi ${sug}`);
+  };
 
   /* ------------------------------------------------------------- uploads */
   const readFileAsDataUrl = (file: File): Promise<string> =>
@@ -157,21 +219,81 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
             />
           </div>
           <div className="form-group">
-            <label className="form-label" htmlFor="inv-slug">
-              Slug tautan
-            </label>
-            <div className="input-icon-left">
-              <span style={{ position: 'absolute', left: 10, fontSize: 'var(--text-2xs)', color: 'var(--ink-400)', pointerEvents: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
+              <label className="form-label" htmlFor="inv-slug" style={{ marginBottom: 0 }}>
+                Slug tautan publik
+              </label>
+              {slugStatus === 'checking' && (
+                <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--ink-500)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <Loader2 size={12} className="spin" /> Memeriksa…
+                </span>
+              )}
+              {slugStatus === 'available' && (
+                <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--success-700, #177245)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <CheckCircle2 size={12} /> Tautan siap & tersedia
+                </span>
+              )}
+              {slugStatus === 'taken' && (
+                <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--danger-600, #b42323)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <AlertCircle size={12} /> Tautan bentrok / sudah digunakan
+                </span>
+              )}
+            </div>
+            <div className="input-icon-left" style={{ position: 'relative' }}>
+              <span style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', fontSize: 'var(--text-2xs)', color: 'var(--ink-400)', pointerEvents: 'none', fontFamily: 'var(--font-mono)' }}>
                 /invite/
               </span>
               <input
                 id="inv-slug"
                 className="form-input"
-                style={{ paddingLeft: 'calc(var(--space-8) + var(--space-6) + var(--space-0-5))' }}
-                value={inv.slug}
-                onChange={(e) => store.updateGeneral(inv.title, e.target.value)}
+                style={{
+                  paddingLeft: 'calc(var(--space-8) + var(--space-6) + var(--space-0-5))',
+                  fontFamily: 'var(--font-mono)',
+                  borderColor: slugStatus === 'taken' ? 'var(--danger-500, #b42323)' : slugStatus === 'available' ? 'var(--success-500, #22c55e)' : undefined,
+                }}
+                value={slugInput}
+                onChange={(e) => setSlugInput(e.target.value)}
               />
             </div>
+
+            {slugStatus === 'taken' && (
+              <div
+                style={{
+                  marginTop: 'var(--space-2)',
+                  padding: '8px 12px',
+                  borderRadius: 'var(--radius-md)',
+                  backgroundColor: 'var(--warn-50, #fdf8ed)',
+                  border: '1px solid var(--warn-200, #f3d9a4)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 'var(--text-xs)', color: 'var(--warn-700, #8a5a00)', fontWeight: 600, marginBottom: 6 }}>
+                  <AlertCircle size={14} />
+                  <span>{conflictReason || 'Slug ini sudah dipakai. Gunakan rekomendasi tautan unik berikut:'}</span>
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                  {suggestions.map((sug) => (
+                    <button
+                      key={sug}
+                      type="button"
+                      onClick={() => applySlugSuggestion(sug)}
+                      className="btn btn-xs"
+                      style={{
+                        background: 'white',
+                        border: '1px solid var(--warn-300, #fbbf24)',
+                        color: 'var(--ink-800)',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '11px',
+                        cursor: 'pointer',
+                        padding: '3px 8px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      + Gunakan {sug}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ))}

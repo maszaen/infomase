@@ -27,6 +27,7 @@ import {
   saveOrders,
 } from './orders';
 import { getTemplate, TEMPLATES } from './templates';
+import { invitationsApi, ordersApi, guestsApi, rsvpsApi, getToken } from './api';
 
 const INVITATIONS_KEY = 'infomase_invitations_v3';
 const ACTIVE_ID_KEY = 'infomase_active_invitation_v3';
@@ -154,6 +155,71 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
     } finally {
       setIsLoaded(true);
     }
+
+    // Hydrate from live backend API if authenticated
+    const token = getToken();
+    if (token) {
+      invitationsApi
+        .getAll()
+        .then(async (remoteList) => {
+          if (Array.isArray(remoteList) && remoteList.length > 0) {
+            const fullInvs = await Promise.all(
+              remoteList.map((item) =>
+                invitationsApi.getById(item.id).catch(() => null)
+              )
+            );
+            const validInvs = fullInvs.filter((i): i is InvitationData => Boolean(i));
+            if (validInvs.length > 0) {
+              setInvitations(validInvs);
+              setActiveId((prev) => (validInvs.some((v) => v.id === prev) ? prev : validInvs[0].id));
+            }
+          }
+        })
+        .catch(() => {});
+
+      ordersApi
+        .getAll()
+        .then((remoteOrders) => {
+          if (Array.isArray(remoteOrders) && remoteOrders.length > 0) {
+            setOrders(
+              remoteOrders.map((o: any) => ({
+                id: o.id,
+                templateId: o.templateId,
+                templateName: getTemplate(o.templateId)?.name || o.templateId,
+                amount: o.amount,
+                currency: 'IDR' as const,
+                invitationId: o.invitationId,
+                invitationTitle: o.invitationSlug || 'Undangan',
+                method: o.paymentMethod || 'qris',
+                reference: o.orderNumber || o.id,
+                status: o.status === 'confirmed' ? 'paid' : o.status,
+                createdAt: o.createdAt,
+                paidAt: o.paidAt,
+              }))
+            );
+          }
+        })
+        .catch(() => {});
+
+      ordersApi
+        .getLicences()
+        .then((remoteLicences) => {
+          if (Array.isArray(remoteLicences) && remoteLicences.length > 0) {
+            setLicences(
+              remoteLicences.map((l: any) => ({
+                id: l.id,
+                invitationId: l.invitationId,
+                templateId: l.templateId,
+                orderId: l.orderId || l.id,
+                kind: 'perpetual' as const,
+                issuedAt: l.issuedAt,
+                status: l.status,
+              }))
+            );
+          }
+        })
+        .catch(() => {});
+    }
   }, []);
 
   /* ----------------------------------------------------------------- persist */
@@ -179,6 +245,19 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
     () => invitations.find((i) => i.id === activeId) ?? invitations[0] ?? DEMO_INVITATION,
     [invitations, activeId]
   );
+
+  // Debounced auto-save active invitation edits to backend
+  useEffect(() => {
+    if (!isLoaded || !data || data.id === DEMO_INVITATION.id) return;
+    const token = getToken();
+    if (!token) return;
+
+    const timer = setTimeout(() => {
+      invitationsApi.update(data.id, data).catch(() => {});
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [data, isLoaded]);
 
   const updateActive = useCallback(
     (updater: (prev: InvitationData) => InvitationData) => {
@@ -274,6 +353,29 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
 
       setInvitations((prev) => [created, ...prev]);
       setActiveId(created.id);
+
+      if (getToken()) {
+        invitationsApi
+          .create({
+            title: created.title,
+            slug: created.slug,
+            templateId: created.templateId,
+            countdownDate: created.countdownDate,
+            groom: created.groom,
+            bride: created.bride,
+            events: created.events,
+          })
+          .then((serverInv) => {
+            if (serverInv?.id) {
+              setInvitations((prev) =>
+                prev.map((i) => (i.id === created.id ? { ...serverInv, id: serverInv.id } : i))
+              );
+              setActiveId(serverInv.id);
+            }
+          })
+          .catch(() => {});
+      }
+
       return created;
     },
     [invitations]
@@ -309,6 +411,10 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
         setActiveId((current) => (current === id ? next[0].id : current));
         return next;
       });
+
+      if (getToken() && id !== DEMO_INVITATION.id) {
+        invitationsApi.delete(id).catch(() => {});
+      }
     },
     []
   );
@@ -330,6 +436,11 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
             : item
         )
       );
+
+      if (getToken() && id !== DEMO_INVITATION.id) {
+        invitationsApi.update(id, { isPublished: willPublish }).catch(() => {});
+      }
+
       return { ok: true, isPublished: willPublish };
     },
     [invitations, needsPurchase]
@@ -355,6 +466,36 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
           ? prev
           : [result.licence, ...prev]
       );
+
+      if (getToken() && invitationId !== DEMO_INVITATION.id) {
+        ordersApi
+          .checkout({
+            invitationId,
+            templateId,
+            paymentMethod: method || 'qris',
+          })
+          .then(async (orderRes) => {
+            if (orderRes?.id) {
+              await ordersApi.confirmPayment(orderRes.id).catch(() => {});
+              const freshLicences = await ordersApi.getLicences().catch(() => []);
+              if (Array.isArray(freshLicences) && freshLicences.length > 0) {
+                setLicences(
+                  freshLicences.map((l: any) => ({
+                    id: l.id,
+                    invitationId: l.invitationId,
+                    templateId: l.templateId,
+                    orderId: l.orderId || l.id,
+                    kind: 'perpetual' as const,
+                    issuedAt: l.issuedAt,
+                    status: l.status,
+                  }))
+                );
+              }
+            }
+          })
+          .catch(() => {});
+      }
+
       return result;
     },
     [invitations]
@@ -362,8 +503,17 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
 
   const getInvitationBySlug = useCallback(
     (slug: string) => {
+      // 1. Direct match on slug
       const found = invitations.find((i) => i.slug === slug);
       if (found) return found;
+
+      // 2. Direct match on invitation ID
+      const foundById = invitations.find((i) => i.id === slug);
+      if (foundById) return foundById;
+
+      // 3. Match by suffix pattern (e.g. slug-xxxx)
+      const foundBySuffix = invitations.find((i) => slug.startsWith(`${i.slug}-`));
+      if (foundBySuffix) return foundBySuffix;
 
       const tpl = TEMPLATES.find((t) => t.demoSlug === slug);
       if (tpl) {
@@ -439,17 +589,46 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
       ],
     }));
 
-  const deleteRSVP = (id: string) =>
+  const deleteRSVP = (id: string) => {
     updateActive((prev) => ({ ...prev, rsvpList: prev.rsvpList.filter((r) => r.id !== id) }));
+    if (getToken() && activeId && activeId !== DEMO_INVITATION.id) {
+      rsvpsApi.delete(activeId, id).catch(() => {});
+    }
+  };
 
-  const addGuest = (guest: Omit<GuestItem, 'id'>) =>
+  const addGuest = (guest: Omit<GuestItem, 'id'>) => {
+    const tempId = clientId('gst');
     updateActive((prev) => ({
       ...prev,
-      guests: [{ ...guest, id: clientId('gst') }, ...prev.guests],
+      guests: [{ ...guest, id: tempId }, ...prev.guests],
     }));
 
-  const deleteGuest = (id: string) =>
+    if (getToken() && activeId && activeId !== DEMO_INVITATION.id) {
+      guestsApi
+        .add(activeId, {
+          name: guest.name,
+          category: guest.category,
+          phone: guest.phone,
+          maxPax: 1,
+        })
+        .then((serverGuest) => {
+          if (serverGuest?.id) {
+            updateActive((prev) => ({
+              ...prev,
+              guests: prev.guests.map((g) => (g.id === tempId ? { ...g, id: serverGuest.id } : g)),
+            }));
+          }
+        })
+        .catch(() => {});
+    }
+  };
+
+  const deleteGuest = (id: string) => {
     updateActive((prev) => ({ ...prev, guests: prev.guests.filter((g) => g.id !== id) }));
+    if (getToken() && activeId && activeId !== DEMO_INVITATION.id) {
+      guestsApi.delete(activeId, id).catch(() => {});
+    }
+  };
 
   const updateWaTemplates = (templates: WhatsAppMessageTemplate[]) =>
     updateActive((prev) => ({ ...prev, waTemplates: templates }));

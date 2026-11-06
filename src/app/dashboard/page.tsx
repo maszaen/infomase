@@ -211,9 +211,14 @@ export default function OverviewPage() {
                         <span className="badge">Draf</span>
                       )}
                     </div>
-                    <div className="record-meta">
-                      {tpl?.name ?? 'Template tidak dikenal'} ·{' '}
-                      {inv.events[0] ? formatFullIndonesianDate(inv.events[0].date) : 'tanggal kosong'}
+                    <div className="record-meta" style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                      <span style={{ fontWeight: 600 }}>{tpl?.name ?? 'Template tidak dikenal'}</span>
+                      <span>·</span>
+                      <code style={{ fontFamily: 'var(--font-mono)', fontSize: '11.5px', background: 'var(--surface-sunken)', padding: '1px 6px', borderRadius: '4px' }}>
+                        /invite/{inv.slug}
+                      </code>
+                      <span>·</span>
+                      <span>{inv.events[0] ? formatFullIndonesianDate(inv.events[0].date) : 'tanggal kosong'}</span>
                     </div>
                   </div>
 

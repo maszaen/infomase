@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, AlertCircle, CheckCircle2, Sparkles, Loader2 } from 'lucide-react';
 import { Modal } from '@/components/ui/Modal';
 import { useInvitationStore } from '@/lib/invitationStore';
 import { useToast } from '@/components/ui/Toast';
 import { TEMPLATES, formatIDR, getTemplate } from '@/lib/templates';
+import { invitationsApi } from '@/lib/api';
 
 interface Props {
   open: boolean;
@@ -24,13 +25,69 @@ export function CreateInvitationModal({ open, onClose, initialTemplateId }: Prop
   const [groomName, setGroomName] = useState('');
   const [brideName, setBrideName] = useState('');
   const [eventDate, setEventDate] = useState('');
+  const [customSlug, setCustomSlug] = useState('');
+  const [isSlugCustomized, setIsSlugCustomized] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Slug check states
+  const [slugStatus, setSlugStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
+  const [conflictReason, setConflictReason] = useState<string>('');
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
   const template = getTemplate(templateId);
-  const slugPreview = useMemo(() => {
-    const raw = `${groomName}-${brideName}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    return raw || 'nama-pasangan';
+
+  // Auto-generate slug candidate when names change if user hasn't manually customized
+  const defaultSlug = useMemo(() => {
+    const raw = `${groomName}-${brideName}`
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+    return raw || '';
   }, [groomName, brideName]);
+
+  const activeSlug = isSlugCustomized ? customSlug : defaultSlug;
+
+  // Real-time debounced slug availability checker
+  useEffect(() => {
+    if (!activeSlug || activeSlug.trim().length === 0) {
+      setSlugStatus('idle');
+      setSuggestions([]);
+      setConflictReason('');
+      return;
+    }
+
+    setSlugStatus('checking');
+    const timer = setTimeout(() => {
+      invitationsApi
+        .checkSlug(activeSlug)
+        .then((res) => {
+          if (res) {
+            if (res.available) {
+              setSlugStatus('available');
+              setSuggestions([]);
+              setConflictReason('');
+            } else {
+              setSlugStatus('taken');
+              setConflictReason(res.reason || 'Slug sudah digunakan oleh undangan lain.');
+              setSuggestions(res.suggestions || []);
+            }
+          }
+        })
+        .catch(() => {
+          setSlugStatus('available');
+        });
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [activeSlug]);
+
+  const applySuggestion = (sug: string) => {
+    setCustomSlug(sug);
+    setIsSlugCustomized(true);
+    setSlugStatus('available');
+    setSuggestions([]);
+    setConflictReason('');
+  };
 
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -38,11 +95,22 @@ export function CreateInvitationModal({ open, onClose, initialTemplateId }: Prop
       setError('Isi nama panggilan kedua mempelai.');
       return;
     }
+
+    const finalSlug = (activeSlug || 'undangan')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+
+    if (slugStatus === 'taken') {
+      setError('Slug tautan ini sudah digunakan. Silakan pilih salah satu saran tautan unik di atas atau ubah slug.');
+      return;
+    }
+
     setError(null);
 
     const created = createInvitation({
       title: `${groomName.trim()} & ${brideName.trim()}`,
-      slug: slugPreview,
+      slug: finalSlug,
       templateId,
       groomName: groomName.trim(),
       brideName: brideName.trim(),
@@ -172,9 +240,99 @@ export function CreateInvitationModal({ open, onClose, initialTemplateId }: Prop
           <span className="form-hint">Bisa diubah kapan saja setelah undangan dibuat.</span>
         </div>
 
+        {/* ----------------- Slug Tautan Publik & Live Collision Check ----------------- */}
+        <div className="form-group">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+            <label className="form-label" htmlFor="create-slug" style={{ marginBottom: 0 }}>
+              Slug tautan publik <span className="req">*</span>
+            </label>
+            {slugStatus === 'checking' && (
+              <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--ink-500)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                <Loader2 size={12} className="spin" /> Memeriksa tautan…
+              </span>
+            )}
+            {slugStatus === 'available' && activeSlug && (
+              <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--success-700, #177245)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                <CheckCircle2 size={12} /> Tautan tersedia
+              </span>
+            )}
+            {slugStatus === 'taken' && (
+              <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--danger-600, #b42323)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                <AlertCircle size={12} /> Tautan sudah digunakan
+              </span>
+            )}
+          </div>
+
+          <div className="input-icon-left" style={{ position: 'relative' }}>
+            <span style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', fontSize: 'var(--text-2xs)', color: 'var(--ink-400)', pointerEvents: 'none', fontFamily: 'var(--font-mono)' }}>
+              /invite/
+            </span>
+            <input
+              id="create-slug"
+              className={`form-input ${slugStatus === 'taken' ? 'border-danger-400' : ''}`}
+              style={{
+                paddingLeft: 'calc(var(--space-8) + var(--space-6) + var(--space-0-5))',
+                fontFamily: 'var(--font-mono)',
+                borderColor: slugStatus === 'taken' ? 'var(--danger-500, #b42323)' : slugStatus === 'available' ? 'var(--success-500, #22c55e)' : undefined,
+              }}
+              value={activeSlug}
+              onChange={(e) => {
+                setCustomSlug(e.target.value.toLowerCase().replace(/[^a-z0-9\-]/g, ''));
+                setIsSlugCustomized(true);
+              }}
+              placeholder="nama-pasangan"
+              required
+            />
+          </div>
+
+          {/* Collision suggestions pill box */}
+          {slugStatus === 'taken' && (
+            <div
+              style={{
+                marginTop: 'var(--space-2)',
+                padding: '10px 12px',
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: 'var(--warn-50, #fdf8ed)',
+                border: '1px solid var(--warn-200, #f3d9a4)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 'var(--text-xs)', color: 'var(--warn-700, #8a5a00)', fontWeight: 600, marginBottom: 6 }}>
+                <Sparkles size={14} />
+                <span>{conflictReason || 'Slug ini sudah dipakai. Gunakan rekomendasi tautan unik berikut:'}</span>
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {suggestions.map((sug) => (
+                  <button
+                    key={sug}
+                    type="button"
+                    onClick={() => applySuggestion(sug)}
+                    className="btn btn-xs"
+                    style={{
+                      background: 'white',
+                      border: '1px solid var(--warn-300, #fbbf24)',
+                      color: 'var(--ink-800)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '11px',
+                      cursor: 'pointer',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                    }}
+                  >
+                    + Pakai {sug}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <span className="form-hint">
+            Tautan ini adalah URL yang akan dibuka oleh tamu undangan Anda di WhatsApp.
+          </span>
+        </div>
+
         <div className="notice">
           <span>
-            Tautan undangan: <code style={{ fontFamily: 'var(--font-mono)' }}>/invite/{slugPreview}</code>{' '}
+            Tautan final: <code style={{ fontFamily: 'var(--font-mono)' }}>/invite/{activeSlug || 'nama-pasangan'}</code>{' '}
             {template && template.price > 0 ? `· ${formatIDR(template.price)} saat dipublikasikan` : '· gratis'}
           </span>
         </div>

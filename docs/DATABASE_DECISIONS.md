@@ -170,6 +170,104 @@ Dipilih **Clean Service-Repository Layering**:
 
 ---
 
+## ADR-010: Normalisasi Pesanan & Pembayaran (Pemisahan Tabel `orders` dan `payments`)
+
+### Status: ACCEPTED
+
+### Konteks
+Pada MVP awal, data transaksi disatukan dalam tabel `orders`. Namun dalam integrasi nyata dengan gerbang pembayaran (Midtrans, Xendit, Tripay) atau verifikasi transfer bank manual:
+1. Pengguna sering mengganti metode pembayaran di tengah jalan (misal awalnya memilih Transfer BCA lalu beralih ke QRIS).
+2. Transaksi pembayaran dapat kedaluwarsa (*expired*) atau ditolak bank tanpa membatalkan niat pesanan (*order intent*) pengguna.
+3. Webhook callback dari payment gateway memerlukan jejak audit (*audit payload*) terpisah dari entitas nota pesanan.
+
+### Keputusan & Alasan
+Dipilih **Pemisahan Entitas `orders` (1) ke `payments` (N)**:
+- Tabel `orders` merekam kesepakatan pembelian (`order_number`, `user_id`, `invitation_id`, `template_id`, `amount`, `status: pending, confirmed, failed, cancelled, refunded`).
+- Tabel `payments` merekam setiap upaya transaksi pembayaran (`payment_number`, `order_id`, `payment_method`, `gateway_name`, `gateway_transaction_id`, `gateway_payload_json`, `status: pending, verified, rejected, expired`).
+- Hubungan: `orders ||--o{ payments` dengan `ON DELETE CASCADE`. Ketika suatu pembayaran sukses diverifikasi (`status = 'verified'`), order otomatis beralih menjadi `confirmed` dan memicu penerbitan `template_licences`.
+
+---
+
+## ADR-011: Integrasi Live Streaming (Kolom Tersemat pada `invitation_events` vs Tabel Terpisah)
+
+### Status: ACCEPTED
+
+### Konteks
+Pernikahan modern di Indonesia membutuhkan tautan siaran langsung (*live streaming*) via YouTube Live, Zoom, Instagram Live, atau TikTok Live bagi keluarga dan tamu jarak jauh. Muncul pertanyaan apakah informasi streaming disimpan di tabel terpisah atau disematkan.
+
+### Keputusan & Alasan
+Dipilih **Penyematan Kolom pada `invitation_events` (`streaming_url` dan `streaming_platform`)**:
+- Setiap sesi acara (Akad Nikah, Pemberkatan, Resepsi) berpotensi memiliki link streaming yang berbeda (misal Akad disiarkan via Zoom terbatas untuk keluarga, sedangkan Resepsi via YouTube publik).
+- Menghindari pembuatan tabel baru dan join tambahan yang tidak perlu (*over-normalization*).
+- Jika acara tidak mengadakan siaran langsung, kedua kolom bernilai `NULL` tanpa membebani storage InnoDB.
+
+---
+
+## ADR-012: Konvensi Penamaan Child Table & Penghindaran Kata Kunci Khusus MySQL (`invitation_*`)
+
+### Status: ACCEPTED
+
+### Konteks
+Terdapat terminologi umum seperti `events`, `groups`, `couples`, `stories`, `musics`. Di MySQL 8.0+, kata `EVENTS` dan `GROUPS` adalah **kata kunci khusus (reserved keywords)** (`CREATE EVENT`, `GROUPS` window function). Menggunakan nama tabel `events` mengharuskan backtick di seluruh query dan rentan memicu galat sintaks SQL pada CI4 Query Builder.
+
+### Keputusan & Alasan
+Dipilih **Prefiks Domain `invitation_*`** untuk seluruh entitas anak undangan (`invitation_couples`, `invitation_events`, `invitation_stories`, `invitation_galleries`, `invitation_bank_accounts`, `invitation_guests`, `invitation_rsvps`, dll):
+- Menjamin 100% bebas dari benturan kata kunci cadangan database engine.
+- Memberikan isolasi visual dan kejelasan konteks arsitektur saat inspeksi skema database maupun monitoring log query lambat (*slow query log*).
+
+---
+
+## ADR-013: Mesin Status & Transisi Siklus Hidup Entitas (State Machines)
+
+### Status: ACCEPTED
+
+### Konteks
+Entitas sistem mengalami perubahan status yang harus divalidasi transisinya agar data tidak mengalami inkonsistensi.
+
+### Keputusan & Alasan
+Ditetapkan mesin status (*finite state machines*) berikut:
+1. **`invitations.status`**:
+   `draft` &rarr; `published` &rarr; `archived` (atau `suspended` oleh admin jika melanggar ketentuan).
+   - Kolom `is_published` diimplementasikan sebagai *Generated Virtual Column* `IF(status = 'published', 1, 0)` untuk kompatibilitas filter logika boolean.
+2. **`orders.status`**:
+   `pending` &rarr; `confirmed` (terbayar) &rarr; `cancelled` / `refunded`.
+3. **`payments.status`**:
+   `pending` &rarr; `verified` (sukses) atau `rejected` / `expired`.
+4. **`template_licences.status`**:
+   `active` &rarr; `revoked` (akibat refund pesanan) atau `expired`.
+
+---
+
+## ADR-014: Daur Ulang Slug pada Undangan Terhapus (Soft-Delete Slug Recycling)
+
+### Status: ACCEPTED
+
+### Konteks
+Kolom `invitations.slug` memiliki batasan unik `UNIQUE(slug)`. Pada sistem yang menerapkan *soft delete* (`deleted_at IS NOT NULL`), record yang terhapus secara fisik masih berada di tabel. Jika pengguna menghapus undangan berslug `raka-sinta` lalu ingin membuat ulang undangan baru dengan slug yang sama, MySQL akan menolak dengan galat `Duplicate entry 'raka-sinta' for key 'slug'`.
+
+### Keputusan & Alasan
+Diterapkan mekanisme **Slug Renaming on Soft Delete**:
+- Saat API `DELETE /invitations/:id` dipanggil, service layer secara otomatis mengubah slug lama menjadi `raka-sinta-del-{UNIX_TIMESTAMP}` sebelum mengisi `deleted_at = NOW()`.
+- Hal ini secara instan membebaskan slug `raka-sinta` agar dapat dipakai kembali oleh pengguna lain tanpa memerlukan composite partial index yang rumit.
+
+---
+
+## ADR-015: Strategi Covering Index untuk Kalkulator Katering dan Eliminasi Filesort
+
+### Status: ACCEPTED
+
+### Konteks
+1. Pada dashboard konsol pengantin, fitur kalkulator katering melakukan agregasi total kehadiran:
+   `SELECT attendance, COUNT(*), SUM(pax) FROM invitation_rsvps WHERE invitation_id = ? GROUP BY attendance`.
+2. Pada halaman riwayat pesanan, pengguna meminta daftar order terurut:
+   `SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC`.
+
+### Keputusan & Alasan
+1. **Covering Index pada `invitation_rsvps`**: Diterapkan `INDEX idx_rsvps_invitation_attendance_pax (invitation_id, attendance, pax)`. Seluruh kolom query agregat berada di daun B-Tree indeks, sehingga MySQL mengeksekusi perhitungan secara instan (*Index-Only Scan*) tanpa I/O ke blok data tabel.
+2. **Composite Sorting Index pada `orders`**: Diterapkan `INDEX idx_orders_user_created (user_id, created_at DESC)`. Menghilangkan operasi `Using filesort` pada EXPLAIN query riwayat pembelian.
+
+---
+
 ## 5. Analisis Risiko & Mitigasi
 
 | Risiko Arsitektur | Dampak | Probabilitas | Rencana Mitigasi |

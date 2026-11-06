@@ -271,12 +271,19 @@ export const invitationsApi = {
     return res.data;
   },
 
-  checkSlug: async (slug: string) => {
+  checkSlug: async (slug: string, excludeId?: string) => {
+    const query = new URLSearchParams({ slug });
+    if (excludeId) query.set('excludeId', excludeId);
     const res = await apiFetch<{
       slug: string;
       available: boolean;
+      isOwnInvitation?: boolean;
+      conflictTitle?: string | null;
+      reason?: string;
+      suggestions?: string[];
+      uniquePath?: string;
       previewUrl?: string;
-    }>(`/invitations/check-slug?slug=${encodeURIComponent(slug)}`);
+    }>(`/public/check-slug?${query.toString()}`);
     return res.data;
   },
 
@@ -533,6 +540,28 @@ export const publicApi = {
     const res = await apiFetch<InvitationData & { personalizedGuest?: any }>(
       `/public/invitations/${slug}${query}`
     );
+    if (res.data) {
+      try {
+        const wishesRes = await apiFetch<any[]>(`/public/invitations/${slug}/wishes`);
+        if (Array.isArray(wishesRes.data)) {
+          res.data.rsvpList = wishesRes.data.map((w: any) => ({
+            id: String(w.id),
+            guestName: w.guestName || w.sender_name || 'Tamu',
+            attendance:
+              (w.attendance || 'hadir').toLowerCase() === 'hadir'
+                ? 'hadir'
+                : (w.attendance || '').toLowerCase() === 'ragu'
+                ? 'ragu'
+                : 'tidak',
+            pax: Number(w.pax) || 1,
+            message: w.message || '',
+            createdAt: w.createdAt || w.created_at || new Date().toISOString(),
+          }));
+        }
+      } catch {
+        /* ignore wishes fetch failure */
+      }
+    }
     return res.data;
   },
 
@@ -575,3 +604,33 @@ export const publicApi = {
     return res.data;
   },
 };
+
+// 8. ORDERS & LICENCES API
+export const ordersApi = {
+  checkout: async (payload: { invitationId: string; templateId: string; paymentMethod?: string }) => {
+    const res = await apiFetch<any>('/orders/checkout', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+    return res.data;
+  },
+
+  getAll: async () => {
+    const res = await apiFetch<any[]>('/orders');
+    return res.data;
+  },
+
+  getLicences: async () => {
+    const res = await apiFetch<any[]>('/orders/licences');
+    return res.data;
+  },
+
+  confirmPayment: async (orderId: string, payload?: { proofUrl?: string }) => {
+    const res = await apiFetch<any>(`/orders/${orderId}/payment`, {
+      method: 'POST',
+      body: JSON.stringify(payload || {}),
+    });
+    return res.data;
+  },
+};
+

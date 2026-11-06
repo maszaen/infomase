@@ -255,21 +255,35 @@
 
   // 4. RSVP SUBMISSION INTERCEPTOR
   function setupRsvpInterceptor() {
-    const rsvpForms = document.querySelectorAll('#rsvpForm, #rsvp-form, form');
-    rsvpForms.forEach(form => {
-      if (form.__rsvpHooked) return;
-      form.__rsvpHooked = true;
+    if (window.__rsvpHooked) return;
+    window.__rsvpHooked = true;
 
-      form.addEventListener('submit', function (e) {
+    // Use capture phase (true) so we grab inputs BEFORE any template script clears form fields!
+    document.addEventListener(
+      'submit',
+      function (e) {
+        const form = e.target;
+        if (!form || typeof form.querySelector !== 'function') return;
+
         // Find inputs
-        const nameInput = form.querySelector('#wishName, #guestName, #rsvp-name, input[name="name"], input[type="text"]');
-        const msgInput = form.querySelector('#wishMessage, #rsvp-msg, #rsvp-message, textarea');
-        const statusSelect = form.querySelector('#attendanceSelect, #rsvp-presence, select[name="presence"], select');
+        const nameInput = form.querySelector(
+          '#wishName, #guestName, #rsvp-name, input[name="name"], input[type="text"]'
+        );
+        const msgInput = form.querySelector(
+          '#wishMessage, #rsvp-msg, #rsvp-message, textarea'
+        );
+        const statusSelect = form.querySelector(
+          '#attendanceSelect, #rsvp-presence, select[name="presence"], select'
+        );
 
         const guestName = nameInput ? nameInput.value.trim() : '';
         const message = msgInput ? msgInput.value.trim() : '';
         const rawStatus = statusSelect ? statusSelect.value.toLowerCase() : 'hadir';
-        const attendance = rawStatus.includes('tidak') ? 'tidak' : rawStatus.includes('ragu') ? 'ragu' : 'hadir';
+        const attendance = rawStatus.includes('tidak')
+          ? 'tidak'
+          : rawStatus.includes('ragu')
+          ? 'ragu'
+          : 'hadir';
 
         if (guestName && message) {
           const targetOrigin =
@@ -284,14 +298,15 @@
                 attendance,
                 pax: 1,
                 message,
-                createdAt: new Date().toISOString()
-              }
+                createdAt: new Date().toISOString(),
+              },
             },
             targetOrigin
           );
         }
-      });
-    });
+      },
+      true
+    );
   }
 
   // 5. MESSAGE LISTENER FROM NEXT.JS PARENT

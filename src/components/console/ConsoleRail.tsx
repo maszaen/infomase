@@ -157,6 +157,7 @@ export function ConsoleRail({ open, onClose, invitations, activeId, onCreate, on
                   key={inv.id}
                   href={`/dashboard/undangan/${inv.id}/content`}
                   className="rail-item"
+                  style={{ alignItems: 'flex-start', padding: '8px 12px' }}
                   onClick={onClose}
                 >
                   <span
@@ -167,9 +168,17 @@ export function ConsoleRail({ open, onClose, invitations, activeId, onCreate, on
                       borderRadius: '50%',
                       background: inv.id === activeId ? 'var(--brand)' : 'var(--ink-300)',
                       flexShrink: 0,
+                      marginTop: 6,
                     }}
                   />
-                  <span className="text-truncate">{inv.title}</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' }}>
+                    <span className="text-truncate" style={{ fontWeight: inv.id === activeId ? 650 : 500 }}>
+                      {inv.title}
+                    </span>
+                    <span style={{ fontSize: '10.5px', color: 'var(--ink-400)', fontFamily: 'var(--font-mono)' }}>
+                      /invite/{inv.slug}
+                    </span>
+                  </div>
                 </Link>
               ))}
 
