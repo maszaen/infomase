@@ -10,18 +10,18 @@ import { useAuth } from '@/lib/authContext';
 import { BrandMark } from '@/components/ui/Brand';
 import { ConsoleChromeProvider, useConsoleChrome } from '@/components/console/ConsoleChrome';
 
+const subscribeNoop = () => () => {};
+
 function Shell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { user, logout } = useAuth();
   const { invitations, activeId } = useInvitationStore();
-  const { railOpen, closeRail, openCreate, createOpen, closeCreate } = useConsoleChrome();
-  const [isImpersonating, setIsImpersonating] = React.useState(false);
-
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsImpersonating(sessionStorage.getItem('is_impersonating') === 'true');
-    }
-  }, []);
+  const { railOpen, closeRail, openCreate, createOpen, createTemplateId, closeCreate } = useConsoleChrome();
+  const isImpersonating = React.useSyncExternalStore(
+    subscribeNoop,
+    () => sessionStorage.getItem('is_impersonating') === 'true',
+    () => false
+  );
 
   return (
     <div className="shell">
@@ -79,7 +79,7 @@ function Shell({ children }: { children: React.ReactNode }) {
         }}
       />
       <main className="shell-main">{children}</main>
-      <CreateInvitationModal open={createOpen} onClose={closeCreate} />
+      <CreateInvitationModal open={createOpen} onClose={closeCreate} initialTemplateId={createTemplateId} />
     </div>
   );
 }

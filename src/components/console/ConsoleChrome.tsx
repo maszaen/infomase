@@ -9,7 +9,8 @@ interface ConsoleChromeValue {
   closeRail(): void;
   toggleRail(): void;
   createOpen: boolean;
-  openCreate(): void;
+  createTemplateId?: string;
+  openCreate(templateId?: string): void;
   closeCreate(): void;
 }
 
@@ -18,15 +19,20 @@ const ConsoleChromeContext = createContext<ConsoleChromeValue | undefined>(undef
 export function ConsoleChromeProvider({ children }: { children: React.ReactNode }) {
   const [railOpen, setRailOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
+  const [createTemplateId, setCreateTemplateId] = useState<string | undefined>(undefined);
 
   const openRail = useCallback(() => setRailOpen(true), []);
   const closeRail = useCallback(() => setRailOpen(false), []);
   const toggleRail = useCallback(() => setRailOpen((v) => !v), []);
-  const openCreate = useCallback(() => {
+  const openCreate = useCallback((templateId?: string) => {
     setRailOpen(false);
+    setCreateTemplateId(typeof templateId === 'string' ? templateId : undefined);
     setCreateOpen(true);
   }, []);
-  const closeCreate = useCallback(() => setCreateOpen(false), []);
+  const closeCreate = useCallback(() => {
+    setCreateOpen(false);
+    setCreateTemplateId(undefined);
+  }, []);
 
   // Esc closes the drawer; body scroll is locked while it is open on mobile.
   useEffect(() => {
@@ -44,8 +50,8 @@ export function ConsoleChromeProvider({ children }: { children: React.ReactNode 
   }, [railOpen, closeRail]);
 
   const value = useMemo(
-    () => ({ railOpen, openRail, closeRail, toggleRail, createOpen, openCreate, closeCreate }),
-    [railOpen, openRail, closeRail, toggleRail, createOpen, openCreate, closeCreate]
+    () => ({ railOpen, openRail, closeRail, toggleRail, createOpen, createTemplateId, openCreate, closeCreate }),
+    [railOpen, openRail, closeRail, toggleRail, createOpen, createTemplateId, openCreate, closeCreate]
   );
 
   return <ConsoleChromeContext.Provider value={value}>{children}</ConsoleChromeContext.Provider>;

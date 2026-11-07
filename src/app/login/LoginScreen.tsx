@@ -1,15 +1,18 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { AlertCircle, ArrowRight, Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import { useAuth } from '@/lib/authContext';
 import { AuthShell } from '@/components/auth/AuthShell';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login, isAuthenticated } = useAuth();
+  const redirectTarget = searchParams.get('redirect') || '/dashboard';
+  const safeRedirect = redirectTarget.startsWith('/') ? redirectTarget : '/dashboard';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,8 +21,8 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isAuthenticated) router.replace('/dashboard');
-  }, [isAuthenticated, router]);
+    if (isAuthenticated) router.replace(safeRedirect);
+  }, [isAuthenticated, router, safeRedirect]);
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -27,7 +30,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login({ email: email.trim(), password });
-      router.push('/dashboard');
+      router.push(safeRedirect);
     } catch (err) {
       setError(
         err instanceof Error
@@ -46,7 +49,10 @@ export default function LoginPage() {
       footer={
         <>
           Belum punya akun?{' '}
-          <Link href="/register" style={{ fontWeight: 600, textDecoration: 'none' }}>
+          <Link
+            href={safeRedirect !== '/dashboard' ? `/register?redirect=${encodeURIComponent(safeRedirect)}` : '/register'}
+            style={{ fontWeight: 600, textDecoration: 'none' }}
+          >
             Daftar
           </Link>
         </>
@@ -125,5 +131,13 @@ export default function LoginPage() {
         </button>
       </form>
     </AuthShell>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="container-narrow" style={{ paddingBlock: 'var(--space-16)' }}>Memuat…</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

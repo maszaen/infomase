@@ -1,15 +1,18 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { AlertCircle, ArrowRight, Check, Eye, EyeOff, Lock, Mail, Phone, User } from 'lucide-react';
 import { useAuth } from '@/lib/authContext';
 import { AuthShell } from '@/components/auth/AuthShell';
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { register, isAuthenticated } = useAuth();
+  const redirectTarget = searchParams.get('redirect') || '/dashboard';
+  const safeRedirect = redirectTarget.startsWith('/') ? redirectTarget : '/dashboard';
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -22,8 +25,8 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isAuthenticated) router.replace('/dashboard');
-  }, [isAuthenticated, router]);
+    if (isAuthenticated) router.replace(safeRedirect);
+  }, [isAuthenticated, router, safeRedirect]);
 
   const checks = [
     { label: 'Minimal 8 karakter', ok: password.length >= 8 },
@@ -46,7 +49,7 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       await register({ name: name.trim(), email: email.trim(), password, phoneNumber: phoneNumber.trim() || undefined });
-      router.push('/dashboard');
+      router.push(safeRedirect);
     } catch (err) {
       setError(
         err instanceof Error
@@ -61,11 +64,14 @@ export default function RegisterPage() {
   return (
     <AuthShell
       title="Buat akun"
-      subtitle="Gratis. Template pertama Anda tidak dikenakan biaya."
+      subtitle="Daftar akun untuk membeli lisensi template dan mengelola undangan pernikahan digital Anda."
       footer={
         <>
           Sudah punya akun?{' '}
-          <Link href="/login" style={{ fontWeight: 600, textDecoration: 'none' }}>
+          <Link
+            href={safeRedirect !== '/dashboard' ? `/login?redirect=${encodeURIComponent(safeRedirect)}` : '/login'}
+            style={{ fontWeight: 600, textDecoration: 'none' }}
+          >
             Masuk
           </Link>
         </>
@@ -239,5 +245,13 @@ export default function RegisterPage() {
         </p>
       </form>
     </AuthShell>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="container-narrow" style={{ paddingBlock: 'var(--space-16)' }}>Memuat…</div>}>
+      <RegisterForm />
+    </Suspense>
   );
 }

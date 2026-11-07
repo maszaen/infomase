@@ -101,7 +101,7 @@ const FAQS = [
 /* --------------------------------------------------------------- sections */
 
 function Hero() {
-  const free = TEMPLATES[0];
+  const featured = TEMPLATES[0];
   return (
     <section className="section section-flush" style={{ paddingTop: 'var(--space-16)' }}>
       <div className="container">
@@ -121,17 +121,17 @@ function Hero() {
             </p>
 
             <div className="row cta-row" style={{ gap: 'var(--space-3)', marginBottom: 'var(--space-5)' }}>
-              <Link href="#template" className="btn btn-lg btn-primary">
-                Lihat template <ArrowRight size={16} />
+              <Link href="/katalog" className="btn btn-lg btn-primary">
+                Lihat katalog template <ArrowRight size={16} />
               </Link>
-              <Link href={`/invite/${free.demoSlug ?? 'raka-sinta'}`} className="btn btn-lg btn-secondary">
+              <Link href={`/invite/${featured.demoSlug ?? 'raka-sinta'}`} className="btn btn-lg btn-secondary">
                 Buka contoh undangan
               </Link>
             </div>
 
             <ul className="tick-list" style={{ gap: 'var(--space-1)' }}>
               <li>
-                <Check size={15} /> {formatIDR(free.price)} untuk template pertama — tanpa kartu kredit
+                <Check size={15} /> Mulai dari {formatIDR(featured.price)} per template — sekali bayar
               </li>
               <li>
                 <Check size={15} /> Tanpa langganan, tanpa masa aktif yang mengunci undangan
@@ -323,11 +323,12 @@ function HeroPreview() {
 }
 
 function TemplateShowcase() {
+  const highlighted = TEMPLATES.filter((t) => t.isHighlighted !== false).slice(0, 6);
   return (
     <section id="template" className="section section-sunken">
       <div className="container">
         <div className="section-head">
-          <span className="eyebrow eyebrow-neutral">Katalog</span>
+          <span className="eyebrow eyebrow-neutral">Pilihan Unggulan</span>
           <h2 className="section-title">Satu desain, satu harga, satu acara.</h2>
           <p className="section-subtitle">
             Setiap template dijual terpisah. Anda membayar hanya untuk desain yang Anda pakai — tidak ada
@@ -339,11 +340,9 @@ function TemplateShowcase() {
           className="grid-2"
           style={{
             gap: 'var(--space-5)',
-            maxWidth: TEMPLATES.length === 1 ? 720 : undefined,
-            marginRight: TEMPLATES.length === 1 ? 'auto' : undefined,
           }}
         >
-          {TEMPLATES.map((tpl) => (
+          {highlighted.map((tpl) => (
             <article key={tpl.id} className="card" style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
               <div style={{ position: 'relative', height: 240, background: 'var(--surface-sunken)' }}>
                 <img
@@ -367,13 +366,40 @@ function TemplateShowcase() {
                 >
                   {tpl.category}
                 </span>
+                {tpl.badge && (
+                  <span
+                    className="badge"
+                    style={{
+                      position: 'absolute',
+                      top: 12,
+                      right: 12,
+                      background: 'var(--ink-900)',
+                      color: 'var(--on-inverse)',
+                      borderColor: 'var(--ink-900)',
+                    }}
+                  >
+                    {tpl.badge}
+                  </span>
+                )}
               </div>
 
               <div style={{ padding: 'var(--space-5)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', flex: 1 }}>
                 <div>
                   <div className="row-between" style={{ alignItems: 'flex-start', gap: 12 }}>
                     <h3 style={{ fontSize: 'var(--text-xl)' }}>{tpl.name}</h3>
-                    <div className="price" style={{ flexShrink: 0 }}>
+                    <div className="price" style={{ flexShrink: 0, textAlign: 'right' }}>
+                      {tpl.compareAt && tpl.compareAt > tpl.price && (
+                        <span
+                          style={{
+                            display: 'block',
+                            fontSize: 'var(--text-xs)',
+                            color: 'var(--ink-400)',
+                            textDecoration: 'line-through',
+                          }}
+                        >
+                          {formatIDR(tpl.compareAt)}
+                        </span>
+                      )}
                       <span className="price-amount" style={{ fontSize: 'var(--text-xl)' }}>
                         {formatIDR(tpl.price)}
                       </span>
@@ -397,12 +423,18 @@ function TemplateShowcase() {
                     </Link>
                   )}
                   <Link href={`/checkout?template=${tpl.id}`} className="btn btn-buy btn-block">
-                    {tpl.price === 0 ? 'Mulai gratis' : `Beli ${formatIDR(tpl.price)}`}
+                    Beli {formatIDR(tpl.price)}
                   </Link>
                 </div>
               </div>
             </article>
           ))}
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'var(--space-8)' }}>
+          <Link href="/katalog" className="btn btn-lg btn-primary">
+            Lihat semua undangan ({TEMPLATES.length} desain) <ArrowRight size={16} />
+          </Link>
         </div>
       </div>
     </section>
@@ -484,7 +516,7 @@ function ValueProps() {
 }
 
 function Pricing() {
-  const free = TEMPLATES[0];
+  const starter = TEMPLATES[0];
   return (
     <section id="harga" className="section section-sunken">
       <div className="container">
@@ -500,22 +532,22 @@ function Pricing() {
         <div className="grid-2" style={{ maxWidth: 880, marginInline: 'auto', alignItems: 'stretch' }}>
           <div className="card" style={{ padding: 'var(--space-6)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
             <div>
-              <span className="label">Template gratis</span>
-              <h3 style={{ fontSize: 'var(--text-xl)', marginTop: 4 }}>{free.name}</h3>
+              <span className="label">Koleksi Modern &amp; Botanical</span>
+              <h3 style={{ fontSize: 'var(--text-xl)', marginTop: 4 }}>Desain Populer</h3>
               <div className="price" style={{ marginTop: 'var(--space-3)' }}>
-                <span className="price-amount">{formatIDR(free.price)}</span>
-                <span className="price-note">selamanya</span>
+                <span className="price-amount">{formatIDR(starter.price)}</span>
+                <span className="price-note">sekali bayar · permanen</span>
               </div>
             </div>
             <ul className="tick-list">
-              {free.includes.map((item) => (
+              {starter.includes.map((item) => (
                 <li key={item}>
                   <Check size={14} /> {item}
                 </li>
               ))}
             </ul>
-            <Link href={`/checkout?template=${free.id}`} className="btn btn-secondary btn-block" style={{ marginTop: 'auto' }}>
-              Coba template ini
+            <Link href="/katalog" className="btn btn-secondary btn-block" style={{ marginTop: 'auto' }}>
+              Jelajahi katalog
             </Link>
           </div>
 
@@ -532,11 +564,11 @@ function Pricing() {
           >
             <div>
               <span className="label" style={{ color: 'var(--brand)' }}>
-                Semua template berbayar
+                Koleksi Luxury &amp; Adat Nusantara
               </span>
-              <h3 style={{ fontSize: 'var(--text-xl)', marginTop: 4 }}>Harga mengikuti desain</h3>
+              <h3 style={{ fontSize: 'var(--text-xl)', marginTop: 4 }}>Eksklusif &amp; Tradisional</h3>
               <div className="price" style={{ marginTop: 'var(--space-3)' }}>
-                <span className="price-amount">Mulai Rp 0</span>
+                <span className="price-amount">Rp 79.000 – Rp 89.000</span>
                 <span className="price-note">per acara</span>
               </div>
             </div>
@@ -554,7 +586,7 @@ function Pricing() {
                 <Check size={14} /> Bukti pesanan dengan nomor referensi
               </li>
             </ul>
-            <Link href="#template" className="btn btn-buy btn-block" style={{ marginTop: 'auto' }}>
+            <Link href="/katalog" className="btn btn-buy btn-block" style={{ marginTop: 'auto' }}>
               Pilih template <ArrowRight size={14} />
             </Link>
           </div>
@@ -613,14 +645,14 @@ function FinalCta() {
   return (
     <section className="section section-sunken">
       <div className="container-narrow" style={{ textAlign: 'center' }}>
-        <h2 className="section-title">Mulai dari template gratis, naik kelas kalau perlu.</h2>
+        <h2 className="section-title">Pilih desain terbaik untuk hari bahagia Anda.</h2>
         <p className="section-subtitle" style={{ marginInline: 'auto' }}>
-          Buat undangan pertama Anda sekarang. Tidak perlu kartu kredit, dan Anda bisa melihat hasilnya di
-          layar ponsel sebelum menyebarkan satu tautan pun.
+          Beli lisensi template pilihan Anda sekali saja, lengkapi detail acara, dan bagikan tautan personal
+          kepada tamu undangan dalam hitungan menit.
         </p>
         <div className="row cta-row" style={{ justifyContent: 'center', marginTop: 'var(--space-5)', gap: 'var(--space-3)' }}>
-          <Link href="/register" className="btn btn-lg btn-primary">
-            Buat undangan <ArrowRight size={16} />
+          <Link href="/katalog" className="btn btn-lg btn-primary">
+            Lihat semua undangan <ArrowRight size={16} />
           </Link>
           <Link href="/invite/raka-sinta" className="btn btn-lg btn-secondary">
             <ImageIcon size={15} /> Lihat contoh jadi

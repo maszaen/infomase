@@ -14,13 +14,14 @@ import {
   Palette,
   Plus,
   Receipt,
-  Star,
+  ShoppingBag,
   Users,
   X,
 } from 'lucide-react';
 import { Wordmark } from '@/components/ui/Brand';
 import { useAuth } from '@/lib/authContext';
 import { useInvitationStore } from '@/lib/invitationStore';
+import { unassignedLicences } from '@/lib/orders';
 
 export interface RailInvitationSummary {
   id: string;
@@ -48,7 +49,8 @@ const STUDIO_ITEMS = [
 export function ConsoleRail({ open, onClose, invitations, activeId, onCreate, onLogout }: ConsoleRailProps) {
   const pathname = usePathname();
   const { user } = useAuth();
-  const { data } = useInvitationStore();
+  const { data, licences } = useInvitationStore();
+  const availableLicences = unassignedLicences(licences);
 
   const studioMatch = pathname.match(/^\/dashboard\/undangan\/([^/]+)/);
   const studioId = studioMatch?.[1];
@@ -62,7 +64,6 @@ export function ConsoleRail({ open, onClose, invitations, activeId, onCreate, on
   const accountItems = [
     { key: 'overview', label: 'Ringkasan', icon: LayoutGrid, href: '/dashboard' },
     { key: 'orders', label: 'Pesanan & lisensi', icon: Receipt, href: '/dashboard/orders' },
-    { key: 'katalog', label: 'Katalog template', icon: Star, href: '/dashboard/katalog' },
   ];
 
   const isActive = (key: string) =>
@@ -182,9 +183,15 @@ export function ConsoleRail({ open, onClose, invitations, activeId, onCreate, on
                 </Link>
               ))}
 
-              <button type="button" className="rail-item" onClick={onCreate}>
-                <Plus size={16} /> Undangan baru
-              </button>
+              {availableLicences.length > 0 ? (
+                <button type="button" className="rail-item" onClick={onCreate}>
+                  <Plus size={16} /> Buat undangan ({availableLicences.length})
+                </button>
+              ) : (
+                <Link href="/katalog" className="rail-item" onClick={onClose}>
+                  <ShoppingBag size={16} /> Beli template
+                </Link>
+              )}
 
               <span className="sidebar-section-label">Bantuan</span>
               <a

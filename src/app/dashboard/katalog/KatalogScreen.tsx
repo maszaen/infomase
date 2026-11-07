@@ -172,7 +172,7 @@ export default function CatalogPage() {
                           Beli lisensi <ArrowRight size={12} />
                         </Link>
                       ) : (
-                        <button type="button" className="btn btn-sm btn-buy" onClick={openCreate}>
+                        <button type="button" className="btn btn-sm btn-buy" onClick={() => openCreate(tpl.id)}>
                           Buat undangan <ArrowRight size={12} />
                         </button>
                       )}

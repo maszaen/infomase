@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import {
   InvitationData,
   TemplateId,
@@ -14,7 +14,6 @@ import {
 } from '@/types/invitation';
 import { DEMO_INVITATION, DEMO_SLUG, getDemoInvitation } from './defaultData';
 import {
-  CheckoutResult,
   Order,
   TemplateLicence,
   completeCheckout,
@@ -26,21 +25,39 @@ import {
   saveLicences,
   saveOrders,
 } from './orders';
-import { getTemplate, TEMPLATES } from './templates';
-import { invitationsApi, ordersApi, guestsApi, rsvpsApi, getToken } from './api';
-
-const INVITATIONS_KEY = 'infomase_invitations_v3';
-const ACTIVE_ID_KEY = 'infomase_active_invitation_v3';
+import { getTemplate, TEMPLATES, TemplateMeta, normalizeTemplateId } from './templates';
+import {
+  invitationsApi,
+  ordersApi,
+  guestsApi,
+  rsvpsApi,
+  templatesApi,
+  getToken,
+  getAuthSession,
+  hasServerSession,
+  type RemoteOrderResponse,
+  type RemoteLicenceResponse,
+  type RemoteTemplate,
+} from './api';
+import { INVITATIONS_KEY, ACTIVE_ID_KEY, AUTH_CHANGE_EVENT } from './storage';
 
 export type PublishResult =
   | { ok: true; isPublished: boolean }
-  | { ok: false; reason: 'not-found' | 'licence-required'; templateId?: string };
+  | { ok: false; reason: 'not-found' | 'licence-required' | 'server-error'; templateId?: string; error?: string };
+
+export type PurchaseResult =
+  | { ok: true; status: 'paid' | 'pending' | 'verifying'; order: Order }
+  | { ok: false; error: string };
 
 interface InvitationStoreValue {
+  templates: TemplateMeta[];
   invitations: InvitationData[];
   activeId: string;
   data: InvitationData;
   isLoaded: boolean;
+  loadError: string;
+  saveStates: Record<string, { status: 'saving' | 'saved' | 'error'; message?: string }>;
+  saveNow(id: string): Promise<void>;
 
   orders: Order[];
   licences: TemplateLicence[];
@@ -53,24 +70,30 @@ interface InvitationStoreValue {
     groomName: string;
     brideName: string;
     eventDate?: string;
-  }): InvitationData;
-  duplicateInvitation(id: string): InvitationData;
-  deleteInvitation(id: string): void;
+  }): Promise<InvitationData>;
+  duplicateInvitation(id: string): Promise<InvitationData>;
+  deleteInvitation(id: string): Promise<void>;
 
   /** Requires a licence when the template is paid. */
-  togglePublish(id: string): PublishResult;
+  togglePublish(id: string): Promise<PublishResult>;
   /** True when this invitation can be published right now. */
   isPublishable(id: string): boolean;
   /** True when this invitation still needs to be bought. */
   needsPurchase(id: string): boolean;
   licenceOf(id: string): TemplateLicence | undefined;
 
-  /** Simulated checkout for one template × one invitation. */
+  /** Checkout for one template (optionally bound to an existing invitation). */
   purchase(input: {
     templateId: string;
-    invitationId: string;
+    invitationId?: string;
     method: 'qris' | 'bank-transfer' | 'ewallet';
-  }): CheckoutResult | null;
+  }): Promise<PurchaseResult>;
+
+  /** Re-fetch orders & licences from the backend (after proof upload / admin verification). */
+  refreshOrdersAndLicences(): Promise<Order[]>;
+
+  /** Update one order's status locally after a payment-proof round-trip. */
+  markOrderStatus(orderId: string, status: Order['status']): void;
 
   getInvitationBySlug(slug: string): InvitationData | undefined;
 
@@ -92,6 +115,7 @@ interface InvitationStoreValue {
   deleteRSVP(id: string): void;
   addGuest(guest: Omit<GuestItem, 'id'>): void;
   deleteGuest(id: string): void;
+  checkInGuest(guestId: string, isCheckedIn: boolean): void;
   updateWaTemplates(templates: WhatsAppMessageTemplate[]): void;
   resetToDefault(): void;
 }
@@ -127,104 +151,195 @@ function slugify(raw: string): string {
     .slice(0, 60);
 }
 
+function mapRemoteOrder(o: RemoteOrderResponse): Order {
+  const status: Order['status'] =
+    o.status === 'confirmed' || o.status === 'paid'
+      ? 'paid'
+      : o.status === 'payment_submitted'
+        ? 'payment_submitted'
+        : o.status === 'cancelled' || o.status === 'failed'
+          ? 'failed'
+          : o.status === 'refunded'
+            ? 'refunded'
+            : 'pending';
+  return {
+    id: o.id,
+    templateId: normalizeTemplateId(o.templateId),
+    invitationId: o.invitationId || '',
+    invitationTitle: o.invitationTitle || o.invitationSlug || 'Lisensi Template (Siap Digunakan)',
+    amount: Number(o.amount) || 0,
+    currency: 'IDR',
+    status,
+    createdAt: o.createdAt,
+    paidAt: o.paidAt ?? undefined,
+    method: o.paymentMethod === 'bank-transfer' || o.paymentMethod === 'ewallet' ? o.paymentMethod : 'qris',
+    reference: o.orderNumber || o.id,
+  };
+}
+
+function mapRemoteLicence(l: RemoteLicenceResponse): TemplateLicence {
+  return {
+    id: l.id,
+    invitationId: l.invitationId || '',
+    invitationSlug: l.invitationSlug ?? null,
+    invitationTitle: l.invitationTitle ?? null,
+    templateId: normalizeTemplateId(l.templateId),
+    orderId: l.orderId || l.id,
+    kind: 'perpetual',
+    issuedAt: l.issuedAt,
+  };
+}
+
+function mergeRemoteTemplates(remoteList?: RemoteTemplate[] | null): TemplateMeta[] {
+  if (!Array.isArray(remoteList) || remoteList.length === 0) return TEMPLATES;
+  const byId = new Map<string, RemoteTemplate>();
+  remoteList.forEach((rt) => {
+    const cid = normalizeTemplateId(rt.id || rt.code);
+    byId.set(cid, rt);
+  });
+  return TEMPLATES.map((local) => {
+    const rt = byId.get(local.id);
+    if (!rt) return local;
+    return {
+      ...local,
+      name: rt.name || local.name,
+      tagline: rt.tagline || local.tagline,
+      price: typeof rt.price === 'number' ? rt.price : local.price,
+      compareAt: typeof rt.compareAt === 'number' ? rt.compareAt : local.compareAt,
+      isHighlighted: typeof rt.isHighlighted === 'boolean' ? rt.isHighlighted : local.isHighlighted,
+      badge: rt.badge !== undefined ? rt.badge : local.badge,
+      previewImage: rt.previewImage || local.previewImage,
+      demoSlug: rt.demoSlug !== undefined ? rt.demoSlug : local.demoSlug,
+      status: rt.status === 'coming-soon' ? 'coming-soon' : 'available',
+    };
+  });
+}
+
+function editablePayload(inv: InvitationData) {
+  return {
+    title: inv.title, slug: inv.slug, templateId: inv.templateId,
+    groom: inv.groom, bride: inv.bride, quote: inv.quote, events: inv.events,
+    countdownDate: inv.countdownDate, stories: inv.stories, gallery: inv.gallery,
+    music: inv.music, bankAccounts: inv.bankAccounts, giftAddress: inv.giftAddress,
+    waTemplates: inv.waTemplates, streaming: inv.streaming,
+  };
+}
+
+/** Placeholder so a signed-in account with no invitations never sees demo content. */
+const EMPTY_INVITATION: InvitationData = {
+  ...DEMO_INVITATION,
+  id: '',
+  slug: '',
+  title: '',
+  templateId: '',
+  isPublished: false,
+  events: [],
+  stories: [],
+  gallery: [],
+  bankAccounts: [],
+  rsvpList: [],
+  guests: [],
+  waTemplates: [],
+};
+
 export function InvitationProvider({ children }: { children: React.ReactNode }) {
-  const [invitations, setInvitations] = useState<InvitationData[]>([DEMO_INVITATION]);
-  const [activeId, setActiveId] = useState<string>(DEMO_INVITATION.id);
+  const [templates, setTemplates] = useState<TemplateMeta[]>(TEMPLATES);
+  const [invitations, setInvitations] = useState<InvitationData[]>([]);
+  const [activeId, setActiveId] = useState('');
   const [orders, setOrders] = useState<Order[]>([]);
   const [licences, setLicences] = useState<TemplateLicence[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [hasStoredOrders, setHasStoredOrders] = useState(false);
+  const [loadError, setLoadError] = useState('');
+  const [saveStates, setSaveStates] = useState<Record<string, { status: 'saving' | 'saved' | 'error'; message?: string }>>({});
+  const saved = useRef(new Map<string, string>());
+  const latest = useRef<InvitationData[]>([]);
+  const saving = useRef(new Map<string, Promise<void>>());
+  const generation = useRef(0);
 
-  /* ---------------------------------------------------------------- hydrate */
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(INVITATIONS_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) setInvitations(parsed);
+    let mounted = true;
+    const hydrate = async () => {
+      const version = ++generation.current;
+      const session = getAuthSession();
+      const current = () => mounted && version === generation.current && session === getAuthSession();
+      setIsLoaded(false);
+      setInvitations([]);
+      setActiveId('');
+      setOrders([]);
+      setLicences([]);
+      setSaveStates({});
+      setLoadError('');
+      saved.current.clear();
+      latest.current = [];
+      saving.current.clear();
+
+      // Hydrate catalog templates from backend in parallel (non-blocking fallback to TEMPLATES)
+      templatesApi
+        .getAll()
+        .then((remoteTemplates) => {
+          if (mounted && remoteTemplates) {
+            setTemplates(mergeRemoteTemplates(remoteTemplates));
+          }
+        })
+        .catch(() => {
+          /* keep local TEMPLATES fallback */
+        });
+
+      try {
+        if (hasServerSession()) {
+          const [list, remoteOrders, remoteLicences] = await Promise.all([
+            invitationsApi.getAll(), ordersApi.getAll(), ordersApi.getLicences(),
+          ]);
+          const full = await Promise.all(list.map((item) => invitationsApi.getById(item.id)));
+          if (!current()) return;
+          full.forEach((inv) => saved.current.set(inv.id, JSON.stringify(editablePayload(inv))));
+          latest.current = full;
+          setInvitations(full);
+          setActiveId(full[0]?.id ?? '');
+          setOrders(remoteOrders.map(mapRemoteOrder));
+          setLicences(remoteLicences.map(mapRemoteLicence));
+        } else if (getToken() === 'demo-token') {
+          let local = [DEMO_INVITATION];
+          try {
+            const parsed = JSON.parse(localStorage.getItem(INVITATIONS_KEY) || 'null');
+            if (Array.isArray(parsed)) local = parsed;
+          } catch { /* Ignore corrupted demo storage. */ }
+          latest.current = local;
+          setInvitations(local);
+          setActiveId(local.find((i) => i.id === localStorage.getItem(ACTIVE_ID_KEY))?.id ?? local[0]?.id ?? '');
+          setOrders(loadOrders());
+          setLicences(loadLicences());
+        } else {
+          latest.current = [];
+          setInvitations([]);
+          setActiveId('');
+          setOrders([]);
+          setLicences([]);
+        }
+      } catch (error) {
+        if (current()) setLoadError(error instanceof Error ? error.message : 'Data akun gagal dimuat.');
+      } finally {
+        if (current()) setIsLoaded(true);
       }
-      const storedActive = localStorage.getItem(ACTIVE_ID_KEY);
-      if (storedActive) setActiveId(storedActive);
-      const storedOrders = loadOrders();
-      const storedLicences = loadLicences();
-      setOrders(storedOrders);
-      setLicences(storedLicences);
-      setHasStoredOrders(storedOrders.length > 0 || storedLicences.length > 0);
-    } catch {
-      /* corrupted storage: fall back to the seed and keep going */
-    } finally {
-      setIsLoaded(true);
-    }
-
-    // Hydrate from live backend API if authenticated
-    const token = getToken();
-    if (token) {
-      invitationsApi
-        .getAll()
-        .then(async (remoteList) => {
-          if (Array.isArray(remoteList) && remoteList.length > 0) {
-            const fullInvs = await Promise.all(
-              remoteList.map((item) =>
-                invitationsApi.getById(item.id).catch(() => null)
-              )
-            );
-            const validInvs = fullInvs.filter((i): i is InvitationData => Boolean(i));
-            if (validInvs.length > 0) {
-              setInvitations(validInvs);
-              setActiveId((prev) => (validInvs.some((v) => v.id === prev) ? prev : validInvs[0].id));
-            }
-          }
-        })
-        .catch(() => {});
-
-      ordersApi
-        .getAll()
-        .then((remoteOrders) => {
-          if (Array.isArray(remoteOrders) && remoteOrders.length > 0) {
-            setOrders(
-              remoteOrders.map((o: any) => ({
-                id: o.id,
-                templateId: o.templateId,
-                templateName: getTemplate(o.templateId)?.name || o.templateId,
-                amount: o.amount,
-                currency: 'IDR' as const,
-                invitationId: o.invitationId,
-                invitationTitle: o.invitationSlug || 'Undangan',
-                method: o.paymentMethod || 'qris',
-                reference: o.orderNumber || o.id,
-                status: o.status === 'confirmed' ? 'paid' : o.status,
-                createdAt: o.createdAt,
-                paidAt: o.paidAt,
-              }))
-            );
-          }
-        })
-        .catch(() => {});
-
-      ordersApi
-        .getLicences()
-        .then((remoteLicences) => {
-          if (Array.isArray(remoteLicences) && remoteLicences.length > 0) {
-            setLicences(
-              remoteLicences.map((l: any) => ({
-                id: l.id,
-                invitationId: l.invitationId,
-                templateId: l.templateId,
-                orderId: l.orderId || l.id,
-                kind: 'perpetual' as const,
-                issuedAt: l.issuedAt,
-                status: l.status,
-              }))
-            );
-          }
-        })
-        .catch(() => {});
-    }
+    };
+    const onAuthChange = () => { void hydrate(); };
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === 'infomase_token' || event.key === 'infomase_user') onAuthChange();
+    };
+    void Promise.resolve().then(() => { if (mounted) return hydrate(); });
+    window.addEventListener(AUTH_CHANGE_EVENT, onAuthChange);
+    window.addEventListener('storage', onStorage);
+    return () => {
+      mounted = false;
+      generation.current += 1;
+      window.removeEventListener(AUTH_CHANGE_EVENT, onAuthChange);
+      window.removeEventListener('storage', onStorage);
+    };
   }, []);
 
   /* ----------------------------------------------------------------- persist */
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded || getToken() !== 'demo-token') return;
     try {
       localStorage.setItem(INVITATIONS_KEY, JSON.stringify(invitations));
       localStorage.setItem(ACTIVE_ID_KEY, activeId);
@@ -234,30 +349,74 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
   }, [invitations, activeId, isLoaded]);
 
   useEffect(() => {
-    if (isLoaded) saveOrders(orders);
+    if (isLoaded && getToken() === 'demo-token') saveOrders(orders);
   }, [orders, isLoaded]);
 
   useEffect(() => {
-    if (isLoaded) saveLicences(licences);
+    if (isLoaded && getToken() === 'demo-token') saveLicences(licences);
   }, [licences, isLoaded]);
 
   const data = useMemo(
-    () => invitations.find((i) => i.id === activeId) ?? invitations[0] ?? DEMO_INVITATION,
+    () =>
+      invitations.find((i) => i.id === activeId) ??
+      invitations[0] ??
+      (hasServerSession() ? EMPTY_INVITATION : DEMO_INVITATION),
     [invitations, activeId]
   );
 
-  // Debounced auto-save active invitation edits to backend
+  const saveNow = useCallback(async (id: string): Promise<void> => {
+    if (!hasServerSession()) return;
+    const inFlight = saving.current.get(id);
+    if (inFlight) return inFlight;
+    const session = getAuthSession();
+    const version = generation.current;
+    const current = () => version === generation.current && session === getAuthSession();
+    const promise = (async () => {
+      try {
+        while (current()) {
+          const inv = latest.current.find((item) => item.id === id);
+          if (!inv) return;
+          const payload = editablePayload(inv);
+          const signature = JSON.stringify(payload);
+          if (saved.current.get(id) === signature) return;
+          setSaveStates((prev) => ({ ...prev, [id]: { status: 'saving' } }));
+          await invitationsApi.update(id, payload);
+          if (!current()) return;
+          saved.current.set(id, signature);
+          setSaveStates((prev) => ({ ...prev, [id]: { status: 'saved' } }));
+        }
+      } catch (error) {
+        if (current()) setSaveStates((prev) => ({ ...prev, [id]: {
+          status: 'error', message: error instanceof Error ? error.message : 'Gagal menyimpan perubahan.',
+        } }));
+        throw error;
+      }
+    })();
+    saving.current.set(id, promise);
+    try { await promise; } finally {
+      if (saving.current.get(id) === promise) saving.current.delete(id);
+    }
+  }, []);
+
   useEffect(() => {
-    if (!isLoaded || !data || data.id === DEMO_INVITATION.id) return;
-    const token = getToken();
-    if (!token) return;
-
+    latest.current = invitations;
+    if (!isLoaded || !hasServerSession() || loadError) return;
+    const dirty = invitations.filter((inv) => saved.current.get(inv.id) !== JSON.stringify(editablePayload(inv)));
     const timer = setTimeout(() => {
-      invitationsApi.update(data.id, data).catch(() => {});
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, [data, isLoaded]);
+      dirty.forEach((inv) => { void saveNow(inv.id).catch(() => undefined); });
+    }, 1000);
+    const warnUnsaved = (event: BeforeUnloadEvent) => {
+      if (latest.current.some((inv) => saved.current.get(inv.id) !== JSON.stringify(editablePayload(inv)))) {
+        event.preventDefault();
+        event.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', warnUnsaved);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('beforeunload', warnUnsaved);
+    };
+  }, [invitations, isLoaded, loadError, saveNow]);
 
   const updateActive = useCallback(
     (updater: (prev: InvitationData) => InvitationData) => {
@@ -265,31 +424,6 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
     },
     [data.id]
   );
-
-  /**
-   * Seed grant: the demo invitation ships with a free template, which is
-   * modelled as a real Rp 0 order so the receipt/order surfaces aren't empty
-   * and so paid templates are never silently unlocked.
-   */
-  useEffect(() => {
-    if (!isLoaded || hasStoredOrders) return;
-    const demo = invitations.find((i) => i.id === DEMO_INVITATION.id);
-    if (!demo) return;
-    const tpl = getTemplate(demo.templateId);
-    if (!tpl || tpl.price !== 0) return;
-    if (licences.some((l) => l.invitationId === demo.id && l.templateId === tpl.id)) return;
-
-    const seeded = completeCheckout({
-      templateId: tpl.id,
-      amount: 0,
-      invitationId: demo.id,
-      invitationTitle: demo.title,
-      method: 'qris',
-    });
-    setOrders((prev) => [seeded.order, ...prev]);
-    setLicences((prev) => [seeded.licence, ...prev]);
-    setHasStoredOrders(true);
-  }, [isLoaded, hasStoredOrders, invitations, licences]);
 
   /* ------------------------------------------------------------- entitlements */
 
@@ -312,8 +446,24 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
 
   const setActiveInvitation = useCallback((id: string) => setActiveId(id), []);
 
+  const refreshOrdersAndLicences = useCallback(async () => {
+    if (!hasServerSession()) return [];
+    const session = getAuthSession();
+    const [remoteOrders, remoteLicences] = await Promise.all([ordersApi.getAll(), ordersApi.getLicences()]);
+    if (session !== getAuthSession()) throw new Error('Akun aktif telah berubah.');
+    const mapped = remoteOrders.map(mapRemoteOrder);
+    setOrders(mapped);
+    setLicences(remoteLicences.map(mapRemoteLicence));
+    return mapped;
+  }, []);
+
+  const markOrderStatus = useCallback((orderId: string, status: Order['status']) => {
+    setOrders((prev) => prev.map((o) => (o.id === orderId ? { ...o, status } : o)));
+  }, []);
+
   const createInvitation = useCallback<InvitationStoreValue['createInvitation']>(
-    (input) => {
+    async (input) => {
+      const session = getAuthSession();
       const now = new Date().toISOString();
       const baseDate = input.eventDate || '2027-06-12';
       const slugBase = slugify(input.slug || `${input.groomName}-${input.brideName}`) || 'undangan';
@@ -351,39 +501,31 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
         guests: [],
       };
 
-      setInvitations((prev) => [created, ...prev]);
-      setActiveId(created.id);
-
-      if (getToken()) {
-        invitationsApi
-          .create({
-            title: created.title,
-            slug: created.slug,
-            templateId: created.templateId,
-            countdownDate: created.countdownDate,
-            groom: created.groom,
-            bride: created.bride,
-            events: created.events,
-          })
-          .then((serverInv) => {
-            if (serverInv?.id) {
-              setInvitations((prev) =>
-                prev.map((i) => (i.id === created.id ? { ...serverInv, id: serverInv.id } : i))
-              );
-              setActiveId(serverInv.id);
-            }
-          })
-          .catch(() => {});
+      const result = hasServerSession() ? await invitationsApi.create(editablePayload(created)) : created;
+      if (session !== getAuthSession()) throw new Error('Akun aktif telah berubah.');
+      saved.current.set(result.id, JSON.stringify(editablePayload(result)));
+      setInvitations((prev) => [result, ...prev]);
+      setActiveId(result.id);
+      if (hasServerSession()) {
+        await refreshOrdersAndLicences().catch(() => undefined);
+      } else if (getToken() === 'demo-token') {
+        setLicences((prev) => {
+          const avail = prev.find((l) => l.templateId === input.templateId && !l.invitationId);
+          if (!avail) return prev;
+          return prev.map((l) => (l.id === avail.id ? { ...l, invitationId: result.id, invitationSlug: result.slug, invitationTitle: result.title } : l));
+        });
       }
-
-      return created;
+      return result;
     },
-    [invitations]
+    [invitations, refreshOrdersAndLicences]
   );
 
   const duplicateInvitation = useCallback(
-    (id: string) => {
-      const source = invitations.find((i) => i.id === id) ?? data;
+    async (id: string) => {
+      const session = getAuthSession();
+      const source = invitations.find((i) => i.id === id);
+      if (!source) throw new Error('Undangan tidak ditemukan.');
+      await saveNow(id);
       const now = new Date().toISOString();
       const copy: InvitationData = {
         ...source,
@@ -396,109 +538,102 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
         rsvpList: [],
         guests: [],
       };
-      setInvitations((prev) => [copy, ...prev]);
-      setActiveId(copy.id);
-      return copy;
-    },
-    [invitations, data]
-  );
-
-  const deleteInvitation = useCallback(
-    (id: string) => {
-      setInvitations((prev) => {
-        if (prev.length <= 1) return prev;
-        const next = prev.filter((i) => i.id !== id);
-        setActiveId((current) => (current === id ? next[0].id : current));
-        return next;
-      });
-
-      if (getToken() && id !== DEMO_INVITATION.id) {
-        invitationsApi.delete(id).catch(() => {});
-      }
-    },
-    []
-  );
-
-  const togglePublish = useCallback(
-    (id: string): PublishResult => {
-      const target = invitations.find((i) => i.id === id);
-      if (!target) return { ok: false, reason: 'not-found' };
-
-      const willPublish = !target.isPublished;
-      if (willPublish && needsPurchase(id)) {
-        return { ok: false, reason: 'licence-required', templateId: target.templateId };
-      }
-
-      setInvitations((prev) =>
-        prev.map((item) =>
-          item.id === id
-            ? { ...item, isPublished: willPublish, updatedAt: new Date().toISOString() }
-            : item
-        )
-      );
-
-      if (getToken() && id !== DEMO_INVITATION.id) {
-        invitationsApi.update(id, { isPublished: willPublish }).catch(() => {});
-      }
-
-      return { ok: true, isPublished: willPublish };
-    },
-    [invitations, needsPurchase]
-  );
-
-  const purchase = useCallback<InvitationStoreValue['purchase']>(
-    ({ templateId, invitationId, method }) => {
-      const tpl = getTemplate(templateId);
-      const invitation = invitations.find((i) => i.id === invitationId);
-      if (!tpl || !invitation) return null;
-
-      const result = completeCheckout({
-        templateId,
-        amount: tpl.price,
-        invitationId,
-        invitationTitle: invitation.title,
-        method,
-      });
-
-      setOrders((prev) => [result.order, ...prev]);
-      setLicences((prev) =>
-        prev.some((l) => l.invitationId === invitationId && l.templateId === templateId)
-          ? prev
-          : [result.licence, ...prev]
-      );
-
-      if (getToken() && invitationId !== DEMO_INVITATION.id) {
-        ordersApi
-          .checkout({
-            invitationId,
-            templateId,
-            paymentMethod: method || 'qris',
-          })
-          .then(async (orderRes) => {
-            if (orderRes?.id) {
-              await ordersApi.confirmPayment(orderRes.id).catch(() => {});
-              const freshLicences = await ordersApi.getLicences().catch(() => []);
-              if (Array.isArray(freshLicences) && freshLicences.length > 0) {
-                setLicences(
-                  freshLicences.map((l: any) => ({
-                    id: l.id,
-                    invitationId: l.invitationId,
-                    templateId: l.templateId,
-                    orderId: l.orderId || l.id,
-                    kind: 'perpetual' as const,
-                    issuedAt: l.issuedAt,
-                    status: l.status,
-                  }))
-                );
-              }
-            }
-          })
-          .catch(() => {});
-      }
-
+      const result = hasServerSession() ? await invitationsApi.create(editablePayload(copy)) : copy;
+      if (session !== getAuthSession()) throw new Error('Akun aktif telah berubah.');
+      saved.current.set(result.id, JSON.stringify(editablePayload(result)));
+      setInvitations((prev) => [result, ...prev]);
+      setActiveId(result.id);
       return result;
     },
-    [invitations]
+    [invitations, saveNow]
+  );
+
+  const deleteInvitation = useCallback(async (id: string) => {
+    const session = getAuthSession();
+    await saveNow(id);
+    if (hasServerSession()) await invitationsApi.delete(id);
+    if (session !== getAuthSession()) return;
+    saved.current.delete(id);
+    setInvitations((prev) => prev.filter((i) => i.id !== id));
+    setActiveId((current) => current === id ? '' : current);
+  }, [saveNow]);
+
+  const togglePublish = useCallback(async (id: string): Promise<PublishResult> => {
+    const target = invitations.find((i) => i.id === id);
+    if (!target) return { ok: false, reason: 'not-found' };
+    const willPublish = !target.isPublished;
+    if (willPublish && needsPurchase(id)) return { ok: false, reason: 'licence-required', templateId: target.templateId };
+    const session = getAuthSession();
+    try {
+      await saveNow(id);
+      if (hasServerSession()) await invitationsApi.update(id, { isPublished: willPublish });
+      if (session !== getAuthSession()) throw new Error('Akun aktif telah berubah.');
+      setInvitations((prev) => prev.map((item) => item.id === id ? { ...item, isPublished: willPublish } : item));
+      return { ok: true, isPublished: willPublish };
+    } catch (error) {
+      return { ok: false, reason: 'server-error', error: error instanceof Error ? error.message : 'Publikasi gagal.' };
+    }
+  }, [invitations, needsPurchase, saveNow]);
+
+  const purchase = useCallback<InvitationStoreValue['purchase']>(
+    async ({ templateId, invitationId, method }) => {
+      const tpl = templates.find((t) => t.id === normalizeTemplateId(templateId)) || getTemplate(templateId);
+      if (!tpl) return { ok: false, error: 'Template tidak ditemukan.' };
+      const invitation = invitationId ? invitations.find((i) => i.id === invitationId) : undefined;
+      if (invitationId && !invitation) {
+        return { ok: false, error: 'Undangan yang dipilih tidak ditemukan.' };
+      }
+
+      // Demo mode: fully local simulation, nothing reaches the backend.
+      if (!getToken()) return { ok: false, error: 'Masuk terlebih dahulu untuk membeli lisensi.' };
+      if (getToken() === 'demo-token') {
+        const result = completeCheckout({
+          templateId: tpl.id,
+          amount: tpl.price,
+          invitationId: invitation?.id || '',
+          invitationTitle: invitation?.title || `Lisensi ${tpl.name}`,
+          method,
+        });
+        setOrders((prev) => [result.order, ...prev]);
+        setLicences((prev) => [result.licence, ...prev]);
+        return { ok: true, status: 'paid', order: result.order };
+      }
+
+      try {
+        if (invitation?.id) {
+          await saveNow(invitation.id);
+        }
+        const res = await ordersApi.checkout({
+          ...(invitation?.id ? { invitationId: invitation.id } : {}),
+          templateId: tpl.id,
+          paymentMethod: method || 'qris',
+        });
+        if (!res?.id) return { ok: false, error: 'Server tidak mengembalikan data pesanan.' };
+
+        const order = mapRemoteOrder(res);
+        setOrders((prev) => [order, ...prev.filter((o) => o.id !== order.id)]);
+
+        if (order.status === 'paid') {
+          await refreshOrdersAndLicences();
+          return { ok: true, status: 'paid', order };
+        }
+        // Paid templates stay pending until the proof is uploaded and an
+        // admin verifies it — never grant a licence optimistically here.
+        return {
+          ok: true,
+          status: order.status === 'payment_submitted' ? 'verifying' : 'pending',
+          order,
+        };
+      } catch (err: unknown) {
+        // Already licensed on the server (e.g. bought in another session).
+        await refreshOrdersAndLicences().catch(() => undefined);
+        return {
+          ok: false,
+          error: err instanceof Error ? err.message : 'Pesanan belum berhasil dibuat. Coba lagi.',
+        };
+      }
+    },
+    [invitations, refreshOrdersAndLicences, saveNow, templates]
   );
 
   const getInvitationBySlug = useCallback(
@@ -534,9 +669,9 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
   );
 
   const setTemplateId = (templateId: TemplateId, targetId?: string) =>
-    targetId
-      ? updateInvitation(targetId, (prev) => ({ ...prev, templateId }))
-      : updateActive((prev) => ({ ...prev, templateId }));
+    (targetId || data.id)
+      ? updateInvitation(targetId || data.id, (prev) => ({ ...prev, templateId }))
+      : undefined;
 
   const updateGroom = (updates: Partial<InvitationData['groom']>) =>
     updateActive((prev) => ({ ...prev, groom: { ...prev.groom, ...updates } }));
@@ -630,6 +765,19 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
     }
   };
 
+  const checkInGuest = (guestId: string, isCheckedIn: boolean) => {
+    const nowIso = isCheckedIn ? new Date().toISOString() : null;
+    updateActive((prev) => ({
+      ...prev,
+      guests: prev.guests.map((g) =>
+        g.id === guestId ? { ...g, isCheckedIn, checkedInAt: nowIso } : g
+      ),
+    }));
+    if (hasServerSession() && activeId && activeId !== DEMO_INVITATION.id) {
+      guestsApi.checkIn(activeId, guestId, isCheckedIn).catch(() => {});
+    }
+  };
+
   const updateWaTemplates = (templates: WhatsAppMessageTemplate[]) =>
     updateActive((prev) => ({ ...prev, waTemplates: templates }));
 
@@ -644,10 +792,14 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
     }));
 
   const value: InvitationStoreValue = {
+    templates,
     invitations,
     activeId,
     data,
     isLoaded,
+    loadError,
+    saveStates,
+    saveNow,
     orders,
     licences,
     setActiveInvitation,
@@ -659,6 +811,8 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
     needsPurchase,
     licenceOf,
     purchase,
+    refreshOrdersAndLicences,
+    markOrderStatus,
     getInvitationBySlug,
     setTemplateId,
     updateGroom,
@@ -678,6 +832,7 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
     deleteRSVP,
     addGuest,
     deleteGuest,
+    checkInGuest,
     updateWaTemplates,
     resetToDefault,
   };

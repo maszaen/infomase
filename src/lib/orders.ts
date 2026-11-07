@@ -12,13 +12,13 @@
  * the single most damaging inconsistency in the previous build.
  */
 
-export type OrderStatus = 'pending' | 'paid' | 'failed' | 'refunded';
+export type OrderStatus = 'pending' | 'payment_submitted' | 'paid' | 'failed' | 'refunded';
 
 export interface Order {
   id: string;
   /** Template SKU being bought. */
   templateId: string;
-  /** Invitation that will consume the licence. */
+  /** Invitation that will consume the licence (empty string when bought before creating an invitation). */
   invitationId: string;
   /** Human label captured at checkout time so receipts survive renames. */
   invitationTitle: string;
@@ -36,7 +36,10 @@ export interface Order {
 export interface TemplateLicence {
   id: string;
   templateId: string;
+  /** Empty string if purchased upfront and not yet bound to an invitation. */
   invitationId: string;
+  invitationSlug?: string | null;
+  invitationTitle?: string | null;
   orderId: string;
   /** Permanent. Present as a field only so the UI can phrase it explicitly. */
   kind: 'perpetual';
@@ -52,8 +55,7 @@ export interface EntitlementSummary {
   lifetimeValue: number;
 }
 
-const ORDERS_KEY = 'infomase_orders_v1';
-const LICENCES_KEY = 'infomase_licences_v1';
+import { ORDERS_KEY, LICENCES_KEY } from './storage';
 
 function readJSON<T>(key: string, fallback: T): T {
   if (typeof window === 'undefined') return fallback;
@@ -106,8 +108,8 @@ export function makeReference(seed = Date.now()): string {
 export interface CheckoutInput {
   templateId: string;
   amount: number;
-  invitationId: string;
-  invitationTitle: string;
+  invitationId?: string;
+  invitationTitle?: string;
   method: NonNullable<Order['method']>;
 }
 
@@ -125,8 +127,8 @@ export function completeCheckout(input: CheckoutInput): CheckoutResult {
   const order: Order = {
     id: `ord-${now.getTime()}`,
     templateId: input.templateId,
-    invitationId: input.invitationId,
-    invitationTitle: input.invitationTitle,
+    invitationId: input.invitationId || '',
+    invitationTitle: input.invitationTitle || 'Lisensi Template (Siap Digunakan)',
     amount: input.amount,
     currency: 'IDR',
     status: 'paid',
@@ -139,7 +141,7 @@ export function completeCheckout(input: CheckoutInput): CheckoutResult {
   const licence: TemplateLicence = {
     id: `lic-${now.getTime()}`,
     templateId: input.templateId,
-    invitationId: input.invitationId,
+    invitationId: input.invitationId || '',
     orderId: order.id,
     kind: 'perpetual',
     issuedAt: now.toISOString(),
@@ -160,7 +162,20 @@ export function licenceFor(
   licences: TemplateLicence[],
   invitationId: string
 ): TemplateLicence | undefined {
-  return licences.find((l) => l.invitationId === invitationId);
+  return licences.find((l) => Boolean(invitationId) && l.invitationId === invitationId);
+}
+
+/** Returns all active licences that have not yet been bound to an invitation. */
+export function unassignedLicences(licences: TemplateLicence[]): TemplateLicence[] {
+  return licences.filter((l) => !l.invitationId);
+}
+
+/** Returns an unassigned active licence for a specific template, if the user has one. */
+export function availableLicenceForTemplate(
+  licences: TemplateLicence[],
+  templateId: string
+): TemplateLicence | undefined {
+  return licences.find((l) => l.templateId === templateId && !l.invitationId);
 }
 
 export function formatOrderDate(iso: string): string {
@@ -187,6 +202,7 @@ export function formatPaymentMethod(method: Order['method']): string {
 
 const STATUS_LABELS: Record<OrderStatus, string> = {
   pending: 'Menunggu pembayaran',
+  payment_submitted: 'Menunggu verifikasi',
   paid: 'Lunas',
   failed: 'Gagal',
   refunded: 'Dikembalikan',

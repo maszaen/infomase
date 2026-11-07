@@ -74,6 +74,10 @@ export interface GuestItem {
   name: string;
   category: GuestCategory;
   phone?: string;
+  phoneNumber?: string;
+  guestCode?: string;
+  isCheckedIn?: boolean;
+  checkedInAt?: string | null;
 }
 
 export interface WhatsAppMessageTemplate {
@@ -111,6 +115,7 @@ export interface InvitationData {
     url: string;
     autoplay: boolean;
   };
+  streaming?: { isEnabled: boolean; platform: string; streamUrl: string; startTime?: string | null };
   bankAccounts: BankAccount[];
   giftAddress?: {
     recipientName: string;

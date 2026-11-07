@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, Check, AlertCircle, CheckCircle2, Sparkles, Loader2 } from 'lucide-react';
+import { ArrowRight, Check, AlertCircle, CheckCircle2, Sparkles, Loader2, ShoppingBag } from 'lucide-react';
 import { Modal } from '@/components/ui/Modal';
 import { useInvitationStore } from '@/lib/invitationStore';
 import { useToast } from '@/components/ui/Toast';
-import { TEMPLATES, formatIDR, getTemplate } from '@/lib/templates';
+import { getTemplate, normalizeTemplateId } from '@/lib/templates';
+import { unassignedLicences } from '@/lib/orders';
 import { invitationsApi } from '@/lib/api';
 
 interface Props {
@@ -18,23 +20,45 @@ interface Props {
 
 export function CreateInvitationModal({ open, onClose, initialTemplateId }: Props) {
   const router = useRouter();
-  const { createInvitation } = useInvitationStore();
+  const { createInvitation, licences, templates } = useInvitationStore();
   const toast = useToast();
 
-  const [templateId, setTemplateId] = useState(initialTemplateId ?? TEMPLATES[0].id);
+  // Only allow selecting templates for which the user has an unassigned active licence
+  const availableLicences = useMemo(() => unassignedLicences(licences), [licences]);
+  const ownedTemplates = useMemo(() => {
+    const ownedIds = new Set(availableLicences.map((l) => normalizeTemplateId(l.templateId)));
+    return templates.filter((tpl) => ownedIds.has(tpl.id));
+  }, [availableLicences, templates]);
+
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>('');
+  const templateId = useMemo(() => {
+    if (initialTemplateId) {
+      const normalizedInit = normalizeTemplateId(initialTemplateId);
+      if (ownedTemplates.some((t) => t.id === normalizedInit)) {
+        return normalizedInit;
+      }
+    }
+    if (selectedTemplateId && ownedTemplates.some((t) => t.id === selectedTemplateId)) {
+      return selectedTemplateId;
+    }
+    return ownedTemplates[0]?.id ?? '';
+  }, [initialTemplateId, ownedTemplates, selectedTemplateId]);
+
   const [groomName, setGroomName] = useState('');
   const [brideName, setBrideName] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [customSlug, setCustomSlug] = useState('');
   const [isSlugCustomized, setIsSlugCustomized] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [creating, setCreating] = useState(false);
 
   // Slug check states
-  const [slugStatus, setSlugStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
-  const [conflictReason, setConflictReason] = useState<string>('');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-
-  const template = getTemplate(templateId);
+  const [slugCheck, setSlugCheck] = useState<{
+    slug: string;
+    status: 'available' | 'taken';
+    reason: string;
+    suggestions: string[];
+  } | null>(null);
 
   // Auto-generate slug candidate when names change if user hasn't manually customized
   const defaultSlug = useMemo(() => {
@@ -46,35 +70,40 @@ export function CreateInvitationModal({ open, onClose, initialTemplateId }: Prop
   }, [groomName, brideName]);
 
   const activeSlug = isSlugCustomized ? customSlug : defaultSlug;
+  const slugStatus: 'idle' | 'checking' | 'available' | 'taken' =
+    !activeSlug || activeSlug.trim().length === 0
+      ? 'idle'
+      : slugCheck?.slug === activeSlug
+        ? slugCheck.status
+        : 'checking';
+  const conflictReason = slugStatus === 'taken' ? slugCheck?.reason ?? '' : '';
+  const suggestions = slugStatus === 'taken' ? slugCheck?.suggestions ?? [] : [];
+
+  const template = getTemplate(templateId);
 
   // Real-time debounced slug availability checker
   useEffect(() => {
-    if (!activeSlug || activeSlug.trim().length === 0) {
-      setSlugStatus('idle');
-      setSuggestions([]);
-      setConflictReason('');
-      return;
-    }
+    if (!activeSlug || activeSlug.trim().length === 0) return;
 
-    setSlugStatus('checking');
     const timer = setTimeout(() => {
       invitationsApi
         .checkSlug(activeSlug)
         .then((res) => {
           if (res) {
             if (res.available) {
-              setSlugStatus('available');
-              setSuggestions([]);
-              setConflictReason('');
+              setSlugCheck({ slug: activeSlug, status: 'available', reason: '', suggestions: [] });
             } else {
-              setSlugStatus('taken');
-              setConflictReason(res.reason || 'Slug sudah digunakan oleh undangan lain.');
-              setSuggestions(res.suggestions || []);
+              setSlugCheck({
+                slug: activeSlug,
+                status: 'taken',
+                reason: res.reason || 'Slug sudah digunakan oleh undangan lain.',
+                suggestions: res.suggestions || [],
+              });
             }
           }
         })
         .catch(() => {
-          setSlugStatus('available');
+          setSlugCheck({ slug: activeSlug, status: 'available', reason: '', suggestions: [] });
         });
     }, 350);
 
@@ -84,13 +113,16 @@ export function CreateInvitationModal({ open, onClose, initialTemplateId }: Prop
   const applySuggestion = (sug: string) => {
     setCustomSlug(sug);
     setIsSlugCustomized(true);
-    setSlugStatus('available');
-    setSuggestions([]);
-    setConflictReason('');
+    setSlugCheck({ slug: sug, status: 'available', reason: '', suggestions: [] });
   };
 
-  const submit = (event: React.FormEvent) => {
+  const submit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (creating) return;
+    if (!templateId) {
+      setError('Anda belum memiliki lisensi template yang siap dipakai. Silakan beli template terlebih dahulu.');
+      return;
+    }
     if (!groomName.trim() || !brideName.trim()) {
       setError('Isi nama panggilan kedua mempelai.');
       return;
@@ -108,7 +140,9 @@ export function CreateInvitationModal({ open, onClose, initialTemplateId }: Prop
 
     setError(null);
 
-    const created = createInvitation({
+    setCreating(true);
+    try {
+    const created = await createInvitation({
       title: `${groomName.trim()} & ${brideName.trim()}`,
       slug: finalSlug,
       templateId,
@@ -120,22 +154,58 @@ export function CreateInvitationModal({ open, onClose, initialTemplateId }: Prop
     onClose();
     toast('success', `Undangan "${created.title}" dibuat sebagai draf.`);
     router.push(`/dashboard/undangan/${created.id}/content`);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Undangan gagal dibuat.');
+    } finally {
+      setCreating(false);
+    }
   };
+
+  if (ownedTemplates.length === 0) {
+    return (
+      <Modal
+        open={open}
+        onClose={onClose}
+        title="Beli template terlebih dahulu"
+        description="Untuk membuat undangan baru, Anda memerlukan lisensi template aktif yang belum terpakai."
+        size="md"
+        footer={
+          <>
+            <button type="button" className="btn btn-secondary" onClick={onClose}>
+              Tutup
+            </button>
+            <Link href="/katalog" className="btn btn-primary" onClick={onClose}>
+              Lihat katalog template <ArrowRight size={14} />
+            </Link>
+          </>
+        }
+      >
+        <div className="empty-state" style={{ padding: 'var(--space-6) var(--space-4)' }}>
+          <ShoppingBag size={24} />
+          <h3>Belum ada lisensi siap pakai</h3>
+          <p>
+            Pilih desain undangan di Katalog dan selesaikan pembayaran sekali bayar. Setelah lisensi aktif, Anda bisa
+            langsung membuat dan menayangkan undangan.
+          </p>
+        </div>
+      </Modal>
+    );
+  }
 
   return (
     <Modal
       open={open}
       onClose={onClose}
-      title="Undangan baru"
-      description="Mulai dari desain, lalu isi detailnya. Anda tidak ditagih sampai undangan dipublikasikan."
+      title="Buat undangan"
+      description="Gunakan lisensi template yang sudah Anda miliki untuk membuat undangan baru."
       size="md"
       footer={
         <>
           <button type="button" className="btn btn-secondary" onClick={onClose}>
             Batal
           </button>
-          <button type="submit" form="create-invitation" className="btn btn-primary">
-            Buat undangan <ArrowRight size={14} />
+          <button type="submit" form="create-invitation" className="btn btn-primary" disabled={creating || !templateId}>
+            {creating ? 'Membuat…' : 'Buat undangan'} <ArrowRight size={14} />
           </button>
         </>
       }
@@ -143,16 +213,17 @@ export function CreateInvitationModal({ open, onClose, initialTemplateId }: Prop
       <form id="create-invitation" onSubmit={submit} className="stack-4">
         <fieldset style={{ border: 0 }}>
           <legend className="form-label" style={{ marginBottom: 'var(--space-2)' }}>
-            1. Desain template
+            1. Pilih lisensi template Anda ({ownedTemplates.length} siap dipakai)
           </legend>
           <div className="stack-2">
-            {TEMPLATES.map((tpl) => {
+            {ownedTemplates.map((tpl) => {
               const selected = templateId === tpl.id;
+              const count = availableLicences.filter((l) => normalizeTemplateId(l.templateId) === tpl.id).length;
               return (
                 <button
                   key={tpl.id}
                   type="button"
-                  onClick={() => setTemplateId(tpl.id)}
+                  onClick={() => setSelectedTemplateId(tpl.id)}
                   aria-pressed={selected}
                   style={{
                     display: 'flex',
@@ -185,8 +256,8 @@ export function CreateInvitationModal({ open, onClose, initialTemplateId }: Prop
                       {tpl.tagline}
                     </span>
                   </span>
-                  <span className="price-note" style={{ fontWeight: 600, color: 'var(--ink-900)' }}>
-                    {formatIDR(tpl.price)}
+                  <span className="badge badge-success" style={{ flexShrink: 0 }}>
+                    {count > 1 ? `${count} Lisensi Aktif` : 'Lisensi Aktif'}
                   </span>
                   {selected && <Check size={16} style={{ color: 'var(--brand)', flexShrink: 0 }} />}
                 </button>
@@ -333,7 +404,7 @@ export function CreateInvitationModal({ open, onClose, initialTemplateId }: Prop
         <div className="notice">
           <span>
             Tautan final: <code style={{ fontFamily: 'var(--font-mono)' }}>/invite/{activeSlug || 'nama-pasangan'}</code>{' '}
-            {template && template.price > 0 ? `· ${formatIDR(template.price)} saat dipublikasikan` : '· gratis'}
+            {template ? `· Lisensi ${template.name} siap diaktifkan` : ''}
           </span>
         </div>
 

@@ -12,9 +12,8 @@ import { formatFullIndonesianDate } from '@/lib/formatDate';
  * functions of one invitation's RSVP/guest data. They belong here.
  */
 export function DaySection({ invitationId }: { invitationId: string }) {
-  const { invitations } = useInvitationStore();
+  const { invitations, setActiveInvitation, checkInGuest } = useInvitationStore();
   const toast = useToast();
-  const [checkedIn, setCheckedIn] = useState<Record<string, boolean>>({});
   const [search, setSearch] = useState('');
   const [buffer, setBuffer] = useState(1.15);
 
@@ -35,7 +34,7 @@ export function DaySection({ invitationId }: { invitationId: string }) {
   if (!inv) return null;
 
   const guests = inv.guests.filter((g) => g.name.toLowerCase().includes(search.toLowerCase()));
-  const checkedCount = Object.values(checkedIn).filter(Boolean).length;
+  const checkedCount = inv.guests.filter((g) => g.isCheckedIn).length;
   const recommended = derived.recommended;
   const prasmanan = Math.round(recommended * 0.6);
 
@@ -164,7 +163,7 @@ export function DaySection({ invitationId }: { invitationId: string }) {
         ) : (
           <div className="record-list">
             {guests.map((guest) => {
-              const done = Boolean(checkedIn[guest.id]);
+              const done = Boolean(guest.isCheckedIn);
               return (
                 <div key={guest.id} className={`card record checkin-row ${done ? 'is-done' : ''}`}>
                   <div className="record-main">
@@ -181,7 +180,10 @@ export function DaySection({ invitationId }: { invitationId: string }) {
                     <button
                       type="button"
                       className="btn btn-sm btn-secondary"
-                      onClick={() => setCheckedIn((prev) => ({ ...prev, [guest.id]: !done }))}
+                      onClick={() => {
+                        setActiveInvitation(invitationId);
+                        checkInGuest(guest.id, !done);
+                      }}
                       aria-pressed={done}
                     >
                       {done ? (

@@ -1,17 +1,50 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, BadgeCheck, Receipt, ShoppingBag, Wallet } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Loader2, Receipt, RefreshCw, ShoppingBag, Upload, Wallet } from 'lucide-react';
 import { ConsolePageHeader } from '@/components/console/ConsolePageHeader';
+import { useConsoleChrome } from '@/components/console/ConsoleChrome';
 import { useInvitationStore } from '@/lib/invitationStore';
+import { useToast } from '@/components/ui/Toast';
 import { formatIDR, getTemplate } from '@/lib/templates';
 import { formatOrderDate, formatOrderStatus, formatPaymentMethod } from '@/lib/orders';
+import { ordersApi } from '@/lib/api';
 
 export default function OrdersPage() {
-  const { orders, licences } = useInvitationStore();
+  const { orders, licences, refreshOrdersAndLicences, markOrderStatus } = useInvitationStore();
+  const { openCreate } = useConsoleChrome();
+  const toast = useToast();
+  const [uploadingId, setUploadingId] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const totalPaid = orders.filter((o) => o.status === 'paid').reduce((sum, o) => sum + o.amount, 0);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await refreshOrdersAndLicences();
+      toast('info', 'Pesanan dan lisensi dimuat ulang dari server.');
+    } catch (error) {
+      toast('error', error instanceof Error ? error.message : 'Status pesanan gagal dimuat.');
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  const handleProof = async (orderId: string, file: File) => {
+    setUploadingId(orderId);
+    try {
+      await ordersApi.submitPaymentProof(orderId, file);
+      markOrderStatus(orderId, 'payment_submitted');
+      await refreshOrdersAndLicences();
+      toast('success', 'Bukti pembayaran terkirim. Menunggu verifikasi admin.');
+    } catch (err: unknown) {
+      toast('error', err instanceof Error ? err.message : 'Bukti pembayaran gagal diunggah.');
+    } finally {
+      setUploadingId(null);
+    }
+  };
 
   return (
     <>
@@ -19,9 +52,15 @@ export default function OrdersPage() {
         title="Pesanan & lisensi"
         description="Setiap pembelian memberi lisensi permanen untuk satu undangan"
         actions={
-          <Link href="/dashboard/katalog" className="btn btn-sm btn-secondary">
-            Katalog template
-          </Link>
+          <>
+            <button type="button" className="btn btn-sm btn-ghost" onClick={handleRefresh} disabled={refreshing}>
+              <RefreshCw size={13} className={refreshing ? 'spin' : undefined} />
+              <span className="btn-label">Muat ulang</span>
+            </button>
+            <Link href="/katalog" className="btn btn-sm btn-secondary">
+              Beli template
+            </Link>
+          </>
         }
       />
 
@@ -47,7 +86,7 @@ export default function OrdersPage() {
             <span className="stat-card-value" style={{ fontSize: 'var(--text-lg)' }}>
               {formatIDR(totalPaid)}
             </span>
-            <span className="stat-card-desc">Termasuk template gratis</span>
+            <span className="stat-card-desc">Total pembayaran lunas</span>
           </div>
           <div className="stat-card">
             <div className="row-nowrap" style={{ gap: 8, marginBottom: 4 }}>
@@ -74,7 +113,7 @@ export default function OrdersPage() {
               <Receipt size={24} />
               <h3>Belum ada pesanan</h3>
               <p>Pembelian template akan muncul di sini lengkap dengan nomor referensi.</p>
-              <Link href="/dashboard/katalog" className="btn btn-sm btn-primary">
+              <Link href="/katalog" className="btn btn-sm btn-primary">
                 Lihat katalog <ArrowRight size={13} />
               </Link>
             </div>
@@ -103,9 +142,26 @@ export default function OrdersPage() {
                       <td className="col-md">{formatPaymentMethod(order.method)}</td>
                       <td className="col-sm">{formatOrderDate(order.paidAt ?? order.createdAt)}</td>
                       <td>
-                        <span className={`badge ${order.status === 'paid' ? 'badge-success' : 'badge-warning'}`}>
+                        <span className={`badge ${order.status === 'paid' ? 'badge-success' : order.status === 'payment_submitted' ? 'badge-blue' : 'badge-warning'}`}>
                           {formatOrderStatus(order.status)}
                         </span>
+                        {order.status === 'pending' && (
+                          <label className="btn btn-xs btn-secondary" style={{ marginLeft: 6, cursor: 'pointer' }}>
+                            {uploadingId === order.id ? <Loader2 size={11} className="spin" /> : <Upload size={11} />}
+                            <span className="btn-label">Bukti</span>
+                            <input
+                              type="file"
+                              accept="image/jpeg,image/png,image/webp"
+                              hidden
+                              disabled={uploadingId === order.id}
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) handleProof(order.id, file);
+                                e.target.value = '';
+                              }}
+                            />
+                          </label>
+                        )}
                       </td>
                       <td style={{ textAlign: 'right', fontWeight: 600 }} className="numeric">
                         {formatIDR(order.amount)}
@@ -145,16 +201,29 @@ export default function OrdersPage() {
                         </span>
                       </div>
                       <div className="record-meta">
-                        Diterbitkan {formatOrderDate(licence.issuedAt)} · permanen
+                        Diterbitkan {formatOrderDate(licence.issuedAt)} ·{' '}
+                        {licence.invitationId
+                          ? licence.invitationTitle || `Terhubung ke undangan`
+                          : 'Siap dipakai untuk undangan baru'}
                       </div>
                     </div>
                     <div className="record-actions">
-                      <Link
-                        href={`/dashboard/undangan/${licence.invitationId}/design`}
-                        className="btn btn-sm btn-secondary"
-                      >
-                        Kelola
-                      </Link>
+                      {licence.invitationId ? (
+                        <Link
+                          href={`/dashboard/undangan/${licence.invitationId}/content`}
+                          className="btn btn-sm btn-secondary"
+                        >
+                          Kelola undangan
+                        </Link>
+                      ) : (
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-primary"
+                          onClick={() => openCreate(licence.templateId)}
+                        >
+                          Buat undangan <ArrowRight size={12} />
+                        </button>
+                      )}
                     </div>
                   </div>
                 );

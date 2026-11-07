@@ -1,9 +1,10 @@
 import { ApiResponse, AuthResponseData, User } from '@/types/auth';
+import { clearDataStorage, dispatchAuthChange } from './storage';
 import { InvitationData, RSVPItem, GuestItem, TemplateId } from '@/types/invitation';
 
 export const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ||
-  (typeof window !== 'undefined' ? '/api/proxy' : 'http://localhost:8000/wedding_digital/api/v1');
+  (typeof window !== 'undefined' ? '/api/proxy' : 'http://localhost:8080/api/v1');
 
 export const TOKEN_KEY = 'infomase_token';
 export const REFRESH_TOKEN_KEY = 'infomase_refresh_token';
@@ -56,98 +57,85 @@ export const getRequestUrl = (endpoint: string): string => {
   return `${API_BASE}${clean}`;
 };
 
-// Generic Fetcher
-export async function apiFetch<T = any>(
+export const hasServerSession = () => Boolean(getToken() && getToken() !== 'demo-token');
+
+export const getAuthSession = () => {
+  if (typeof window === 'undefined') return '';
+  return `${getStoredUser()?.id ?? ''}:${localStorage.getItem(REFRESH_TOKEN_KEY) || getToken() || ''}`;
+};
+
+export class ApiError extends Error {
+  constructor(message: string, public status: number) {
+    super(message);
+  }
+}
+
+let refreshing: { session: string; promise: Promise<void> } | null = null;
+
+async function renewAccessToken(session: string): Promise<void> {
+  if (refreshing?.session === session) return refreshing.promise;
+  const promise = (async () => {
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
+    if (!refreshToken) throw new ApiError('Sesi berakhir. Silakan masuk kembali.', 401);
+    const res = await fetch(getRequestUrl('/auth/refresh-token'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    });
+    if (!res.ok) throw new ApiError('Sesi berakhir. Silakan masuk kembali.', res.status);
+    const json: ApiResponse<{ accessToken: string }> = await res.json();
+    if (!json.success || !json.data?.accessToken) throw new ApiError('Refresh token gagal.', 401);
+    if (session !== getAuthSession()) throw new ApiError('Akun aktif telah berubah.', 409);
+    setToken(json.data.accessToken);
+  })();
+  refreshing = { session, promise };
+  try {
+    await promise;
+  } catch (error) {
+    if (session === getAuthSession() && error instanceof ApiError && error.status === 401) {
+      clearAuthStorage();
+      clearDataStorage();
+      dispatchAuthChange();
+    }
+    throw error;
+  } finally {
+    if (refreshing?.promise === promise) refreshing = null;
+  }
+}
+
+export async function apiFetch<T = unknown>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
+  const session = getAuthSession();
   const token = getToken();
-  const url = getRequestUrl(endpoint);
-
-  const headers: Record<string, string> = {
-    Accept: 'application/json',
-    'ngrok-skip-browser-warning': 'true',
-    ...(options.headers as Record<string, string>),
-  };
-
-  if (!(options.body instanceof FormData)) {
-    headers['Content-Type'] = 'application/json';
+  const authenticated = hasServerSession() && !/^\/auth\/(login|register|refresh-token)$/.test(endpoint);
+  const headers = new Headers(options.headers);
+  headers.set('Accept', 'application/json');
+  headers.set('ngrok-skip-browser-warning', 'true');
+  if (!(options.body instanceof FormData)) headers.set('Content-Type', 'application/json');
+  if (authenticated) headers.set('Authorization', `Bearer ${token}`);
+  const request = () => fetch(getRequestUrl(endpoint), { ...options, headers });
+  let res = await request();
+  if (res.status === 401 && authenticated) {
+    if (session !== getAuthSession()) throw new ApiError('Akun aktif telah berubah.', 409);
+    if (getToken() === token) await renewAccessToken(session);
+    if (session !== getAuthSession()) throw new ApiError('Akun aktif telah berubah.', 409);
+    headers.set('Authorization', `Bearer ${getToken()}`);
+    res = await request();
   }
-
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+  if (authenticated && session !== getAuthSession()) throw new ApiError('Akun aktif telah berubah.', 409);
+  const json: ApiResponse<T> & { status?: boolean } = await res.json().catch(() => {
+    throw new ApiError('Respons server tidak valid.', res.status);
+  });
+  if (!res.ok || json.success === false || json.status === false) {
+    throw new ApiError(json.message || json.error?.message || `HTTP Error ${res.status}`, res.status);
   }
-
-  let res: Response;
-  try {
-    res = await fetch(url, {
-      ...options,
-      headers,
-    });
-  } catch (err: any) {
-    console.warn(`[apiFetch error] ${url}:`, err);
-    throw new Error(
-      `Tidak dapat terhubung ke server backend di "${url}". Pastikan URL backend valid dan web server backend sedang aktif.`
-    );
-  }
-
-  const json: ApiResponse<T> = await res.json().catch(() => ({
-    success: false,
-    message: 'Gagal memproses respon server',
-    data: null as any,
-  }));
-
-  const isSuccess =
-    json.success === true ||
-    (json as any).status === true ||
-    (res.ok && json.success !== false && (json as any).status !== false);
-
-  if (!res.ok || !isSuccess) {
-    const errorMsg =
-      json.message ||
-      json.error?.message ||
-      json.error?.details?.[0]?.message ||
-      `HTTP Error ${res.status}`;
-    throw new Error(errorMsg);
-  }
-
   return json;
 }
 
-// Upload Fetcher
-export async function apiUpload<T = any>(
-  endpoint: string,
-  formData: FormData
-): Promise<ApiResponse<T>> {
-  const token = getToken();
-  const headers: Record<string, string> = {
-    Accept: 'application/json',
-    'ngrok-skip-browser-warning': 'true',
-  };
-
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  const url = getRequestUrl(endpoint);
-
-  const res = await fetch(url, {
-    method: 'POST',
-    headers,
-    body: formData,
-  });
-
-  const json: ApiResponse<T> = await res.json().catch(() => ({
-    success: false,
-    message: 'Gagal upload file',
-    data: null as any,
-  }));
-
-  if (!res.ok || !json.success) {
-    throw new Error(json.message || `Upload gagal dengan status ${res.status}`);
-  }
-
-  return json;
+export async function apiUpload<T = unknown>(endpoint: string, formData: FormData): Promise<ApiResponse<T>> {
+  return apiFetch<T>(endpoint, { method: 'POST', body: formData });
 }
 
 // 1. AUTH API SERVICES
@@ -208,7 +196,10 @@ export const authApi = {
 
   logout: async () => {
     try {
-      await apiFetch('/auth/logout', { method: 'POST' });
+      if (hasServerSession()) await apiFetch('/auth/logout', {
+        method: 'POST',
+        body: JSON.stringify({ refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY) }),
+      });
     } catch {
       // Ignored if token expired
     } finally {
@@ -217,10 +208,40 @@ export const authApi = {
   },
 };
 
+export interface RemoteTemplate {
+  id: string;
+  code?: string;
+  folderId?: string;
+  name: string;
+  tagline?: string;
+  category?: string;
+  price?: number;
+  compareAt?: number;
+  isHighlighted?: boolean;
+  includes?: string[];
+  palette?: {
+    primary: string;
+    accent: string;
+    surface: string;
+    ink: string;
+  };
+  typography?: {
+    heading: string;
+    body: string;
+  };
+  ornament?: string;
+  previewImage?: string;
+  demoSlug?: string | null;
+  status?: 'available' | 'coming-soon';
+  badge?: string;
+  [key: string]: unknown;
+}
+
 // 2. TEMPLATES API
 export const templatesApi = {
-  getAll: async () => {
-    const res = await apiFetch<any[]>('/templates');
+  getAll: async (params?: { highlighted?: boolean }) => {
+    const query = params?.highlighted ? '?highlighted=1' : '';
+    const res = await apiFetch<RemoteTemplate[]>(`/templates${query}`);
     return res.data;
   },
 };
@@ -254,16 +275,7 @@ export const invitationsApi = {
     return res.data;
   },
 
-  create: async (payload: {
-    title: string;
-    slug: string;
-    templateId: string;
-    countdownDate?: string;
-    themeConfig?: Record<string, any>;
-    groom?: any;
-    bride?: any;
-    events?: any[];
-  }) => {
+  create: async (payload: Partial<InvitationData>) => {
     const res = await apiFetch<InvitationData>('/invitations', {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -486,6 +498,14 @@ export const guestsApi = {
     });
     return res.data;
   },
+
+  checkIn: async (invitationId: string, guestId: string, isCheckedIn: boolean) => {
+    const res = await apiFetch<GuestItem>(`/invitations/${invitationId}/guests/${guestId}/check-in`, {
+      method: 'PATCH',
+      body: JSON.stringify({ isCheckedIn }),
+    });
+    return res.data;
+  },
 };
 
 // 6. RSVP & GUESTBOOK API (LIST_API.txt: [7] MANAJEMEN RSVP & BUKU TAMU)
@@ -533,30 +553,53 @@ export const rsvpsApi = {
   },
 };
 
+interface PersonalizedGuest {
+  id: string;
+  name: string;
+  category?: string;
+  maxPax?: number;
+  guestCode?: string;
+}
+
+interface RemoteWish {
+  id: string | number;
+  guestName?: string;
+  sender_name?: string;
+  attendance?: string;
+  pax?: number | string;
+  message?: string;
+  createdAt?: string;
+  created_at?: string;
+}
+
+function mapRemoteWish(w: RemoteWish): RSVPItem {
+  return {
+    id: String(w.id),
+    guestName: w.guestName || w.sender_name || 'Tamu',
+    attendance:
+      (w.attendance || 'hadir').toLowerCase() === 'hadir'
+        ? 'hadir'
+        : (w.attendance || '').toLowerCase() === 'ragu'
+        ? 'ragu'
+        : 'tidak',
+    pax: Number(w.pax) || 1,
+    message: w.message || '',
+    createdAt: w.createdAt || w.created_at || new Date().toISOString(),
+  };
+}
+
 // 7. PUBLIC API (LIST_API.txt: [8] ENDPOINT PUBLIK)
 export const publicApi = {
   getBySlug: async (slug: string, toGuest?: string) => {
     const query = toGuest ? `?to=${encodeURIComponent(toGuest)}` : '';
-    const res = await apiFetch<InvitationData & { personalizedGuest?: any }>(
+    const res = await apiFetch<InvitationData & { personalizedGuest?: PersonalizedGuest }>(
       `/public/invitations/${slug}${query}`
     );
     if (res.data) {
       try {
-        const wishesRes = await apiFetch<any[]>(`/public/invitations/${slug}/wishes`);
+        const wishesRes = await apiFetch<RemoteWish[]>(`/public/invitations/${slug}/wishes`);
         if (Array.isArray(wishesRes.data)) {
-          res.data.rsvpList = wishesRes.data.map((w: any) => ({
-            id: String(w.id),
-            guestName: w.guestName || w.sender_name || 'Tamu',
-            attendance:
-              (w.attendance || 'hadir').toLowerCase() === 'hadir'
-                ? 'hadir'
-                : (w.attendance || '').toLowerCase() === 'ragu'
-                ? 'ragu'
-                : 'tidak',
-            pax: Number(w.pax) || 1,
-            message: w.message || '',
-            createdAt: w.createdAt || w.created_at || new Date().toISOString(),
-          }));
+          res.data.rsvpList = wishesRes.data.map(mapRemoteWish);
         }
       } catch {
         /* ignore wishes fetch failure */
@@ -606,9 +649,37 @@ export const publicApi = {
 };
 
 // 8. ORDERS & LICENCES API
+export interface RemoteOrderResponse {
+  id: string;
+  orderNumber?: string;
+  templateId: string;
+  invitationId: string;
+  invitationSlug?: string | null;
+  invitationTitle?: string;
+  amount: number | string;
+  currency?: string;
+  status: string;
+  createdAt: string;
+  paidAt?: string | null;
+  paymentMethod?: string | null;
+  payment?: unknown;
+}
+
+export interface RemoteLicenceResponse {
+  id: string;
+  invitationId: string;
+  invitationSlug?: string | null;
+  invitationTitle?: string | null;
+  templateId: string;
+  orderId?: string;
+  kind?: string;
+  status?: string;
+  issuedAt: string;
+}
+
 export const ordersApi = {
-  checkout: async (payload: { invitationId: string; templateId: string; paymentMethod?: string }) => {
-    const res = await apiFetch<any>('/orders/checkout', {
+  checkout: async (payload: { invitationId?: string; templateId: string; paymentMethod?: string }) => {
+    const res = await apiFetch<RemoteOrderResponse>('/orders/checkout', {
       method: 'POST',
       body: JSON.stringify(payload),
     });
@@ -616,20 +687,27 @@ export const ordersApi = {
   },
 
   getAll: async () => {
-    const res = await apiFetch<any[]>('/orders');
+    const res = await apiFetch<RemoteOrderResponse[]>('/orders');
     return res.data;
   },
 
   getLicences: async () => {
-    const res = await apiFetch<any[]>('/orders/licences');
+    const res = await apiFetch<RemoteLicenceResponse[]>('/orders/licences');
     return res.data;
   },
 
   confirmPayment: async (orderId: string, payload?: { proofUrl?: string }) => {
-    const res = await apiFetch<any>(`/orders/${orderId}/payment`, {
+    const res = await apiFetch<RemoteOrderResponse>(`/orders/${orderId}/payment`, {
       method: 'POST',
       body: JSON.stringify(payload || {}),
     });
+    return res.data;
+  },
+
+  submitPaymentProof: async (orderId: string, file: File) => {
+    const formData = new FormData();
+    formData.append('proof', file);
+    const res = await apiUpload<RemoteOrderResponse>(`/orders/${orderId}/payment`, formData);
     return res.data;
   },
 };

@@ -8,9 +8,9 @@ import { useAuth } from '@/lib/authContext';
 
 /** Four destinations, two of which are the actual conversion paths. */
 const LINKS = [
-  { href: '#template', label: 'Template' },
-  { href: '#fitur', label: 'Fitur' },
-  { href: '#harga', label: 'Harga' },
+  { href: '/katalog', label: 'Katalog Template' },
+  { href: '/#fitur', label: 'Fitur' },
+  { href: '/#harga', label: 'Harga' },
   { href: '/invite/raka-sinta', label: 'Contoh undangan' },
 ];
 
@@ -55,9 +55,9 @@ export function MarketingNav() {
                 <Link href="/login" className="btn btn-sm btn-ghost nav-login">
                   Masuk
                 </Link>
-                <Link href="/register" className="btn btn-sm btn-primary">
-                  <span className="nav-cta-label">Buat undangan</span>
-                  <span className="nav-cta-short">Buat</span>
+                <Link href="/katalog" className="btn btn-sm btn-primary">
+                  <span className="nav-cta-label">Beli template</span>
+                  <span className="nav-cta-short">Beli</span>
                   <ArrowRight size={14} />
                 </Link>
               </>

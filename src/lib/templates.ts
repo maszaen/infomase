@@ -23,10 +23,12 @@ export interface TemplateMeta {
   /** Short positioning line: what the design *is*, not marketing superlatives. */
   tagline: string;
   category: TemplateCategory;
-  /** One-time price in IDR. 0 = free forever. */
+  /** One-time price in IDR. */
   price: number;
   /** Optional strike-through price in IDR, for launch pricing. */
   compareAt?: number;
+  /** Whether the template is highlighted on the Landing Page (max 6). */
+  isHighlighted?: boolean;
   /** What the buyer gets, written as deliverable outcomes. */
   includes: string[];
   /** Cosmetic fields used by the preview + picker swatches. */
@@ -58,13 +60,15 @@ export const TEMPLATES: TemplateMeta[] = [
     name: 'Boho Botanical',
     tagline: 'Aquarel hangat, dedaunan bergoyang, dan gate cover 3D.',
     category: 'Botanical & Rustic',
-    price: 0,
+    price: 49000,
+    compareAt: 99000,
+    isHighlighted: true,
     includes: [
       'Gate cover 3D book flip',
       'Animasi daun & bunga (wind sway)',
       'Musik latar autoplay',
       'Galeri, love story, amplop digital, RSVP',
-      '1 undangan · aktif tanpa batas',
+      '1 undangan · aktif permanen',
     ],
     palette: {
       primary: '#79624C',
@@ -80,7 +84,7 @@ export const TEMPLATES: TemplateMeta[] = [
     previewImage: '/template/undangan_1/img/foto_mempelai_dummy.jpg',
     demoSlug: 'raka-sinta',
     status: 'available',
-    badge: 'Gratis untuk dicoba',
+    badge: 'Populer',
   },
   {
     id: 'modern-minimalist',
@@ -90,6 +94,7 @@ export const TEMPLATES: TemplateMeta[] = [
     category: 'Modern Minimal',
     price: 49000,
     compareAt: 99000,
+    isHighlighted: true,
     includes: [
       'Editorial layout bergaya majalah Kinfolk & Vogue',
       'Harmoni palet sage olive & warm ivory',
@@ -121,6 +126,7 @@ export const TEMPLATES: TemplateMeta[] = [
     category: 'Botanical & Rustic',
     price: 49000,
     compareAt: 99000,
+    isHighlighted: true,
     includes: [
       'Tema pesisir pantai & desiran ombak laut',
       'Perpaduan ocean teal, palm green & warm sand gold',
@@ -151,6 +157,7 @@ export const TEMPLATES: TemplateMeta[] = [
     category: 'Luxury Classic',
     price: 79000,
     compareAt: 149000,
+    isHighlighted: true,
     includes: [
       'Arsitektur bingkai lengkung mihrab islami',
       'Ornamen kaligrafi basmalah & kutipan suci Ar-Rum',
@@ -182,6 +189,7 @@ export const TEMPLATES: TemplateMeta[] = [
     category: 'Botanical & Rustic',
     price: 49000,
     compareAt: 99000,
+    isHighlighted: false,
     includes: [
       'Visual latar kabut pegunungan pinus alami',
       'Nuansa pine emerald, cedar gold & mist white',
@@ -212,6 +220,7 @@ export const TEMPLATES: TemplateMeta[] = [
     category: 'Luxury Classic',
     price: 79000,
     compareAt: 149000,
+    isHighlighted: true,
     includes: [
       'Ambience beludru maroon istana kerajaan & antique gold',
       'Lampu gantung chandelier kristal bergoyang & pilar megah',
@@ -243,6 +252,7 @@ export const TEMPLATES: TemplateMeta[] = [
     category: 'Traditional Nusantara',
     price: 89000,
     compareAt: 159000,
+    isHighlighted: true,
     includes: [
       'Arsitektur panggung desktop 3-kolom Pendopo Kraton',
       'Motif batik Megamendung, Gunungan & Wayang Kulit',
@@ -274,6 +284,7 @@ export const TEMPLATES: TemplateMeta[] = [
     category: 'Traditional Nusantara',
     price: 89000,
     compareAt: 159000,
+    isHighlighted: false,
     includes: [
       'Panggung adat Jawa pethak bernuansa putih suci',
       'Batik Kawung putih, roncen melati gantung & mandala cakra',
@@ -363,7 +374,6 @@ export function getTemplate(id: string | undefined | null): TemplateMeta | undef
 }
 
 export function formatIDR(amount: number): string {
-  if (amount === 0) return 'Gratis';
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',

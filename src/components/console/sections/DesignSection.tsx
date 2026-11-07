@@ -1,22 +1,37 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Check, Crown, Lock, Palette, ShieldCheck } from 'lucide-react';
+import { Check, Crown, Lock, Palette, ShieldCheck, ShoppingBag } from 'lucide-react';
 import { useInvitationStore } from '@/lib/invitationStore';
 import { useToast } from '@/components/ui/Toast';
-import { TEMPLATES, formatIDR, getTemplate } from '@/lib/templates';
+import { formatIDR, getTemplate, normalizeTemplateId } from '@/lib/templates';
 import { formatOrderDate } from '@/lib/orders';
 
 export function DesignSection({ invitationId }: { invitationId: string }) {
-  const { invitations, licences, setTemplateId, needsPurchase } = useInvitationStore();
+  const { invitations, licences, templates, setTemplateId, needsPurchase } = useInvitationStore();
   const toast = useToast();
 
   const invitation = invitations.find((i) => i.id === invitationId);
+
+  const ownedTemplates = useMemo(() => {
+    if (!invitation) return [];
+    const currentId = normalizeTemplateId(invitation.templateId);
+    const licensedIds = new Set(
+      licences
+        .filter((l) => l.invitationId === invitationId || !l.invitationId)
+        .map((l) => normalizeTemplateId(l.templateId))
+    );
+    licensedIds.add(currentId);
+    return templates.filter((tpl) => licensedIds.has(tpl.id));
+  }, [invitation, invitationId, licences, templates]);
+
   if (!invitation) return null;
 
   const current = getTemplate(invitation.templateId);
-  const currentLicence = licences.find((l) => l.invitationId === invitationId);
+  const currentLicence = licences.find(
+    (l) => l.invitationId === invitationId && normalizeTemplateId(l.templateId) === normalizeTemplateId(invitation.templateId)
+  );
   const pending = needsPurchase(invitationId);
 
   return (
@@ -49,7 +64,7 @@ export function DesignSection({ invitationId }: { invitationId: string }) {
               <p className="meta" style={{ marginTop: 2 }}>
                 {currentLicence
                   ? `Diterbitkan ${formatOrderDate(currentLicence.issuedAt)} · tidak ada tanggal berakhir`
-                  : 'Desain boleh dipakai untuk menyusun undangan; pembayaran diperlukan sebelum undangan ditayangkan.'}
+                  : 'Pembayaran lisensi diperlukan sebelum undangan dapat ditayangkan ke publik.'}
               </p>
             </div>
           </div>
@@ -75,28 +90,29 @@ export function DesignSection({ invitationId }: { invitationId: string }) {
           <div className="notice notice-warning" style={{ marginTop: 'var(--space-3)' }}>
             <Lock size={14} />
             <span>
-              Undangan belum bisa dibuka tamu. Anda tetap bisa mengisi semua konten sekarang, lalu membayar
-              saat siap menyebarkan.
+              Undangan belum bisa dibuka tamu. Selesaikan pembelian lisensi untuk menayangkan undangan ini.
             </span>
           </div>
         )}
       </section>
 
-      {/* ------------------------------------------------------- template list */}
+      {/* ------------------------------------------------------- owned template list */}
       <section className="page-section">
         <div className="section-bar">
           <div>
-            <h2>Ganti desain</h2>
-            <p>Mengganti desain tidak menghapus konten yang sudah Anda isi.</p>
+            <h2>Template yang Anda miliki</h2>
+            <p>Hanya menampilkan desain yang sudah Anda beli untuk undangan ini atau lisensi aktif yang siap pakai.</p>
           </div>
-          <span className="meta">{TEMPLATES.length} desain tersedia</span>
+          <Link href="/katalog" className="btn btn-sm btn-secondary">
+            <ShoppingBag size={13} /> Beli template lain di Katalog
+          </Link>
         </div>
 
         <div className="template-grid">
-          {TEMPLATES.map((tpl) => {
-            const selected = tpl.id === invitation.templateId;
-            const owned = licences.some(
-              (l) => l.invitationId === invitationId && l.templateId === tpl.id
+          {ownedTemplates.map((tpl) => {
+            const selected = tpl.id === normalizeTemplateId(invitation.templateId);
+            const boundHere = licences.some(
+              (l) => l.invitationId === invitationId && normalizeTemplateId(l.templateId) === tpl.id
             );
 
             return (
@@ -118,6 +134,12 @@ export function DesignSection({ invitationId }: { invitationId: string }) {
                       Dipakai
                     </span>
                   )}
+                  <span
+                    className={`badge ${boundHere ? 'badge-success' : ''}`}
+                    style={{ position: 'absolute', top: 8, right: 8 }}
+                  >
+                    {boundHere ? 'Lisensi Aktif' : 'Siap Dipakai'}
+                  </span>
                 </div>
 
                 <div className="template-card-body">
@@ -149,15 +171,6 @@ export function DesignSection({ invitationId }: { invitationId: string }) {
                     >
                       {selected ? 'Sedang dipakai' : 'Pakai desain ini'}
                     </button>
-
-                    {tpl.price > 0 && !owned && (
-                      <Link
-                        href={`/checkout?template=${tpl.id}&undangan=${invitationId}`}
-                        className="btn btn-sm btn-ghost"
-                      >
-                        Beli lisensi <ArrowRight size={12} />
-                      </Link>
-                    )}
                   </div>
                 </div>
               </article>

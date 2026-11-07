@@ -6,9 +6,9 @@ const COLUMNS = [
   {
     title: 'Produk',
     links: [
-      { href: '#template', label: 'Katalog template' },
-      { href: '#fitur', label: 'Fitur undangan' },
-      { href: '#harga', label: 'Harga' },
+      { href: '/katalog', label: 'Katalog template' },
+      { href: '/#fitur', label: 'Fitur undangan' },
+      { href: '/#harga', label: 'Harga' },
       { href: '/invite/raka-sinta', label: 'Contoh undangan' },
     ],
   },
@@ -16,7 +16,7 @@ const COLUMNS = [
     title: 'Konsol',
     links: [
       { href: '/dashboard', label: 'Buka konsol' },
-      { href: '/dashboard?view=orders', label: 'Pesanan saya' },
+      { href: '/dashboard/orders', label: 'Pesanan saya' },
       { href: '/login', label: 'Masuk' },
       { href: '/register', label: 'Daftar' },
     ],
