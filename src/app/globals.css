@@ -1981,6 +1981,10 @@ table.table {
   }
 }
 
+.spin {
+  animation: spinSlow 1.1s linear infinite;
+}
+
 .music-spinning {
   animation: spinSlow 1.1s linear infinite;
 }

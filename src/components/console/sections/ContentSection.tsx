@@ -44,63 +44,79 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
   const [newPhotoUrl, setNewPhotoUrl] = useState('');
   const [newCaption, setNewCaption] = useState('');
 
-  const inv = store.invitations.find((i) => i.id === invitationId) ?? store.data;
+  const inv = store.invitations.find((i) => i.id === invitationId);
 
   // Slug collision handling & live validation
-  const [slugInput, setSlugInput] = useState(inv.slug);
-  const [slugStatus, setSlugStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
-  const [conflictReason, setConflictReason] = useState('');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [slugOverride, setSlugOverride] = useState<{ id: string; value: string } | null>(null);
+  const slugInput = slugOverride && slugOverride.id === inv?.id ? slugOverride.value : inv?.slug ?? '';
+  const [slugCheck, setSlugCheck] = useState<{
+    key: string;
+    status: 'checking' | 'available' | 'taken';
+    reason: string;
+    suggestions: string[];
+  } | null>(null);
+
+  const invId = inv?.id;
+  const invSlug = inv?.slug ?? '';
+  const invTitle = inv?.title ?? '';
+  const slugKey = `${invId ?? ''}:${slugInput}`;
+  const slugStatus =
+    !slugInput.trim() || slugInput === invSlug
+      ? slugInput === invSlug && invSlug
+        ? 'available'
+        : 'idle'
+      : slugCheck?.key === slugKey
+        ? slugCheck.status
+        : 'checking';
+  const conflictReason = slugStatus === 'taken' ? slugCheck?.reason ?? '' : '';
+  const suggestions = slugStatus === 'taken' ? slugCheck?.suggestions ?? [] : [];
 
   useEffect(() => {
-    setSlugInput(inv.slug);
-  }, [inv.slug]);
-
-  useEffect(() => {
+    if (!invId) return;
     const cleaned = slugInput.trim().toLowerCase().replace(/[^a-z0-9\-]/g, '');
-    if (!cleaned) {
-      setSlugStatus('idle');
-      return;
-    }
-    if (cleaned === inv.slug) {
-      setSlugStatus('available');
-      setSuggestions([]);
-      setConflictReason('');
-      return;
-    }
+    if (!cleaned || cleaned === invSlug) return;
 
-    setSlugStatus('checking');
     const timer = setTimeout(() => {
       invitationsApi
-        .checkSlug(cleaned, inv.id)
+        .checkSlug(cleaned, invId)
         .then((res) => {
           if (res) {
             if (res.available) {
-              setSlugStatus('available');
-              setSuggestions([]);
-              setConflictReason('');
-              store.updateGeneral(inv.title, cleaned);
+              setSlugCheck({ key: `${invId}:${slugInput}`, status: 'available', reason: '', suggestions: [] });
+              store.updateGeneral(invTitle, cleaned);
             } else {
-              setSlugStatus('taken');
-              setConflictReason(res.reason || 'Slug sudah digunakan oleh undangan lain.');
-              setSuggestions(res.suggestions || []);
+              setSlugCheck({
+                key: `${invId}:${slugInput}`,
+                status: 'taken',
+                reason: res.reason || 'Slug sudah digunakan oleh undangan lain.',
+                suggestions: res.suggestions || [],
+              });
             }
           }
         })
         .catch(() => {
-          setSlugStatus('available');
-          store.updateGeneral(inv.title, cleaned);
+          setSlugCheck({ key: `${invId}:${slugInput}`, status: 'available', reason: '', suggestions: [] });
+          store.updateGeneral(invTitle, cleaned);
         });
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [slugInput, inv.id, inv.slug, inv.title, store]);
+  }, [slugInput, invId, invSlug, invTitle, store]);
+
+  if (!inv) {
+    return (
+      <div className="card" style={{ padding: 'var(--space-8)', textAlign: 'center' }}>
+        <h2 style={{ fontSize: 'var(--text-md)' }}>Undangan tidak ditemukan</h2>
+        <p className="meta" style={{ marginTop: 'var(--space-2)' }}>
+          Undangan ini bukan milik akun yang sedang aktif. Muat ulang halaman atau kembali ke daftar undangan.
+        </p>
+      </div>
+    );
+  }
 
   const applySlugSuggestion = (sug: string) => {
-    setSlugInput(sug);
-    setSlugStatus('available');
-    setSuggestions([]);
-    setConflictReason('');
+    setSlugOverride({ id: inv.id, value: sug });
+    setSlugCheck({ key: `${inv.id}:${sug}`, status: 'available', reason: '', suggestions: [] });
     store.updateGeneral(inv.title, sug);
     toast('success', `Slug diubah menjadi ${sug}`);
   };
@@ -252,7 +268,7 @@ export function ContentSection({ invitationId }: { invitationId: string }) {
                   borderColor: slugStatus === 'taken' ? 'var(--danger-500, #b42323)' : slugStatus === 'available' ? 'var(--success-500, #22c55e)' : undefined,
                 }}
                 value={slugInput}
-                onChange={(e) => setSlugInput(e.target.value)}
+                onChange={(e) => setSlugOverride({ id: inv.id, value: e.target.value })}
               />
             </div>
 

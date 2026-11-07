@@ -3,6 +3,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { User } from '@/types/auth';
 import { authApi, getToken, setToken as saveTokenToStorage, getStoredUser, clearAuthStorage, setStoredUser } from './api';
+import { AUTH_CHANGE_EVENT, clearDataStorage, dispatchAuthChange } from './storage';
 
 /**
  * Auth only. Nothing about billing lives here anymore: the old
@@ -53,6 +54,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const storedUser = getStoredUser();
 
+      if (storedToken === 'demo-token') {
+        setToken(storedToken);
+        setUser(storedUser);
+        setIsLoading(false);
+        return;
+      }
       if (storedToken) {
         if (!cancelled) {
           setToken(storedToken);
@@ -71,9 +78,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (!cancelled) setIsLoading(false);
     };
 
+    const syncIdentity = () => {
+      setToken(getToken());
+      setUser(getStoredUser());
+    };
+    window.addEventListener(AUTH_CHANGE_EVENT, syncIdentity);
     init();
     return () => {
       cancelled = true;
+      window.removeEventListener(AUTH_CHANGE_EVENT, syncIdentity);
     };
   }, []);
 
@@ -81,11 +94,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     try {
       const res = await authApi.login(credentials);
+      // Never carry another account's cached invitations/orders across login.
+      clearDataStorage();
       if (res?.user) {
         setUser(res.user);
         setStoredUser(res.user);
       }
       setToken(getToken());
+      dispatchAuthChange();
     } finally {
       setIsLoading(false);
     }
@@ -96,11 +112,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsLoading(true);
       try {
         const res = await authApi.register(payload);
+        clearDataStorage();
         if (res?.user) {
           setUser(res.user);
           setStoredUser(res.user);
         }
         setToken(getToken());
+        dispatchAuthChange();
       } finally {
         setIsLoading(false);
       }
@@ -116,12 +134,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       email: 'demo@infomase.id',
       role: 'USER',
     };
+    clearAuthStorage();
+    clearDataStorage();
     setUser(demoUser);
     setToken('demo-token');
     if (typeof window !== 'undefined') {
       localStorage.setItem('infomase_token', 'demo-token');
       setStoredUser(demoUser);
     }
+    dispatchAuthChange();
   }, []);
 
   const logout = useCallback(async () => {
@@ -129,8 +150,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await authApi.logout();
     } finally {
       clearAuthStorage();
+      clearDataStorage();
       setUser(null);
       setToken(null);
+      dispatchAuthChange();
     }
   }, []);
 

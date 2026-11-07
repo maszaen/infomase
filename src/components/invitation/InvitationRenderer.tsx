@@ -22,14 +22,7 @@ export const InvitationRenderer: React.FC<InvitationRendererProps> = ({
   onAddRSVP,
   defaultOpened = false,
 }) => {
-  const Component = getTemplateComponent(data?.templateId);
+  const Component = React.useMemo(() => getTemplateComponent(data?.templateId), [data?.templateId]);
 
-  return (
-    <Component
-      data={data}
-      guestName={guestName}
-      onAddRSVP={onAddRSVP}
-      defaultOpened={defaultOpened}
-    />
-  );
+  return React.createElement(Component, { data, guestName, onAddRSVP, defaultOpened });
 };

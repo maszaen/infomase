@@ -21,6 +21,65 @@
     });
   }
 
+  // 0b. DATE HELPERS
+  var DAY_NAMES = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+  var MONTH_NAMES = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+  function parseEventDate(value) {
+    if (!value) return null;
+    var date = new Date(String(value) + 'T00:00:00');
+    if (isNaN(date.getTime())) return null;
+    return {
+      day: date.getDate(),
+      dayName: DAY_NAMES[date.getDay()],
+      month: MONTH_NAMES[date.getMonth()],
+      monthNumber: date.getMonth() + 1,
+      year: date.getFullYear()
+    };
+  }
+
+  function formatEventDate(value) {
+    var parts = parseEventDate(value);
+    return parts ? parts.dayName + ', ' + parts.day + ' ' + parts.month + ' ' + parts.year : '';
+  }
+
+  function formatEventTime(event) {
+    var start = String(event.startTime || '').replace(':', '.');
+    var end = String(event.endTime || '').replace(':', '.');
+    if (!start) return '';
+    return 'Pukul ' + start + (end ? ' \u2013 ' + end : '') + ' ' + (event.timezone || 'WIB');
+  }
+
+  function safeMediaUrl(url) {
+    var value = String(url || '').trim();
+    if (/^https?:\/\//i.test(value) || /^data:image\//i.test(value) || /^\/(uploads|template)\//i.test(value)) {
+      return value;
+    }
+    return '';
+  }
+
+  function setText(node, value) {
+    if (node && value !== undefined && value !== null && String(value).trim() !== '') {
+      node.textContent = String(value);
+      return true;
+    }
+    return false;
+  }
+
+  function replaceIfMatches(nodes, pattern, value) {
+    nodes.forEach(function (node) {
+      if (node.children.length === 0 && pattern.test(node.textContent.trim())) {
+        setText(node, value);
+      }
+    });
+  }
+
+  function findEventSection() {
+    return document.getElementById('acara')
+      || document.getElementById('event')
+      || document.querySelector('section[class*="event"]');
+  }
+
   // 1. GUEST NAME RESOLUTION
   function resolveGuestName(customName) {
     if (customName && typeof customName === 'string' && customName.trim()) {
@@ -233,7 +292,23 @@
       }
     }
 
-    // G. Digital Envelope / Bank Accounts
+    // G. Event dates, times & venue
+    if (Array.isArray(data.events) && data.events.length > 0) {
+      applyEventSchedule(data.events);
+      applyCoverDate(data.events[0]);
+    }
+
+    // H. Love stories
+    if (Array.isArray(data.stories) && data.stories.length > 0) {
+      applyStories(data.stories);
+    }
+
+    // I. Gallery photos
+    if (Array.isArray(data.gallery) && data.gallery.length > 0) {
+      applyGallery(data.gallery);
+    }
+
+    // J. Digital Envelope / Bank Accounts
     if (Array.isArray(data.bankAccounts) && data.bankAccounts.length > 0) {
       data.bankAccounts.forEach((acc, idx) => {
         const numEl = document.querySelector(`.bank-acc-${idx + 1}-num, [data-bank-acc="${idx + 1}"], #bankNumber${idx + 1}`);
@@ -243,14 +318,198 @@
       });
     }
 
-    // H. Audio Background URL
+    // K. Audio Background URL
     if (data.music && data.music.url) {
       const audio = document.getElementById('weddingMusic') || document.getElementById('wedding-audio') || document.getElementById('bg-audio');
       if (audio && audio.src !== data.music.url) {
         audio.src = data.music.url;
         audio.load();
       }
+      const source = audio ? audio.querySelector('source') : null;
+      if (source && source.src !== data.music.url) {
+        source.src = data.music.url;
+      }
     }
+  }
+
+  // 3b. EVENT SCHEDULE (dates, times, venue)
+  function applyEventSchedule(events) {
+    const section = findEventSection();
+    if (!section) return;
+
+    const headings = Array.from(section.querySelectorAll(
+      'h2, h3, h4, h5, [class*="side-title"], [class*="event-title"], [class*="event-name"]'
+    ));
+    const usedEvents = [];
+
+    headings.forEach((heading) => {
+      const label = heading.textContent.trim();
+      let event = null;
+      // "Pernikahan" also contains "nikah", so reception must be tested first.
+      if (/resepsi|walimah|reception/i.test(label)) {
+        event = events.find((item) => /resepsi|walimah|reception/i.test(item.title || '')) || events[1] || null;
+      } else if (/akad|ijab|nikah/i.test(label)) {
+        event = events.find((item) => /akad|ijab|nikah/i.test(item.title || '')) || events[0] || null;
+      }
+      if (!event || usedEvents.indexOf(event.id) !== -1) return;
+      usedEvents.push(event.id);
+
+      setText(heading, event.title);
+      const card = heading.parentElement || heading.closest('div') || section;
+      const textNodes = Array.from(card.querySelectorAll('p, span, div, b, strong'))
+        .filter((node) => node.children.length === 0 && node.textContent.trim() !== '');
+
+      const dateText = formatEventDate(event.date);
+      const timeText = formatEventTime(event);
+      const venueText = [event.locationName, event.address].filter(Boolean).join(', ');
+
+      // Class-based slots used by the editorial templates.
+      const classSlots = [
+        ['[class*="date-text"], [class*="event-date-text"]', dateText],
+        ['[class*="day-number"], [class*="event-day"]', (parseEventDate(event.date) || {}).day],
+        ['[class*="event-time"], [class*="time-range"]', timeText],
+        ['[class*="location-address"]', venueText],
+        ['[class*="location-title"], [class*="venue"]', event.locationName]
+      ];
+      classSlots.forEach(([selector, value]) => {
+        const node = card.querySelector(selector) || section.querySelector(selector);
+        if (node && value !== undefined) setText(node, value);
+      });
+
+      replaceIfMatches(textNodes, /^(senin|selasa|rabu|kamis|jumat|sabtu|minggu),?\s+\d{1,2}\s+[a-z]+\s+\d{4}$/i, dateText);
+      replaceIfMatches(textNodes, /^(tanggal|date)\b/i, dateText);
+      replaceIfMatches(textNodes, /pukul|^waktu\b/i, timeText);
+
+      textNodes.forEach((node) => {
+        const text = node.textContent.trim();
+        if (!/^(gedung|hotel|jl\.|jalan|tempat|location|lokasi|ds\s|desa|kec\.)/i.test(text)) return;
+        if (/pukul|tanggal|\d{4}/i.test(text)) return;
+        setText(node, venueText);
+      });
+
+      const mapsLink = card.querySelector('a[href*="maps"], a[href*="goo.gl"], a[href*="google"]');
+      if (mapsLink && /^https?:\/\//i.test(event.mapsUrl || '')) {
+        mapsLink.href = event.mapsUrl;
+      }
+    });
+
+    // Big "save the date" headline such as 24 . 05 . 2025
+    const primary = events[0];
+    const parts = parseEventDate(primary.date);
+    if (parts) {
+      const dotted = String(parts.day).padStart(2, '0') + ' . ' +
+        String(parts.monthNumber).padStart(2, '0') + ' . ' + parts.year;
+      replaceIfMatches(
+        Array.from(section.querySelectorAll('h2, h3, h4, span, div')).filter((n) => n.children.length === 0),
+        /^\d{1,2}\s*[./-]\s*\d{1,2}\s*[./-]\s*\d{4}$/,
+        dotted
+      );
+    }
+  }
+
+  // 3c. COVER DATE (hero section)
+  function applyCoverDate(event) {
+    const parts = parseEventDate(event.date);
+    if (!parts) return;
+    const hero = document.getElementById('home') || document.getElementById('gatePage') || document.getElementById('gate-cover');
+    if (!hero) return;
+
+    const nodes = Array.from(hero.querySelectorAll('span, p, div, h2, h3')).filter(
+      (node) => node.children.length === 0 && node.textContent.trim() !== '' && !/^cd-/.test(node.id || '')
+    );
+
+    nodes.forEach((node) => {
+      const text = node.textContent.trim();
+      const upper = text === text.toUpperCase();
+      if (/^(senin|selasa|rabu|kamis|jumat|sabtu|minggu|monday|tuesday|wednesday|thursday|friday|saturday|sunday)$/i.test(text)) {
+        setText(node, upper ? parts.dayName.toUpperCase() : parts.dayName);
+      } else if (/^[a-z]{3,9}\s+\d{4}$/i.test(text)) {
+        const month = (upper ? parts.month : parts.month.charAt(0) + parts.month.slice(1).toLowerCase()) + ' ' + parts.year;
+        setText(node, upper ? month.toUpperCase() : month);
+      } else if (/^\d{1,2}$/.test(text)) {
+        setText(node, String(parts.day));
+      }
+    });
+  }
+
+  // 3d. LOVE STORIES
+  function findStorySection() {
+    const explicit = document.querySelector('#kisah, #story, .love-story-section, section.sec--story');
+    if (explicit) return explicit;
+    const heading = Array.from(document.querySelectorAll('h2, h3')).find((node) =>
+      /kisah|love story|our journey/i.test(node.textContent || '')
+    );
+    return heading ? heading.closest('section') || heading.parentElement : null;
+  }
+
+  function applyStories(stories) {
+    const section = findStorySection();
+    if (!section) return;
+
+    let items = Array.from(section.querySelectorAll('li'));
+    if (items.length < 2) {
+      items = Array.from(section.querySelectorAll('.story-chapter, [class*="tl-entry"], [class*="story-item"], [class*="timeline"] > div'));
+    }
+    if (items.length < 2) {
+      const grid = Array.from(section.querySelectorAll('div')).find((node) => {
+        const kids = Array.from(node.children);
+        return kids.length >= 2 && kids.every((kid) => kid.querySelectorAll('span').length >= 1 && !kid.querySelector('img'));
+      });
+      if (grid) items = Array.from(grid.children);
+    }
+    if (items.length === 0) return;
+
+    stories.slice(0, items.length).forEach((story, index) => {
+      const item = items[index];
+      const yearNode = Array.from(item.querySelectorAll('span, b, strong, div'))
+        .find((node) => node.children.length === 0 &&
+          (/^(19|20)\d{2}$/.test(node.textContent.trim()) || /[a-z]+\s+(19|20)\d{2}$/i.test(node.textContent.trim()) || /[class*="year"]/.test(node.className || '')));
+      let title = item.querySelector('h3, h4, [class*="title"]');
+      if (!title) {
+        title = Array.from(item.querySelectorAll('span, b, strong, div'))
+          .find((node) => node.children.length === 0 && node !== yearNode && node.textContent.trim() !== '');
+      }
+      const description = item.querySelector('p, [class*="desc"]');
+
+      if (yearNode) setText(yearNode, story.year);
+      if (title && title !== yearNode) setText(title, story.title);
+      if (description && description !== yearNode) setText(description, story.description);
+
+      const image = item.querySelector('img');
+      const imageUrl = safeMediaUrl(story.image);
+      if (image && imageUrl) image.src = imageUrl;
+    });
+  }
+
+  // 3e. GALLERY
+  function applyGallery(gallery) {
+    const section = document.getElementById('galeri') || document.getElementById('gallery') || document.querySelector('section[class*="gallery"]');
+    if (!section) return;
+
+    const images = Array.from(section.querySelectorAll('img')).filter((img) => {
+      const src = img.getAttribute('src') || '';
+      return img.id !== 'lightbox-img' && /galeri|gallery|unsplash|photo|foto/i.test(src);
+    });
+    if (images.length === 0) return;
+
+    gallery.slice(0, images.length).forEach((photo, index) => {
+      const url = safeMediaUrl(photo.url);
+      if (!url) return;
+      const image = images[index];
+      const oldUrl = image.getAttribute('src') || '';
+      image.src = url;
+
+      const clickable = image.closest('[onclick]');
+      const handler = clickable ? clickable.getAttribute('onclick') || '' : '';
+      if (handler.indexOf('openLightbox') !== -1 && oldUrl !== url) {
+        clickable.setAttribute(
+          'onclick',
+          handler.replace(/openLightbox\(\s*(['"])[^'"]*\1/, function () {
+            return "openLightbox('" + url.replace(/'/g, '') + "'";
+          })
+        );
+      }
+    });
   }
 
   // 4. RSVP SUBMISSION INTERCEPTOR
