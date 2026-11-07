@@ -56,7 +56,7 @@ interface InvitationStoreValue {
   data: InvitationData;
   isLoaded: boolean;
   loadError: string;
-  saveStates: Record<string, { status: 'saving' | 'saved' | 'error'; message?: string }>;
+  saveStates: Record<string, { status: 'unsaved' | 'saving' | 'saved' | 'error'; message?: string; savedAt?: string }>;
   saveNow(id: string): Promise<void>;
 
   orders: Order[];
@@ -250,7 +250,7 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
   const [licences, setLicences] = useState<TemplateLicence[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadError, setLoadError] = useState('');
-  const [saveStates, setSaveStates] = useState<Record<string, { status: 'saving' | 'saved' | 'error'; message?: string }>>({});
+  const [saveStates, setSaveStates] = useState<Record<string, { status: 'unsaved' | 'saving' | 'saved' | 'error'; message?: string; savedAt?: string }>>({});
   const saved = useRef(new Map<string, string>());
   const latest = useRef<InvitationData[]>([]);
   const saving = useRef(new Map<string, Promise<void>>());
@@ -292,9 +292,14 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
           ]);
           const full = await Promise.all(list.map((item) => invitationsApi.getById(item.id)));
           if (!current()) return;
-          full.forEach((inv) => saved.current.set(inv.id, JSON.stringify(editablePayload(inv))));
+          const initialSaveStates: Record<string, { status: 'unsaved' | 'saving' | 'saved' | 'error'; message?: string; savedAt?: string }> = {};
+          full.forEach((inv) => {
+            saved.current.set(inv.id, JSON.stringify(editablePayload(inv)));
+            initialSaveStates[inv.id] = { status: 'saved', savedAt: inv.updatedAt || new Date().toISOString() };
+          });
           latest.current = full;
           setInvitations(full);
+          setSaveStates(initialSaveStates);
           setActiveId(full[0]?.id ?? '');
           setOrders(remoteOrders.map(mapRemoteOrder));
           setLicences(remoteLicences.map(mapRemoteLicence));
@@ -379,15 +384,17 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
           const payload = editablePayload(inv);
           const signature = JSON.stringify(payload);
           if (saved.current.get(id) === signature) return;
-          setSaveStates((prev) => ({ ...prev, [id]: { status: 'saving' } }));
+          setSaveStates((prev) => ({ ...prev, [id]: { status: 'saving', savedAt: prev[id]?.savedAt } }));
           await invitationsApi.update(id, payload);
           if (!current()) return;
           saved.current.set(id, signature);
-          setSaveStates((prev) => ({ ...prev, [id]: { status: 'saved' } }));
+          setSaveStates((prev) => ({ ...prev, [id]: { status: 'saved', savedAt: new Date().toISOString() } }));
         }
       } catch (error) {
         if (current()) setSaveStates((prev) => ({ ...prev, [id]: {
-          status: 'error', message: error instanceof Error ? error.message : 'Gagal menyimpan perubahan.',
+          status: 'error',
+          message: error instanceof Error ? error.message : 'Gagal menyimpan perubahan.',
+          savedAt: prev[id]?.savedAt,
         } }));
         throw error;
       }
@@ -402,9 +409,23 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
     latest.current = invitations;
     if (!isLoaded || !hasServerSession() || loadError) return;
     const dirty = invitations.filter((inv) => saved.current.get(inv.id) !== JSON.stringify(editablePayload(inv)));
+    if (dirty.length > 0) {
+      setSaveStates((prev) => {
+        let changed = false;
+        const next = { ...prev };
+        dirty.forEach((inv) => {
+          const cur = prev[inv.id];
+          if (!cur || (cur.status !== 'unsaved' && cur.status !== 'saving')) {
+            next[inv.id] = { status: 'unsaved', savedAt: cur?.savedAt };
+            changed = true;
+          }
+        });
+        return changed ? next : prev;
+      });
+    }
     const timer = setTimeout(() => {
       dirty.forEach((inv) => { void saveNow(inv.id).catch(() => undefined); });
-    }, 1000);
+    }, 5000);
     const warnUnsaved = (event: BeforeUnloadEvent) => {
       if (latest.current.some((inv) => saved.current.get(inv.id) !== JSON.stringify(editablePayload(inv)))) {
         event.preventDefault();
@@ -487,16 +508,20 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
           ...DEMO_INVITATION.groom,
           name: input.groomName,
           fullName: input.groomName,
+          photo: '',
           instagram: '',
         },
         bride: {
           ...DEMO_INVITATION.bride,
           name: input.brideName,
           fullName: input.brideName,
+          photo: '',
           instagram: '',
         },
         countdownDate: `${baseDate}T08:00:00`,
         events: DEMO_INVITATION.events.map((ev) => ({ ...ev, date: baseDate })),
+        stories: DEMO_INVITATION.stories.map((st) => ({ ...st, image: undefined })),
+        gallery: [],
         rsvpList: [],
         guests: [],
       };
@@ -504,6 +529,7 @@ export function InvitationProvider({ children }: { children: React.ReactNode }) 
       const result = hasServerSession() ? await invitationsApi.create(editablePayload(created)) : created;
       if (session !== getAuthSession()) throw new Error('Akun aktif telah berubah.');
       saved.current.set(result.id, JSON.stringify(editablePayload(result)));
+      setSaveStates((prev) => ({ ...prev, [result.id]: { status: 'saved', savedAt: new Date().toISOString() } }));
       setInvitations((prev) => [result, ...prev]);
       setActiveId(result.id);
       if (hasServerSession()) {
