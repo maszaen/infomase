@@ -10,11 +10,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Workflow & Git Commit Guidelines
 
-1. **Rekomendasi Commit & Push per Task**:
-   - Setiap kali menyelesaikan sebuah task atau perbaikan, agen **wajib** memberikan rekomendasi perintah Git yang spesifik kepada pengguna.
-   - Gunakan parameter `git -C <directory>` untuk menargetkan repositori yang sesuai (misalnya `git -C .` untuk root frontend `undangan-online`, atau `git -C infomase-backend` untuk repositori backend).
+1. **Aturan Styling & CSS**:
+   - **DILARANG menggunakan / mengandalkan build Tailwind CSS** untuk styling baru di admin backend (`backend-ci4`).
+   - Gunakan CSS murni / vanilla di `public/assets/admin/css/console.css` atau class CSS yang sudah terbukti ada. Jangan compile atau menambah ketergantungan utility Tailwind baru.
 
-2. **Rekomendasi Commit Message**:
+2. **Rekomendasi Commit & Push per Task**:
+   - Setiap kali menyelesaikan sebuah task atau perbaikan, agen **wajib** memberikan rekomendasi perintah Git yang spesifik kepada pengguna.
+   - Gunakan parameter `git -C <directory>` untuk menargetkan repositori yang sesuai (misalnya `git -C .` untuk root frontend `undangan-online`, atau `git -C backend-ci4` untuk repositori backend).
+
+3. **Rekomendasi Commit Message**:
    - Selalu sertakan format pesan commit yang jelas, terstruktur (disarankan Conventional Commits: `feat:`, `fix:`, `refactor:`, `chore:`, dsb.), dan deskriptif sesuai cakupan perubahan task yang baru diselesaikan.
    - Sediakan perintah siap salin (*copy-paste*) untuk:
      - `git -C <dir> status`

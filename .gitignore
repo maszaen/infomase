@@ -48,6 +48,7 @@ next-env.d.ts
 /.audit/
 /undangan_*/
 
-# Sub-repositories
+# Sub-repositories & Private IP Vault
 /infomase-backend/
 /backend-ci4/
+/cdn-vault/
