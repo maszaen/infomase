@@ -590,12 +590,12 @@
       const msg = rsvpMsgInput ? rsvpMsgInput.value.trim() : '';
 
       if (!name) {
-        alert('Silakan masukkan nama Anda.');
+        showToast('Silakan masukkan nama Anda.');
         if (rsvpNameInput) rsvpNameInput.focus();
         return;
       }
       if (!msg) {
-        alert('Silakan tuliskan ucapan atau doa Anda.');
+        showToast('Silakan tuliskan ucapan atau doa Anda.');
         if (rsvpMsgInput) rsvpMsgInput.focus();
         return;
       }

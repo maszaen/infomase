@@ -10,9 +10,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Workflow & Git Commit Guidelines
 
+0. **Arsitektur Aktif (Monolith CI4 + CDN Vault — BUKAN Next.js)**:
+   - Frontend Next.js (`src/`) **SUDAH TIDAK DIPAKAI LAGI (deprecated)**. Jangan pernah membaca atau mengedit file Next.js.
+   - Seluruh halaman publik (landing page, katalog, checkout, undangan), user console (`/dashboard`), dan admin console (`/admin`) berjalan penuh di **`backend-ci4`** (`app/Controllers/Web/`, `app/Views/web/`, `app/Views/admin/`).
+   - **JANGAN PERNAH menanam/menulis (seed) CSS ke `backend-ci4/public/assets/admin/css/console.css`**. File lokal `console.css` hanya berupa stub kosong (seperti `console.js` dan `studio.js`) agar ketika server CDN dimatikan, halaman tidak memiliki style.
+   - Seluruh perubahan dan penambahan CSS **WAJIB ditulis HANYA di `cdn-vault/console-core.css`** yang dimuat via `cdn_asset('console-core.css')`.
+
 1. **Aturan Styling & CSS**:
    - **DILARANG menggunakan / mengandalkan build Tailwind CSS** untuk styling baru di admin backend (`backend-ci4`).
-   - Gunakan CSS murni / vanilla di `public/assets/admin/css/console.css` atau class CSS yang sudah terbukti ada. Jangan compile atau menambah ketergantungan utility Tailwind baru.
+   - Gunakan CSS murni / vanilla **HANYA di `cdn-vault/console-core.css`**. Jangan pernah mengisi `backend-ci4/public/assets/admin/css/console.css`.
 
 2. **Rekomendasi Commit & Push per Task**:
    - Setiap kali menyelesaikan sebuah task atau perbaikan, agen **wajib** memberikan rekomendasi perintah Git yang spesifik kepada pengguna.
@@ -25,3 +31,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
      - `git -C <dir> add <files>`
      - `git -C <dir> commit -m "<pesan rekomendasi>"`
      - `git -C <dir> push <remote> <branch>`
+
+4. **Larangan Menyentuh Terminal**:
+   - **DILARANG KERAS menyentuh atau menjalankan perintah terminal apa pun** (baik Git, shell script, CLI build, atau perintah apa pun) tanpa instruksi eksplisit dari pengguna.
+   - Tindakan eksekusi terminal HANYA boleh dilakukan jika ada perintah langsung dari pengguna.
