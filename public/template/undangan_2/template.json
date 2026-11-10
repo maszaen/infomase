@@ -1,0 +1,58 @@
+{
+  "id": "modern-minimalist",
+  "folderId": "undangan_2",
+  "name": "Modern Minimalist",
+  "gallery": {
+    "min": 1,
+    "max": 8,
+    "recommended": 4,
+    "aspect": "3:4"
+  },
+  "slots": [
+    {
+      "key": "cover.photo",
+      "label": "Foto Sampul Pembuka (Gate Cover)",
+      "section": "Sampul Pembuka",
+      "aspect": "3:4",
+      "cutout": true,
+      "hint": "Desain asli menggunakan PNG transparan (tanpa background). Jika Anda mengunggah foto JPG/biasa, aktifkan opsi Bingkai Otomatis agar tampil rapi.",
+      "default": "asset/img/couple_cutout.png"
+    },
+    {
+      "key": "hero.photo",
+      "label": "Foto Utama Beranda (Hero Arch)",
+      "section": "Beranda (Hero)",
+      "aspect": "4:5",
+      "cutout": false,
+      "hint": "Foto potret utama berbingkai lengkung (arch) pada bagian atas halaman undangan.",
+      "default": "asset/img/foto_editorial_hero.jpg"
+    },
+    {
+      "key": "hero.secondaryPhoto",
+      "label": "Foto Candid Beranda (Offset Frame)",
+      "section": "Beranda (Hero)",
+      "aspect": "1:1",
+      "cutout": false,
+      "hint": "Foto persegi kecil di pojok kiri bawah bingkai utama beranda.",
+      "default": "asset/img/foto_editorial_story.jpg"
+    },
+    {
+      "key": "story.photo",
+      "label": "Foto Banner Kisah Cinta",
+      "section": "Kisah Cinta",
+      "aspect": "16:10",
+      "cutout": false,
+      "hint": "Foto editorial horizontal pada pembuka seksi Perjalanan Cinta.",
+      "default": "asset/img/foto_editorial_story.jpg"
+    },
+    {
+      "key": "closing.photo",
+      "label": "Foto Lingkaran Penutup",
+      "section": "Penutup",
+      "aspect": "1:1",
+      "cutout": false,
+      "hint": "Foto lingkaran pada bagian ucapan terima kasih di akhir undangan.",
+      "default": "asset/img/foto_editorial_hero.jpg"
+    }
+  ]
+}

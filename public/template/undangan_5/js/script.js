@@ -339,6 +339,21 @@ function submitWish(e) {
   const status = statusInput ? statusInput.value : 'hadir';
   if (!name || !message) return;
 
+  // Notify the parent page (public invite wrapper) so the RSVP is persisted server-side.
+  try {
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({
+        type: 'RSVP_SUBMIT',
+        payload: {
+          guestName: name,
+          attendance: status,
+          message: message,
+          totalPax: status === 'tidak' ? 0 : 1
+        }
+      }, '*');
+    }
+  } catch (err) { /* ignore cross-origin errors */ }
+
   const card = document.createElement('div');
   card.className = 'p-3.5 rounded-2xl bg-white/95 border border-[#C59A45]/30 shadow-2xs transition-all';
   card.innerHTML = `

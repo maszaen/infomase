@@ -50,6 +50,7 @@
         <div class="relative w-full h-[50%] min-h-[290px] max-h-[53vh] overflow-hidden flex-shrink-0">
           <img src="asset/img/mempelai/couple_beach_full.jpg" 
                alt="Arga &amp; Maya" 
+               data-slot="cover.photo"
                class="w-full h-full object-cover object-[center_20%]" 
                decoding="async">
           <!-- Bottom Gradient Div to softly fade image into background -->
@@ -66,7 +67,7 @@
             </p>
 
             <!-- Couple Names in Elegant Script (Alex Brush / Great Vibes) -->
-            <h1 class="font-script text-4xl sm:text-5xl text-[#152A22] leading-tight my-1 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)] gate-anim-2">
+            <h1 data-couple-names class="font-script text-4xl sm:text-5xl text-[#152A22] leading-tight my-1 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)] gate-anim-2">
               Arga <span class="text-[#C59A45]">&amp;</span> Maya
             </h1>
 
@@ -82,7 +83,7 @@
             <!-- Dynamic Guest Name -->
             <div class="mt-2 mb-0.5 gate-anim-4">
               <span class="text-xs sm:text-sm text-[#1E352B]/75 font-normal block">Kepada Bapak/Ibu/Saudara/i:</span>
-              <div id="coverGuestName" class="font-serif text-xl sm:text-2xl font-semibold text-[#152A22] tracking-wide mt-1">
+              <div id="coverGuestName" data-guest-name class="font-serif text-xl sm:text-2xl font-semibold text-[#152A22] tracking-wide mt-1">
                 Nama Tamu
               </div>
             </div>
@@ -200,7 +201,7 @@
         </span>
 
         <!-- Grand Couple Names: Arga & Maya -->
-        <h1 class="hero-anim hero-anim-title hero-delay-2 font-serif text-4xl sm:text-5xl text-[#152A22] font-normal tracking-wide leading-none">
+        <h1 data-couple-names class="hero-anim hero-anim-title hero-delay-2 font-serif text-4xl sm:text-5xl text-[#152A22] font-normal tracking-wide leading-none">
           Arga <span class="font-light italic text-[#C59A45]">&amp;</span> Maya
         </h1>
 
@@ -211,7 +212,7 @@
         <div class="relative w-[242px] h-[242px] sm:w-[270px] sm:h-[270px] mx-auto hero-anim hero-anim-main-photo hero-delay-3">
           <!-- Circular Photo Frame (Border saat ini: border-2 border-white/95 & shadow khas tema gunung) -->
           <div class="w-full h-full rounded-full overflow-hidden border-2 border-white/95 shadow-[0_22px_60px_-12px_rgba(20,42,32,0.30)] bg-[#E8EDE7]">
-            <img src="asset/img/mempelai/couple_beach_full.jpg" alt="Arga &amp; Maya" class="w-full h-full object-cover object-[center_22%]" decoding="async">
+            <img src="asset/img/mempelai/couple_beach_full.jpg" alt="Arga &amp; Maya" data-slot="hero.photo" class="w-full h-full object-cover object-[center_22%]" decoding="async">
           </div>
 
           <!-- Mountain Alpine Botanical Accent (Ornamen Awal Megah, Ukuran Dikecilkan & Pas Menempel Rapi) -->
@@ -269,7 +270,7 @@
         <!-- Large Artistic Quote Mark in Alpine Pine -->
         <span class="font-serif text-5xl text-[#244135]/25 leading-none select-none block mb-1">“</span>
 
-        <p class="font-serif text-sm sm:text-base leading-relaxed text-[#152A22] italic mb-4 max-w-sm mx-auto text-justify sm:text-center">
+        <p data-quote-text class="font-serif text-sm sm:text-base leading-relaxed text-[#152A22] italic mb-4 max-w-sm mx-auto text-justify sm:text-center">
           "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
         </p>
 
@@ -279,7 +280,7 @@
           <div class="w-8 h-px bg-[#C59A45]/40"></div>
         </div>
 
-        <span class="text-[10px] tracking-[0.2em] text-[#244135] font-semibold block uppercase">
+        <span data-quote-source class="text-[10px] tracking-[0.2em] text-[#244135] font-semibold block uppercase">
           QS. Ar-Rum Ayat 21
         </span>
 
@@ -319,7 +320,7 @@
         
         <!-- Sail Frame Photo -->
         <div class="relative w-full aspect-[4/5] max-w-[270px] mx-auto coastal-sail-left overflow-hidden bg-[#E8EDE7] mb-4">
-          <img src="asset/img/mempelai/foto_editorial_groom.jpg" alt="Arga Dirgantara" class="w-full h-full object-cover object-top" decoding="async" loading="lazy">
+          <img src="asset/img/mempelai/foto_editorial_groom.jpg" alt="Arga Dirgantara" data-groom-photo class="w-full h-full object-cover object-top" decoding="async" loading="lazy">
           <div class="absolute bottom-2.5 left-3 px-3 py-1 rounded-full bg-white/90 backdrop-blur-xs text-[9px] uppercase tracking-widest font-bold text-[#152A22] shadow-xs">
             THE GROOM
           </div>
@@ -355,7 +356,7 @@
         
         <!-- Sail Frame Photo -->
         <div class="relative w-full aspect-[4/5] max-w-[270px] mx-auto coastal-sail-right overflow-hidden bg-[#E8EDE7] mb-4">
-          <img src="asset/img/mempelai/foto_editorial_bride.jpg" alt="Maya Kusumaningrum" class="w-full h-full object-cover object-top" decoding="async" loading="lazy">
+          <img src="asset/img/mempelai/foto_editorial_bride.jpg" alt="Maya Kusumaningrum" data-bride-photo class="w-full h-full object-cover object-top" decoding="async" loading="lazy">
           <div class="absolute bottom-2.5 right-3 px-3 py-1 rounded-full bg-white/90 backdrop-blur-xs text-[9px] uppercase tracking-widest font-bold text-[#A67C2C] shadow-xs">
             THE BRIDE
           </div>
@@ -405,39 +406,39 @@
       <div class="space-y-4 max-w-[360px] mx-auto">
         
         <!-- Milestone 1: 2021 (Edelweiss Cream Card) -->
-        <div class="coastal-card coastal-sail-left !rounded-[36px_14px_36px_14px] p-4 text-left relative overflow-hidden reveal delay-100 shadow-xs">
+        <div data-story-item class="coastal-card coastal-sail-left !rounded-[36px_14px_36px_14px] p-4 text-left relative overflow-hidden reveal delay-100 shadow-xs">
           <div class="flex items-center justify-between mb-2">
-            <span class="coastal-badge-gold">TAHUN 2021</span>
+            <span data-story-year class="coastal-badge-gold">TAHUN 2021</span>
             <span class="text-sm">🌲</span>
           </div>
-          <h4 class="font-serif text-lg font-bold text-[#152A22]">Perjumpaan di Lembah Kabut</h4>
-          <p class="text-sm text-[#152A22]/80 leading-relaxed mt-1">
+          <h4 data-story-title class="font-serif text-lg font-bold text-[#152A22]">Perjumpaan di Lembah Kabut</h4>
+          <p data-story-description class="text-sm text-[#152A22]/80 leading-relaxed mt-1">
             Sebuah perjumpaan tak terduga di tengah sejuknya lereng pegunungan Parahyangan yang mengawali getaran rasa dan membuka lembaran takdir hidup kami.
           </p>
         </div>
 
         <!-- Milestone 2: 2023 (Deep Forest Pine Metallic Card - Contrast Feature) -->
-        <div class="coastal-card-teal coastal-sail-right !rounded-[14px_36px_14px_36px] border-2 border-white/20 p-4 text-left relative overflow-hidden reveal delay-150 shadow-md">
+        <div data-story-item class="coastal-card-teal coastal-sail-right !rounded-[14px_36px_14px_36px] border-2 border-white/20 p-4 text-left relative overflow-hidden reveal delay-150 shadow-md">
           <div class="flex items-center justify-between mb-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-[#C59A45]/20 border border-[#C59A45]/50 text-[#C59A45] text-[9px] font-bold uppercase tracking-wider">
+            <span data-story-year class="px-2.5 py-0.5 rounded-full bg-[#C59A45]/20 border border-[#C59A45]/50 text-[#C59A45] text-[9px] font-bold uppercase tracking-wider">
               TAHUN 2023
             </span>
             <span class="text-sm">⛰️</span>
           </div>
-          <h4 class="font-serif text-lg font-bold text-white">Janji di Puncak Pinus</h4>
-          <p class="text-sm text-white/85 leading-relaxed mt-1">
+          <h4 data-story-title class="font-serif text-lg font-bold text-white">Janji di Puncak Pinus</h4>
+          <p data-story-description class="text-sm text-white/85 leading-relaxed mt-1">
             Diiringi hembusan angin sejuk hutan cemara dan hangatnya cahaya senja, dua impian menyatu dalam satu ikrar tulus untuk saling melengkapi dan melangkah bersama.
           </p>
         </div>
 
         <!-- Milestone 3: 2025 (Edelweiss Cream Card with Gold Accent) -->
-        <div class="coastal-card coastal-sail-left !rounded-[36px_14px_36px_14px] p-4 text-left relative overflow-hidden reveal delay-200 shadow-xs">
+        <div data-story-item class="coastal-card coastal-sail-left !rounded-[36px_14px_36px_14px] p-4 text-left relative overflow-hidden reveal delay-200 shadow-xs">
           <div class="flex items-center justify-between mb-2">
-            <span class="coastal-badge-gold">TAHUN 2025</span>
+            <span data-story-year class="coastal-badge-gold">TAHUN 2025</span>
             <span class="text-sm">💍</span>
           </div>
-          <h4 class="font-serif text-lg font-bold text-[#152A22]">Menuju Puncak Janji Suci</h4>
-          <p class="text-sm text-[#152A22]/80 leading-relaxed mt-1">
+          <h4 data-story-title class="font-serif text-lg font-bold text-[#152A22]">Menuju Puncak Janji Suci</h4>
+          <p data-story-description class="text-sm text-[#152A22]/80 leading-relaxed mt-1">
             Dengan restu kedua orang tua dan sanak keluarga, kami mengikrarkan janji suci pernikahan untuk mengarungi bahtera rumah tangga yang sakinah, mawaddah, dan warahmah.
           </p>
         </div>
@@ -446,7 +447,7 @@
         <div class="pt-2 text-center reveal delay-250">
           <div class="p-2 bg-white rounded-2xl shadow-xs border border-[#C59A45]/30 max-w-[290px] mx-auto rotate-1 hover:rotate-0 transition duration-300">
             <div class="aspect-[16/10] rounded-xl overflow-hidden bg-[#E8EDE7]">
-              <img src="asset/img/mempelai/foto_editorial_story.jpg" alt="Our Story" class="w-full h-full object-cover" decoding="async" loading="lazy">
+              <img src="asset/img/mempelai/foto_editorial_story.jpg" alt="Our Story" data-slot="story.photo" class="w-full h-full object-cover" decoding="async" loading="lazy">
             </div>
             <p class="font-serif text-sm italic text-[#152A22] mt-1.5 font-semibold">"Captured Moments on the Highland Trail"</p>
           </div>
@@ -501,12 +502,12 @@
       <div class="space-y-5 max-w-[360px] mx-auto">
         
         <!-- CARD 1: AKAD NIKAH (Morning Pine Vows - Edelweiss Cream Card) -->
-        <div class="coastal-card coastal-sail-left p-6 text-center relative overflow-hidden reveal delay-150 shadow-xs">
+        <div data-event-card class="coastal-card coastal-sail-left p-6 text-center relative overflow-hidden reveal delay-150 shadow-xs">
           
-          <h4 class="font-serif text-2xl font-bold text-[#152A22]">Akad Nikah</h4>
-          <p class="text-sm font-semibold text-[#152A22]/85 mt-1">Sabtu, 25 Oktober 2025</p>
-          <p class="text-sm font-bold text-[#3E6655] mt-0.5">Pukul 08.00 - 10.00 WIB</p>
-          <p class="text-sm text-[#152A22]/75 mt-1.5 max-w-xs mx-auto">Pine Valley Glass Chapel, The Highland Sanctuary, Lembang, Bandung Barat</p>
+          <h4 data-event-title class="font-serif text-2xl font-bold text-[#152A22]">Akad Nikah</h4>
+          <p data-event-date class="text-sm font-semibold text-[#152A22]/85 mt-1">Sabtu, 25 Oktober 2025</p>
+          <p data-event-time class="text-sm font-bold text-[#3E6655] mt-0.5">Pukul 08.00 - 10.00 WIB</p>
+          <p data-event-venue class="text-sm text-[#152A22]/75 mt-1.5 max-w-xs mx-auto">Pine Valley Glass Chapel, The Highland Sanctuary, Lembang, Bandung Barat</p>
           
           <div class="mt-2.5 inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white border border-[#C59A45]/40 text-[9px] text-[#A67C2C] font-medium">
             <span>Dresscode: Alpine Ivory &amp; Soft Sage</span>
@@ -527,12 +528,12 @@
         </div>
 
         <!-- CARD 2: RESEPSI PERNIKAHAN (Highland Sunset Gala - Deep Forest Pine Metallic Card) -->
-        <div class="coastal-card-teal coastal-sail-right border-2 border-white/30 p-6 text-center relative overflow-hidden reveal delay-200 shadow-md">
+        <div data-event-card class="coastal-card-teal coastal-sail-right border-2 border-white/30 p-6 text-center relative overflow-hidden reveal delay-200 shadow-md">
           
-          <h4 class="font-serif text-2xl font-bold text-white">Resepsi Pernikahan</h4>
-          <p class="text-sm font-semibold text-white/90 mt-1">Sabtu, 25 Oktober 2025</p>
-          <p class="text-sm font-bold text-[#C59A45] mt-0.5">Pukul 16.00 – 20.00 WIB (Highland Sunset Hour)</p>
-          <p class="text-sm text-white/80 mt-1.5 max-w-xs mx-auto">Highland Grand Lawn &amp; Glass Ballroom, The Highland Sanctuary, Lembang</p>
+          <h4 data-event-title class="font-serif text-2xl font-bold text-white">Resepsi Pernikahan</h4>
+          <p data-event-date class="text-sm font-semibold text-white/90 mt-1">Sabtu, 25 Oktober 2025</p>
+          <p data-event-time class="text-sm font-bold text-[#C59A45] mt-0.5">Pukul 16.00 – 20.00 WIB (Highland Sunset Hour)</p>
+          <p data-event-venue class="text-sm text-white/80 mt-1.5 max-w-xs mx-auto">Highland Grand Lawn &amp; Glass Ballroom, The Highland Sanctuary, Lembang</p>
           
           <div class="mt-2.5 inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/15 border border-white/25 text-[9px] text-[#FAF9F5] font-medium">
             <span>Dresscode: Mountain Earth Tone &amp; Forest Green</span>
@@ -581,7 +582,7 @@
           <!-- Tall Left Photo (3 cols) -->
           <div onclick="openLightbox('asset/img/mempelai/foto_editorial_hero.jpg', 'Arga & Maya — The Alpine Portrait')"
                class="col-span-3 aspect-[3/4] rounded-2xl overflow-hidden shadow-xs border border-[#C59A45]/35 cursor-pointer group reveal-scale delay-100 relative">
-            <img src="asset/img/mempelai/foto_editorial_hero.jpg" alt="Editorial Hero" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
+            <img src="asset/img/mempelai/foto_editorial_hero.jpg" alt="Editorial Hero" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-75"></div>
             <div class="absolute bottom-2 left-2 text-left">
               <span class="text-[8px] uppercase tracking-widest text-[#C59A45] font-semibold">PORTRAIT</span>
@@ -593,7 +594,7 @@
           <div class="col-span-2 flex flex-col gap-3">
             <div onclick="openLightbox('asset/img/mempelai/foto_editorial_bride.jpg', 'Maya Kusumaningrum — The Bride')"
                  class="flex-1 aspect-[1/1] rounded-2xl overflow-hidden shadow-xs border border-[#C59A45]/35 cursor-pointer group reveal-scale delay-150 relative">
-              <img src="asset/img/mempelai/foto_editorial_bride.jpg" alt="Bride Portrait" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
+              <img src="asset/img/mempelai/foto_editorial_bride.jpg" alt="Bride Portrait" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
               <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
               <div class="absolute bottom-1.5 left-2 text-left">
                 <p class="font-serif text-[10px] text-white">The Bride</p>
@@ -602,7 +603,7 @@
 
             <div onclick="openLightbox('asset/img/mempelai/foto_editorial_groom.jpg', 'Arga Dirgantara — The Groom')"
                  class="flex-1 aspect-[1/1] rounded-2xl overflow-hidden shadow-xs border border-[#C59A45]/35 cursor-pointer group reveal-scale delay-200 relative">
-              <img src="asset/img/mempelai/foto_editorial_groom.jpg" alt="Groom Portrait" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
+              <img src="asset/img/mempelai/foto_editorial_groom.jpg" alt="Groom Portrait" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
               <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
               <div class="absolute bottom-1.5 left-2 text-left">
                 <p class="font-serif text-[10px] text-white">The Groom</p>
@@ -615,7 +616,7 @@
         <!-- Row 2: Wide Panoramic Cinema Mountain View -->
         <div onclick="openLightbox('asset/img/mempelai/foto_editorial_story.jpg', 'Highland Sunset Moments — Mountain Summit')"
              class="relative w-full aspect-[16/10] rounded-[24px] overflow-hidden shadow-xs border border-[#C59A45]/35 cursor-pointer group reveal-scale delay-250">
-          <img src="asset/img/mempelai/foto_editorial_story.jpg" alt="Candid Moments" class="w-full h-full object-cover" decoding="async" loading="lazy">
+          <img src="asset/img/mempelai/foto_editorial_story.jpg" alt="Candid Moments" data-gallery-img class="w-full h-full object-cover" decoding="async" loading="lazy">
           <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-75"></div>
           <div class="absolute bottom-3 left-3 text-left">
             <span class="text-[8px] uppercase tracking-widest text-[#C59A45] font-semibold">CINEMATIC</span>
@@ -662,21 +663,21 @@
         <div id="giftContentBank" class="space-y-4">
           
           <!-- Rekening 1: BCA Deep Forest Pine Metallic Card -->
-          <div class="coastal-card-teal p-5 rounded-2xl text-left relative overflow-hidden group">
+          <div data-bank-card class="coastal-card-teal p-5 rounded-2xl text-left relative overflow-hidden group">
             <div class="flex items-center justify-between mb-4">
-              <span class="font-serif font-bold text-base tracking-wider text-white">BCA</span>
+              <span data-bank-name class="font-serif font-bold text-base tracking-wider text-white">BCA</span>
               <span class="text-[9px] font-mono tracking-widest text-[#C59A45] uppercase font-semibold">DIGITAL ACCESS</span>
             </div>
             
             <div class="my-3">
               <span class="text-[10px] text-white/70 block uppercase tracking-wider">Nomor Rekening:</span>
-              <span class="font-mono text-xl sm:text-2xl font-bold tracking-widest text-white drop-shadow-xs">
+              <span data-account-number class="font-mono text-xl sm:text-2xl font-bold tracking-widest text-white drop-shadow-xs">
                 7720 4819 32
               </span>
             </div>
 
             <div class="flex items-center justify-between pt-2 border-t border-white/20">
-              <span class="text-sm text-white/90 font-medium">a.n. Arga Dirgantara</span>
+              <span data-account-holder class="text-sm text-white/90 font-medium">a.n. Arga Dirgantara</span>
               <button onclick="copyToClipboard('7720481932', this)"
                       class="px-3.5 py-1.5 rounded-full bg-white/20 hover:bg-white text-white hover:text-[#152A22] text-sm font-medium transition-all shadow-xs cursor-pointer active:scale-95">
                 Salin No. Rekening
@@ -685,21 +686,21 @@
           </div>
 
           <!-- Rekening 2: Mandiri Alpine Cedar Gold Card -->
-          <div class="coastal-card-sand p-5 rounded-2xl text-left relative overflow-hidden group">
+          <div data-bank-card class="coastal-card-sand p-5 rounded-2xl text-left relative overflow-hidden group">
             <div class="flex items-center justify-between mb-4">
-              <span class="font-serif font-bold text-base tracking-wider text-white">MANDIRI</span>
+              <span data-bank-name class="font-serif font-bold text-base tracking-wider text-white">MANDIRI</span>
               <span class="text-[9px] font-mono tracking-widest text-[#FAF9F5]/80 uppercase font-semibold">DIGITAL ACCESS</span>
             </div>
             
             <div class="my-3">
               <span class="text-[10px] text-white/70 block uppercase tracking-wider">Nomor Rekening:</span>
-              <span class="font-mono text-xl sm:text-2xl font-bold tracking-widest text-white drop-shadow-xs">
+              <span data-account-number class="font-mono text-xl sm:text-2xl font-bold tracking-widest text-white drop-shadow-xs">
                 1320 0948 1120
               </span>
             </div>
 
             <div class="flex items-center justify-between pt-2 border-t border-white/20">
-              <span class="text-sm text-white/90 font-medium">a.n. Maya Kusumaningrum</span>
+              <span data-account-holder class="text-sm text-white/90 font-medium">a.n. Maya Kusumaningrum</span>
               <button onclick="copyToClipboard('132009481120', this)"
                       class="px-3.5 py-1.5 rounded-full bg-white/20 hover:bg-white text-white hover:text-[#4A3A2A] text-sm font-medium transition-all shadow-xs cursor-pointer active:scale-95">
                 Salin No. Rekening
@@ -717,7 +718,7 @@
               <h4 class="font-serif font-bold text-sm text-[#152A22]">Alamat Kirim Kado Fisik</h4>
             </div>
 
-            <div class="space-y-1.5 mb-4 text-sm text-[#152A22]/80">
+            <div data-gift-address class="space-y-1.5 mb-4 text-sm text-[#152A22]/80">
               <div class="flex justify-between items-center text-[11px]">
                 <span class="text-[#244135]">Penerima:</span>
                 <span class="font-semibold text-[#152A22]">Arga Dirgantara / Maya Kusuma</span>
@@ -864,6 +865,7 @@
         <div class="w-full h-full rounded-full overflow-hidden bg-white">
           <img src="asset/img/mempelai/foto_editorial_hero.jpg" 
             alt="Thank you"
+            data-slot="closing.photo"
             class="w-full h-full object-cover object-[center_15%]" decoding="async" loading="lazy">
         </div>
       </div>
@@ -876,7 +878,7 @@
       <p class="text-[11px] text-[#152A22]/70 mb-2">Kami yang berbahagia,</p>
 
       <!-- Signature Names -->
-      <h3 class="font-serif text-3xl sm:text-4xl text-[#152A22] font-semibold mb-8 reveal delay-200">
+      <h3 data-couple-names class="font-serif text-3xl sm:text-4xl text-[#152A22] font-semibold mb-8 reveal delay-200">
         Arga <span class="font-light italic text-[#C59A45]">&amp;</span> Maya
       </h3>
 
@@ -943,7 +945,7 @@
 
   <!-- JavaScript Application Logic -->
   <script src="js/script.js"></script>
-  <!-- Universal InfoMase Template Bridge -->
-  <script src="../template-bridge.js?v=4"></script>
+  <!-- Universal Anvitation Template Bridge -->
+  <script src="../template-bridge.js?v=5"></script>
 </body>
 </html>

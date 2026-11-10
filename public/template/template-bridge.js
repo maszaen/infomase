@@ -1,5 +1,5 @@
 /**
- * InfoMase Template Bridge — Remote CDN Stub Loader
+ * Anvitation Template Bridge — Remote CDN Stub Loader
  * ----------------------------------------------------------------------------
  * Core DOM synchronization, gate auto-open, and RSVP capture engine are
  * decoupled and loaded from the external CDN Vault (`template-bridge.js`).
@@ -44,11 +44,11 @@
   if (!cdnBase) return;
 
   var script = document.createElement('script');
-  script.src = cdnBase + '/template-bridge.js?v=4';
+  script.src = cdnBase + '/template-bridge.js?v=5';
   script.async = true;
   script.onerror = function () {
     console.warn(
-      '[InfoMase Bridge] Remote template-bridge engine unreachable (' +
+      '[Anvitation Bridge] Remote template-bridge engine unreachable (' +
         cdnBase +
         '). Running in static native fallback mode (live sync disabled).'
     );

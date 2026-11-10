@@ -1,0 +1,58 @@
+{
+  "id": "luxury-islamic",
+  "folderId": "undangan_4",
+  "name": "Luxury Islamic",
+  "gallery": {
+    "min": 1,
+    "max": 8,
+    "recommended": 6,
+    "aspect": "4:5"
+  },
+  "slots": [
+    {
+      "key": "hero.photo",
+      "label": "Foto Latar Beranda #1 (Hero Slideshow)",
+      "section": "Beranda (Hero)",
+      "aspect": "9:16",
+      "cutout": false,
+      "hint": "Foto layar penuh pertama yang menjadi latar belakang bagian beranda utama.",
+      "default": "asset/img/foto_mempelai_dummy.jpg"
+    },
+    {
+      "key": "hero.secondaryPhoto",
+      "label": "Foto Latar Beranda #2 (Hero Slideshow)",
+      "section": "Beranda (Hero)",
+      "aspect": "9:16",
+      "cutout": false,
+      "hint": "Foto layar penuh kedua untuk efek pergantian latar di bagian beranda.",
+      "default": "asset/img/couple_1.jpg"
+    },
+    {
+      "key": "intro.photo",
+      "label": "Foto Pembuka Countdown (Intro Arch)",
+      "section": "Pembuka & Ayat",
+      "aspect": "4:5",
+      "cutout": false,
+      "hint": "Foto pasangan berbingkai lengkung tepat di atas hitung mundur hari bahagia.",
+      "default": "asset/img/foto_mempelai_dummy.jpg"
+    },
+    {
+      "key": "story.photo",
+      "label": "Foto Utama Kisah Cinta",
+      "section": "Kisah Cinta",
+      "aspect": "4:3",
+      "cutout": false,
+      "hint": "Foto kebersamaan pada kartu kisah perjalanan cinta.",
+      "default": "asset/img/couple_2.jpg"
+    },
+    {
+      "key": "closing.photo",
+      "label": "Foto Latar Penutup (Terima Kasih)",
+      "section": "Penutup",
+      "aspect": "9:16",
+      "cutout": false,
+      "hint": "Foto latar belakang pada seksi penutup ucapan terima kasih.",
+      "default": "asset/img/couple_1.jpg"
+    }
+  ]
+}

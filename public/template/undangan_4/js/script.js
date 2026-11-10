@@ -600,6 +600,21 @@
         return;
       }
 
+      // Notify the public invite wrapper so the RSVP is persisted server-side.
+      try {
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'RSVP_SUBMIT',
+            payload: {
+              guestName: name,
+              attendance: selectedPresence,
+              message: msg,
+              totalPax: selectedPresence === 'tidak' ? 0 : 1
+            }
+          }, '*');
+        }
+      } catch (err) { /* ignore cross-origin errors */ }
+
       const wishes = getStoredWishes();
       wishes.unshift({
         name: name,

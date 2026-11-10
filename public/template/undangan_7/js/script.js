@@ -411,6 +411,21 @@
         return;
       }
 
+      // Notify the parent page (public invite wrapper) so the RSVP is persisted server-side.
+      try {
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: "RSVP_SUBMIT",
+            payload: {
+              guestName: name,
+              attendance: presence === "Hadir" ? "hadir" : "tidak",
+              message: message,
+              totalPax: presence === "Hadir" ? 1 : 0
+            }
+          }, "*");
+        }
+      } catch {}
+
       wishes.unshift({ name, presence, message, createdAt: Date.now() });
       saveWishes(wishes);
       renderWishes();

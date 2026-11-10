@@ -1,0 +1,58 @@
+{
+  "id": "tropical-beach",
+  "folderId": "undangan_3",
+  "name": "Tropical Beach",
+  "gallery": {
+    "min": 1,
+    "max": 8,
+    "recommended": 4,
+    "aspect": "3:4"
+  },
+  "slots": [
+    {
+      "key": "cover.photo",
+      "label": "Foto Sampul Pembuka (Gate Cover)",
+      "section": "Sampul Pembuka",
+      "aspect": "3:4",
+      "cutout": true,
+      "hint": "Desain asli menggunakan PNG transparan (tanpa background). Jika mengunggah foto JPG/biasa, gunakan opsi Bingkai Otomatis agar tetap estetik.",
+      "default": "asset/img/mempelai/couple_cutout.png"
+    },
+    {
+      "key": "hero.photo",
+      "label": "Foto Utama Beranda (Hero Arch)",
+      "section": "Beranda (Hero)",
+      "aspect": "4:5",
+      "cutout": false,
+      "hint": "Foto potret utama di dalam bingkai lengkung halaman beranda.",
+      "default": "asset/img/mempelai/couple_beach_full.jpg"
+    },
+    {
+      "key": "hero.secondaryPhoto",
+      "label": "Foto Polaroid Beranda (Mini Candid)",
+      "section": "Beranda (Hero)",
+      "aspect": "1:1",
+      "cutout": false,
+      "hint": "Foto candid kecil bergaya polaroid di sudut kiri bawah foto utama beranda.",
+      "default": "asset/img/mempelai/foto_editorial_story.jpg"
+    },
+    {
+      "key": "story.photo",
+      "label": "Foto Polaroid Kisah Cinta",
+      "section": "Kisah Cinta",
+      "aspect": "16:10",
+      "cutout": false,
+      "hint": "Foto polaroid pada bagian bawah timeline Perjalanan Cinta.",
+      "default": "asset/img/mempelai/foto_editorial_story.jpg"
+    },
+    {
+      "key": "closing.photo",
+      "label": "Foto Lingkaran Penutup",
+      "section": "Penutup",
+      "aspect": "1:1",
+      "cutout": false,
+      "hint": "Foto lingkaran pada bagian ucapan terima kasih di akhir halaman.",
+      "default": "asset/img/mempelai/foto_editorial_hero.jpg"
+    }
+  ]
+}

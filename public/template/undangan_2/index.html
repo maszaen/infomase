@@ -71,6 +71,8 @@
         <div class="relative w-full flex justify-center items-center mb-1.5 sm:mb-2 gate-anim-photo">
           <img src="asset/img/couple_cutout.png" 
                alt="Raka &amp; Sinta" 
+               data-slot="cover.photo"
+               data-slot-cutout="true"
                class="max-h-[35vh] sm:max-h-[37vh] h-auto w-auto max-w-[70%] object-contain object-top mx-auto drop-shadow-[0_12px_28px_rgba(12,13,12,0.12)]"
                style="-webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 98%); mask-image: linear-gradient(to bottom, black 65%, transparent 98%);">
         </div>
@@ -83,7 +85,7 @@
           </span>
 
           <!-- Names in High-Fashion Serif -->
-          <h1 class="font-serif text-3xl sm:text-[36px] text-[#0C0D0C] font-normal tracking-wide leading-none mb-1.5 gate-anim-2">
+          <h1 data-couple-names class="font-serif text-3xl sm:text-[36px] text-[#0C0D0C] font-normal tracking-wide leading-none mb-1.5 gate-anim-2">
             Raka <span class="font-light italic text-[#727464]">&amp;</span> Sinta
           </h1>
 
@@ -103,7 +105,7 @@
             <!-- Center: Date & Year -->
             <div class="flex-1 flex flex-col items-center justify-center text-center">
               <span class="font-serif text-3xl font-normal text-[#0C0D0C] leading-none">24</span>
-              <span class="text-[9px] uppercase tracking-widest font-semibold text-[#0C0D0C]/75 mt-0.5">MEI 2025</span>
+              <span data-wedding-date class="text-[9px] uppercase tracking-widest font-semibold text-[#0C0D0C]/75 mt-0.5">MEI 2025</span>
             </div>
             <!-- Vertical Divider -->
             <div class="w-px h-8 bg-[#7F8170]/35 mx-1"></div>
@@ -117,7 +119,7 @@
           <!-- Dynamic Guest Name -->
           <div class="my-2 gate-anim-4">
             <span class="text-[10px] uppercase tracking-widest text-[#0C0D0C]/60 font-medium block">Kepada Bapak/Ibu/Saudara/i:</span>
-            <div id="coverGuestName" class="font-serif text-lg sm:text-xl font-semibold text-[#0C0D0C] tracking-wide mt-0.5">
+            <div id="coverGuestName" data-guest-name class="font-serif text-lg sm:text-xl font-semibold text-[#0C0D0C] tracking-wide mt-0.5">
               Nama Tamu
             </div>
           </div>
@@ -201,12 +203,12 @@
         </div>
 
         <!-- 2. Couple Names "Raka & Sinta" -->
-        <h1 class="hero-anim hero-anim-title hero-delay-2 font-serif text-4xl sm:text-5xl text-[#0C0D0C] font-normal tracking-wide leading-none mb-2">
+        <h1 data-couple-names class="hero-anim hero-anim-title hero-delay-2 font-serif text-4xl sm:text-5xl text-[#0C0D0C] font-normal tracking-wide leading-none mb-2">
           Raka <span class="font-light italic text-[#727464]">&amp;</span> Sinta
         </h1>
 
         <!-- 3. Date & Location -->
-        <span class="hero-anim hero-anim-down hero-delay-3 text-[11px] font-serif italic text-[#7F8170] tracking-wider block">
+        <span data-wedding-date class="hero-anim hero-anim-down hero-delay-3 text-[11px] font-serif italic text-[#7F8170] tracking-wider block">
           Saturday, 24 May 2025 · Jakarta, Indonesia
         </span>
       </div>
@@ -224,7 +226,7 @@
 
         <!-- 2. Main Arch Portal Portrait Frame (In front of flower, 100% solid border & background) -->
         <div class="hero-anim hero-anim-main-photo hero-delay-4 relative z-10 w-full aspect-[4/5] rounded-t-full rounded-b-3xl overflow-hidden shadow-2xl border-2 border-white bg-[#E8E3D7]">
-          <img src="asset/img/foto_editorial_hero.jpg" alt="Raka &amp; Sinta" class="w-full h-full object-cover object-[center_15%]">
+          <img src="asset/img/foto_editorial_hero.jpg" alt="Raka &amp; Sinta" data-slot="hero.photo" class="w-full h-full object-cover object-[center_15%]">
           <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent"></div>
           
           <!-- Bottom-Left Meaningful Wedding Tag (Janji Suci / Ikrar Cinta) -->
@@ -236,7 +238,7 @@
 
         <!-- 3. Floating Secondary Candid Story Frame (Offset & Tilted) -->
         <div class="hero-anim hero-anim-candid hero-delay-6 absolute -bottom-3 -right-3 w-32 sm:w-36 aspect-[4/3] rounded-2xl overflow-hidden border-2 border-white shadow-2xl bg-[#E8E3D7] hover:rotate-0 transition-transform duration-500 z-20">
-          <img src="asset/img/foto_editorial_story.jpg" alt="Our Story" class="w-full h-full object-cover">
+          <img src="asset/img/foto_editorial_story.jpg" alt="Our Story" data-slot="hero.secondaryPhoto" class="w-full h-full object-cover">
           <div class="absolute bottom-1 right-2 px-1.5 py-0.5 rounded bg-[#0C0D0C]/80 text-[8px] text-white font-medium tracking-wider">
             OUR MOMENT
           </div>
@@ -292,13 +294,13 @@
         <!-- Large Artistic Quote Mark -->
         <span class="font-serif text-6xl text-[#7F8170]/30 leading-none select-none block mb-1">“</span>
 
-        <p class="font-serif text-base sm:text-lg leading-relaxed text-[#0C0D0C] italic mb-4 max-w-sm mx-auto">
+        <p data-quote-text class="font-serif text-base sm:text-lg leading-relaxed text-[#0C0D0C] italic mb-4 max-w-sm mx-auto">
           "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
         </p>
 
         <div class="editorial-line w-24 mx-auto my-3"></div>
 
-        <span class="text-[11px] tracking-[0.18em] text-[#7F8170] font-semibold block">
+        <span data-quote-source class="text-[11px] tracking-[0.18em] text-[#7F8170] font-semibold block">
           QS. Ar-Rum ayat 21
         </span>
 
@@ -359,7 +361,7 @@
       <!-- Feature 1: The Groom (Editorial Portrait Card) -->
       <div class="editorial-card rounded-3xl p-5 mb-8 text-center reveal-scale delay-100">
         <div class="relative w-full aspect-[3/4] max-w-[280px] mx-auto rounded-2xl overflow-hidden shadow-md border border-[#7F8170]/25 mb-4">
-          <img src="asset/img/foto_editorial_groom.jpg" alt="Raka Pratama" class="w-full h-full object-cover object-top">
+          <img src="asset/img/foto_editorial_groom.jpg" alt="Raka Pratama" data-groom-photo class="w-full h-full object-cover object-top">
           <div class="absolute bottom-2 left-2 px-2.5 py-0.5 rounded-full bg-white/90 backdrop-blur-sm text-[9px] uppercase tracking-widest font-semibold text-[#0C0D0C]">
             THE GROOM
           </div>
@@ -386,7 +388,7 @@
       <!-- Feature 2: The Bride (Editorial Portrait Card) -->
       <div class="editorial-card rounded-3xl p-5 mb-4 text-center reveal-scale delay-200">
         <div class="relative w-full aspect-[3/4] max-w-[280px] mx-auto rounded-2xl overflow-hidden shadow-md border border-[#7F8170]/25 mb-4">
-          <img src="asset/img/foto_editorial_bride.jpg" alt="Sinta Maharani" class="w-full h-full object-cover object-top">
+          <img src="asset/img/foto_editorial_bride.jpg" alt="Sinta Maharani" data-bride-photo class="w-full h-full object-cover object-top">
           <div class="absolute bottom-2 left-2 px-2.5 py-0.5 rounded-full bg-white/90 backdrop-blur-sm text-[9px] uppercase tracking-widest font-semibold text-[#0C0D0C]">
             THE BRIDE
           </div>
@@ -436,32 +438,32 @@
 
         <!-- Full-Bleed Candid Photo -->
         <div class="relative w-full aspect-[3/2] rounded-2xl overflow-hidden shadow-sm border border-[#7F8170]/25 mb-6">
-          <img src="asset/img/foto_editorial_story.jpg" alt="Love Chronicle" class="w-full h-full object-cover">
+          <img src="asset/img/foto_editorial_story.jpg" alt="Love Chronicle" data-slot="story.photo" class="w-full h-full object-cover">
         </div>
 
         <!-- Editorial Story Timeline -->
         <div class="space-y-4 text-left border-l-2 border-[#727464]/30 pl-4 ml-2">
           
-          <div class="relative reveal delay-100">
-            <span class="text-[11px] font-bold text-[#727464] block">2020</span>
-            <h4 class="font-serif text-lg font-semibold text-[#0C0D0C]">The First Glance</h4>
-            <p class="text-xs text-[#0C0D0C]/75 leading-relaxed mt-0.5">
+          <div data-story-item class="relative reveal delay-100">
+            <span data-story-year class="text-[11px] font-bold text-[#727464] block">2020</span>
+            <h4 data-story-title class="font-serif text-lg font-semibold text-[#0C0D0C]">The First Glance</h4>
+            <p data-story-description class="text-xs text-[#0C0D0C]/75 leading-relaxed mt-0.5">
               Sebuah pertemuan sederhana di sebuah kedai kopi kecil di Yogyakarta yang mengubah arah takdir hidup kami selamanya.
             </p>
           </div>
 
-          <div class="relative reveal delay-150">
-            <span class="text-[11px] font-bold text-[#727464] block">2022</span>
-            <h4 class="font-serif text-lg font-semibold text-[#0C0D0C]">The Commitment</h4>
-            <p class="text-xs text-[#0C0D0C]/75 leading-relaxed mt-0.5">
+          <div data-story-item class="relative reveal delay-150">
+            <span data-story-year class="text-[11px] font-bold text-[#727464] block">2022</span>
+            <h4 data-story-title class="font-serif text-lg font-semibold text-[#0C0D0C]">The Commitment</h4>
+            <p data-story-description class="text-xs text-[#0C0D0C]/75 leading-relaxed mt-0.5">
               Dua pemikiran menyatu dalam visi yang sama. Saling belajar, tumbuh bersama, dan menemukan kedamaian dalam setiap langkah.
             </p>
           </div>
 
-          <div class="relative reveal delay-200">
-            <span class="text-[11px] font-bold text-[#727464] block">2024</span>
-            <h4 class="font-serif text-lg font-semibold text-[#0C0D0C]">The Sacred Promise</h4>
-            <p class="text-xs text-[#0C0D0C]/75 leading-relaxed mt-0.5">
+          <div data-story-item class="relative reveal delay-200">
+            <span data-story-year class="text-[11px] font-bold text-[#727464] block">2024</span>
+            <h4 data-story-title class="font-serif text-lg font-semibold text-[#0C0D0C]">The Sacred Promise</h4>
+            <p data-story-description class="text-xs text-[#0C0D0C]/75 leading-relaxed mt-0.5">
               Di hadapan keluarga dan semesta, kami mengikat janji suci untuk melangkah bersama menuju babak baru yang penuh berkah.
             </p>
           </div>
@@ -518,11 +520,11 @@
       <div class="editorial-card rounded-3xl p-6 relative overflow-hidden reveal delay-150">
         
         <!-- Akad Nikah Program -->
-        <div class="text-center pb-6 border-b border-[#7F8170]/30 reveal delay-200">
-          <h4 class="font-serif text-2xl font-bold text-[#0C0D0C]">Akad Nikah</h4>
-          <p class="text-xs font-semibold text-[#0C0D0C]/80 mt-1">Sabtu, 24 Mei 2025</p>
-          <p class="text-xs font-bold text-[#727464] mt-0.5">Pukul 08.00 WIB - Selesai</p>
-          <p class="text-xs text-[#0C0D0C]/70 mt-1 max-w-xs mx-auto">Gedung Graha Saka, Jl. Melati No. 12, Sleman, Yogyakarta</p>
+        <div data-event-card class="text-center pb-6 border-b border-[#7F8170]/30 reveal delay-200">
+          <h4 data-event-title class="font-serif text-2xl font-bold text-[#0C0D0C]">Akad Nikah</h4>
+          <p data-event-date class="text-xs font-semibold text-[#0C0D0C]/80 mt-1">Sabtu, 24 Mei 2025</p>
+          <p data-event-time class="text-xs font-bold text-[#727464] mt-0.5">Pukul 08.00 WIB - Selesai</p>
+          <p data-event-venue class="text-xs text-[#0C0D0C]/70 mt-1 max-w-xs mx-auto">Gedung Graha Saka, Jl. Melati No. 12, Sleman, Yogyakarta</p>
           <div class="mt-2 inline-block px-3 py-1 rounded-full bg-[#727464]/10 text-[10px] text-[#727464] font-medium">
             Dresscode: Modest &amp; Earth Tone
           </div>
@@ -535,11 +537,11 @@
         </div>
 
         <!-- Resepsi Pernikahan Program -->
-        <div class="text-center pt-6 reveal delay-250">
-          <h4 class="font-serif text-2xl font-bold text-[#0C0D0C]">Resepsi Pernikahan</h4>
-          <p class="text-xs font-semibold text-[#0C0D0C]/80 mt-1">Sabtu, 24 Mei 2025</p>
-          <p class="text-xs font-bold text-[#727464] mt-0.5">Pukul 11.00 – 14.00 WIB</p>
-          <p class="text-xs text-[#0C0D0C]/70 mt-1 max-w-xs mx-auto">Gedung Graha Saka, Jl. Melati No. 12, Sleman, Yogyakarta</p>
+        <div data-event-card class="text-center pt-6 reveal delay-250">
+          <h4 data-event-title class="font-serif text-2xl font-bold text-[#0C0D0C]">Resepsi Pernikahan</h4>
+          <p data-event-date class="text-xs font-semibold text-[#0C0D0C]/80 mt-1">Sabtu, 24 Mei 2025</p>
+          <p data-event-time class="text-xs font-bold text-[#727464] mt-0.5">Pukul 11.00 – 14.00 WIB</p>
+          <p data-event-venue class="text-xs text-[#0C0D0C]/70 mt-1 max-w-xs mx-auto">Gedung Graha Saka, Jl. Melati No. 12, Sleman, Yogyakarta</p>
           <div class="mt-2 inline-block px-3 py-1 rounded-full bg-[#727464]/10 text-[10px] text-[#727464] font-medium">
             Dresscode: Sage Olive, Ivory &amp; Neutral Chic
           </div>
@@ -648,7 +650,7 @@
         <!-- Hero Shot (Plate No. 01) -->
         <div onclick="openLightbox('asset/img/foto_editorial_hero.jpg', 'Raka & Sinta — The Editorial Portrait')"
              class="relative w-full aspect-[4/5] rounded-3xl overflow-hidden shadow-sm border border-[#7F8170]/30 cursor-pointer group reveal-scale delay-100">
-          <img src="asset/img/foto_editorial_hero.jpg" alt="Editorial Hero" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+          <img src="asset/img/foto_editorial_hero.jpg" alt="Editorial Hero" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
 
         </div>
 
@@ -656,18 +658,18 @@
         <div class="grid grid-cols-2 gap-3">
           <div onclick="openLightbox('asset/img/foto_editorial_bride.jpg', 'Sinta Maharani — The Bride')"
                class="aspect-[3/4] rounded-2xl overflow-hidden shadow-sm border border-[#7F8170]/30 cursor-pointer group reveal-scale delay-150">
-            <img src="asset/img/foto_editorial_bride.jpg" alt="Bride Portrait" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+            <img src="asset/img/foto_editorial_bride.jpg" alt="Bride Portrait" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
           </div>
           <div onclick="openLightbox('asset/img/foto_editorial_groom.jpg', 'Raka Pratama — The Groom')"
                class="aspect-[3/4] rounded-2xl overflow-hidden shadow-sm border border-[#7F8170]/30 cursor-pointer group reveal-scale delay-200">
-            <img src="asset/img/foto_editorial_groom.jpg" alt="Groom Portrait" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+            <img src="asset/img/foto_editorial_groom.jpg" alt="Groom Portrait" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
           </div>
         </div>
 
         <!-- Wide Candid Shot (Plate No. 02) -->
         <div onclick="openLightbox('asset/img/foto_editorial_story.jpg', 'Sunlit Moments — Courtyard')"
              class="relative w-full aspect-[3/2] rounded-3xl overflow-hidden shadow-sm border border-[#7F8170]/30 cursor-pointer group reveal-scale delay-250">
-          <img src="asset/img/foto_editorial_story.jpg" alt="Candid Moments" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+          <img src="asset/img/foto_editorial_story.jpg" alt="Candid Moments" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
 
         </div>
 
@@ -731,13 +733,13 @@
         <div id="giftContentBank" class="space-y-3.5 transition-all">
           
           <!-- Fresh Luxe Card 1 (BCA - Raka) -->
-          <div class="p-4 rounded-2xl bg-gradient-to-br from-[#FAF8F5] via-[#F4F1EA] to-[#EAE6DC] border border-[#7F8170]/35 text-left shadow-[0_8px_24px_-6px_rgba(12,13,12,0.08)] relative overflow-hidden group">
+          <div data-bank-card class="p-4 rounded-2xl bg-gradient-to-br from-[#FAF8F5] via-[#F4F1EA] to-[#EAE6DC] border border-[#7F8170]/35 text-left shadow-[0_8px_24px_-6px_rgba(12,13,12,0.08)] relative overflow-hidden group">
             <div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-[#727464]/5 pointer-events-none"></div>
 
             <div class="flex justify-between items-center mb-3">
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-[#727464]"></span>
-                <span class="font-serif font-bold text-sm tracking-wider text-[#0C0D0C]">BCA</span>
+                <span data-bank-name class="font-serif font-bold text-sm tracking-wider text-[#0C0D0C]">BCA</span>
                 <span class="text-[10px] text-[#7F8170] uppercase tracking-wider font-semibold">· Bank Central Asia</span>
               </div>
               <span class="text-[9px] px-2.5 py-0.5 rounded-full bg-[#727464]/10 text-[#727464] font-semibold tracking-wider uppercase border border-[#727464]/20">
@@ -749,7 +751,7 @@
             <div class="my-3 flex items-center justify-between">
               <div>
                 <span class="text-[9px] uppercase tracking-[0.2em] text-[#7F8170] font-semibold block mb-0.5">Nomor Rekening</span>
-                <span class="font-mono text-lg sm:text-xl font-bold tracking-wider text-[#0C0D0C]">1234 5678 90</span>
+                <span data-account-number class="font-mono text-lg sm:text-xl font-bold tracking-wider text-[#0C0D0C]">1234 5678 90</span>
               </div>
               <!-- Metallic Chip Accent -->
               <div class="w-8 h-6 rounded-md bg-gradient-to-br from-[#D4AF37] to-[#AA8222] p-0.5 shadow-inner opacity-80 flex flex-col justify-between py-1 px-1">
@@ -762,7 +764,7 @@
             <div class="pt-3 border-t border-[#7F8170]/20 flex items-center justify-between">
               <div>
                 <span class="text-[9px] text-[#7F8170] block uppercase tracking-wider">Atas Nama</span>
-                <span class="font-serif text-xs font-semibold text-[#0C0D0C]">Raka Pratama</span>
+                <span data-account-holder class="font-serif text-xs font-semibold text-[#0C0D0C]">Raka Pratama</span>
               </div>
               <button onclick="copyToClipboard('1234567890', this)"
                       class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#0C0D0C] hover:bg-[#727464] text-white text-[11px] font-medium transition-all shadow-sm active:scale-95 cursor-pointer">
@@ -775,13 +777,13 @@
           </div>
 
           <!-- Fresh Luxe Card 2 (Mandiri - Sinta) -->
-          <div class="p-4 rounded-2xl bg-gradient-to-br from-[#F5F7F2] via-[#EBF0E6] to-[#E0E6DA] border border-[#7F8170]/35 text-left shadow-[0_8px_24px_-6px_rgba(12,13,12,0.08)] relative overflow-hidden group">
+          <div data-bank-card class="p-4 rounded-2xl bg-gradient-to-br from-[#F5F7F2] via-[#EBF0E6] to-[#E0E6DA] border border-[#7F8170]/35 text-left shadow-[0_8px_24px_-6px_rgba(12,13,12,0.08)] relative overflow-hidden group">
             <div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-[#727464]/5 pointer-events-none"></div>
 
             <div class="flex justify-between items-center mb-3">
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-[#5D6052]"></span>
-                <span class="font-serif font-bold text-sm tracking-wider text-[#0C0D0C]">MANDIRI</span>
+                <span data-bank-name class="font-serif font-bold text-sm tracking-wider text-[#0C0D0C]">MANDIRI</span>
                 <span class="text-[10px] text-[#7F8170] uppercase tracking-wider font-semibold">· Bank Mandiri</span>
               </div>
               <span class="text-[9px] px-2.5 py-0.5 rounded-full bg-[#727464]/10 text-[#727464] font-semibold tracking-wider uppercase border border-[#727464]/20">
@@ -793,7 +795,7 @@
             <div class="my-3 flex items-center justify-between">
               <div>
                 <span class="text-[9px] uppercase tracking-[0.2em] text-[#7F8170] font-semibold block mb-0.5">Nomor Rekening</span>
-                <span class="font-mono text-lg sm:text-xl font-bold tracking-wider text-[#0C0D0C]">0987 6543 210</span>
+                <span data-account-number class="font-mono text-lg sm:text-xl font-bold tracking-wider text-[#0C0D0C]">0987 6543 210</span>
               </div>
               <!-- Metallic Chip Accent -->
               <div class="w-8 h-6 rounded-md bg-gradient-to-br from-[#D4AF37] to-[#AA8222] p-0.5 shadow-inner opacity-80 flex flex-col justify-between py-1 px-1">
@@ -806,7 +808,7 @@
             <div class="pt-3 border-t border-[#7F8170]/20 flex items-center justify-between">
               <div>
                 <span class="text-[9px] text-[#7F8170] block uppercase tracking-wider">Atas Nama</span>
-                <span class="font-serif text-xs font-semibold text-[#0C0D0C]">Sinta Maharani</span>
+                <span data-account-holder class="font-serif text-xs font-semibold text-[#0C0D0C]">Sinta Maharani</span>
               </div>
               <button onclick="copyToClipboard('09876543210', this)"
                       class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#0C0D0C] hover:bg-[#727464] text-white text-[11px] font-medium transition-all shadow-sm active:scale-95 cursor-pointer">
@@ -891,7 +893,7 @@
         <form id="rsvpForm" onsubmit="submitWish(event)" class="space-y-3.5 mb-8 text-left">
           <div>
             <label class="block text-[11px] font-bold text-[#0C0D0C] mb-1">Nama Lengkap</label>
-            <input type="text" id="guestName" required placeholder="Contoh: Budi Santoso"
+            <input type="text" id="wishName" required placeholder="Contoh: Budi Santoso"
               class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#7F8170]/40 text-xs text-[#0C0D0C] focus:outline-none focus:ring-1 focus:ring-[#727464]"/>
           </div>
 
@@ -993,6 +995,7 @@
           <img 
             src="asset/img/foto_editorial_hero.jpg" 
             alt="Thank you"
+            data-slot="closing.photo"
             class="w-full h-full object-cover object-[center_15%]"
           />
         </div>
@@ -1006,7 +1009,7 @@
       <p class="text-[11px] text-[#0C0D0C]/70 mb-2">Kami yang berbahagia,</p>
 
       <!-- Editorial Sign-off -->
-      <h3 class="font-serif text-3xl sm:text-4xl text-[#0C0D0C] font-semibold mb-8 reveal delay-200">
+      <h3 data-couple-names class="font-serif text-3xl sm:text-4xl text-[#0C0D0C] font-semibold mb-8 reveal delay-200">
         Raka &amp; Sinta
       </h3>
 
@@ -1073,7 +1076,7 @@
 
   <!-- JavaScript Application Logic -->
   <script src="js/script.js"></script>
-  <!-- Universal InfoMase Template Bridge -->
-  <script src="../template-bridge.js?v=4"></script>
+  <!-- Universal Anvitation Template Bridge -->
+  <script src="../template-bridge.js?v=5"></script>
 </body>
 </html>

@@ -1,0 +1,49 @@
+{
+  "id": "misty-mountain",
+  "folderId": "undangan_5",
+  "name": "Misty Mountain",
+  "gallery": {
+    "min": 1,
+    "max": 8,
+    "recommended": 4,
+    "aspect": "3:4"
+  },
+  "slots": [
+    {
+      "key": "cover.photo",
+      "label": "Foto Sampul Pembuka (Gate Cover)",
+      "section": "Sampul Pembuka",
+      "aspect": "3:4",
+      "cutout": false,
+      "hint": "Foto pasangan dengan efek gradasi lembut di layar sampul pembuka.",
+      "default": "asset/img/mempelai/couple_beach_full.jpg"
+    },
+    {
+      "key": "hero.photo",
+      "label": "Foto Lingkaran Beranda (Hero Frame)",
+      "section": "Beranda (Hero)",
+      "aspect": "1:1",
+      "cutout": false,
+      "hint": "Foto utama berbentuk lingkaran di bagian tengah beranda.",
+      "default": "asset/img/mempelai/couple_beach_full.jpg"
+    },
+    {
+      "key": "story.photo",
+      "label": "Foto Polaroid Kisah Cinta",
+      "section": "Kisah Cinta",
+      "aspect": "16:10",
+      "cutout": false,
+      "hint": "Foto polaroid pada bagian bawah timeline Perjalanan Cinta.",
+      "default": "asset/img/mempelai/foto_editorial_story.jpg"
+    },
+    {
+      "key": "closing.photo",
+      "label": "Foto Lingkaran Penutup",
+      "section": "Penutup",
+      "aspect": "1:1",
+      "cutout": false,
+      "hint": "Foto lingkaran pada bagian ucapan terima kasih di akhir halaman.",
+      "default": "asset/img/mempelai/foto_editorial_hero.jpg"
+    }
+  ]
+}

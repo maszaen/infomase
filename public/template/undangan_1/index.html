@@ -36,7 +36,7 @@
 
       <!-- 1. Upper Half: Couple Photo with Seamless Gradient Fade -->
       <div class="absolute top-0 left-0 right-0 w-full h-[55%] overflow-hidden pointer-events-none z-10 gate-anim-photo">
-        <img src="asset/img/foto_mempelai_dummy.jpg" alt="Foto Mempelai" class="w-full h-full object-cover object-top">
+        <img src="asset/img/foto_mempelai_dummy.jpg" alt="Foto Mempelai" data-slot="cover.photo" class="w-full h-full object-cover object-top">
         <!-- Soft Gradient Overlay: Menutup bagian bawah foto agar menyatu halus ke background -->
         <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#FAF7F2]/30 via-50% to-[#FAF7F2]"></div>
       </div>
@@ -59,7 +59,7 @@
         </span>
 
         <!-- Couple Name in Luxury Calligraphy Script -->
-        <h1 class="font-script text-4xl sm:text-5xl text-[#755B46] tracking-wide mb-3 gate-anim-2">
+        <h1 data-couple-names class="font-script text-4xl sm:text-5xl text-[#755B46] tracking-wide mb-3 gate-anim-2">
           Raka &amp; Sinta
         </h1>
 
@@ -69,7 +69,7 @@
         </p>
 
         <!-- Dynamic Guest Name -->
-        <div id="coverGuestName" class="font-serif text-xl sm:text-2xl font-semibold text-[#2E251E] tracking-wide mb-5 gate-anim-4">
+        <div id="coverGuestName" data-guest-name class="font-serif text-xl sm:text-2xl font-semibold text-[#2E251E] tracking-wide mb-5 gate-anim-4">
           Nama Tamu
         </div>
 
@@ -140,7 +140,7 @@
         </span>
 
         <!-- Couple Name: Raka & Sinta (Luxury Serif Calligraphy) -->
-        <h1 class="font-serif text-4xl sm:text-5xl text-[#2E251E] font-normal tracking-wide leading-tight mb-2 reveal delay-100">
+        <h1 data-couple-names class="font-serif text-4xl sm:text-5xl text-[#2E251E] font-normal tracking-wide leading-tight mb-2 reveal delay-100">
           Raka <span class="font-light italic text-[#755B46]">&amp;</span> Sinta
         </h1>
 
@@ -164,7 +164,7 @@
           <span class="font-serif text-5xl sm:text-6xl font-normal text-[#2E251E] tracking-tight leading-none my-0.5">
             24
           </span>
-          <span class="text-[11px] uppercase tracking-[0.28em] text-[#554A40] font-semibold mt-1">
+          <span data-wedding-date class="text-[11px] uppercase tracking-[0.28em] text-[#554A40] font-semibold mt-1">
             MEI 2025
           </span>
         </div>
@@ -201,11 +201,11 @@
         </svg>
       </div>
 
-      <p class="font-serif text-base sm:text-lg leading-relaxed text-[#FAF5EE] italic mb-4 max-w-sm mx-auto">
+      <p data-quote-text class="font-serif text-base sm:text-lg leading-relaxed text-[#FAF5EE] italic mb-4 max-w-sm mx-auto">
         "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
       </p>
 
-      <span class="text-xs uppercase tracking-widest text-[#EADBCE] font-semibold block">
+      <span data-quote-source class="text-xs uppercase tracking-widest text-[#EADBCE] font-semibold block">
         (QS. AR-RUM: 21)
       </span>
     </section>
@@ -231,6 +231,7 @@
             <img 
               src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" 
               alt="Raka Pratama"
+              data-groom-photo
               class="w-full h-full object-cover object-top sepia-[.10]"
             />
           </div>
@@ -257,6 +258,7 @@
             <img 
               src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" 
               alt="Sinta Maharani"
+              data-bride-photo
               class="w-full h-full object-cover object-top sepia-[.10]"
             />
           </div>
@@ -274,7 +276,7 @@
     <!-- ==============================================================
          4. KISAH CINTA (OUR STORY)
          ============================================================== -->
-    <section class="py-8 px-6">
+    <section id="kisah" class="py-8 px-6">
       <div class="paper-card rounded-3xl p-6 text-center relative overflow-hidden reveal">
         
         <!-- Couple Horizontal Photo -->
@@ -282,6 +284,7 @@
           <img 
             src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" 
             alt="Love Story"
+            data-slot="story.photo"
             class="w-full h-full object-cover sepia-[.10]"
           />
         </div>
@@ -351,19 +354,20 @@
           <img 
             src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80" 
             alt="Venue"
+            data-slot="event.photo"
             class="w-full h-full object-cover sepia-[.10]"
           />
         </div>
 
         <!-- Akad Nikah Details (Muncul perlahan 1 per 1 saat scroll) -->
-        <div class="text-center mb-6 reveal delay-150">
+        <div data-event-card class="text-center mb-6 reveal delay-150">
           <div class="w-9 h-9 mx-auto rounded-full bg-[#EFE8DD] text-[#8C735B] flex items-center justify-center mb-2 reveal-scale delay-200">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
           </div>
-          <h4 class="font-serif text-2xl font-bold text-[#382E25] reveal delay-200">Akad Nikah</h4>
-          <p class="text-xs text-[#786755] font-medium mt-1 reveal delay-250">Sabtu, 24 Mei 2025</p>
-          <p class="text-xs font-bold text-[#8C735B] mt-0.5 reveal delay-250">Pukul 08.00 WIB - Selesai</p>
-          <p class="text-xs text-[#786755] mt-1 reveal delay-300">Gedung Graha Saka, Jl. Melati No. 12, Yogyakarta</p>
+          <h4 data-event-title class="font-serif text-2xl font-bold text-[#382E25] reveal delay-200">Akad Nikah</h4>
+          <p data-event-date class="text-xs text-[#786755] font-medium mt-1 reveal delay-250">Sabtu, 24 Mei 2025</p>
+          <p data-event-time class="text-xs font-bold text-[#8C735B] mt-0.5 reveal delay-250">Pukul 08.00 WIB - Selesai</p>
+          <p data-event-venue class="text-xs text-[#786755] mt-1 reveal delay-300">Gedung Graha Saka, Jl. Melati No. 12, Yogyakarta</p>
           <a href="https://maps.google.com/?q=Gedung+Graha+Saka+Yogyakarta" target="_blank" rel="noopener"
              class="inline-flex items-center gap-1.5 mt-3 px-4 py-1.5 rounded-full bg-[#8C735B] text-white text-[11px] font-medium shadow hover:bg-[#79624C] reveal-scale delay-300">
             <span>Buka Google Maps</span> &#x2197;
@@ -378,14 +382,14 @@
         </div>
 
         <!-- Resepsi Details (Muncul bertahap 1 per 1 berikutnya) -->
-        <div class="text-center mb-4 reveal delay-350">
+        <div data-event-card class="text-center mb-4 reveal delay-350">
           <div class="w-9 h-9 mx-auto rounded-full bg-[#EFE8DD] text-[#8C735B] flex items-center justify-center mb-2 reveal-scale delay-350">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="9" cy="12" r="5" stroke-width="1.8"/><circle cx="15" cy="12" r="5" stroke-width="1.8"/></svg>
           </div>
-          <h4 class="font-serif text-2xl font-bold text-[#382E25] reveal delay-350">Resepsi Pernikahan</h4>
-          <p class="text-xs text-[#786755] font-medium mt-1 reveal delay-400">Sabtu, 24 Mei 2025</p>
-          <p class="text-xs font-bold text-[#8C735B] mt-0.5 reveal delay-400">Pukul 11.00 - 14.00 WIB</p>
-          <p class="text-xs text-[#786755] mt-1 reveal delay-400">Gedung Graha Saka, Jl. Melati No. 12, Yogyakarta</p>
+          <h4 data-event-title class="font-serif text-2xl font-bold text-[#382E25] reveal delay-350">Resepsi Pernikahan</h4>
+          <p data-event-date class="text-xs text-[#786755] font-medium mt-1 reveal delay-400">Sabtu, 24 Mei 2025</p>
+          <p data-event-time class="text-xs font-bold text-[#8C735B] mt-0.5 reveal delay-400">Pukul 11.00 - 14.00 WIB</p>
+          <p data-event-venue class="text-xs text-[#786755] mt-1 reveal delay-400">Gedung Graha Saka, Jl. Melati No. 12, Yogyakarta</p>
           <a href="https://maps.google.com/?q=Gedung+Graha+Saka+Yogyakarta" target="_blank" rel="noopener"
              class="inline-flex items-center gap-1.5 mt-3 px-4 py-1.5 rounded-full bg-[#8C735B] text-white text-[11px] font-medium shadow hover:bg-[#79624C] reveal-scale delay-450">
             <span>Buka Google Maps</span> &#x2197;
@@ -524,27 +528,27 @@
       <div class="grid grid-cols-2 gap-3 mb-6">
         <div onclick="openLightbox('https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1000&q=80', 'Raka & Sinta - Prewedding Outdoor')"
              class="aspect-3/4 rounded-2xl overflow-hidden shadow-xs cursor-pointer group reveal-scale delay-100">
-          <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=500&q=80" alt="Galeri 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 sepia-[.10]">
+          <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=500&q=80" alt="Galeri 1" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-500 sepia-[.10]">
         </div>
         <div onclick="openLightbox('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80', 'Momen Manis')"
              class="aspect-3/4 rounded-2xl overflow-hidden shadow-xs cursor-pointer group reveal-scale delay-150">
-          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=500&q=80" alt="Galeri 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 sepia-[.10]">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=500&q=80" alt="Galeri 2" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-500 sepia-[.10]">
         </div>
         <div onclick="openLightbox('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1000&q=80', 'Senyum Bahagia')"
              class="aspect-square rounded-2xl overflow-hidden shadow-xs cursor-pointer group reveal-scale delay-200">
-          <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=500&q=80" alt="Galeri 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 sepia-[.10]">
+          <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=500&q=80" alt="Galeri 3" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-500 sepia-[.10]">
         </div>
         <div onclick="openLightbox('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1000&q=80', 'Simbol Cincin Pernikahan')"
              class="aspect-square rounded-2xl overflow-hidden shadow-xs cursor-pointer group reveal-scale delay-250">
-          <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=500&q=80" alt="Galeri 4" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 sepia-[.10]">
+          <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=500&q=80" alt="Galeri 4" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-500 sepia-[.10]">
         </div>
         <div onclick="openLightbox('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1000&q=80', 'Raka Pratama')"
              class="aspect-square rounded-2xl overflow-hidden shadow-xs cursor-pointer group reveal-scale delay-300">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" alt="Galeri 5" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 sepia-[.10]">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" alt="Galeri 5" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-500 sepia-[.10]">
         </div>
         <div onclick="openLightbox('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80', 'Sinta Maharani')"
              class="aspect-square rounded-2xl overflow-hidden shadow-xs cursor-pointer group reveal-scale delay-350">
-          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" alt="Galeri 6" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 sepia-[.10]">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" alt="Galeri 6" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-500 sepia-[.10]">
         </div>
       </div>
 
@@ -575,13 +579,13 @@
         </p>
 
         <!-- Bank Card 1: BCA -->
-        <div class="p-4 rounded-2xl bg-white/90 border border-[#D5C6B1]/70 mb-4 shadow-xs text-left reveal-left delay-100">
+        <div data-bank-card class="p-4 rounded-2xl bg-white/90 border border-[#D5C6B1]/70 mb-4 shadow-xs text-left reveal-left delay-100">
           <div class="flex items-center justify-between mb-2">
-            <span class="font-bold text-sm text-blue-800 tracking-wider">BANK BCA</span>
+            <span data-bank-name class="font-bold text-sm text-blue-800 tracking-wider">BANK BCA</span>
             <svg class="w-5 h-5 text-[#8C735B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
           </div>
-          <p class="font-mono text-base font-bold text-[#382E25] tracking-wider mb-1">1234 5678 90</p>
-          <p class="text-xs text-[#786755] mb-3">a.n. Raka Pratama</p>
+          <p data-account-number class="font-mono text-base font-bold text-[#382E25] tracking-wider mb-1">1234 5678 90</p>
+          <p data-account-holder class="text-xs text-[#786755] mb-3">a.n. Raka Pratama</p>
           <button onclick="copyToClipboard('1234567890', this)"
             class="w-full py-2 rounded-xl border border-[#8C735B] text-[#8C735B] text-xs font-semibold hover:bg-[#8C735B] hover:text-white transition flex items-center justify-center gap-1.5">
             <svg class="w-3.5 h-3.5 fill-none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
@@ -590,13 +594,13 @@
         </div>
 
         <!-- Bank Card 2: Mandiri -->
-        <div class="p-4 rounded-2xl bg-white/90 border border-[#D5C6B1]/70 mb-4 shadow-xs text-left reveal-right delay-200">
+        <div data-bank-card class="p-4 rounded-2xl bg-white/90 border border-[#D5C6B1]/70 mb-4 shadow-xs text-left reveal-right delay-200">
           <div class="flex items-center justify-between mb-2">
-            <span class="font-bold text-sm text-amber-700 tracking-wider">BANK MANDIRI</span>
+            <span data-bank-name class="font-bold text-sm text-amber-700 tracking-wider">BANK MANDIRI</span>
             <svg class="w-5 h-5 text-[#8C735B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
           </div>
-          <p class="font-mono text-base font-bold text-[#382E25] tracking-wider mb-1">0987 6543 21</p>
-          <p class="text-xs text-[#786755] mb-3">a.n. Sinta Maharani</p>
+          <p data-account-number class="font-mono text-base font-bold text-[#382E25] tracking-wider mb-1">0987 6543 21</p>
+          <p data-account-holder class="text-xs text-[#786755] mb-3">a.n. Sinta Maharani</p>
           <button onclick="copyToClipboard('0987654321', this)"
             class="w-full py-2 rounded-xl border border-[#8C735B] text-[#8C735B] text-xs font-semibold hover:bg-[#8C735B] hover:text-white transition flex items-center justify-center gap-1.5">
             <svg class="w-3.5 h-3.5 fill-none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
@@ -715,6 +719,7 @@
           <img 
             src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=500&q=80" 
             alt="Thank you"
+            data-slot="closing.photo"
             class="w-full h-full object-cover sepia-[.10]"
           />
         </div>
@@ -728,7 +733,7 @@
       <p class="text-[11px] text-[#786755] mb-4">Kami yang berbahagia,</p>
 
       <!-- Couple Name (Cursive Script) -->
-      <h3 class="font-script text-4xl text-[#755B46] mb-8 reveal delay-200">
+      <h3 data-couple-names class="font-script text-4xl text-[#755B46] mb-8 reveal delay-200">
         Raka &amp; Sinta
       </h3>
 
@@ -827,7 +832,7 @@
 
   <!-- JavaScript Application Logic -->
   <script src="js/script.js"></script>
-  <!-- Universal InfoMase Template Bridge -->
-  <script src="../template-bridge.js?v=4"></script>
+  <!-- Universal Anvitation Template Bridge -->
+  <script src="../template-bridge.js?v=5"></script>
 </body>
 </html>

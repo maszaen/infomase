@@ -122,6 +122,7 @@
             <div class="absolute w-[44%] h-[56%] rounded-full overflow-hidden shadow-inner bg-[#2A060A]" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
               <img src="asset/img/mempelai/mempelai_maroon_royal.jpg" 
                    alt="Mempelai Raka &amp; Sinta" 
+                   data-slot="cover.photo"
                    class="w-full h-full object-cover object-[54%_28%] filter brightness-105 gate-anim-photo-soft" 
                    decoding="async">
             </div>
@@ -138,7 +139,7 @@
           </span>
 
           <!-- Names: Raka & Sinta -->
-          <h1 class="font-serif text-3xl sm:text-[40px] text-[#F5E8D8] font-normal tracking-wide leading-tight mb-2 drop-shadow-[0_2px_12px_rgba(0,0,0,0.65)] gate-anim-names">
+          <h1 data-couple-names class="font-serif text-3xl sm:text-[40px] text-[#F5E8D8] font-normal tracking-wide leading-tight mb-2 drop-shadow-[0_2px_12px_rgba(0,0,0,0.65)] gate-anim-names">
             Raka <span class="font-light italic text-[#E8C995]">&amp;</span> Sinta
           </h1>
 
@@ -161,7 +162,7 @@
             <!-- Vertical Divider -->
             <div class="w-px h-8 bg-gradient-to-b from-transparent via-[#C49A55]/60 to-transparent mx-2"></div>
             <!-- Center: Big Date & Month/Year -->
-            <div class="flex-1 flex flex-col items-center justify-center text-center">
+            <div data-wedding-date class="flex-1 flex flex-col items-center justify-center text-center">
               <span class="font-serif text-3xl sm:text-[38px] font-normal leading-none text-[#F5E8D8] drop-shadow-sm">24</span>
               <span class="text-[9.5px] uppercase tracking-[0.22em] font-semibold text-[#C49A55] mt-1">MEI 2025</span>
             </div>
@@ -177,7 +178,7 @@
           <!-- Dynamic Guest Name Invitation -->
           <div class="mt-2 mb-1 gate-anim-guest">
             <span class="text-[9.5px] uppercase tracking-[0.22em] text-[#C49A55]/85 font-medium block">Kepada Yth. Bapak/Ibu/Saudara/i:</span>
-            <div id="coverGuestName" class="font-serif text-base sm:text-lg font-medium text-[#F5E8D8] tracking-wide mt-0.5 drop-shadow-sm">
+            <div id="coverGuestName" data-guest-name class="font-serif text-base sm:text-lg font-medium text-[#F5E8D8] tracking-wide mt-0.5 drop-shadow-sm">
               Nama Tamu
             </div>
           </div>
@@ -346,6 +347,7 @@
                style="top: 20.6%; left: 7.7%; width: 84.6%; height: 73.6%; border-radius: 64px 64px 6px 6px;">
             <img src="asset/img/mempelai/mempelai_maroon_royal.jpg" 
                  alt="Mempelai Raka &amp; Sinta" 
+                 data-slot="hero.photo"
                  class="w-full h-full object-cover object-[54%_25%] filter brightness-105" 
                  decoding="async">
           </div>
@@ -361,7 +363,7 @@
           <span class="hero-anim hero-anim-down hero-delay-5 text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-[#C49A55] font-semibold block mb-1">
             THE WEDDING OF
           </span>
-          <h1 class="hero-anim hero-anim-title hero-delay-6 font-serif text-3xl sm:text-[40px] text-[#F5E8D8] font-normal tracking-wide leading-tight mb-1.5 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+          <h1 data-couple-names class="hero-anim hero-anim-title hero-delay-6 font-serif text-3xl sm:text-[40px] text-[#F5E8D8] font-normal tracking-wide leading-tight mb-1.5 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
             Raka <span class="font-light italic text-[#E8C995]">&amp;</span> Sinta
           </h1>
           <div class="hero-anim hero-anim-down hero-delay-7 flex items-center justify-center gap-2">
@@ -424,7 +426,7 @@
         <!-- Large Artistic Quote Mark in Antique Gold -->
         <span class="font-serif text-5xl text-[#C49A55]/30 leading-none select-none block mb-1">“</span>
 
-        <p class="font-serif text-[15px] sm:text-base leading-relaxed text-[#F5E8D8] italic mb-4 max-w-sm mx-auto text-justify sm:text-center">
+        <p data-quote-text class="font-serif text-[15px] sm:text-base leading-relaxed text-[#F5E8D8] italic mb-4 max-w-sm mx-auto text-justify sm:text-center">
           "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
         </p>
 
@@ -434,7 +436,7 @@
           <div class="w-8 h-px bg-[#C49A55]/40"></div>
         </div>
 
-        <span class="text-[10px] tracking-[0.2em] text-[#E8C995] font-semibold block uppercase">
+        <span data-quote-source class="text-[10px] tracking-[0.2em] text-[#E8C995] font-semibold block uppercase">
           QS. Ar-Rum Ayat 21
         </span>
       </div>
@@ -474,7 +476,7 @@
       <div class="text-center mb-8 reveal-scale delay-100">
         <!-- Royal Baroque Gold Framed Groom Portrait -->
         <div class="relative w-full aspect-[4/5] max-w-[270px] mx-auto rounded-[32px] overflow-hidden border-2 border-[#E8C995]/60 shadow-[0_16px_40px_rgba(0,0,0,0.7)] bg-[#2B070E] mb-4 group">
-          <img src="asset/img/mempelai/foto_editorial_groom.jpg" alt="Raka Pratama" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" decoding="async" loading="lazy">
+          <img src="asset/img/mempelai/foto_editorial_groom.jpg" alt="Raka Pratama" data-groom-photo class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" decoding="async" loading="lazy">
           <div class="absolute inset-0 bg-gradient-to-t from-[#1C0407]/90 via-transparent to-transparent opacity-80"></div>
           <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-gradient-to-r from-[#E8C995] via-[#F3DEB8] to-[#E8C995] text-[9.5px] uppercase tracking-widest font-bold text-[#21100F] shadow-md">
             THE GROOM
@@ -506,7 +508,7 @@
       <div class="text-center mb-6 reveal-scale delay-200">
         <!-- Royal Baroque Gold Framed Bride Portrait -->
         <div class="relative w-full aspect-[4/5] max-w-[270px] mx-auto rounded-[32px] overflow-hidden border-2 border-[#E8C995]/60 shadow-[0_16px_40px_rgba(0,0,0,0.7)] bg-[#2B070E] mb-4 group">
-          <img src="asset/img/mempelai/foto_editorial_bride.jpg" alt="Sinta Maharani" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" decoding="async" loading="lazy">
+          <img src="asset/img/mempelai/foto_editorial_bride.jpg" alt="Sinta Maharani" data-bride-photo class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" decoding="async" loading="lazy">
           <div class="absolute inset-0 bg-gradient-to-t from-[#1C0407]/90 via-transparent to-transparent opacity-80"></div>
           <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-gradient-to-r from-[#E8C995] via-[#F3DEB8] to-[#E8C995] text-[9.5px] uppercase tracking-widest font-bold text-[#21100F] shadow-md">
             THE BRIDE
@@ -558,43 +560,43 @@
       <div class="space-y-4 max-w-[360px] mx-auto">
         
         <!-- Milestone 1: 2021 -->
-        <div class="royal-velvet-card p-4 text-left relative overflow-hidden reveal delay-100 shadow-md">
+        <div data-story-item class="royal-velvet-card p-4 text-left relative overflow-hidden reveal delay-100 shadow-md">
           <div class="flex items-center justify-between mb-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-[#E8C995]/20 border border-[#E8C995]/50 text-[#E8C995] text-[9.5px] font-bold uppercase tracking-wider">
+            <span data-story-year class="px-2.5 py-0.5 rounded-full bg-[#E8C995]/20 border border-[#E8C995]/50 text-[#E8C995] text-[9.5px] font-bold uppercase tracking-wider">
               TAHUN 2021
             </span>
             <span class="text-xs">✨</span>
           </div>
-          <h4 class="font-serif text-lg font-bold text-[#F5E8D8]">Pertemuan Penuh Takdir</h4>
-          <p class="text-xs text-[#F5E8D8]/80 leading-relaxed mt-1">
+          <h4 data-story-title class="font-serif text-lg font-bold text-[#F5E8D8]">Pertemuan Penuh Takdir</h4>
+          <p data-story-description class="text-xs text-[#F5E8D8]/80 leading-relaxed mt-1">
             Sebuah perjumpaan tak terduga yang mengawali getaran rasa, menautkan dua jiwa dalam ketulusan yang mengubah jalan takdir hidup kami selamanya.
           </p>
         </div>
 
         <!-- Milestone 2: 2023 -->
-        <div class="royal-velvet-card-accent p-4 text-left relative overflow-hidden reveal delay-150 shadow-md border-2 border-[#E8C995]/50">
+        <div data-story-item class="royal-velvet-card-accent p-4 text-left relative overflow-hidden reveal delay-150 shadow-md border-2 border-[#E8C995]/50">
           <div class="flex items-center justify-between mb-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#E8C995] via-[#F3DEB8] to-[#E8C995] text-[#21100F] text-[9.5px] font-bold uppercase tracking-wider">
+            <span data-story-year class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#E8C995] via-[#F3DEB8] to-[#E8C995] text-[#21100F] text-[9.5px] font-bold uppercase tracking-wider">
               TAHUN 2023
             </span>
             <span class="text-xs">🕊️</span>
           </div>
-          <h4 class="font-serif text-lg font-bold text-white">Ikrar Kasih &amp; Komitmen</h4>
-          <p class="text-xs text-white/90 leading-relaxed mt-1">
+          <h4 data-story-title class="font-serif text-lg font-bold text-white">Ikrar Kasih &amp; Komitmen</h4>
+          <p data-story-description class="text-xs text-white/90 leading-relaxed mt-1">
             Dua pemikiran menyatu dalam visi yang sama untuk saling melengkapi, menjaga kehormatan, dan melangkah bersama menuju mahligai masa depan.
           </p>
         </div>
 
         <!-- Milestone 3: 2025 -->
-        <div class="royal-velvet-card p-4 text-left relative overflow-hidden reveal delay-200 shadow-md">
+        <div data-story-item class="royal-velvet-card p-4 text-left relative overflow-hidden reveal delay-200 shadow-md">
           <div class="flex items-center justify-between mb-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-[#E8C995]/20 border border-[#E8C995]/50 text-[#E8C995] text-[9.5px] font-bold uppercase tracking-wider">
+            <span data-story-year class="px-2.5 py-0.5 rounded-full bg-[#E8C995]/20 border border-[#E8C995]/50 text-[#E8C995] text-[9.5px] font-bold uppercase tracking-wider">
               TAHUN 2025
             </span>
             <span class="text-xs">💍</span>
           </div>
-          <h4 class="font-serif text-lg font-bold text-[#F5E8D8]">Mahligai Pernikahan Suci</h4>
-          <p class="text-xs text-[#F5E8D8]/80 leading-relaxed mt-1">
+          <h4 data-story-title class="font-serif text-lg font-bold text-[#F5E8D8]">Mahligai Pernikahan Suci</h4>
+          <p data-story-description class="text-xs text-[#F5E8D8]/80 leading-relaxed mt-1">
             Dengan restu kedua orang tua dan ridho Ilahi, kami mengikrarkan janji suci pernikahan untuk mengarungi bahtera rumah tangga yang sakinah, mawaddah, warahmah.
           </p>
         </div>
@@ -603,7 +605,7 @@
         <div class="pt-2 text-center reveal delay-250">
           <div class="p-2 bg-[#2B070E] rounded-2xl shadow-lg border border-[#E8C995]/40 max-w-[290px] mx-auto rotate-1 hover:rotate-0 transition duration-300">
             <div class="aspect-[16/10] rounded-xl overflow-hidden bg-[#2A060E]">
-              <img src="asset/img/mempelai/foto_editorial_story.jpg" alt="Our Story" class="w-full h-full object-cover" decoding="async" loading="lazy">
+              <img src="asset/img/mempelai/foto_editorial_story.jpg" alt="Our Story" data-slot="story.photo" class="w-full h-full object-cover" decoding="async" loading="lazy">
             </div>
             <p class="font-serif text-[10px] italic text-[#E8C995] mt-1.5 font-semibold">"Abadi Dalam Satu Detak Jantung"</p>
           </div>
@@ -670,14 +672,14 @@
       <div class="space-y-5 max-w-[360px] mx-auto">
         
         <!-- CARD 1: AKAD NIKAH -->
-        <div class="royal-velvet-card p-6 text-center relative overflow-hidden reveal delay-150 shadow-md">
+        <div data-event-card class="royal-velvet-card p-6 text-center relative overflow-hidden reveal delay-150 shadow-md">
           <span class="inline-block px-3 py-0.5 rounded-full bg-[#E8C995]/20 border border-[#E8C995]/40 text-[9px] uppercase tracking-widest text-[#E8C995] font-bold mb-2">
             PROSESI SUCI
           </span>
-          <h4 class="font-serif text-2xl font-bold text-[#F5E8D8]">Akad Nikah</h4>
-          <p class="text-xs font-semibold text-[#E8C995] mt-1">Sabtu, 24 Mei 2025</p>
-          <p class="text-xs font-bold text-[#F5E8D8] mt-0.5">Pukul 08.00 - 10.00 WIB</p>
-          <p class="text-xs text-[#F5E8D8]/75 mt-1.5 max-w-xs mx-auto">Grand Ballroom, The Royal Palace Hotel, Jl. Jend. Sudirman Kav. 1, Jakarta</p>
+          <h4 data-event-title class="font-serif text-2xl font-bold text-[#F5E8D8]">Akad Nikah</h4>
+          <p data-event-date class="text-xs font-semibold text-[#E8C995] mt-1">Sabtu, 24 Mei 2025</p>
+          <p data-event-time class="text-xs font-bold text-[#F5E8D8] mt-0.5">Pukul 08.00 - 10.00 WIB</p>
+          <p data-event-venue class="text-xs text-[#F5E8D8]/75 mt-1.5 max-w-xs mx-auto">Grand Ballroom, The Royal Palace Hotel, Jl. Jend. Sudirman Kav. 1, Jakarta</p>
           
           <div class="mt-2.5 inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/5 border border-[#E8C995]/30 text-[9px] text-[#E8C995] font-medium">
             <span>Dresscode: Royal Maroon &amp; Champagne Gold</span>
@@ -698,14 +700,14 @@
         </div>
 
         <!-- CARD 2: RESEPSI PERNIKAHAN -->
-        <div class="royal-velvet-card-accent p-6 text-center relative overflow-hidden reveal delay-200 shadow-lg border-2 border-[#E8C995]/60">
+        <div data-event-card class="royal-velvet-card-accent p-6 text-center relative overflow-hidden reveal delay-200 shadow-lg border-2 border-[#E8C995]/60">
           <span class="inline-block px-3 py-0.5 rounded-full bg-gradient-to-r from-[#E8C995] via-[#F3DEB8] to-[#E8C995] text-[#21100F] text-[9px] uppercase tracking-widest font-bold mb-2">
             PERAYAAN AGUNG
           </span>
-          <h4 class="font-serif text-2xl font-bold text-white">Resepsi Pernikahan</h4>
-          <p class="text-xs font-semibold text-[#E8C995] mt-1">Sabtu, 24 Mei 2025</p>
-          <p class="text-xs font-bold text-white mt-0.5">Pukul 19.00 – 22.00 WIB</p>
-          <p class="text-xs text-white/80 mt-1.5 max-w-xs mx-auto">Royal Grand Hall, The Royal Palace Hotel, Jl. Jend. Sudirman Kav. 1, Jakarta</p>
+          <h4 data-event-title class="font-serif text-2xl font-bold text-white">Resepsi Pernikahan</h4>
+          <p data-event-date class="text-xs font-semibold text-[#E8C995] mt-1">Sabtu, 24 Mei 2025</p>
+          <p data-event-time class="text-xs font-bold text-white mt-0.5">Pukul 19.00 – 22.00 WIB</p>
+          <p data-event-venue class="text-xs text-white/80 mt-1.5 max-w-xs mx-auto">Royal Grand Hall, The Royal Palace Hotel, Jl. Jend. Sudirman Kav. 1, Jakarta</p>
           
           <div class="mt-2.5 inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/10 border border-white/20 text-[9px] text-[#F5E8D8] font-medium">
             <span>Dresscode: Formal Evening / Royal Glamour</span>
@@ -756,7 +758,7 @@
           <!-- Tall Left Photo (3 cols) -->
           <div onclick="openLightbox('asset/img/mempelai/foto_editorial_hero.jpg', 'Raka & Sinta — The Editorial Portrait')"
                class="col-span-3 aspect-[3/4] rounded-2xl overflow-hidden shadow-md border border-[#E8C995]/50 cursor-pointer group reveal-scale delay-100 relative bg-[#2A060E]">
-            <img src="asset/img/mempelai/foto_editorial_hero.jpg" alt="Editorial Hero" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
+            <img src="asset/img/mempelai/foto_editorial_hero.jpg" alt="Editorial Hero" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
             <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-80"></div>
             <div class="absolute bottom-2.5 left-2.5 text-left">
               <span class="text-[8px] uppercase tracking-widest text-[#E8C995] font-semibold">ROYAL PORTRAIT</span>
@@ -768,7 +770,7 @@
           <div class="col-span-2 flex flex-col gap-3">
             <div onclick="openLightbox('asset/img/mempelai/foto_editorial_bride.jpg', 'Sinta Maharani — The Bride')"
                  class="flex-1 aspect-[1/1] rounded-2xl overflow-hidden shadow-md border border-[#E8C995]/50 cursor-pointer group reveal-scale delay-150 relative bg-[#2A060E]">
-              <img src="asset/img/mempelai/foto_editorial_bride.jpg" alt="Bride Portrait" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
+              <img src="asset/img/mempelai/foto_editorial_bride.jpg" alt="Bride Portrait" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-70"></div>
               <div class="absolute bottom-1.5 left-2 text-left">
                 <p class="font-serif text-[10px] text-white">The Bride</p>
@@ -777,7 +779,7 @@
 
             <div onclick="openLightbox('asset/img/mempelai/foto_editorial_groom.jpg', 'Raka Pratama — The Groom')"
                  class="flex-1 aspect-[1/1] rounded-2xl overflow-hidden shadow-md border border-[#E8C995]/50 cursor-pointer group reveal-scale delay-200 relative bg-[#2A060E]">
-              <img src="asset/img/mempelai/foto_editorial_groom.jpg" alt="Groom Portrait" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
+              <img src="asset/img/mempelai/foto_editorial_groom.jpg" alt="Groom Portrait" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-70"></div>
               <div class="absolute bottom-1.5 left-2 text-left">
                 <p class="font-serif text-[10px] text-white">The Groom</p>
@@ -790,7 +792,7 @@
         <!-- Row 2: Wide Panoramic Royal View -->
         <div onclick="openLightbox('asset/img/mempelai/foto_editorial_story.jpg', 'Moments of Love — Royal Romance')"
              class="relative w-full aspect-[16/10] rounded-[24px] overflow-hidden shadow-md border border-[#E8C995]/50 cursor-pointer group reveal-scale delay-250 bg-[#2A060E]">
-          <img src="asset/img/mempelai/foto_editorial_story.jpg" alt="Candid Moments" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
+          <img src="asset/img/mempelai/foto_editorial_story.jpg" alt="Candid Moments" data-gallery-img class="w-full h-full object-cover group-hover:scale-105 transition duration-700" decoding="async" loading="lazy">
           <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-80"></div>
           <div class="absolute bottom-3 left-3 text-left">
             <span class="text-[8px] uppercase tracking-widest text-[#E8C995] font-semibold">ETERNAL BOND</span>
@@ -847,21 +849,21 @@
         <div id="giftContentBank" class="space-y-4">
           
           <!-- Rekening 1: BCA Deep Velvet Maroon Metallic Card -->
-          <div class="p-5 rounded-2xl text-left relative overflow-hidden group bg-gradient-to-br from-[#3B080D] via-[#24060B] to-[#150406] border border-[#E8C995]/50 shadow-[0_8px_25px_rgba(0,0,0,0.6)]">
+          <div data-bank-card class="p-5 rounded-2xl text-left relative overflow-hidden group bg-gradient-to-br from-[#3B080D] via-[#24060B] to-[#150406] border border-[#E8C995]/50 shadow-[0_8px_25px_rgba(0,0,0,0.6)]">
             <div class="flex items-center justify-between mb-4">
-              <span class="font-serif font-bold text-lg tracking-wider text-[#F5E8D8]">BCA</span>
+              <span data-bank-name class="font-serif font-bold text-lg tracking-wider text-[#F5E8D8]">BCA</span>
               <span class="text-[9px] font-mono tracking-widest text-[#E8C995] uppercase font-semibold">ROYAL ACCESS</span>
             </div>
             
             <div class="my-3">
               <span class="text-[10px] text-[#E8C995]/70 block uppercase tracking-wider">Nomor Rekening:</span>
-              <span class="font-mono text-xl sm:text-2xl font-bold tracking-widest text-[#F3DEB8] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+              <span data-account-number class="font-mono text-xl sm:text-2xl font-bold tracking-widest text-[#F3DEB8] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                 8830 5219 01
               </span>
             </div>
 
             <div class="flex items-center justify-between pt-2 border-t border-[#E8C995]/20">
-              <span class="text-xs text-[#F5E8D8]/90 font-medium">a.n. Raka Pratama</span>
+              <span data-account-holder class="text-xs text-[#F5E8D8]/90 font-medium">a.n. Raka Pratama</span>
               <button onclick="copyToClipboard('8830521901', this)"
                       class="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#E8C995] via-[#F3DEB8] to-[#E8C995] hover:brightness-110 text-[#21100F] text-xs font-semibold transition-all shadow-[0_2px_10px_rgba(232,201,149,0.3)] cursor-pointer active:scale-95">
                 Salin No. Rekening
@@ -870,21 +872,21 @@
           </div>
 
           <!-- Rekening 2: Mandiri Burnished Gold Metallic Card -->
-          <div class="p-5 rounded-2xl text-left relative overflow-hidden group bg-gradient-to-br from-[#790F25] via-[#3B080D] to-[#1F0509] border border-[#E8C995]/50 shadow-[0_8px_25px_rgba(0,0,0,0.6)]">
+          <div data-bank-card class="p-5 rounded-2xl text-left relative overflow-hidden group bg-gradient-to-br from-[#790F25] via-[#3B080D] to-[#1F0509] border border-[#E8C995]/50 shadow-[0_8px_25px_rgba(0,0,0,0.6)]">
             <div class="flex items-center justify-between mb-4">
-              <span class="font-serif font-bold text-lg tracking-wider text-[#F5E8D8]">MANDIRI</span>
+              <span data-bank-name class="font-serif font-bold text-lg tracking-wider text-[#F5E8D8]">MANDIRI</span>
               <span class="text-[9px] font-mono tracking-widest text-[#E8C995] uppercase font-semibold">ROYAL ACCESS</span>
             </div>
             
             <div class="my-3">
               <span class="text-[10px] text-[#E8C995]/70 block uppercase tracking-wider">Nomor Rekening:</span>
-              <span class="font-mono text-xl sm:text-2xl font-bold tracking-widest text-[#F3DEB8] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+              <span data-account-number class="font-mono text-xl sm:text-2xl font-bold tracking-widest text-[#F3DEB8] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                 1370 0192 8412
               </span>
             </div>
 
             <div class="flex items-center justify-between pt-2 border-t border-[#E8C995]/20">
-              <span class="text-xs text-[#F5E8D8]/90 font-medium">a.n. Sinta Maharani</span>
+              <span data-account-holder class="text-xs text-[#F5E8D8]/90 font-medium">a.n. Sinta Maharani</span>
               <button onclick="copyToClipboard('137001928412', this)"
                       class="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#E8C995] via-[#F3DEB8] to-[#E8C995] hover:brightness-110 text-[#21100F] text-xs font-semibold transition-all shadow-[0_2px_10px_rgba(232,201,149,0.3)] cursor-pointer active:scale-95">
                 Salin No. Rekening
@@ -902,7 +904,7 @@
               <h4 class="font-serif font-bold text-sm text-[#F5E8D8]">Alamat Kirim Kado Fisik</h4>
             </div>
 
-            <div class="space-y-1.5 mb-4 text-xs text-[#F5E8D8]/80">
+            <div data-gift-address class="space-y-1.5 mb-4 text-xs text-[#F5E8D8]/80">
               <div class="flex justify-between items-center text-[11px]">
                 <span class="text-[#E8C995]">Penerima:</span>
                 <span class="font-semibold text-[#F5E8D8]">Raka Pratama / Sinta Maharani</span>
@@ -1075,6 +1077,7 @@
         <div class="w-full h-full rounded-full overflow-hidden bg-[#2A060E] border-2 border-[#FFF2D6]/40">
           <img src="asset/img/mempelai/foto_editorial_hero.jpg" 
             alt="Thank you"
+            data-slot="closing.photo"
             class="w-full h-full object-cover object-[center_15%]"
             decoding="async" loading="lazy">
         </div>
@@ -1088,7 +1091,7 @@
       <p class="text-[11px] text-[#F5E8D8]/70 mb-2">Kami yang berbahagia,</p>
 
       <!-- Signature Names -->
-      <h3 class="font-serif text-3xl sm:text-4xl text-[#F5E8D8] font-semibold mb-8 reveal delay-200">
+      <h3 data-couple-names class="font-serif text-3xl sm:text-4xl text-[#F5E8D8] font-semibold mb-8 reveal delay-200">
         Raka <span class="font-light italic text-[#E8C995]">&amp;</span> Sinta
       </h3>
 
@@ -1155,7 +1158,7 @@
 
   <!-- JavaScript Application Logic -->
   <script src="js/script.js"></script>
-  <!-- Universal InfoMase Template Bridge -->
-  <script src="../template-bridge.js?v=4"></script>
+  <!-- Universal Anvitation Template Bridge -->
+  <script src="../template-bridge.js?v=5"></script>
 </body>
 </html>

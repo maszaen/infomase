@@ -1,0 +1,49 @@
+{
+  "id": "royal-maroon",
+  "folderId": "undangan_6",
+  "name": "Royal Maroon",
+  "gallery": {
+    "min": 1,
+    "max": 8,
+    "recommended": 4,
+    "aspect": "3:4"
+  },
+  "slots": [
+    {
+      "key": "cover.photo",
+      "label": "Foto Medali Sampul (Gate Cover)",
+      "section": "Sampul Pembuka",
+      "aspect": "3:4",
+      "cutout": false,
+      "hint": "Foto pasangan di dalam bingkai ukiran emas pada layar sampul pembuka.",
+      "default": "asset/img/mempelai/mempelai_maroon_royal.jpg"
+    },
+    {
+      "key": "hero.photo",
+      "label": "Foto Utama Beranda (Royal Arch)",
+      "section": "Beranda (Hero)",
+      "aspect": "3:4",
+      "cutout": false,
+      "hint": "Foto potret utama di dalam bingkai emas pada seksi beranda.",
+      "default": "asset/img/mempelai/mempelai_maroon_royal.jpg"
+    },
+    {
+      "key": "story.photo",
+      "label": "Foto Polaroid Kisah Cinta",
+      "section": "Kisah Cinta",
+      "aspect": "16:10",
+      "cutout": false,
+      "hint": "Foto kebersamaan pada bagian bawah timeline Perjalanan Cinta.",
+      "default": "asset/img/mempelai/foto_editorial_story.jpg"
+    },
+    {
+      "key": "closing.photo",
+      "label": "Foto Lingkaran Penutup",
+      "section": "Penutup",
+      "aspect": "1:1",
+      "cutout": false,
+      "hint": "Foto lingkaran berbingkai emas pada bagian ucapan terima kasih.",
+      "default": "asset/img/mempelai/foto_editorial_hero.jpg"
+    }
+  ]
+}

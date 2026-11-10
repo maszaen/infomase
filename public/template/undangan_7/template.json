@@ -1,0 +1,58 @@
+{
+  "id": "pawiwahan-agung",
+  "folderId": "undangan_7",
+  "name": "Pawiwahan Agung",
+  "gallery": {
+    "min": 1,
+    "max": 8,
+    "recommended": 8,
+    "aspect": "3:4"
+  },
+  "slots": [
+    {
+      "key": "cover.photo",
+      "label": "Foto Medali Sampul & Sayap Desktop",
+      "section": "Sampul Pembuka",
+      "aspect": "3:4",
+      "cutout": false,
+      "hint": "Foto utama pada medali lengkung sampul pembuka dan panel samping layar desktop.",
+      "default": "asset/cover-sepeda-onthel-batik.jpg"
+    },
+    {
+      "key": "hero.photo",
+      "label": "Foto Triptych Beranda (Tengah Utama)",
+      "section": "Beranda (Hero)",
+      "aspect": "3:4",
+      "cutout": false,
+      "hint": "Foto lengkung tengah (paling besar) pada susunan 3 bingkai di halaman beranda.",
+      "default": "asset/quotes-jalan-keraton-batik.jpg"
+    },
+    {
+      "key": "hero.secondaryPhoto",
+      "label": "Foto Triptych Beranda (Kiri)",
+      "section": "Beranda (Hero)",
+      "aspect": "3:4",
+      "cutout": false,
+      "hint": "Foto lengkung sisi kiri pada susunan 3 bingkai di halaman beranda.",
+      "default": "asset/galeri-jawa-01.jpg"
+    },
+    {
+      "key": "hero.tertiaryPhoto",
+      "label": "Foto Triptych Beranda (Kanan)",
+      "section": "Beranda (Hero)",
+      "aspect": "3:4",
+      "cutout": false,
+      "hint": "Foto lengkung sisi kanan pada susunan 3 bingkai di halaman beranda.",
+      "default": "asset/galeri-jawa-07.jpg"
+    },
+    {
+      "key": "closing.photo",
+      "label": "Foto Oval Penutup (Matur Nuwun)",
+      "section": "Penutup",
+      "aspect": "3:4",
+      "cutout": false,
+      "hint": "Foto pasangan berbentuk oval pada bagian penutup Matur Nuwun.",
+      "default": "asset/footer-onthel-keraton.jpg"
+    }
+  ]
+}
