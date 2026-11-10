@@ -1,0 +1,251 @@
+
+/* ==========================================================================
+   Hero Pink Eclipse Cinematic Lighting Animation (Power: 50%)
+   ========================================================================== */
+.lp-hero-scene {
+    --power: 0.50;            /* intensitas cahaya */
+    --L: 255 244 231;       /* warna cahaya (r g b) */
+    --mx: 0;
+    --my: 0;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .lp-hero-scene .layer { position: absolute; inset: -7%; pointer-events: none; }
+
+  /* ---------- Rekreasi gradien pink ---------- */
+  .lp-hero-scene .base {
+    background:
+      radial-gradient(ellipse 55% 68% at 28% 6%, rgba(255,255,255,.98) 0%, rgba(255,226,244,.88) 34%, rgba(255,196,228,0) 73%),
+      radial-gradient(ellipse 78% 82% at 62% 101%, rgba(255,253,254,1) 0%, rgba(255,232,247,.94) 38%, rgba(255,195,228,0) 78%),
+      radial-gradient(ellipse 58% 72% at -8% -12%, #ff43a4 0%, rgba(255,80,170,.88) 28%, rgba(255,122,191,0) 72%),
+      radial-gradient(ellipse 62% 74% at 108% -10%, #f5389a 0%, rgba(246,69,158,.88) 30%, rgba(250,113,186,0) 74%),
+      radial-gradient(ellipse 68% 70% at -8% 105%, #ff9bd0 0%, rgba(255,167,215,0) 68%),
+      radial-gradient(ellipse 70% 72% at 107% 104%, #ffa7d7 0%, rgba(255,180,222,0) 68%),
+      linear-gradient(148deg, #ff68b5 0%, #ffadda 31%, #ffe0f1 63%, #ffc0e1 100%);
+    animation: baseBreath 26s ease-in-out infinite alternate;
+  }
+  .lp-hero-scene .wash {
+    background:
+      radial-gradient(ellipse 42% 48% at 18% 20%, rgba(255,255,255,.62), transparent 70%),
+      radial-gradient(ellipse 48% 55% at 86% 74%, rgba(255,255,255,.42), transparent 72%),
+      radial-gradient(ellipse 34% 42% at 52% 48%, rgba(255,245,252,.45), transparent 75%);
+    mix-blend-mode: screen;
+    animation: washDrift 19s ease-in-out infinite alternate;
+  }
+
+  /* ---------- Dua busur raksasa ---------- */
+  .lp-hero-scene .arc-wrap {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    transform: translate3d(calc(var(--mx) * 12px), calc(var(--my) * 9px), 0);
+    transition: transform 1.1s cubic-bezier(.2,.8,.2,1);
+  }
+  .lp-hero-scene .arcs {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    transform-origin: 50% 50%;
+    animation: arcFloat 24s ease-in-out infinite alternate;
+  }
+  /* kilau yang berjalan menyusuri tepi busur */
+  .lp-hero-scene .glint {
+    fill: none;
+    stroke-linecap: round;
+    stroke-dasharray: 16 184;
+    stroke-dashoffset: 16;
+    animation: glintRun 11s cubic-bezier(.45,.05,.3,1) infinite;
+  }
+  .lp-hero-scene .glint.right { animation-duration: 14s; animation-delay: -6s; }
+  .lp-hero-scene .boost { fill: none; opacity: 0; }
+
+  /* ---------- Bayangan pink lembut (lawan arah cahaya) ---------- */
+  .lp-hero-scene .shade {
+    position: absolute;
+    left: 0; top: 0;
+    width: 130vmax; height: 130vmax;
+    margin: -65vmax 0 0 -65vmax;
+    border-radius: 50%;
+    z-index: 3;
+    pointer-events: none;
+    background: radial-gradient(circle closest-side, rgba(224,58,148,.40) 0%, rgba(236,92,172,.16) 50%, rgba(236,92,172,0) 100%);
+    mix-blend-mode: multiply;
+    opacity: calc(var(--power) * .55);
+    will-change: transform;
+  }
+
+  /* ---------- Grup pencahayaan (di-blend "screen") ---------- */
+  .lp-hero-scene .lights {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 4;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: calc(var(--power) * .8);
+    transition: opacity .5s ease;
+  }
+  .lp-hero-scene .lights-inner {
+    position: absolute;
+    inset: 0;
+    animation: exposure 9s ease-in-out infinite alternate;
+  }
+
+  /* sinar volumetrik (god rays) dari arah kiri-atas */
+  .lp-hero-scene .fans { position: absolute; inset: 0; transition: opacity 1.2s ease; }
+  .lp-hero-scene .fans.off { opacity: 0; }
+  .lp-hero-scene .fan {
+    position: absolute;
+    left: 22%; top: 4%;
+    width: 180vmax; height: 180vmax;
+    margin: -90vmax 0 0 -90vmax;
+    border-radius: 50%;
+    transform-origin: 50% 50%;
+    -webkit-mask-image: radial-gradient(circle closest-side, transparent 0%, #000 6%, #000 28%, transparent 78%);
+            mask-image: radial-gradient(circle closest-side, transparent 0%, #000 6%, #000 28%, transparent 78%);
+  }
+  .fan-a {
+    background: conic-gradient(from 0deg,
+      transparent 0deg 82deg,
+      rgb(var(--L) / .30) 95deg,  transparent 107deg,
+      rgb(var(--L) / .16) 117deg, transparent 125deg,
+      rgb(var(--L) / .38) 139deg, transparent 153deg,
+      rgb(var(--L) / .12) 161deg, transparent 167deg,
+      rgb(var(--L) / .32) 181deg, transparent 195deg,
+      rgb(var(--L) / .18) 205deg, transparent 215deg,
+      rgb(var(--L) / .26) 229deg, transparent 245deg 360deg);
+    animation: fanA 31s ease-in-out infinite alternate;
+  }
+  .fan-b {
+    background: conic-gradient(from 0deg,
+      transparent 0deg 88deg,
+      rgb(var(--L) / .20) 102deg, transparent 112deg,
+      rgb(var(--L) / .28) 128deg, transparent 144deg,
+      rgb(var(--L) / .14) 150deg, transparent 158deg,
+      rgb(var(--L) / .30) 172deg, transparent 188deg,
+      rgb(var(--L) / .22) 214deg, transparent 232deg 360deg);
+    animation: fanB 43s ease-in-out infinite alternate;
+  }
+
+  /* bloom ambien + sapuan cahaya */
+  .lp-hero-scene .bloom {
+    position: absolute; inset: -7%;
+    background:
+      radial-gradient(circle at 24% 14%, rgb(var(--L) / .46), transparent 26%),
+      radial-gradient(circle at 80% 76%, rgb(var(--L) / .30), transparent 28%),
+      radial-gradient(circle at 60% 98%, rgb(var(--L) / .26), transparent 30%);
+    animation: bloomPulse 13s ease-in-out infinite alternate;
+  }
+  .lp-hero-scene .sweep {
+    position: absolute; inset: -60%;
+    background: linear-gradient(100deg, transparent 34%, rgb(var(--L) / .05) 42%, rgb(var(--L) / .32) 50%, rgb(var(--L) / .05) 58%, transparent 66%);
+    opacity: 0;
+    animation: sweep 21s ease-in-out infinite;
+  }
+
+  /* bokeh */
+  .lp-hero-scene .bokeh { position: absolute; inset: 0; }
+  .lp-hero-scene .bokeh span {
+    position: absolute;
+    left: var(--x); top: var(--y);
+    width: var(--s); height: var(--s);
+    margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+    border-radius: 50%;
+    background: radial-gradient(circle closest-side, rgb(var(--L) / .50) 0%, rgb(var(--L) / .24) 46%, transparent 100%);
+    opacity: 0;
+    animation: bokehFloat var(--dur) ease-in-out var(--delay) infinite;
+  }
+
+  /* key light — mengikuti kursor dengan sangat halus */
+  .lp-hero-scene .key, .lp-hero-scene .key-core {
+    position: absolute; left: 0; top: 0;
+    border-radius: 50%;
+    will-change: transform;
+  }
+  .lp-hero-scene .key {
+    width: 120vmax; height: 120vmax;
+    margin: -60vmax 0 0 -60vmax;
+    background: radial-gradient(circle closest-side, rgb(var(--L) / .46) 0%, rgb(var(--L) / .24) 28%, rgb(var(--L) / .07) 60%, transparent 100%);
+  }
+  .lp-hero-scene .key-core {
+    width: 46vmax; height: 46vmax;
+    margin: -23vmax 0 0 -23vmax;
+    background: radial-gradient(circle closest-side, rgb(var(--L) / .58) 0%, rgb(var(--L) / .20) 45%, transparent 100%);
+  }
+
+  /* gelombang cahaya (klik) */
+  .lp-hero-scene .wave, .lp-hero-scene .flare {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+  }
+  .lp-hero-scene .wave {
+    width: 70vmax; height: 70vmax;
+    background: radial-gradient(circle closest-side, transparent 0%, transparent 44%, rgb(var(--L) / .20) 62%, rgb(var(--L) / .55) 78%, rgb(var(--L) / .14) 90%, transparent 100%);
+  }
+  .lp-hero-scene .flare {
+    width: 90vmax; height: 90vmax;
+    background: radial-gradient(circle closest-side, rgb(var(--L) / .80) 0%, rgb(var(--L) / .30) 34%, transparent 100%);
+  }
+
+  /* ---------- Atmosfer ---------- */
+  .lp-hero-scene .particles { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+  .lp-hero-scene .spark {
+    position: absolute; left: var(--x); top: var(--y);
+    width: var(--size); height: var(--size);
+    border-radius: 50%; background: #fff;
+    box-shadow: 0 0 9px 2px rgba(255,255,255,.8), 0 0 20px 4px rgba(255,170,220,.35);
+    opacity: 0;
+    animation: sparkFloat var(--dur) linear var(--delay) infinite;
+  }
+  .lp-hero-scene .grain {
+    z-index: 6;
+    background-image: radial-gradient(rgba(255,255,255,.36) .5px, transparent .6px);
+    background-size: 4px 4px;
+    opacity: .12;
+    mix-blend-mode: soft-light;
+  }
+  .lp-hero-scene .vignette {
+    z-index: 6;
+    background: radial-gradient(ellipse at 50% 46%, transparent 46%, rgba(170,28,102,.15) 100%);
+    animation: vignetteBreath 11s ease-in-out infinite alternate;
+  }
+
+  
+/* ---------- Keyframes ---------- */
+  
+@keyframes baseBreath { 0% { transform: scale(1) translate(0,0); } 100% { transform: scale(1.025) translate(.4%,-.3%); } }
+  @keyframes washDrift { 0% { transform: translate(-1.5%, 1%) scale(1); opacity: .75; } 100% { transform: translate(1.8%, -1.4%) scale(1.04); opacity: 1; } }
+  @keyframes arcFloat { 0% { transform: scale(1) translate(0,0); } 100% { transform: scale(1.015) translate(5px,-4px); } }
+  @keyframes glintRun { 0% { stroke-dashoffset: 16; } 62%, 100% { stroke-dashoffset: -100; } }
+  @keyframes exposure { 0% { opacity: .8; } 100% { opacity: 1; } }
+  @keyframes fanA { 0% { transform: rotate(-5deg); opacity: .65; } 100% { transform: rotate(6deg); opacity: 1; } }
+  @keyframes fanB { 0% { transform: rotate(7deg); opacity: 1; } 100% { transform: rotate(-4deg); opacity: .6; } }
+  @keyframes bloomPulse { 0% { opacity: .5; transform: scale(.98); } 100% { opacity: 1; transform: scale(1.05); } }
+  @keyframes sweep { 0%, 14% { opacity: 0; transform: translateX(-55%) rotate(7deg); } 42% { opacity: .8; } 70%, 100% { opacity: 0; transform: translateX(55%) rotate(7deg); } }
+  @keyframes bokehFloat {
+    0%   { transform: translate(0,0) scale(.88); opacity: 0; }
+    22%  { opacity: var(--o); }
+    50%  { transform: translate(var(--dx), var(--dy)) scale(1.08); }
+    78%  { opacity: var(--o); }
+    100% { transform: translate(calc(var(--dx) * 1.9), calc(var(--dy) * 1.9)) scale(.94); opacity: 0; }
+  }
+  @keyframes sparkFloat { 0% { transform: translate(0, 45px); opacity: 0; } 18% { opacity: .75; } 40% { opacity: .25; } 58% { opacity: .7; } 80% { opacity: .2; } 100% { transform: translate(var(--drift), -130px); opacity: 0; } }
+  @keyframes vignetteBreath { 0% { opacity: .75; } 100% { opacity: 1; } }
+  @keyframes livePulse { 0%,100% { box-shadow: 0 0 0 4px rgba(226,58,146,.16); } 50% { box-shadow: 0 0 0 8px rgba(226,58,146,.04); } }
+  @keyframes scrollDot { 0%,100% { transform: translate(-50%,0); opacity: 1; } 60% { transform: translate(-50%,7px); opacity: .2; } }
+
+  .lp-hero-scene.paused * { animation-play-state: paused !important; }
+
+  
